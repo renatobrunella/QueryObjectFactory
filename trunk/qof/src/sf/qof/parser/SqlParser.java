@@ -136,7 +136,7 @@ public class SqlParser {
     return sql;
   }
 
-  @SuppressWarnings("unchecked")
+//  @SuppressWarnings("unchecked")
   private String parse(String sql, boolean isCallableStatement) {
     findCurlyBrackets(sql);
     int curlyBracketIndex = 0;
@@ -213,9 +213,13 @@ public class SqlParser {
     if (callableInCurlyBrackets) {
       sql = "{ " + sql + " }";
     }
-
-    resultDefs = (List<ResultDefinition>)PartialDefinitionCombiner.combine(resultDefs);
-    parameterDefs = (List<ParameterDefinition>)PartialDefinitionCombiner.combine(parameterDefs);
+    @SuppressWarnings("unchecked") List<ResultDefinition> combinedResults = 
+      (List<ResultDefinition>)PartialDefinitionCombiner.combine(resultDefs);
+    resultDefs = combinedResults;
+    
+    @SuppressWarnings("unchecked") List<ParameterDefinition> combinedParameters = 
+      (List<ParameterDefinition>)PartialDefinitionCombiner.combine(parameterDefs);
+    parameterDefs = combinedParameters;
     
     if (openCurlyBrackets.size() != closeCurlyBrackets.size()) {
       throw new SqlParserException("Number of opening and closing curly brackets does not match", 0, sqlLength);

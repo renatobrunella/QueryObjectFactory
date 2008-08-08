@@ -74,11 +74,11 @@ public class DefineClassHelper {
    * 
    * @see java.lang.ClassLoader
    */
-  @SuppressWarnings("unchecked")
   public static <T> Class<T> defineClass(String className, byte[] byteCode, ClassLoader loader) throws Exception {
     Object[] args = new Object[] { className, byteCode, new Integer(0), new Integer(byteCode.length),
         PROTECTION_DOMAIN };
-    return (Class<T>) DEFINE_CLASS.invoke(loader, args);
+    @SuppressWarnings("unchecked") Class<T> definedClass = (Class<T>) DEFINE_CLASS.invoke(loader, args);
+    return definedClass;
   }
 
 }

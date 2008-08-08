@@ -39,7 +39,6 @@ public final class ObjectInstantiator {
    * @return         an instance of clazz
    * @throws RuntimeException instanziation failed
    */
-  @SuppressWarnings("unchecked")
   public static <T> T newInstance(Class<T> clazz, Object[] initArgs) {
     if (initArgs == null || initArgs.length == 0) {
       try {
@@ -51,7 +50,7 @@ public final class ObjectInstantiator {
       }
     } else {
       Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-      for (Constructor<T> constructor : (Constructor<T>[]) constructors) {
+      for (Constructor<?> constructor : constructors) {
         Class<?>[] constructorParams = constructor.getParameterTypes();
         if (constructorParams.length == initArgs.length) {
           boolean match = true;
@@ -67,7 +66,8 @@ public final class ObjectInstantiator {
           }
           if (match) {
             try {
-              return (T) constructor.newInstance(initArgs);
+              @SuppressWarnings("unchecked") T newInstance = (T) constructor.newInstance(initArgs);
+              return newInstance;
             } catch (IllegalArgumentException e) {
               throw new RuntimeException(e);
             } catch (InstantiationException e) {

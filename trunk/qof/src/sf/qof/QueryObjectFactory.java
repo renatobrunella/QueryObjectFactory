@@ -204,13 +204,12 @@ public class QueryObjectFactory {
    * 
    * @since 1.0
    */
-  @SuppressWarnings("unchecked")
   public static <T, S> T createQueryObjectFromSuperClass(Class<T> queryDefinitionClass, Class<S> superClass,
       Object... parameters) {
     if ((queryDefinitionClass != superClass) && !queryDefinitionClass.isInterface()) {
       throw new RuntimeException("Invalid class hierarchie");
     }
-    Class<T> clazz = (Class<T>)ClassGenerationCache.getCachedClass(queryDefinitionClass);
+    @SuppressWarnings("unchecked") Class<T> clazz = (Class<T>)ClassGenerationCache.getCachedClass(queryDefinitionClass);
     if (clazz == null) {
       try {
         List<Mapper> mappers = new ArrayList<Mapper>();

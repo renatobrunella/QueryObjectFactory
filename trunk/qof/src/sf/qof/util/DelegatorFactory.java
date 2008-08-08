@@ -92,9 +92,8 @@ public class DelegatorFactory {
    *          parameters that are passed to the delegatee factory
    * @return delegator object instance
    */
-  @SuppressWarnings("unchecked")
   public static <T> T create(Class<T> delegateeClass, Class<?> delegateeFactory, Object... constructorParameters) {
-    Class<T> delegatorClass = (Class<T>) ClassGenerationCache.getCachedClass(delegateeClass, delegateeFactory);
+    @SuppressWarnings("unchecked") Class<T> delegatorClass = (Class<T>) ClassGenerationCache.getCachedClass(delegateeClass, delegateeFactory);
     if (delegatorClass == null) {
       try {
         // create new class
@@ -109,7 +108,7 @@ public class DelegatorFactory {
     }
 
     // create instance
-    Class[] constructorParameterTypes = new Class[constructorParameters.length];
+    @SuppressWarnings("unchecked") Class[] constructorParameterTypes = new Class[constructorParameters.length];
     for (int i = 0; i < constructorParameters.length; i++) {
       constructorParameterTypes[i] = constructorParameters[i].getClass();
     }
