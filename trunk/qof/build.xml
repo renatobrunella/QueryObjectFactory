@@ -6,12 +6,12 @@
 	<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="${basedir}/lib/jarjar-0.9.jar" />
 
 	<!-- OSGi Ant taskdefs -->
-	<taskdef name="osgi-manifest" classname="uk.co.brunella.osgi.ant.tasks.OsgiManifestReader" classpath="${basedir}/lib/uk.co.brunella.osgi.ant.support-1.0.0.jar" />
-	<taskdef name="osgi-create" classname="uk.co.brunella.osgi.ant.tasks.OsgiCreate" classpath="${basedir}/lib/uk.co.brunella.osgi.ant.support-1.0.0.jar" />
-	<taskdef name="osgi-deploy" classname="uk.co.brunella.osgi.ant.tasks.OsgiDeploy" classpath="${basedir}/lib/uk.co.brunella.osgi.ant.support-1.0.0.jar" />
-	<taskdef name="osgi-undeploy" classname="uk.co.brunella.osgi.ant.tasks.OsgiUndeploy" classpath="${basedir}/lib/uk.co.brunella.osgi.ant.support-1.0.0.jar" />
-	<taskdef name="osgi-list" classname="uk.co.brunella.osgi.ant.tasks.OsgiList" classpath="${basedir}/lib/uk.co.brunella.osgi.ant.support-1.0.0.jar" />
-	<typedef name="osgi-path" classname="uk.co.brunella.osgi.ant.types.OsgiPath" classpath="${basedir}/lib/uk.co.brunella.osgi.ant.support-1.0.0.jar" />
+	<taskdef name="osgi-manifest" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiManifestReader" classpath="${basedir}/lib/uk.co.brunella.osgi.bdt.support-1.3.0.jar" />
+	<taskdef name="osgi-create" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiCreate" classpath="${basedir}/lib/uk.co.brunella.osgi.bdt.support-1.3.0.jar" />
+	<taskdef name="osgi-deploy" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiDeploy" classpath="${basedir}/lib/uk.co.brunella.osgi.bdt.support-1.3.0.jar" />
+	<taskdef name="osgi-undeploy" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiUndeploy" classpath="${basedir}/lib/uk.co.brunella.osgi.bdt.support-1.3.0.jar" />
+	<taskdef name="osgi-list" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiList" classpath="${basedir}/lib/uk.co.brunella.osgi.bdt.support-1.3.0.jar" />
+	<typedef name="osgi-path" classname="uk.co.brunella.osgi.bdt.ant.types.OSGiPath" classpath="${basedir}/lib/uk.co.brunella.osgi.bdt.support-1.3.0.jar" />
 
 	<!-- read bundle symbolic name and version from manifest into properties bundle.name, bundle.version -->
 	<osgi-manifest manifest="META-INF/MANIFEST.MF"/>
@@ -238,7 +238,7 @@
 	<target name="jar-src">
 		<jar 
 			basedir="${basedir}" 
-			destfile="${dist.dir}/${bundle.name}-src-${bundle.version}.jar" 
+			destfile="${dist.dir}/${bundle.name}-source-${bundle.version}.jar" 
 			description="create source jar"
 			includes="src/**,qof-license.txt,lgpl-3_0.txt">
 			<manifest>
