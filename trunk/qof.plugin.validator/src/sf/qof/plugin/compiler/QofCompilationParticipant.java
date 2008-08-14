@@ -21,6 +21,7 @@ package sf.qof.plugin.compiler;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -34,22 +35,27 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
+import sf.qof.plugin.nature.QueryObjectFactoryNature;
+
 public class QofCompilationParticipant extends CompilationParticipant {
 
   public QofCompilationParticipant() {
   }
 
   public boolean isActive(IJavaProject javaProject) {
-    //TODO check QOF nature
-    return true;
-    // IProject project = javaProject.getProject();
-    // return project.exists() && ProjectHelper.projectHasQofNature(project);
+    IProject project = javaProject.getProject();
+    try {
+      return project.exists() && project.getNature(QueryObjectFactoryNature.NATURE_ID) != null;
+    } catch (CoreException e) {
+      // ignore
+    }
+    return false;
   }
 
-  public void reconcile(ReconcileContext reconcilecontext) {
+  public void reconcile(ReconcileContext reconcileContext) {
   }
 
-  public void buildStarting(BuildContext abuildcontext[], boolean flag) {
+  public void buildStarting(BuildContext buildContext[], boolean flag) {
   }
 
   public boolean isAnnotationProcessor() {
