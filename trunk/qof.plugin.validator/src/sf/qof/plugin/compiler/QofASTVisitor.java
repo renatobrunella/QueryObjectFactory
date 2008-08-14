@@ -301,7 +301,7 @@ public class QofASTVisitor extends ASTVisitor {
       boolean isBeanResult = false;
       if (isAtomic(returnType.getQualifiedName())) {
         isAtomicResult = true;
-      } else {
+      } else if (!isVoid(returnType.getQualifiedName())){
         isBeanResult = true;
       }
       
@@ -484,6 +484,10 @@ public class QofASTVisitor extends ASTVisitor {
         || typeName.equals("float") || typeName.equals("java.lang.Float")
         || typeName.equals("double") || typeName.equals("java.lang.Double")
         || typeName.equals("java.lang.String") || typeName.equals("java.util.Date");      // Atomic
+  }
+  
+  private boolean isVoid(String typeName) {
+    return typeName.equals("void") || typeName.equals("java.lang.Void");
   }
 
   private String getInfoString(List<Object[]> infoList) {
