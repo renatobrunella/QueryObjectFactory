@@ -332,7 +332,8 @@ public class QofASTVisitor extends ASTVisitor {
         }
         
         for (ResultDefinition definition : parser.getResultDefinitions()) {
-          if (definition.getField() == null && definition.getConstructorParameter() == 0) {
+          if (definition.getField() == null && definition.getConstructorParameter() == 0 
+              && !definition.isMapKey() && definition.getType().equals("auto")) {
             // no field or constructor parameter defined
             ResultDefinitionImpl resultImpl = (ResultDefinitionImpl)definition;
             addSqlStatementProblem(infoList, "Either a field or constructor parameter must be defined", 
