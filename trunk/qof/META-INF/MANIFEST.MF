@@ -1,5 +1,5 @@
 Bundle-Name: QueryObjectFactory
-Bundle-SymbolicName: sf.qof;singleton=true
+Bundle-SymbolicName: sf.qof
 Bundle-Version: 1.0.0.RC6
 Bundle-Vendor: brunella ltd
 Bundle-Copyright: "brunella ltd (c) 2007, 2008"
