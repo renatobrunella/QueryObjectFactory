@@ -172,6 +172,9 @@ public class SessionContextFactory {
 		Connection connection;
 		try {
 		  connection = dataSource.getConnection();
+		  if (connection == null) {
+		    throw new SQLException("DataSource returned null connection");
+		  }
 		  connection.setAutoCommit(false);
 		} catch (SQLException e) {
 		  throw new SystemException(e);
