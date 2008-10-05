@@ -248,13 +248,13 @@ public class DefaultSessionContextTest extends TestCase {
   }
 
   public void testIsRollbackOnly() throws SystemException {
-    SessionContextFactory.setDataSource("testGetUserTransaction", createDataSource());
-    SessionContext ctx = SessionContextFactory.getContext("testGetUserTransaction");
+    SessionContextFactory.setDataSource("testIsRollbackOnly", createDataSource());
+    SessionContext ctx = SessionContextFactory.getContext("testIsRollbackOnly");
     try {
       ctx.getUserTransaction().isRollbackOnly();
       fail("Should raise exception");
     } catch (IllegalStateException e) {
-      assertEquals("Session is not running in thread for context testGetUserTransaction", e.getMessage());
+      assertEquals("Session is not running in thread for context testIsRollbackOnly", e.getMessage());
     }
     ctx.startSession();
     try {
@@ -268,5 +268,75 @@ public class DefaultSessionContextTest extends TestCase {
     ctx.getUserTransaction().setRollbackOnly();
     assertTrue(ctx.getUserTransaction().isRollbackOnly());
     ctx.stopSession();
+  }
+  
+  public void testSetSessionConnectionHandler() throws SystemException {
+    final boolean[] called = new boolean[2];
+    SessionConnectionHandler handler = new SessionConnectionHandler() {
+      public void closeConnection(Connection connection) throws SystemException {
+        try {
+          called[0] = true;
+          connection.close();
+        } catch (SQLException e) {
+          throw new SystemException(e);
+        }
+      }
+      public Connection getConnection(DataSource dataSource) throws SystemException {
+        try {
+          called[1] = true;
+          return dataSource.getConnection();
+        } catch (SQLException e) {
+          throw new SystemException(e);
+        }
+      }
+    };
+    SessionContextFactory.setDataSource(createDataSource());
+    SessionContextFactory.setSessionConnectionHandler(handler);
+    SessionContext ctx = SessionContextFactory.getContext();
+    assertFalse(called[0]);
+    assertFalse(called[1]);
+    ctx.startSession();
+    assertFalse(called[0]);
+    assertTrue(called[1]);
+    assertNotNull(ctx.getConnection());
+    ctx.stopSession();
+    assertTrue(called[0]);
+    assertTrue(called[1]);
+    // reset to default handler
+    SessionContextFactory.setSessionConnectionHandler(null);
+  }
+  
+  public void testSetSessionConnectionHandlerContext() throws SystemException {
+    final boolean[] called = new boolean[2];
+    SessionConnectionHandler handler = new SessionConnectionHandler() {
+      public void closeConnection(Connection connection) throws SystemException {
+        try {
+          called[0] = true;
+          connection.close();
+        } catch (SQLException e) {
+          throw new SystemException(e);
+        }
+      }
+      public Connection getConnection(DataSource dataSource) throws SystemException {
+        try {
+          called[1] = true;
+          return dataSource.getConnection();
+        } catch (SQLException e) {
+          throw new SystemException(e);
+        }
+      }
+    };
+    SessionContextFactory.setDataSource("testSetSessionConnectionHandlerContext", createDataSource());
+    SessionContextFactory.setSessionConnectionHandler("testSetSessionConnectionHandlerContext", handler);
+    SessionContext ctx = SessionContextFactory.getContext("testSetSessionConnectionHandlerContext");
+    assertFalse(called[0]);
+    assertFalse(called[1]);
+    ctx.startSession();
+    assertFalse(called[0]);
+    assertTrue(called[1]);
+    assertNotNull(ctx.getConnection());
+    ctx.stopSession();
+    assertTrue(called[0]);
+    assertTrue(called[1]);
   }
 }

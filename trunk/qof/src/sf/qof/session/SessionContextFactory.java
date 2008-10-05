@@ -133,7 +133,7 @@ public class SessionContextFactory {
    * The default handler is <code>DefaultSessionConnectionHandler</code>.
    * 
    * @param contextName  the session context name
-   * @param sessionConnectionHandler the session connection handler
+   * @param sessionConnectionHandler the session connection handler if null use the default handler
    * 
    * @see DefaultSessionConnectionHandler
    */
@@ -172,7 +172,11 @@ public class SessionContextFactory {
     }
     
     private void setSessionConnectionHandler(SessionConnectionHandler sessionConnectionHandler) {
-      this.sessionConnectionHandler = sessionConnectionHandler;
+      if (sessionConnectionHandler == null) {
+        this.sessionConnectionHandler = DEFAULT_SESSION_CONNECTION_HANDLER;
+      } else {
+        this.sessionConnectionHandler = sessionConnectionHandler;
+      }
     }
   
     public Connection getConnection() {
