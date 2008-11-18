@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import sf.qof.Call;
 import sf.qof.Delete;
@@ -210,7 +211,13 @@ public final class AnnotationMapperFactory {
         if (info == null) {
           setter = ReflectionUtils.findSetter(beanType, field);
         } else {
-          setter = ReflectionUtils.findSetter(beanType, field, info.getMappableTypes());
+          Set<Class<?>> mappableTypes = info.getMappableTypes();
+          // special handling for Enum
+          if (mappableTypes.size() == 1 && mappableTypes.contains(Enum.class)) {
+            setter = ReflectionUtils.findSetter(beanType, field);
+          } else {
+            setter = ReflectionUtils.findSetter(beanType, field, mappableTypes);
+          }
         }
         if (setter == null) {
           throw new ValidationException("Cannot find or access setter for " + field + " in class " + beanType.getName()
