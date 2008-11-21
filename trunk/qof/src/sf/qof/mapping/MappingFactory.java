@@ -270,7 +270,7 @@ public class MappingFactory {
     if (info != null) {
       return info;
     } else if (classLoader != null) {
-      return getParameterMappingInfo(null, type);
+      return getResultMappingInfo(null, type);
     }
     return null;
   }
