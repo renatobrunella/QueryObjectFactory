@@ -357,8 +357,7 @@ public class BooleanAdapter implements GeneratorMappingAdapter {
    * It maps "Y" to true, "N" to false, is not case-sensitive and allows null values.
    */
   public static void registerYesNo() {
-    ClassLoader classLoader = CallStackIntrospector.getCaller().getClassLoader();
-    QueryObjectFactoryDelegator.registerMapper_(classLoader, "yesno", new BooleanAdapter("yesno", "Y", "N", false, true));
+    QueryObjectFactoryDelegator.registerMapper_(null, "yesno", new BooleanAdapter("yesno", "Y", "N", false, true));
   }
   
   /**

@@ -167,8 +167,7 @@ public class EnumerationAdapter implements GeneratorMappingAdapter {
    * Register the mapping adapter with the default name "enum".
    */
   public static void register() {
-    ClassLoader classLoader = CallStackIntrospector.getCaller().getClassLoader();
-    QueryObjectFactoryDelegator.registerMapper_(classLoader, "enum", new EnumerationAdapter("name", "valueOf"));
+    QueryObjectFactoryDelegator.registerMapper_(null, "enum", new EnumerationAdapter("name", "valueOf"));
   }
 
   /**

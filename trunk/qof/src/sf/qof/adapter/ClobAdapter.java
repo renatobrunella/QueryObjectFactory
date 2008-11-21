@@ -160,8 +160,7 @@ public class ClobAdapter implements GeneratorMappingAdapter {
    * Register the mapping adapter with the default name "clob".
    */
   public static void register() {
-    ClassLoader classLoader = CallStackIntrospector.getCaller().getClassLoader();
-    QueryObjectFactoryDelegator.registerMapper_(classLoader, "clob", generator);
+    QueryObjectFactoryDelegator.registerMapper_(null, "clob", generator);
   }
   
   /**

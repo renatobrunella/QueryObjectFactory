@@ -151,8 +151,7 @@ public class BlobAdapter implements GeneratorMappingAdapter {
    * Register the mapping adapter with the default name "blob".
    */
   public static void register() {
-    ClassLoader classLoader = CallStackIntrospector.getCaller().getClassLoader();
-    QueryObjectFactoryDelegator.registerMapper_(classLoader, "blob", generator);
+    QueryObjectFactoryDelegator.registerMapper_(null, "blob", generator);
   }
   
   /**
