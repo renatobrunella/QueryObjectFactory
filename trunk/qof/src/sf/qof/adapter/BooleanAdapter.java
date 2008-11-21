@@ -380,6 +380,7 @@ public class BooleanAdapter implements GeneratorMappingAdapter {
    */
   private static class QueryObjectFactoryDelegator extends QueryObjectFactory {
     public static void registerMapper_(ClassLoader classLoader, String type, MappingAdapter adapter) {
+      unregisterMapper(classLoader, type);
       registerMapper(classLoader, type, adapter);
     }
   }
