@@ -56,17 +56,16 @@ public final class AnnotationMapperFactory {
   private AnnotationMapperFactory() { }
   
   public static Mapper create(Class<?> queryDefinitionClass, Method method) {
-	  MethodInfo methodInfo = MethodInfoFactory.createMethodInfo(method);
     if (method.isAnnotationPresent(Query.class)) {
-      return create(queryDefinitionClass, methodInfo, method.getAnnotation(Query.class));
+      return create(queryDefinitionClass, MethodInfoFactory.createMethodInfo(method), method.getAnnotation(Query.class));
     } else if (method.isAnnotationPresent(Insert.class)) {
-      return create(queryDefinitionClass, methodInfo, method.getAnnotation(Insert.class));
+      return create(queryDefinitionClass, MethodInfoFactory.createMethodInfo(method), method.getAnnotation(Insert.class));
     } else if (method.isAnnotationPresent(Update.class)) {
-      return create(queryDefinitionClass, methodInfo, method.getAnnotation(Update.class));
+      return create(queryDefinitionClass, MethodInfoFactory.createMethodInfo(method), method.getAnnotation(Update.class));
     } else if (method.isAnnotationPresent(Delete.class)) {
-      return create(queryDefinitionClass, methodInfo, method.getAnnotation(Delete.class));
+      return create(queryDefinitionClass, MethodInfoFactory.createMethodInfo(method), method.getAnnotation(Delete.class));
     } else if (method.isAnnotationPresent(Call.class)) {
-      return create(queryDefinitionClass, methodInfo, method.getAnnotation(Call.class));
+      return create(queryDefinitionClass, MethodInfoFactory.createMethodInfo(method), method.getAnnotation(Call.class));
     } else {
       return null;
     }
