@@ -1,6 +1,6 @@
 Bundle-Name: QueryObjectFactory
 Bundle-SymbolicName: sf.qof
-Bundle-Version: 1.0.0.RC6
+Bundle-Version: 1.0.0.RC7
 Bundle-Vendor: brunella ltd
 Bundle-Copyright: "brunella ltd (c) 2007, 2008"
 Bundle-DocURL: http://www.queryobjectfactory.com/
