@@ -153,7 +153,7 @@
 		<junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure" dir="${basedir}">
 			<formatter type="xml" />
 			<test name="sf.qof.AllTests" todir="${junit.output.dir}" />
-			<jvmarg line="-Dcglib.debugLocation=&quot;${junit.output.dir}&quot;" />
+			<jvmarg line="-Dcglib.debugLocation=${junit.output.dir}" />
 			<classpath refid="qof.classpath" />
 		</junit>
 		<antcall target="junitreport" />
@@ -212,7 +212,7 @@
 		<junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
 			<formatter type="xml" />
 			<test name="sf.qof.AllTests" todir="${junit.output.nodep.dir}" />
-			<jvmarg line="-Dcglib.debugLocation=&quot;${junit.output.nodep.dir}&quot;" />
+			<jvmarg line="-Dcglib.debugLocation=${junit.output.nodep.dir}" />
 			<classpath refid="qof.nodep.classpath" />
 		</junit>
 		<fail if="junit.failure"/>
@@ -329,8 +329,8 @@
 	
 		<junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
 			<test name="sf.qof.AllTests" />
-			<jvmarg value="-Dcglib.debugLocation=&quot;${junit.output.dir}&quot;" />
-			<jvmarg value="-Demma.coverage.out.file=&quot;${coverage.dir}/coverage.emma&quot;" />
+			<jvmarg value="-Dcglib.debugLocation=${junit.output.dir}" />
+			<jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
 			<jvmarg value="-Demma.coverage.out.merge=true" />
 			<classpath refid="qof.emma.classpath" />
 		</junit>
