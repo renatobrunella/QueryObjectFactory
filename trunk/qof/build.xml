@@ -344,6 +344,15 @@
 			</report>
 		</emma>
 		
+		<emma enabled="true" >
+			<report sourcepath="${src.dir}" >
+				<fileset dir="${coverage.dir}" >
+					<include name="*.emma" />
+				</fileset>
+				<xml outfile="${coverage.dir}/coverage.xml" depth="method"/>
+			</report>
+		</emma>
+
 		<delete file="${coverage.dir}/metadata.emma" />
 		<delete file="${coverage.dir}/coverage.emma" />
 	</target>
