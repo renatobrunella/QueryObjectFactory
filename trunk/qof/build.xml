@@ -285,7 +285,7 @@
 			<header>
 			<![CDATA[<a href=\"http://qof-jdbc.sourceforge.net\" target=\"_blank\">
 			<img style=\"border: none;\" src=\"{@docRoot}/doc-files/qof-small.png\" >]]></header>
-			<bottom><![CDATA[<i>Copyright &#169; 2007, 2008 brunella ltd. All Rights Reserved.</i>]]></bottom>
+			<bottom><![CDATA[<i>Copyright &#169; 2007 - 2009 brunella ltd. All Rights Reserved.</i>]]></bottom>
 			<link offline="true" href="http://java.sun.com/j2se/1.5.0/docs/api/" packagelistLoc="${doc.dir}/jre1.5-api" />
 		</javadoc>
 	</target>
@@ -302,7 +302,7 @@
 			<img style=\"border: none;\" src=\"{@docRoot}/doc-files/qof-small.png\" >
 				<a href=\"http://sourceforge.net\">
 					<img src=\"http://sflogo.sourceforge.net/sflogo.php?group_id=204175&amp;type=1\" border=\"0\" alt=\"sf logo\" />]]></header>
-			<bottom><![CDATA[<i>Copyright &#169; 2007, 2008 brunella ltd. All Rights Reserved.</i>]]></bottom>
+			<bottom><![CDATA[<i>Copyright &#169; 2007 - 2009 brunella ltd. All Rights Reserved.</i>]]></bottom>
 			<link offline="true" href="http://java.sun.com/j2se/1.5.0/docs/api/" packagelistLoc="${doc.dir}/jre1.5-api" />
 		</javadoc>
 	</target>
