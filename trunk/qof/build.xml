@@ -6,7 +6,7 @@
 	<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="${basedir}/lib/jarjar-0.9.jar" />
 
 	<!-- OSGi BDT taskdefs -->
-	<property name="osgi.bdt.jar" value="${basedir}/lib/uk.co.brunella.osgi.bdt.support-1.5.1.jar" />
+	<property name="osgi.bdt.jar" value="${basedir}/lib/uk.co.brunella.osgi.bdt-2.2.0.jar" />
 	<taskdef name="osgi-manifest" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiManifestReader" classpath="${osgi.bdt.jar}" />
 	<taskdef name="osgi-create" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiCreate" classpath="${osgi.bdt.jar}" />
 	<taskdef name="osgi-deploy" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiDeploy" classpath="${osgi.bdt.jar}" />
