@@ -95,7 +95,7 @@ public class FolderSelectionDialog extends ElementTreeSelectionDialog implements
   protected void newFolderButtonPressed() {
     NewFolderDialog dialog = new NewFolderDialog(getShell(), fSelectedContainer) {
       protected Control createContents(Composite parent) {
-        PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IJavaHelpContextIds.BP_CREATE_NEW_FOLDER);
+//        PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IJavaHelpContextIds.BP_CREATE_NEW_FOLDER);
         return super.createContents(parent);
       }
     };
