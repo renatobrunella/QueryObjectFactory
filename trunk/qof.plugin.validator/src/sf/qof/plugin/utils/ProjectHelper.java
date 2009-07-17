@@ -111,7 +111,6 @@ public class ProjectHelper {
     while ((qofLibraryName == null || qofLibrarySourceName == null) && entries.hasMoreElements()) {
       String entry = (String) entries.nextElement();
       entry = entry.substring(entry.indexOf('/') + 1);
-      System.out.println(entry);
       if (entry.startsWith("sf.qof-source-")) {
         qofLibrarySourceName = entry;
       } else if (entry.startsWith("sf.qof-")) {
