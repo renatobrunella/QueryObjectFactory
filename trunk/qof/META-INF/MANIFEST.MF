@@ -1,8 +1,8 @@
 Bundle-Name: QueryObjectFactory
 Bundle-SymbolicName: sf.qof
-Bundle-Version: 1.0.0.RC7
+Bundle-Version: 1.0.0.RC8
 Bundle-Vendor: brunella ltd
-Bundle-Copyright: "brunella ltd (c) 2007, 2008"
+Bundle-Copyright: "brunella ltd (c) 2007 - 2009"
 Bundle-DocURL: http://www.queryobjectfactory.com/
 Bundle-Description: QueryObjectFactory
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

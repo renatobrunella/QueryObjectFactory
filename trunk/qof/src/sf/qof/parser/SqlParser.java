@@ -79,6 +79,9 @@ import sf.qof.exception.SqlParserException;
  */
 public class SqlParser {
 
+  // used to replace strings in the SQL
+  private static final char REPLACEMENT_CHAR = '¬'; 
+  
   private List<ParameterDefinition> parameterDefs;
   private List<ResultDefinition> resultDefs;
   private List<Integer> openCurlyBrackets;
@@ -136,7 +139,6 @@ public class SqlParser {
     return sql;
   }
 
-//  @SuppressWarnings("unchecked")
   private String parse(String sql, boolean isCallableStatement) {
     findCurlyBrackets(sql);
     int curlyBracketIndex = 0;
@@ -263,7 +265,6 @@ public class SqlParser {
     }
   }
 
-//  private static final Pattern RESULT_DEF_PATTERN = Pattern.compile("\\{([\\w-_]+)?%%((\\d+)|\\*|\\.(\\w+))?\\}");
   private static final Pattern RESULT_DEF_PATTERN = 
     Pattern.compile("\\{([\\w\\-]+)?%%((\\d+)|\\*|\\.(\\w+))?(@\\d+)?(\\[[\\w]+\\])?\\}");
 
@@ -310,7 +311,6 @@ public class SqlParser {
     }
   }
 
-//  private static final Pattern PARAMETER_DEF_PATTERN = Pattern.compile("\\{(\\w+)?%(\\d+)(\\.(\\w+))?\\}");
   private static final Pattern PARAMETER_DEF_PATTERN = 
     Pattern.compile("\\{([\\w\\-]+)?%(\\d+)(\\.(\\w+))?(@\\d+)?(\\[[\\w]+\\])?\\}");
 
@@ -354,7 +354,7 @@ public class SqlParser {
 
     for (int i = 0; i < sql.length(); i++) {
       char c = sql.charAt(i);
-      if (c == '#') {
+      if (c == REPLACEMENT_CHAR) {
         sb.append(stringList.get(index++));
       } else {
         sb.append(c);
@@ -400,7 +400,7 @@ public class SqlParser {
           quoteChar = '\0';
           sbString.append(c);
           stringList.add(sbString.toString());
-          sb.append('#');
+          sb.append(REPLACEMENT_CHAR);
         } else {
           sbString.append(c);
         }
