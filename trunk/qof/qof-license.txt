@@ -1,6 +1,6 @@
 qof - QueryObjectFactory
 
-Copyright © 2007, 2008 brunella ltd, Renato Brunella.
+Copyright © 2007 - 2009 brunella ltd, Renato Brunella.
 All Rights Reserved. 
 
 This software is distributed under the GNU LESSER GENERAL PUBLIC LICENSE Version 3.0
