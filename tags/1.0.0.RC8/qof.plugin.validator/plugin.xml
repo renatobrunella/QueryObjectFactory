@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="sf.qof.plugin.queryObjectFactoryNature"
+         name="QueryObjectFactory Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="sf.qof.plugin.nature.QueryObjectFactoryNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="sf.qof.plugin.contribution1">
+         <action
+               label="Add QueryObjectFactory support..."
+               class="sf.qof.plugin.nature.ToggleNatureAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="sf.qof.plugin.addRemoveNatureAction">
+         </action>
+         <visibility>
+	         <and>
+	         	<objectState name="nature" value="org.eclipse.jdt.core.javanature" />
+	         	<not>
+	         		<objectState name="nature" value="sf.qof.plugin.queryObjectFactoryNature" />
+	         	</not>
+	         </and>
+	     </visibility>
+      </objectContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="sf.qof.plugin.contribution2">
+         <action
+               label="Remove QueryObjectFactory support"
+               class="sf.qof.plugin.nature.ToggleNatureAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="sf.qof.plugin.addRemoveNatureAction">
+         </action>
+         <visibility>
+         	<objectState name="nature" value="sf.qof.plugin.queryObjectFactoryNature" />
+	     </visibility>
+         <filter name="nature" value="sf.qof.plugin.queryObjectFactoryNature"/> 
+      </objectContribution>
+   </extension>
+   
+	<extension 
+		point ="org.eclipse.jdt.core.compilationParticipant" >
+		<compilationParticipant
+	        class="sf.qof.plugin.compiler.QofCompilationParticipant"               
+			id="sf.qof.plugin.compiler.QofCompilationParticipant"
+			modifiesEnvironment="false"  
+			createsProblems="true"
+			requiredSourceLevel="1.5">
+			<managedMarker 
+			   	markerType="org.eclipse.jdt.core.problem"/> 
+   		</compilationParticipant>    
+   </extension>
+     
+</plugin>
