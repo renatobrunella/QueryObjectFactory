@@ -142,6 +142,31 @@ public class SessionContextFactory {
   }
 
   /**
+   * Sets the auto commit policy of the connection for the default session context.
+   * 
+   * The default behaviour is to call <code>connection.setAutoCommit(false)</code>.
+   * 
+   * @param setAutoCommitToFalse  If true <code>setAutoCommit(false)</code> of the connection is called. 
+   *   If false <code>setAutoCommit</code> of the connection is not called.
+   */
+  public static void setAutoCommitPolicy(boolean setAutoCommitToFalse) {
+    ((DefaultSessionContext) getContext(SessionContext.DEFAULT_CONTEXT_NAME)).setAutoCommitPolicy(setAutoCommitToFalse);
+  }
+
+  /**
+   * Sets the auto commit policy of the connection for the specified session context.
+   * 
+   * The default behaviour is to call <code>connection.setAutoCommit(false)</code>.
+   * 
+   * @param contextName  the session context name
+   * @param setAutoCommitToFalse  If true <code>setAutoCommit(false)</code> of the connection is called. 
+   *   If false <code>setAutoCommit</code> of the connection is not called.
+   */
+  public static void setAutoCommitPolicy(String contextName, boolean setAutoCommitToFalse) {
+    ((DefaultSessionContext) getContext(contextName)).setAutoCommitPolicy(setAutoCommitToFalse);
+  }
+
+  /**
    * Internal implementation of <code>SessionContext</code>. 
    *
    * Uses a <code>ThreadLocal</code> field to handle sessions for different threads.
@@ -149,12 +174,15 @@ public class SessionContextFactory {
    */
   protected static class DefaultSessionContext implements SessionContext {
 
+    private final static SessionConnectionHandler DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE =
+      new DefaultSessionConnectionHandler(true);
     private final static SessionConnectionHandler DEFAULT_SESSION_CONNECTION_HANDLER =
-      new DefaultSessionConnectionHandler();
+      new DefaultSessionConnectionHandler(false);
   
     private DataSource dataSource;
     private String contextName;
     private SessionConnectionHandler sessionConnectionHandler;
+    private boolean setAutoCommitToFalse;
   
     private ThreadLocal<Session> sessionThreadLocal = new ThreadLocal<Session>() {
       protected synchronized Session initialValue() {
@@ -164,7 +192,8 @@ public class SessionContextFactory {
   
     private DefaultSessionContext(String contextName) {
       this.contextName = contextName;
-      this.sessionConnectionHandler = DEFAULT_SESSION_CONNECTION_HANDLER;
+      this.sessionConnectionHandler = null;
+      this.setAutoCommitToFalse = true;
     }
   
     private void setDataSource(DataSource dataSource) {
@@ -173,12 +202,16 @@ public class SessionContextFactory {
     
     private void setSessionConnectionHandler(SessionConnectionHandler sessionConnectionHandler) {
       if (sessionConnectionHandler == null) {
-        this.sessionConnectionHandler = DEFAULT_SESSION_CONNECTION_HANDLER;
+        this.sessionConnectionHandler = null;
       } else {
         this.sessionConnectionHandler = sessionConnectionHandler;
       }
     }
   
+    private void setAutoCommitPolicy(boolean setAutoCommitToFalse) {
+      this.setAutoCommitToFalse = setAutoCommitToFalse;
+    }
+    
     public Connection getConnection() {
       Session session = sessionThreadLocal.get();
       if (session.getState() == SessionState.STOPPED) {
@@ -205,7 +238,16 @@ public class SessionContextFactory {
         if (dataSource == null) {
           throw new SystemException("No data source defined for context " + contextName);
       }
-      Connection connection = sessionConnectionHandler.getConnection(dataSource);
+      Connection connection = null;
+      if (sessionConnectionHandler != null) {
+        connection = sessionConnectionHandler.getConnection(dataSource);
+      } else {
+        if (setAutoCommitToFalse) {
+          connection = DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE.getConnection(dataSource);
+        } else {
+          connection = DEFAULT_SESSION_CONNECTION_HANDLER.getConnection(dataSource);
+        }
+      }
       session.setConnection(connection);
       session.setUserTransaction(new DefaultUserTransaction(connection));
       session.setState(SessionState.RUNNING);
@@ -220,7 +262,15 @@ public class SessionContextFactory {
         session.setState(SessionState.STOPPED);
         ((DefaultUserTransaction) session.getUserTransaction()).close();
         session.setUserTransaction(null);
-        sessionConnectionHandler.closeConnection(session.getConnection());
+        if (sessionConnectionHandler != null) {
+          sessionConnectionHandler.closeConnection(session.getConnection());
+        } else {
+          if (setAutoCommitToFalse) {
+            DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE.closeConnection(session.getConnection());
+          } else {
+            DEFAULT_SESSION_CONNECTION_HANDLER.closeConnection(session.getConnection());
+          }
+        }
         session.setConnection(null);
       }
     }

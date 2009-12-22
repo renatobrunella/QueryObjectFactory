@@ -32,6 +32,11 @@ import javax.sql.DataSource;
  */
 public class DefaultSessionConnectionHandler implements SessionConnectionHandler {
 
+  private boolean setAutoCommitToFalse;
+
+  public DefaultSessionConnectionHandler(boolean setAutoCommitToFalse) {
+    this.setAutoCommitToFalse = setAutoCommitToFalse;
+  }
   /**
    * Returns a new connection from the data source and sets auto commit to false.
    * 
@@ -45,7 +50,9 @@ public class DefaultSessionConnectionHandler implements SessionConnectionHandler
       if (connection == null) {
         throw new SQLException("DataSource returned null connection");
       }
-      connection.setAutoCommit(false);
+      if (setAutoCommitToFalse) {
+        connection.setAutoCommit(false);
+      }
       return connection;
     } catch (SQLException e) {
       throw new SystemException(e);

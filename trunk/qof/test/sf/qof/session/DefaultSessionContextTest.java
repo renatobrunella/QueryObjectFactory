@@ -1,17 +1,18 @@
 package sf.qof.session;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
+import junit.framework.TestCase;
+
 import org.hsqldb.jdbc.jdbcDataSource;
 
-import sf.qof.session.SessionContext;
-import sf.qof.session.SessionContextFactory;
-import sf.qof.session.SystemException;
-
-import junit.framework.TestCase;
+import sf.qof.testtools.LoggingDelegationProxy;
+import sf.qof.testtools.MockConnectionFactory;
 
 public class DefaultSessionContextTest extends TestCase {
 
@@ -338,5 +339,75 @@ public class DefaultSessionContextTest extends TestCase {
     ctx.stopSession();
     assertTrue(called[0]);
     assertTrue(called[1]);
+  }
+  
+  public void testSetAutoCommitPolicyFalse() throws SystemException {
+    MockDataSource dataSource = new MockDataSource();
+    SessionContextFactory.setDataSource("testSetAutoCommitPolicyFalse", dataSource);
+    SessionContextFactory.setAutoCommitPolicy("testSetAutoCommitPolicyFalse", false);
+    SessionContext ctx = SessionContextFactory.getContext("testSetAutoCommitPolicyFalse");
+    List<String> log = ((LoggingDelegationProxy) dataSource.connection).getLog();
+    assertEquals(0, log.size());
+    ctx.startSession();
+    assertEquals(0, log.size());
+    ctx.stopSession();
+    assertEquals(1, log.size());
+    assertEquals("close()", log.get(0));
+  }
+  
+  public void testSetAutoCommitPolicyTrue() throws SystemException {
+    MockDataSource dataSource = new MockDataSource();
+    SessionContextFactory.setDataSource("testSetAutoCommitPolicyTrue", dataSource);
+    SessionContextFactory.setAutoCommitPolicy("testSetAutoCommitPolicyTrue", true);
+    SessionContext ctx = SessionContextFactory.getContext("testSetAutoCommitPolicyTrue");
+    List<String> log = ((LoggingDelegationProxy) dataSource.connection).getLog();
+    assertEquals(0, log.size());
+    ctx.startSession();
+    assertEquals(1, log.size());
+    assertEquals("setAutoCommit(false)", log.get(0));
+    ctx.stopSession();
+    assertEquals(2, log.size());
+    assertEquals("close()", log.get(1));
+  }
+  
+  private static class MockDataSource implements DataSource {
+
+    public Connection connection;
+    
+    public MockDataSource() {
+      connection = MockConnectionFactory.getConnection();
+    }
+    
+    public Connection getConnection() throws SQLException {
+      return (Connection) connection;
+    }
+
+    public Connection getConnection(String username, String password)
+        throws SQLException {
+      return null;
+    }
+
+    public PrintWriter getLogWriter() throws SQLException {
+      return null;
+    }
+
+    public int getLoginTimeout() throws SQLException {
+      return 0;
+    }
+
+    public void setLogWriter(PrintWriter arg0) throws SQLException {
+    }
+
+    public void setLoginTimeout(int arg0) throws SQLException {
+    }
+
+    public boolean isWrapperFor(Class<?> arg0) throws SQLException {
+      return false;
+    }
+
+    public <T> T unwrap(Class<T> arg0) throws SQLException {
+      return null;
+    }
+    
   }
 }
