@@ -388,9 +388,9 @@ public class QueryObjectGenerator {
     }
     if (field == null) {
       ce.declare_field(Constants.ACC_PRIVATE, fieldName, fieldType, null, null);
-      fields.put(fieldName, new FieldInfo(Constants.ACC_PRIVATE, fieldName, ce.getClassType(), fieldType));
+      fields.put(fieldName, new FieldInfo(/*Constants.ACC_PRIVATE,*/ fieldName, ce.getClassType(), fieldType));
     } else {
-      fields.put(fieldName, new FieldInfo(field.getModifiers(), fieldName, Type.getType(superClass), fieldType));
+      fields.put(fieldName, new FieldInfo(/*field.getModifiers(),*/ fieldName, Type.getType(superClass), fieldType));
     }
   }
 
@@ -460,13 +460,11 @@ public class QueryObjectGenerator {
   }
 
   private static class FieldInfo {
-    int access;
     String name;
     Type type;
     Type owner;
 
-    public FieldInfo(int access, String name, Type owner, Type type) {
-      this.access = access;
+    public FieldInfo(String name, Type owner, Type type) {
       this.name = name;
       this.owner = owner;
       this.type = type;
