@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package sf.qof.customizer;
 
 import static sf.qof.codegen.Constants.SIG_getConnection;
+import static sf.qof.codegen.Constants.SIG_ungetConnection;
 import static sf.qof.codegen.Constants.SIG_setConnection;
 import static sf.qof.codegen.Constants.TYPE_Connection;
 import static sf.qof.codegen.Constants.TYPE_RuntimeException;
@@ -41,7 +42,8 @@ import net.sf.cglib.core.Constants;
  */
 public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCustomizer {
 
-	private static final String FIELD_NAME_CONNECTION = "$connection";
+	private static final Class<?>[] CONNECTION_PARAMETER_TYPES = new Class<?>[] {java.sql.Connection.class};
+  private static final String FIELD_NAME_CONNECTION = "$connection";
 
 	public void emitFields(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
 	  if (!methodExists(superClass, "getConnection", null)) {
@@ -58,6 +60,15 @@ public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCust
   		co.end_method();
 	  }
 	}
+	
+	public void emitUngetConnection(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
+	  if (!methodExists(superClass, "ungetConnection", CONNECTION_PARAMETER_TYPES)) {
+	    // empty method
+	    CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_ungetConnection, null, null);
+	    co.return_value();
+	    co.end_method();
+	  }
+	}
 
 	public void emitSetConnection(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
 	  if (!methodExists(superClass, "getConnection", null)) {
@@ -67,7 +78,7 @@ public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCust
   		co.putfield(FIELD_NAME_CONNECTION);
   		co.return_value();
   		co.end_method();
-	  } else if (!methodExists(superClass, "setConnection", new Class<?>[] {java.sql.Connection.class})) {
+	  } else if (!methodExists(superClass, "setConnection", CONNECTION_PARAMETER_TYPES)) {
 	    CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_setConnection, null, null);
 	    co.throw_exception(TYPE_RuntimeException, "Connection cannot be set");
 	    co.end_method();

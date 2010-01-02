@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package sf.qof.customizer;
 
 import static sf.qof.codegen.Constants.SIG_getConnection;
 import static sf.qof.codegen.Constants.SIG_setConnection;
+import static sf.qof.codegen.Constants.SIG_ungetConnection;
 import static sf.qof.codegen.Constants.TYPE_RuntimeException;
 import net.sf.cglib.core.ClassEmitter;
 import net.sf.cglib.core.CodeEmitter;
@@ -67,6 +68,13 @@ public class SessionContextConnectionFactoryCustomizer implements ConnectionFact
       co.invoke_static(TYPE_SessionContextFactory, SIG_getContext);
     }
     co.invoke_interface(TYPE_SessionContext, SIG_getConnection);
+    co.return_value();
+    co.end_method();
+  }
+  
+  public void emitUngetConnection(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
+    // empty method
+    CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_ungetConnection, null, null);
     co.return_value();
     co.end_method();
   }

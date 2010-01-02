@@ -50,6 +50,17 @@ public interface ConnectionFactoryCustomizer {
    * @see sf.qof.BaseQuery#getConnection()
    */
   void emitGetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
+  
+  /**
+   * This method must implement the <code>ungetConnection(Connection)</code>
+   * method as specified in the <code>BaseQuery</code> interface.
+   * 
+   * @param queryDefinitionClass   the annotated query definition class
+   * @param superClass             the super class
+   * @param ce                     the class emitter
+   * @see sf.qof.BaseQuery#ungetConnection()
+   */
+  void emitUngetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
 
   /**
    * This method must implement the <code>setConnection()</code>
