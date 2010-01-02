@@ -97,14 +97,18 @@ public class SelectQueryMethodGenerator {
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
     co.store_local(localConnection);
+    
+    // try {
+    Block tryBlockConnection = co.begin_block();
+
     // ps = connection.prepareStatement(sql);
     co.load_local(localConnection);
     co.push(mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
     co.store_local(localPreparedStatement);
   
-    // try{
-    Block blockTry = co.begin_block();
+    // try {
+    Block tryBlockStatement = co.begin_block();
   
     // set fetch size to two as we do not expect more than one row
     // ps.setFetchSize(2);
@@ -119,7 +123,10 @@ public class SelectQueryMethodGenerator {
     co.load_local(localPreparedStatement);
     co.invoke_interface(TYPE_PreparedStatement, SIG_executeQuery);
     co.store_local(localResultSet);
-  
+
+    // try {
+    Block tryBlockResultSet = co.begin_block();
+    
     Class<?> returnType = mapper.getMethod().getReturnInfo().getType();
   
     Label labelThrowNoResult = co.make_label();
@@ -163,30 +170,45 @@ public class SelectQueryMethodGenerator {
     co.mark(labelThrowNoResult);
     co.throw_exception(TYPE_SQLException, EXCEPTION_EMPTY_RESULT);
   
-    // finally block
+    // finally blocks
     co.mark(labelFinally);
-    EmitUtils.emitClose(co, localResultSet, true);
-    EmitUtils.emitClose(co, localPreparedStatement, false);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
+    
+    tryBlockResultSet.end();
+    EmitUtils.emitClose(co, localResultSet);
+
+    tryBlockStatement.end();
+    EmitUtils.emitClose(co, localPreparedStatement);
+    
+    tryBlockConnection.end();
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
   
     // return result
     co.load_local(localResult);
     co.return_value();
     // }
   
-    // exception handler + finally
-    blockTry.end();
-    co.catch_exception(blockTry, TYPE_Throwable);
-  
-    // store thrown exception
+    // exception handlers
+    EmitUtils.emitCatchException(co, tryBlockResultSet, null);
+    Block tryBlockResultSet2 = co.begin_block();
+    Block tryBlockStatement2 = co.begin_block();
     co.store_local(localException);
-  
-    // finally block
-    EmitUtils.emitClose(co, localResultSet, true);
-    EmitUtils.emitClose(co, localPreparedStatement, false);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
-  
-    // throw stored exception
+    EmitUtils.emitClose(co, localResultSet);
+    co.load_local(localException);
+    co.athrow();
+    tryBlockResultSet2.end();
+    
+    EmitUtils.emitCatchException(co, tryBlockStatement, null);
+    EmitUtils.emitCatchException(co, tryBlockResultSet2, null);
+    co.store_local(localException);
+    EmitUtils.emitClose(co, localPreparedStatement);
+    co.load_local(localException);
+    co.athrow();
+    tryBlockStatement2.end();
+    
+    EmitUtils.emitCatchException(co, tryBlockConnection, null);
+    EmitUtils.emitCatchException(co, tryBlockStatement2, null);
+    co.store_local(localException);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
     co.load_local(localException);
     co.athrow();
   }
@@ -199,6 +221,9 @@ public class SelectQueryMethodGenerator {
     Local localException = co.make_local(TYPE_Throwable);
     Local localMapKey;
     boolean usesMap = false;
+    Block tryBlockConnection;
+    Block tryBlockStatement;
+    Block tryBlockResultSet;
     
     SQLDialect sqlDialect = generator.getSqlDialect();
     boolean implementPaging = generator.getImplementPaging();
@@ -281,12 +306,19 @@ public class SelectQueryMethodGenerator {
       co.load_this();
       co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
       co.store_local(localConnection);
+      
+      // try {
+      tryBlockConnection = co.begin_block();
+
       co.load_local(localConnection);
       //co.push(sqlDialect.getLimitString(sql, false));
       pushSql(co, mapper, sqlDialect.getLimitString(sql, false));
       co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
       co.store_local(localPreparedStatement);
   
+      // try {
+      tryBlockStatement = co.begin_block();
+
       if (sqlDialect.limitParametersBeforeQueryParameters()) {
         co.push(1);
         co.store_local(localParameterIndexOffset);
@@ -311,11 +343,19 @@ public class SelectQueryMethodGenerator {
       co.load_this();
       co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
       co.store_local(localConnection);
+      
+      // try {
+      tryBlockConnection = co.begin_block();
+
       co.load_local(localConnection);
-      // co.push(sqlDialect.getLimitString(sql, true));
+
       pushSql(co, mapper, sqlDialect.getLimitString(sql, true));
       co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
       co.store_local(localPreparedStatement);
+      
+      // try {
+      tryBlockStatement = co.begin_block();
+
   
       if (sqlDialect.limitParametersBeforeQueryParameters()) {
         co.push(2);
@@ -428,15 +468,19 @@ public class SelectQueryMethodGenerator {
       co.load_this();
       co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
       co.store_local(localConnection);
+      
+      // try {
+      tryBlockConnection = co.begin_block();
+
       co.load_local(localConnection);
       pushSql(co, mapper, mapper.getSql());
       co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
       co.store_local(localPreparedStatement);
+      
+      // try {
+      tryBlockStatement = co.begin_block();
     }
-  
-    // try{
-    Block blockTry = co.begin_block();
-  
+
     // ps.setFetchSize(fetchSize);
     co.load_local(localPreparedStatement);
     co.load_this();
@@ -451,6 +495,9 @@ public class SelectQueryMethodGenerator {
     co.load_local(localPreparedStatement);
     co.invoke_interface(TYPE_PreparedStatement, SIG_executeQuery);
     co.store_local(localResultSet);
+    
+    // try {
+    tryBlockResultSet = co.begin_block();
   
     ResultMapping resultMapping = null;
     for (ResultMapping rm : mapper.getResults()) {
@@ -499,30 +546,46 @@ public class SelectQueryMethodGenerator {
   
     // finally block
     co.mark(labelFinally);
-    EmitUtils.emitClose(co, localResultSet, true);
-    EmitUtils.emitClose(co, localPreparedStatement, false);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
+
+    tryBlockResultSet.end();
+    EmitUtils.emitClose(co, localResultSet);
+
+    tryBlockStatement.end();
+    EmitUtils.emitClose(co, localPreparedStatement);
+    
+    tryBlockConnection.end();
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
   
     // return result
     co.load_local(localResultCollection);
     co.return_value();
     // }
-  
-    // exception handler + finally
-    blockTry.end();
-    co.catch_exception(blockTry, TYPE_Throwable);
-  
-    // store thrown exception
+    
+    // exception handlers
+    EmitUtils.emitCatchException(co, tryBlockResultSet, null);
+    Block tryBlockResultSet2 = co.begin_block();
+    Block tryBlockStatement2 = co.begin_block();
     co.store_local(localException);
-  
-    // finally block
-    EmitUtils.emitClose(co, localResultSet, true);
-    EmitUtils.emitClose(co, localPreparedStatement, false);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
-  
-    // throw stored exception
+    EmitUtils.emitClose(co, localResultSet);
     co.load_local(localException);
     co.athrow();
+    tryBlockResultSet2.end();
+    
+    EmitUtils.emitCatchException(co, tryBlockStatement, null);
+    EmitUtils.emitCatchException(co, tryBlockResultSet2, null);
+    co.store_local(localException);
+    EmitUtils.emitClose(co, localPreparedStatement);
+    co.load_local(localException);
+    co.athrow();
+    tryBlockStatement2.end();
+    
+    EmitUtils.emitCatchException(co, tryBlockConnection, null);
+    EmitUtils.emitCatchException(co, tryBlockStatement2, null);
+    co.store_local(localException);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    co.load_local(localException);
+    co.athrow();
+
   }
 
   private static void pushSql(CodeEmitter co, Mapper mapper, String sql) {

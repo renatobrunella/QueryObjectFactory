@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ import static sf.qof.codegen.Constants.TYPE_short;
 
 import java.lang.reflect.Constructor;
 
+import net.sf.cglib.core.Block;
 import net.sf.cglib.core.CodeEmitter;
 import net.sf.cglib.core.Local;
 import net.sf.cglib.core.Signature;
@@ -96,20 +97,10 @@ public class EmitUtils {
    * 
    * @param co                 the code emitter
    * @param local              the local
-   * @param addIfNotNullCheck  add if not null check
    */
-  public static void emitClose(CodeEmitter co, Local local, boolean addIfNotNullCheck) {
-    Label labelNull = null;
-    if (addIfNotNullCheck) {
-      co.load_local(local);
-      labelNull = co.make_label();
-      co.ifnull(labelNull);
-    }
+  public static void emitClose(CodeEmitter co, Local local) {
     co.load_local(local);
     co.invoke_interface(local.getType(), SIG_close);
-    if (addIfNotNullCheck) {
-      co.mark(labelNull);
-    }
   }
   
   /**
@@ -118,25 +109,25 @@ public class EmitUtils {
    * @param co                 the code emitter
    * @param classType          the class type
    * @param local              the local
-   * @param addIfNotNullCheck  add if not null check
    * 
    * @see sf.qof.BaseQuery#ungetConnection(java.sql.Connection)
    */
-  public static void emitUngetConnection(CodeEmitter co, Type classType, Local local, boolean addIfNotNullCheck) {
-    Label labelNull = null;
-    if (addIfNotNullCheck) {
-      co.load_local(local);
-      labelNull = co.make_label();
-      co.ifnull(labelNull);
-    }
+  public static void emitUngetConnection(CodeEmitter co, Type classType, Local local) {
     co.load_this();
     co.load_local(local);
     co.invoke_virtual(classType, SIG_ungetConnection);
-    if (addIfNotNullCheck) {
-      co.mark(labelNull);
-    }
   }
 
+  public static void emitCatchException(CodeEmitter co, Block tryBlock, Type exception) {
+    Label label = co.make_label();
+    co.mark(label);
+    if (exception == null) {
+      co.visitTryCatchBlock(tryBlock.getStart(), tryBlock.getEnd(), label, null);
+    } else {
+      co.visitTryCatchBlock(tryBlock.getStart(), tryBlock.getEnd(), label, exception.getInternalName());
+    }
+  }
+  
   public static void createAndStoreNewResultObject(CodeEmitter co, Mapper mapper, Local localResultSet, Local localStoreResult) {
     // constructor mappings
     Local[] constructorParameters = new Local[mapper.getNumberOfConstructorParameters()];

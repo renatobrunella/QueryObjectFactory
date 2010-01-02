@@ -88,14 +88,18 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
     co.store_local(localConnection);
+    
+    // try {
+    Block tryBlockConnection = co.begin_block();
+
     // ps = connection.prepareStatement("select count(*) from person");
     co.load_local(localConnection);
     pushSql(co, mapper, mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
     co.store_local(localPreparedStatement);
   
-    // try{
-    Block blockTry = co.begin_block();
+    // try {
+    Block tryBlockStatement = co.begin_block();
     
     Local localParameterIndexOffset = null;
     if (mapper.usesArray()) {
@@ -117,10 +121,13 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     } else {
       co.pop();
     }
-  
-    // finally block
-    EmitUtils.emitClose(co, localPreparedStatement, false);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
+    
+    // finally
+    tryBlockStatement.end();
+    EmitUtils.emitClose(co, localPreparedStatement);
+    
+    tryBlockConnection.end();
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
   
     // return result
     if (localResult != null) {
@@ -129,15 +136,19 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     co.return_value();
     // }
   
-    // exception handler + finally
-    blockTry.end();
-    co.catch_exception(blockTry, TYPE_Throwable);
-    // store thrown exception
+    // exception handler
+    EmitUtils.emitCatchException(co, tryBlockStatement, null);
+    Block tryBlockStatement2 = co.begin_block();
     co.store_local(localException);
-    // finally block
-    EmitUtils.emitClose(co, localPreparedStatement, false);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
-    // throw stored exception
+    EmitUtils.emitClose(co, localPreparedStatement);
+    co.load_local(localException);
+    co.athrow();
+    tryBlockStatement2.end();
+    
+    EmitUtils.emitCatchException(co, tryBlockConnection, null);
+    EmitUtils.emitCatchException(co, tryBlockStatement2, null);
+    co.store_local(localException);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
     co.load_local(localException);
     co.athrow();
   }
@@ -195,14 +206,18 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
     co.store_local(localConnection);
+    
+    // try {
+    Block tryBlockConnection = co.begin_block();
+
     // ps = connection.prepareStatement("select count(*) from person");
     co.load_local(localConnection);
     pushSql(co, mapper, mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
     co.store_local(localPreparedStatement);
   
-    // try{
-    Block blockTry = co.begin_block();
+    // try {
+    Block tryBlockStatement = co.begin_block();
   
     Local localResult = null;
     Local localPartResult = null;
@@ -375,9 +390,12 @@ public class InsertUpdateDeleteQueryMethodGenerator {
   
     co.mark(labelAfter2);
   
-    // finally block
-    EmitUtils.emitClose(co, localPreparedStatement, false);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
+    // finally
+    tryBlockStatement.end();
+    EmitUtils.emitClose(co, localPreparedStatement);
+    
+    tryBlockConnection.end();
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
   
     // return result
     if (returnType.isArray()) {
@@ -386,15 +404,19 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     co.return_value();
     // }
   
-    // exception handler + finally
-    blockTry.end();
-    co.catch_exception(blockTry, TYPE_Throwable);
-    // store thrown exception
+    // exception handler
+    EmitUtils.emitCatchException(co, tryBlockStatement, null);
+    Block tryBlockStatement2 = co.begin_block();
     co.store_local(localException);
-    // finally block
-    EmitUtils.emitClose(co, localPreparedStatement, false);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
-    // throw stored exception
+    EmitUtils.emitClose(co, localPreparedStatement);
+    co.load_local(localException);
+    co.athrow();
+    tryBlockStatement2.end();
+    
+    EmitUtils.emitCatchException(co, tryBlockConnection, null);
+    EmitUtils.emitCatchException(co, tryBlockStatement2, null);
+    co.store_local(localException);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
     co.load_local(localException);
     co.athrow();
   }
