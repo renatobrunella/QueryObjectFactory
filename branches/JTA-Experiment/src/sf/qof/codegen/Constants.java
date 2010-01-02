@@ -158,6 +158,7 @@ public final class Constants {
   public static final Signature SIG_put = new Signature("put", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
 
   public static final Signature SIG_getConnection = new Signature("getConnection", "()Ljava/sql/Connection;");
+  public static final Signature SIG_ungetConnection = new Signature("ungetConnection", "(Ljava/sql/Connection;)V");
   public static final Signature SIG_setConnection = new Signature("setConnection", "(Ljava/sql/Connection;)V");
 
   public static final Signature SIG_toString = new Signature("toString", "()Ljava/lang/String;");
@@ -173,6 +174,4 @@ public final class Constants {
   public static final Signature SIG_Double_valueOf = new Signature("valueOf", "(D)Ljava/lang/Double;");
   public static final Signature SIG_Character_valueOf = new Signature("valueOf", "(C)Ljava/lang/Character;");
   public static final Signature SIG_Boolean_valueOf = new Signature("valueOf", "(Z)Ljava/lang/Boolean;");
-
-  //TODO move
 }

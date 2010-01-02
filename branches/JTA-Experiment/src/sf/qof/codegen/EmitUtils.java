@@ -27,6 +27,7 @@ import static sf.qof.codegen.Constants.SIG_Integer_valueOf;
 import static sf.qof.codegen.Constants.SIG_Long_valueOf;
 import static sf.qof.codegen.Constants.SIG_Short_valueOf;
 import static sf.qof.codegen.Constants.SIG_close;
+import static sf.qof.codegen.Constants.SIG_ungetConnection;
 import static sf.qof.codegen.Constants.TYPE_Boolean;
 import static sf.qof.codegen.Constants.TYPE_Byte;
 import static sf.qof.codegen.Constants.TYPE_Character;
@@ -93,20 +94,45 @@ public class EmitUtils {
   /**
    * Emits code to call <code>close()</code> on the local variable.
    * 
-   * @param co              the code emitter
-   * @param local           the local
-   * @param addIfNotNull    add if not null check
+   * @param co                 the code emitter
+   * @param local              the local
+   * @param addIfNotNullCheck  add if not null check
    */
-  public static void emitClose(CodeEmitter co, Local local, boolean addIfNotNull) {
+  public static void emitClose(CodeEmitter co, Local local, boolean addIfNotNullCheck) {
     Label labelNull = null;
-    if (addIfNotNull) {
+    if (addIfNotNullCheck) {
       co.load_local(local);
       labelNull = co.make_label();
       co.ifnull(labelNull);
     }
     co.load_local(local);
     co.invoke_interface(local.getType(), SIG_close);
-    if (addIfNotNull) {
+    if (addIfNotNullCheck) {
+      co.mark(labelNull);
+    }
+  }
+  
+  /**
+   * Emits code to call <code>ungetConnection(Connection)</code> on the local connection variable.
+   * 
+   * @param co                 the code emitter
+   * @param classType          the class type
+   * @param local              the local
+   * @param addIfNotNullCheck  add if not null check
+   * 
+   * @see sf.qof.BaseQuery#ungetConnection(java.sql.Connection)
+   */
+  public static void emitUngetConnection(CodeEmitter co, Type classType, Local local, boolean addIfNotNullCheck) {
+    Label labelNull = null;
+    if (addIfNotNullCheck) {
+      co.load_local(local);
+      labelNull = co.make_label();
+      co.ifnull(labelNull);
+    }
+    co.load_this();
+    co.load_local(local);
+    co.invoke_virtual(classType, SIG_ungetConnection);
+    if (addIfNotNullCheck) {
       co.mark(labelNull);
     }
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,6 +84,7 @@ public class SelectQueryMethodGenerator {
   }
 
   private static void addSelectQueryBodyNoCollection(CodeEmitter co, QueryObjectGenerator generator, Mapper mapper) {
+    Local localConnection = co.make_local(TYPE_Connection);
     Local localPreparedStatement = co.make_local(TYPE_PreparedStatement);
     Local localResultSet = co.make_local(TYPE_ResultSet);
     Local localException = co.make_local(TYPE_Throwable);
@@ -91,10 +92,13 @@ public class SelectQueryMethodGenerator {
     // ResultSet rs = null;
     co.aconst_null();
     co.store_local(localResultSet);
-  
-    // ps = connection.prepareStatement(sql);
+
+    // connection = getConnection();
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
+    co.store_local(localConnection);
+    // ps = connection.prepareStatement(sql);
+    co.load_local(localConnection);
     co.push(mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
     co.store_local(localPreparedStatement);
@@ -163,6 +167,7 @@ public class SelectQueryMethodGenerator {
     co.mark(labelFinally);
     EmitUtils.emitClose(co, localResultSet, true);
     EmitUtils.emitClose(co, localPreparedStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
   
     // return result
     co.load_local(localResult);
@@ -179,6 +184,7 @@ public class SelectQueryMethodGenerator {
     // finally block
     EmitUtils.emitClose(co, localResultSet, true);
     EmitUtils.emitClose(co, localPreparedStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
   
     // throw stored exception
     co.load_local(localException);
@@ -186,6 +192,7 @@ public class SelectQueryMethodGenerator {
   }
 
   private static void addSelectQueryBodyWithCollection(CodeEmitter co, QueryObjectGenerator generator, Mapper mapper) {
+    Local localConnection = co.make_local(TYPE_Connection);
     Local localPreparedStatement = co.make_local(TYPE_PreparedStatement);
     Local localResultSet = co.make_local(TYPE_ResultSet);
     Local localResultCollection = co.make_local(TYPE_Collection);
@@ -249,16 +256,19 @@ public class SelectQueryMethodGenerator {
       co.getfield(FIELD_NAME_MAX_RESULTS);
       co.if_jump(CodeEmitter.NE, label1);
       
+      // connection = getConnection();
       co.load_this();
       co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
-      //co.push(sql);
+      co.store_local(localConnection);
+      // ps = connection.prepareStatement(sql);
+      co.load_local(localConnection);
       pushSql(co, mapper, sql);
       co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
       co.store_local(localPreparedStatement);
       
       if (sqlDialect.limitParametersBeforeQueryParameters()) {
-    	co.push(0);
-    	co.store_local(localParameterIndexOffset);
+      	co.push(0);
+      	co.store_local(localParameterIndexOffset);
       }
   
       co.goTo(label2);
@@ -270,6 +280,8 @@ public class SelectQueryMethodGenerator {
   
       co.load_this();
       co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
+      co.store_local(localConnection);
+      co.load_local(localConnection);
       //co.push(sqlDialect.getLimitString(sql, false));
       pushSql(co, mapper, sqlDialect.getLimitString(sql, false));
       co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
@@ -298,6 +310,8 @@ public class SelectQueryMethodGenerator {
   
       co.load_this();
       co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
+      co.store_local(localConnection);
+      co.load_local(localConnection);
       // co.push(sqlDialect.getLimitString(sql, true));
       pushSql(co, mapper, sqlDialect.getLimitString(sql, true));
       co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
@@ -413,6 +427,8 @@ public class SelectQueryMethodGenerator {
       // ps = connection.prepareStatement(sql);
       co.load_this();
       co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
+      co.store_local(localConnection);
+      co.load_local(localConnection);
       pushSql(co, mapper, mapper.getSql());
       co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
       co.store_local(localPreparedStatement);
@@ -485,6 +501,7 @@ public class SelectQueryMethodGenerator {
     co.mark(labelFinally);
     EmitUtils.emitClose(co, localResultSet, true);
     EmitUtils.emitClose(co, localPreparedStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
   
     // return result
     co.load_local(localResultCollection);
@@ -501,6 +518,7 @@ public class SelectQueryMethodGenerator {
     // finally block
     EmitUtils.emitClose(co, localResultSet, true);
     EmitUtils.emitClose(co, localPreparedStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
   
     // throw stored exception
     co.load_local(localException);

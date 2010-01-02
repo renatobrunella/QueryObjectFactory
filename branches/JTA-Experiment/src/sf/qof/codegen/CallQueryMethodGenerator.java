@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,12 +65,16 @@ public class CallQueryMethodGenerator {
   }
 
   private static void addCallQueryBodyNoCollection(CodeEmitter co, QueryObjectGenerator generator, Mapper mapper) {
+    Local localConnection = co.make_local(TYPE_Connection);
     Local localCallableStatement = co.make_local(TYPE_CallableStatement);
     Local localException = co.make_local(TYPE_Throwable);
-  
-    // ps = connection.prepareCall("{ ? = call xyz (?,?) }");
+
+    // connection = getConnection();
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
+    co.store_local(localConnection);
+    // ps = connection.prepareCall("{ ? = call xyz (?,?) }");
+    co.load_local(localConnection);
     co.push(mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareCall);
     co.store_local(localCallableStatement);
@@ -108,6 +112,7 @@ public class CallQueryMethodGenerator {
   
     // finally block
     EmitUtils.emitClose(co, localCallableStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
   
     // return result
     if (localResult != null) {
@@ -123,6 +128,7 @@ public class CallQueryMethodGenerator {
     co.store_local(localException);
     // finally block
     EmitUtils.emitClose(co, localCallableStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
     // throw stored exception
     co.load_local(localException);
     co.athrow();
@@ -169,12 +175,16 @@ public class CallQueryMethodGenerator {
     co.return_value();
     co.mark(labelNotZero);
   
+    Local localConnection = co.make_local(TYPE_Connection);
     Local localCallableStatement = co.make_local(TYPE_CallableStatement);
     Local localException = co.make_local(TYPE_Throwable);
-  
-    // ps = connection.prepareStatement("select count(*) from person");
+
+    // connection = getConnection();
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
+    co.store_local(localConnection);
+    // ps = connection.prepareStatement("select count(*) from person");
+    co.load_local(localConnection);
     co.push(mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareCall);
     co.store_local(localCallableStatement);
@@ -287,6 +297,7 @@ public class CallQueryMethodGenerator {
   
     // finally block
     EmitUtils.emitClose(co, localCallableStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
   
     // return result
     co.return_value();
@@ -299,6 +310,7 @@ public class CallQueryMethodGenerator {
     co.store_local(localException);
     // finally block
     EmitUtils.emitClose(co, localCallableStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
     // throw stored exception
     co.load_local(localException);
     co.athrow();

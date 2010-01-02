@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,6 +74,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
   }
 
   private static void addInsertUpdateDeleteQueryBodyNoCollection(CodeEmitter co, QueryObjectGenerator generator, Mapper mapper) {
+    Local localConnection = co.make_local(TYPE_Connection);
     Local localPreparedStatement = co.make_local(TYPE_PreparedStatement);
     Local localException = co.make_local(TYPE_Throwable);
   
@@ -83,9 +84,12 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     	throw new ValidationException("Only int or void is allowed as return type");
     }
     
-    // ps = connection.prepareStatement("select count(*) from person");
+    // connection = getConnection();
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
+    co.store_local(localConnection);
+    // ps = connection.prepareStatement("select count(*) from person");
+    co.load_local(localConnection);
     pushSql(co, mapper, mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
     co.store_local(localPreparedStatement);
@@ -116,6 +120,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
   
     // finally block
     EmitUtils.emitClose(co, localPreparedStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
   
     // return result
     if (localResult != null) {
@@ -131,6 +136,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     co.store_local(localException);
     // finally block
     EmitUtils.emitClose(co, localPreparedStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
     // throw stored exception
     co.load_local(localException);
     co.athrow();
@@ -181,12 +187,16 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     co.return_value();
     co.mark(labelNotZero);
   
+    Local localConnection = co.make_local(TYPE_Connection);
     Local localPreparedStatement = co.make_local(TYPE_PreparedStatement);
     Local localException = co.make_local(TYPE_Throwable);
-  
-    // ps = connection.prepareStatement("select count(*) from person");
+
+    // connection = getConnection();
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
+    co.store_local(localConnection);
+    // ps = connection.prepareStatement("select count(*) from person");
+    co.load_local(localConnection);
     pushSql(co, mapper, mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
     co.store_local(localPreparedStatement);
@@ -367,6 +377,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
   
     // finally block
     EmitUtils.emitClose(co, localPreparedStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
   
     // return result
     if (returnType.isArray()) {
@@ -382,6 +393,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     co.store_local(localException);
     // finally block
     EmitUtils.emitClose(co, localPreparedStatement, false);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection, false);
     // throw stored exception
     co.load_local(localException);
     co.athrow();
