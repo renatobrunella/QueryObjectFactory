@@ -42,6 +42,7 @@ public interface BaseQuery {
    * @return the connection
    * 
    * @see #setConnection(Connection)
+   * @see #ungetConnection(Connection)
    */
   Connection getConnection();
 

@@ -58,7 +58,7 @@ public interface ConnectionFactoryCustomizer {
    * @param queryDefinitionClass   the annotated query definition class
    * @param superClass             the super class
    * @param ce                     the class emitter
-   * @see sf.qof.BaseQuery#ungetConnection()
+   * @see sf.qof.BaseQuery#ungetConnection(java.sql.Connection)
    */
   void emitUngetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
 
