@@ -9,6 +9,7 @@ import java.util.Map;
 
 import sf.qof.testtools.MockConnectionData;
 import sf.qof.testtools.MockConnectionFactory;
+import sf.qof.testtools.MockConnectionFactory.MockConnection;
 
 import junit.framework.TestCase;
 
@@ -56,8 +57,88 @@ public class ExceptionHandlingTest extends TestCase {
     }
     ((MockConnectionData)connection).setResultSetData(results);
   }
+  
+  public void testPrepareStatementFailsSelectOne() throws SQLException {
+    Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
+    setValues("data");
+    queries.setConnection(connection);
+    ((MockConnectionData)connection).setPrepareFailes(true);
+    try {
+      queries.selectOne("criteria");
+      fail("Should throw exception");
+    } catch (SQLException e) {
+      assertEquals("prepareStatement failed", e.getMessage());
+    }
+    assertTrue(queries.ungetConnectionCalled);
+    assertEquals(2, log.size());
+    int i = 0;
+    assertEquals("setPrepareFailes(true)", log.get(i++));
+    assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
+  }
+  
+  public void testPrepareStatementFailsSelectMany() throws SQLException {
+    Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
+    setValues("data1", "data2");
+    queries.setConnection(connection);
+    ((MockConnectionData)connection).setPrepareFailes(true);
+    try {
+      queries.selectMany("criteria");
+      fail("Should throw exception");
+    } catch (SQLException e) {
+      assertEquals("prepareStatement failed", e.getMessage());
+    }
+    assertTrue(queries.ungetConnectionCalled);
+    assertEquals(2, log.size());
+    int i = 0;
+    assertEquals("setPrepareFailes(true)", log.get(i++));
+    assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
+  }
+  
+  public void testExecuteFailsSelectOne() throws SQLException {
+    Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
+    setValues("data");
+    queries.setConnection(connection);
+    ((MockConnectionData)connection).setExecuteFailes(true);
+    try {
+      queries.selectOne("criteria");
+      fail("Should throw exception");
+    } catch (SQLException e) {
+      assertEquals("executeQuery failed", e.getMessage());
+    }
+    assertTrue(queries.ungetConnectionCalled);
+    assertEquals(6, log.size());
+    int i = 0;
+    assertEquals("setExecuteFailes(true)", log.get(i++));
+    assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
+    assertEquals("setFetchSize(2)", log.get(i++));
+    assertEquals("setString(1,criteria)", log.get(i++));
+    assertEquals("executeQuery()", log.get(i++));
+    assertEquals("close()", log.get(i++));
+  }
+  
+  public void testExecuteFailsSelectMany() throws SQLException {
+    Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
+    setValues("data1", "data2");
+    queries.setConnection(connection);
+    ((MockConnectionData)connection).setExecuteFailes(true);
+    try {
+      queries.selectMany("criteria");
+      fail("Should throw exception");
+    } catch (SQLException e) {
+      assertEquals("executeQuery failed", e.getMessage());
+    }
+    assertTrue(queries.ungetConnectionCalled);
+    assertEquals(6, log.size());
+    int i = 0;
+    assertEquals("setExecuteFailes(true)", log.get(i++));
+    assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
+    assertEquals("setFetchSize(100)", log.get(i++));
+    assertEquals("setString(1,criteria)", log.get(i++));
+    assertEquals("executeQuery()", log.get(i++));
+    assertEquals("close()", log.get(i++));
+  }
 
-  public void testUngetConnectionFailsOne() throws SQLException {
+  public void testUngetConnectionFailsSelectOne() throws SQLException {
     Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
     setValues("data");
     queries.setConnection(connection);
@@ -89,7 +170,7 @@ public class ExceptionHandlingTest extends TestCase {
     assertEquals("close()", log.get(i++));
   }
   
-  public void testUngetConnectionFailsMany() throws SQLException {
+  public void testUngetConnectionFailsSelectMany() throws SQLException {
     Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
     setValues("data1", "data2");
     queries.setConnection(connection);
