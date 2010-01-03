@@ -7,11 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import junit.framework.TestCase;
+import sf.qof.dialect.OracleDialect;
 import sf.qof.testtools.MockConnectionData;
 import sf.qof.testtools.MockConnectionFactory;
-import sf.qof.testtools.MockConnectionFactory.MockConnection;
-
-import junit.framework.TestCase;
 
 public class ExceptionHandlingTest extends TestCase {
 
@@ -193,6 +192,86 @@ public class ExceptionHandlingTest extends TestCase {
     assertEquals(11, log.size());
     int i = 0;
     assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
+    assertEquals("setFetchSize(100)", log.get(i++));
+    assertEquals("setString(1,criteria)", log.get(i++));
+    assertEquals("executeQuery()", log.get(i++));
+    assertEquals("next()", log.get(i++));
+    assertEquals("getString(value)", log.get(i++));
+    assertEquals("next()", log.get(i++));
+    assertEquals("getString(value)", log.get(i++));
+    assertEquals("next()", log.get(i++));
+    assertEquals("close()", log.get(i++));
+    assertEquals("close()", log.get(i++));
+  }
+  
+  public void testPrepareStatementFailsSelectPaging() throws SQLException {
+    QueryObjectFactory.setSQLDialect(new OracleDialect());
+    QueriesPaging queries = QueryObjectFactory.createQueryObject(QueriesPaging.class);
+    setValues("data1", "data2");
+    queries.setConnection(connection);
+    queries.setFirstResult(1);
+    queries.setMaxResults(20);
+    ((MockConnectionData)connection).setPrepareFailes(true);
+    try {
+      queries.select("criteria");
+      fail("Should throw exception");
+    } catch (SQLException e) {
+      assertEquals("prepareStatement failed", e.getMessage());
+    }
+    assertTrue(queries.ungetConnectionCalled);
+    assertEquals(2, log.size());
+    int i = 0;
+    assertEquals("setPrepareFailes(true)", log.get(i++));
+    assertEquals("prepareStatement(select * from ( select qof_row_.*, rownum qof_rownum_ from ( select value from test where id = ? ) qof_row_ where rownum <= ?) where qof_rownum_ > ?)", log.get(i++));
+  }
+
+  public void testExecuteFailsSelectPaging() throws SQLException {
+    QueryObjectFactory.setSQLDialect(new OracleDialect());
+    QueriesPaging queries = QueryObjectFactory.createQueryObject(QueriesPaging.class);
+    setValues("data1", "data2");
+    queries.setConnection(connection);
+    queries.setFirstResult(1);
+    queries.setMaxResults(20);
+    ((MockConnectionData)connection).setExecuteFailes(true);
+    try {
+      queries.select("criteria");
+      fail("Should throw exception");
+    } catch (SQLException e) {
+      assertEquals("executeQuery failed", e.getMessage());
+    }
+    assertTrue(queries.ungetConnectionCalled);
+    assertEquals(8, log.size());
+    int i = 0;
+    assertEquals("setExecuteFailes(true)", log.get(i++));
+    assertEquals("prepareStatement(select * from ( select qof_row_.*, rownum qof_rownum_ from ( select value from test where id = ? ) qof_row_ where rownum <= ?) where qof_rownum_ > ?)", log.get(i++));
+    assertEquals("setInt(2,21)", log.get(i++));
+    assertEquals("setInt(3,1)", log.get(i++));
+    assertEquals("setFetchSize(100)", log.get(i++));
+    assertEquals("setString(1,criteria)", log.get(i++));
+    assertEquals("executeQuery()", log.get(i++));
+    assertEquals("close()", log.get(i++));
+  }
+
+  public void testUngetConnectionFailsSelectPaging() throws SQLException {
+    QueriesPaging queries = QueryObjectFactory.createQueryObject(QueriesPaging.class);
+    setValues("data1", "data2");
+    queries.setConnection(connection);
+    queries.setFirstResult(1);
+    queries.setMaxResults(20);
+    queries.ungetConnectionFails = true;
+    assertFalse(queries.ungetConnectionCalled);
+    try {
+      queries.select("criteria");
+      fail("Should throw exception");
+    } catch (RuntimeException e) {
+      assertEquals("Bang! ungetConnection failed", e.getMessage());
+    }
+    assertTrue(queries.ungetConnectionCalled);
+    assertEquals(13, log.size());
+    int i = 0;
+    assertEquals("prepareStatement(select * from ( select qof_row_.*, rownum qof_rownum_ from ( select value from test where id = ? ) qof_row_ where rownum <= ?) where qof_rownum_ > ?)", log.get(i++));
+    assertEquals("setInt(2,21)", log.get(i++));
+    assertEquals("setInt(3,1)", log.get(i++));
     assertEquals("setFetchSize(100)", log.get(i++));
     assertEquals("setString(1,criteria)", log.get(i++));
     assertEquals("executeQuery()", log.get(i++));
