@@ -401,10 +401,12 @@ public class DefaultSessionContextTest extends TestCase {
     public void setLoginTimeout(int arg0) throws SQLException {
     }
 
+    @SuppressWarnings("unused")
     public boolean isWrapperFor(Class<?> arg0) throws SQLException {
       return false;
     }
 
+    @SuppressWarnings("unused")
     public <T> T unwrap(Class<T> arg0) throws SQLException {
       return null;
     }

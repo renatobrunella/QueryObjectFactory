@@ -41,11 +41,13 @@ public class BaseSessionRunnerTest extends TestCase {
 	public void setLoginTimeout(int seconds) throws SQLException {
 	}
 
-	public boolean isWrapperFor(Class<?> iface) throws SQLException {
+	@SuppressWarnings("unused")
+  public boolean isWrapperFor(Class<?> iface) throws SQLException {
 	  return false;
 	}
 
-	public <T> T unwrap(Class<T> iface) throws SQLException {
+	@SuppressWarnings("unused")
+  public <T> T unwrap(Class<T> iface) throws SQLException {
 	  return null;
 	}
 	
