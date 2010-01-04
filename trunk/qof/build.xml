@@ -5,6 +5,9 @@
 	<!-- jarjar taskdef -->
 	<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="${basedir}/lib/jarjar-0.9.jar" />
 
+	<!-- Ant-Contrib taskdefs -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${basedir}/lib/ant-contrib-1.0b3.jar" />
+	
 	<!-- OSGi BDT taskdefs -->
 	<property name="osgi.bdt.jar" value="${basedir}/lib/uk.co.brunella.osgi.bdt-2.2.0.jar" />
 	<taskdef name="osgi-manifest" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiManifestReader" classpath="${osgi.bdt.jar}" />
@@ -16,6 +19,14 @@
 
 	<!-- read bundle symbolic name and version from manifest into properties bundle.name, bundle.version -->
 	<osgi-manifest manifest="META-INF/MANIFEST.MF"/>
+	
+	<!-- check if this is a snapshot build and set the version postfix accordingly -->
+	<if>
+		<contains string="${bundle.version}" substring="SNAPSHOT" />
+		<then>
+			<property name="bundle.version.postfix" value="-${DSTAMP}${TSTAMP}" />
+		</then>
+	</if>
 	
 	<!-- compiler settings -->
 	<property name="debuglevel" value="source,lines,vars" />
@@ -67,7 +78,7 @@
 	</path>
 
 	<path id="qof.nodep.classpath">
-		<pathelement location="${dist.dir}/${bundle.name}-${bundle.version}.jar" />
+		<pathelement location="${dist.dir}/${bundle.name}-${bundle.version}${bundle.version.postfix}.jar" />
 		<pathelement location="${junit.output.nodep.dir}" />
 		<pathelement location="${lib.dir}/osgi.core.jar" />
 		<pathelement location="${lib.dir}/osgi.cmpn.jar" />
@@ -172,7 +183,7 @@
 	<target name="jar-bin" depends="build">
 		<copy file="qof-license.txt" todir="bin"/>
 		<copy file="lgpl-3_0.txt" todir="bin"/>
-		<jarjar destfile="${dist.dir}/${bundle.name}-${bundle.version}.jar" filesetmanifest="merge">
+		<jarjar destfile="${dist.dir}/${bundle.name}-${bundle.version}${bundle.version.postfix}.jar" filesetmanifest="merge">
 			<fileset dir="${bin.dir}">
 				<exclude name="doc-files/**" />
 			</fileset>
@@ -219,7 +230,7 @@
 	</target>
 
 	<target name="zip-full" depends="javadoc">
-		<zip destfile="${dist.dir}/${bundle.name}-full-${bundle.version}.zip" >
+		<zip destfile="${dist.dir}/${bundle.name}-full-${bundle.version}${bundle.version.postfix}.zip" >
 			<fileset dir="${basedir}">
 				<exclude name="${dist.path}/**" />
 				<exclude name="${bin.path}/**" />
@@ -239,7 +250,7 @@
 	<target name="jar-src">
 		<jar 
 			basedir="${basedir}" 
-			destfile="${dist.dir}/${bundle.name}-source-${bundle.version}.jar" 
+			destfile="${dist.dir}/${bundle.name}-source-${bundle.version}${bundle.version.postfix}.jar" 
 			description="create source jar"
 			includes="src/**,qof-license.txt,lgpl-3_0.txt">
 			<manifest>
@@ -262,7 +273,7 @@
 	<target name="jar-api" depends="javadoc">
 		<jar 
 			basedir="${doc.api.dir}" 
-			destfile="${dist.dir}/${bundle.name}-api-doc-${bundle.version}.jar" >
+			destfile="${dist.dir}/${bundle.name}-api-doc-${bundle.version}${bundle.version.postfix}.jar" >
 			<manifest>
 				<attribute name="Specification-Title" value="QueryObjectFactory" />
 				<attribute name="Specification-Version" value="${bundle.version}" />
@@ -370,7 +381,7 @@
 		<antcall target="coverage" />
 		<antcall target="javadoc-sourceforge" />
 		<antcall target="sitemap" />
-		<zip destfile="${dist.dir}/${bundle.name}-website-${bundle.version}.zip" >
+		<zip destfile="${dist.dir}/${bundle.name}-website-${bundle.version}${bundle.version.postfix}.zip" >
 			<fileset dir="${web.dir}/htdocs">
 				<exclude name="*/CVS**" />
 			</fileset>
