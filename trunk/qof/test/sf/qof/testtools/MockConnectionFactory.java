@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,9 +48,19 @@ public class MockConnectionFactory {
     private List<Object> resultData;
     private List<Map<String, Object>> resultSetData = new ArrayList<Map<String, Object>>();
     private int resultSetDataIndex = -1;
+    private boolean prepareFails = false;
+    private boolean executeFails = false;
 
     private void setProxy(LoggingDelegationProxy proxy) {
       this.proxy = proxy;
+    }
+    
+    public void setPrepareFailes(boolean fails) {
+      prepareFails = fails;
+    }
+    
+    public void setExecuteFailes(boolean fails) {
+      executeFails = fails;
     }
 
     public void setResultSetData(List<Map<String, Object>> resultSetData) {
@@ -65,6 +75,9 @@ public class MockConnectionFactory {
     }
 
     public CallableStatement prepareCall(String sql) throws SQLException {
+      if (prepareFails) {
+        throw new SQLException("prepareCall failed");
+      }
       MockCallableStatement mockCallableStatement = new MockCallableStatement();
       LoggingDelegationProxy proxy = (LoggingDelegationProxy) LoggingDelegationProxyFactory.createProxy(this.proxy,
           mockCallableStatement, CallableStatement.class);
@@ -73,6 +86,9 @@ public class MockConnectionFactory {
     }
 
     public PreparedStatement prepareStatement(String sql) throws SQLException {
+      if (prepareFails) {
+        throw new SQLException("prepareStatement failed");
+      }
       MockCallableStatement mockCallableStatement = new MockCallableStatement();
       LoggingDelegationProxy proxy = (LoggingDelegationProxy) LoggingDelegationProxyFactory.createProxy(this.proxy,
           mockCallableStatement, PreparedStatement.class);
@@ -235,6 +251,9 @@ public class MockConnectionFactory {
 
       @SuppressWarnings("unused")
       public ResultSet executeQuery() throws SQLException {
+        if (executeFails) {
+          throw new SQLException("executeQuery failed");
+        }
         MockResultSet mockCallableStatement = new MockResultSet();
         return (ResultSet) LoggingDelegationProxyFactory
             .createProxy(this.proxy, mockCallableStatement, ResultSet.class);
@@ -242,16 +261,25 @@ public class MockConnectionFactory {
 
       @SuppressWarnings("unused")
       public boolean execute() throws SQLException {
+        if (executeFails) {
+          throw new SQLException("execute failed");
+        }
         return false;
       }
 
       @SuppressWarnings("unused")
       public int executeUpdate() throws SQLException {
+        if (executeFails) {
+          throw new SQLException("execute failed");
+        }
         return 1;
       }
 
       @SuppressWarnings("unused")
       public int[] executeBatch() throws SQLException {
+        if (executeFails) {
+          throw new SQLException("execute failed");
+        }
         int[] result = new int[batches];
         for (int i = 0; i < result.length; i++) {
           result[i] = i + 1;

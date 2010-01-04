@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package sf.qof.customizer;
 
 import static sf.qof.codegen.Constants.SIG_getConnection;
+import static sf.qof.codegen.Constants.SIG_ungetConnection;
 import static sf.qof.codegen.Constants.SIG_setConnection;
 import static sf.qof.codegen.Constants.TYPE_Connection;
 import static sf.qof.codegen.Constants.TYPE_RuntimeException;
@@ -41,16 +42,17 @@ import net.sf.cglib.core.Constants;
  */
 public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCustomizer {
 
-	private static final String FIELD_NAME_CONNECTION = "$connection";
+	private static final Class<?>[] CONNECTION_PARAMETER_TYPES = new Class<?>[] {java.sql.Connection.class};
+  private static final String FIELD_NAME_CONNECTION = "$connection";
 
 	public void emitFields(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-	  if (!methodExists(superClass, "getConnection", null)) {
+	  if (!methodExists(superClass, "getConnection", null, java.sql.Connection.class)) {
 	    ce.declare_field(Constants.ACC_PRIVATE, FIELD_NAME_CONNECTION, TYPE_Connection, null, null);
 	  }
 	}
 
 	public void emitGetConnection(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-	  if (!methodExists(superClass, "getConnection", null)) {
+	  if (!methodExists(superClass, "getConnection", null, java.sql.Connection.class)) {
   		CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_getConnection, null, null);
   		co.load_this();
   		co.getfield(FIELD_NAME_CONNECTION);
@@ -58,30 +60,42 @@ public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCust
   		co.end_method();
 	  }
 	}
+	
+	public void emitUngetConnection(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
+	  if (!methodExists(superClass, "ungetConnection", CONNECTION_PARAMETER_TYPES, null)) {
+	    // empty method
+	    CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_ungetConnection, null, null);
+	    co.return_value();
+	    co.end_method();
+	  }
+	}
 
 	public void emitSetConnection(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-	  if (!methodExists(superClass, "getConnection", null)) {
+	  // only create the setConnection method if a getConnection method is NOT defined
+	  if (!methodExists(superClass, "getConnection", null, java.sql.Connection.class)) {
   		CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_setConnection, null, null);
   		co.load_this();
   		co.load_arg(0);
   		co.putfield(FIELD_NAME_CONNECTION);
   		co.return_value();
   		co.end_method();
-	  } else if (!methodExists(superClass, "setConnection", new Class<?>[] {java.sql.Connection.class})) {
+	  } else if (!methodExists(superClass, "setConnection", CONNECTION_PARAMETER_TYPES, null)) {
 	    CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_setConnection, null, null);
 	    co.throw_exception(TYPE_RuntimeException, "Connection cannot be set");
 	    co.end_method();
 	  }
 	}
 
-	private boolean methodExists(Class<?> superClass, String methodName, Class<?>[] parameterTypes) {
+	private boolean methodExists(Class<?> superClass, String methodName, Class<?>[] parameterTypes, Class<?> returnType) {
 	  try {
       Method method = superClass.getMethod(methodName, parameterTypes);
       int modifiers = method.getModifiers();
       if (Modifier.isPrivate(modifiers) || Modifier.isAbstract(modifiers)) {
         return false;
       }
-      if (method.getReturnType() != java.sql.Connection.class) {
+      if (returnType != null && method.getReturnType() != returnType) {
+        return false;
+      } else if (returnType == null && method.getReturnType() != void.class) {
         return false;
       }
       return true;

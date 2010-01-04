@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,19 +65,27 @@ public class CallQueryMethodGenerator {
   }
 
   private static void addCallQueryBodyNoCollection(CodeEmitter co, QueryObjectGenerator generator, Mapper mapper) {
+    Local localConnection = co.make_local(TYPE_Connection);
     Local localCallableStatement = co.make_local(TYPE_CallableStatement);
     Local localException = co.make_local(TYPE_Throwable);
-  
-    // ps = connection.prepareCall("{ ? = call xyz (?,?) }");
+
+    // connection = getConnection();
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
+    co.store_local(localConnection);
+    
+    // try {
+    Block tryBlockConnection = co.begin_block();
+    
+    // ps = connection.prepareCall("{ ? = call xyz (?,?) }");
+    co.load_local(localConnection);
     co.push(mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareCall);
     co.store_local(localCallableStatement);
-  
-    // try{
-    Block blockTry = co.begin_block();
-  
+
+    // try {
+    Block tryBlockStatement = co.begin_block();
+
     // set the parameters
     ParameterMappingGenerator pmg = new ParameterMappingGenerator(co, localCallableStatement, null, null, null);
     mapper.acceptParameterMappers(pmg);
@@ -106,8 +114,12 @@ public class CallQueryMethodGenerator {
       mapper.acceptResultMappers(rmp);
     }
   
-    // finally block
-    EmitUtils.emitClose(co, localCallableStatement, false);
+    // finally
+    tryBlockStatement.end();
+    EmitUtils.emitClose(co, localCallableStatement);
+    
+    tryBlockConnection.end();
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
   
     // return result
     if (localResult != null) {
@@ -116,14 +128,19 @@ public class CallQueryMethodGenerator {
     co.return_value();
     // }
   
-    // exception handler + finally
-    blockTry.end();
-    co.catch_exception(blockTry, TYPE_Throwable);
-    // store thrown exception
+    // exception handler
+    EmitUtils.emitCatchException(co, tryBlockStatement, null);
+    Block tryBlockStatement2 = co.begin_block();
     co.store_local(localException);
-    // finally block
-    EmitUtils.emitClose(co, localCallableStatement, false);
-    // throw stored exception
+    EmitUtils.emitClose(co, localCallableStatement);
+    co.load_local(localException);
+    co.athrow();
+    tryBlockStatement2.end();
+    
+    EmitUtils.emitCatchException(co, tryBlockConnection, null);
+    EmitUtils.emitCatchException(co, tryBlockStatement2, null);
+    co.store_local(localException);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
     co.load_local(localException);
     co.athrow();
   }
@@ -169,18 +186,26 @@ public class CallQueryMethodGenerator {
     co.return_value();
     co.mark(labelNotZero);
   
+    Local localConnection = co.make_local(TYPE_Connection);
     Local localCallableStatement = co.make_local(TYPE_CallableStatement);
     Local localException = co.make_local(TYPE_Throwable);
-  
-    // ps = connection.prepareStatement("select count(*) from person");
+
+    // connection = getConnection();
     co.load_this();
     co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
+    co.store_local(localConnection);
+    
+    // try {
+    Block tryBlockConnection = co.begin_block();
+
+    // ps = connection.prepareStatement("select count(*) from person");
+    co.load_local(localConnection);
     co.push(mapper.getSql());
     co.invoke_interface(TYPE_Connection, SIG_prepareCall);
     co.store_local(localCallableStatement);
-  
-    // try{
-    Block blockTry = co.begin_block();
+    
+    // try {
+    Block tryBlockStatement = co.begin_block();
   
     // start the loop
     // Iterator<Person> iter = list.iterator();
@@ -285,21 +310,30 @@ public class CallQueryMethodGenerator {
   
     co.mark(labelAfter2);
   
-    // finally block
-    EmitUtils.emitClose(co, localCallableStatement, false);
+    // finally
+    tryBlockStatement.end();
+    EmitUtils.emitClose(co, localCallableStatement);
+    
+    tryBlockConnection.end();
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
   
     // return result
     co.return_value();
     // }
   
-    // exception handler + finally
-    blockTry.end();
-    co.catch_exception(blockTry, TYPE_Throwable);
-    // store thrown exception
+    // exception handler
+    EmitUtils.emitCatchException(co, tryBlockStatement, null);
+    Block tryBlockStatement2 = co.begin_block();
     co.store_local(localException);
-    // finally block
-    EmitUtils.emitClose(co, localCallableStatement, false);
-    // throw stored exception
+    EmitUtils.emitClose(co, localCallableStatement);
+    co.load_local(localException);
+    co.athrow();
+    tryBlockStatement2.end();
+    
+    EmitUtils.emitCatchException(co, tryBlockConnection, null);
+    EmitUtils.emitCatchException(co, tryBlockStatement2, null);
+    co.store_local(localException);
+    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
     co.load_local(localException);
     co.athrow();
   }

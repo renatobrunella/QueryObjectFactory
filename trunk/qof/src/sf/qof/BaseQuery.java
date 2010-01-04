@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 brunella ltd
+ * Copyright 2007 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,9 +42,19 @@ public interface BaseQuery {
    * @return the connection
    * 
    * @see #setConnection(Connection)
+   * @see #ungetConnection(Connection)
    */
   Connection getConnection();
 
+  /**
+   * This method is called to return a connection after a <code>getConnection</code> call.
+   * 
+   * @param connection the connection
+   * 
+   * @see #getConnection()
+   */
+  void ungetConnection(Connection connection);
+  
   /**
    * Sets the fetch size to be used in select queries.
    * 

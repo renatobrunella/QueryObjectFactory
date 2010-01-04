@@ -233,6 +233,7 @@ public class QueryObjectGenerator {
 
   private void addBaseQueryMethods(ClassEmitter ce) {
   	customizer.getConnectionFactoryCustomizer(queryDefinitionClass).emitGetConnection(queryDefinitionClass, superClass, ce);
+  	customizer.getConnectionFactoryCustomizer(queryDefinitionClass).emitUngetConnection(queryDefinitionClass, superClass, ce);
   	customizer.getConnectionFactoryCustomizer(queryDefinitionClass).emitSetConnection(queryDefinitionClass, superClass, ce);
     addGetterAndSetter(ce, FIELD_NAME_FETCH_SIZE, "I");
     addGetterAndSetter(ce, FIELD_NAME_BATCH_SIZE, "I");
