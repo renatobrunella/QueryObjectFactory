@@ -50,6 +50,7 @@ public class MockConnectionFactory {
     private int resultSetDataIndex = -1;
     private boolean prepareFails = false;
     private boolean executeFails = false;
+    private boolean isOpen = true;
 
     private void setProxy(LoggingDelegationProxy proxy) {
       this.proxy = proxy;
@@ -96,6 +97,14 @@ public class MockConnectionFactory {
       return (PreparedStatement) proxy;
     }
 
+    public void close() throws SQLException {
+      isOpen = false;
+    }
+    
+    public boolean isClosed() throws SQLException {
+      return !isOpen;
+    }
+    
     private class MockCallableStatement {
       private LoggingDelegationProxy proxy;
 
