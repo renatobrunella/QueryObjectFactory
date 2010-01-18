@@ -154,7 +154,8 @@ public class SessionContextFactory {
    * @see TransactionManagementType
    */
   public static void setJndiDataSource(String contextName, String jndiName, Hashtable<?, ?> jndiProperties, TransactionManagementType transactionManagementType) {
-    ((JndiSessionContext) getContext(contextName, JndiSessionContext.class)).setJndiDataSource(jndiName, jndiProperties, transactionManagementType);
+    JndiSessionContext sessionContext = (JndiSessionContext) getContext(contextName, JndiSessionContext.class); 
+    sessionContext.setJndiDataSource(jndiName, jndiProperties, transactionManagementType);
   }
 
   /**
@@ -263,6 +264,14 @@ public class SessionContextFactory {
       } else {
         this.transactionManagementType = transactionManagementType;
       }
+      // if the CONTAINER manages the transaction do not set autocommit
+      // if the BEAN manages the transaction set autocommit to false
+      if (this.transactionManagementType == TransactionManagementType.CONTAINER) {
+        this.setAutoCommitToFalse = false;
+      } else {
+        this.setAutoCommitToFalse = true;
+      }
+
     }
     
     protected void setAutoCommitPolicy(boolean setAutoCommitToFalse) {
