@@ -60,7 +60,7 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    * @param numberOfRetries  max number of retries
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, int numberOfRetries) {
-	this(runnable, numberOfRetries, 0);
+    this(runnable, numberOfRetries, 0);
   }
 
   /**
@@ -72,7 +72,7 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    * @param delayInMilliSeconds  delay inbetween retries in milli seconds
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, int numberOfRetries, long delayInMilliSeconds) {
-	this(runnable, SessionContext.DEFAULT_CONTEXT_NAME, numberOfRetries, delayInMilliSeconds);
+    this(runnable, SessionContext.DEFAULT_CONTEXT_NAME, numberOfRetries, delayInMilliSeconds);
   }
 
   /**
@@ -84,7 +84,7 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    * @param numberOfRetries  max number of retries
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, String contextName, int numberOfRetries) {
-	this(runnable, contextName, numberOfRetries, 0);
+    this(runnable, contextName, numberOfRetries, 0);
   }
 
   /**
@@ -97,10 +97,10 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    * @param delayInMilliSeconds  delay inbetween retries in milli seconds
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, String contextName, int numberOfRetries, long delayInMilliSeconds) {
-	super(contextName);
-	this.runnable = runnable;
-	this.numberOfRetries = numberOfRetries;
-	this.delayInMilliSeconds = delayInMilliSeconds;
+    super(contextName);
+    this.runnable = runnable;
+    this.numberOfRetries = numberOfRetries;
+    this.delayInMilliSeconds = delayInMilliSeconds;
   }
 
   /**
@@ -131,6 +131,6 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
 
   @Override
   protected T run(Connection connection, Object... arguments) throws SQLException {
-	return runnable.run(connection, arguments);
+    return runnable.run(connection, arguments);
   }
 }

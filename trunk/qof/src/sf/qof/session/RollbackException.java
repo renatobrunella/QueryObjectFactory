@@ -32,7 +32,7 @@ public class RollbackException extends Exception {
 	 * @param message  the error message
 	 */
 	public RollbackException(String message) {
-		super(message);
+    super(message);
 	}
 
 }

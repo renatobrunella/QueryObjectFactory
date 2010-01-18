@@ -32,7 +32,7 @@ public class SystemException extends Exception {
    * Constructs a SystemException object.
    */
   public SystemException() {
-	super();
+    super();
   }
 
   /**
@@ -41,7 +41,7 @@ public class SystemException extends Exception {
    * @param cause  a Throwable object
    */
   public SystemException(Throwable cause) {
-	super(cause);
+    super(cause);
   }
 
   /**
@@ -50,7 +50,7 @@ public class SystemException extends Exception {
    * @param message  the error message
    */
   public SystemException(String message) {
-	super(message);
+    super(message);
   }
 
   /**
@@ -60,6 +60,6 @@ public class SystemException extends Exception {
    * @param cause    a Throwable object
    */
   public SystemException(String message, Throwable cause) {
-	super(message, cause);
+    super(message, cause);
   }
 }

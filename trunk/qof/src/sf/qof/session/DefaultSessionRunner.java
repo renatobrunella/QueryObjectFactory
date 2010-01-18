@@ -54,7 +54,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
    * @param runnable a <code>TransactionRunnable</code>
    */
   public DefaultSessionRunner(TransactionRunnable<T> runnable) {
-	this(runnable, SessionContext.DEFAULT_CONTEXT_NAME);
+    this(runnable, SessionContext.DEFAULT_CONTEXT_NAME);
   }
 
   /**
@@ -65,12 +65,12 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
    * @param contextName the context name
    */
   public DefaultSessionRunner(TransactionRunnable<T> runnable, String contextName) {
-	super(contextName);
-	this.runnable = runnable;
+    super(contextName);
+    this.runnable = runnable;
   }
 
   @Override
   protected T run(Connection connection, Object... arguments) throws SQLException {
-	return runnable.run(connection, arguments);
+    return runnable.run(connection, arguments);
   }
 }

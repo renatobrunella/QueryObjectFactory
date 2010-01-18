@@ -72,7 +72,7 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T> {
    *
    */
   public BaseSessionRunner() {
-	this(SessionContext.DEFAULT_CONTEXT_NAME);
+    this(SessionContext.DEFAULT_CONTEXT_NAME);
   }
 
   /**
@@ -82,40 +82,40 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T> {
    * @param contextName the context name
    */
   public BaseSessionRunner(String contextName) {
-	sessionContext = SessionContextFactory.getContext(contextName);
+    sessionContext = SessionContextFactory.getContext(contextName);
   }
 
   /**
     * @see SessionRunner#execute(Object[])
     */
   public T execute(Object... arguments) throws SystemException {
-	T result;
-	sessionContext.startSession();
-	try {
-	  sessionContext.getUserTransaction().begin();
-	  try {
-		result = run(sessionContext.getConnection(), arguments);
-	  } catch (Throwable e) {
-		try {
-		  sessionContext.getUserTransaction().rollback();
-		} catch (SystemException se) {
-		  // ignore - nothing we can do about
-		}
-		throw new SystemException(e);
-	  }
-	  if (sessionContext.getUserTransaction().isRollbackOnly()) {
-		sessionContext.getUserTransaction().rollback();
-	  } else {
-		try {
-		  sessionContext.getUserTransaction().commit();
-		} catch (RollbackException re) {
-		  // can't happen
-		}
-	  }
-	} finally {
-	  sessionContext.stopSession();
-	}
-	return result;
+    T result;
+    sessionContext.startSession();
+    try {
+      sessionContext.getUserTransaction().begin();
+      try {
+        result = run(sessionContext.getConnection(), arguments);
+      } catch (Throwable e) {
+        try {
+          sessionContext.getUserTransaction().rollback();
+        } catch (SystemException se) {
+          // ignore - nothing we can do about
+        }
+        throw new SystemException(e);
+      }
+      if (sessionContext.getUserTransaction().isRollbackOnly()) {
+        sessionContext.getUserTransaction().rollback();
+      } else {
+        try {
+          sessionContext.getUserTransaction().commit();
+        } catch (RollbackException re) {
+          // can't happen
+        }
+      }
+    } finally {
+      sessionContext.stopSession();
+    }
+    return result;
   }
   
   /**
