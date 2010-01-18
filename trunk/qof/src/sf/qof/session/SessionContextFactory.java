@@ -288,7 +288,11 @@ public class SessionContextFactory {
 
     @Override
     protected UserTransaction getNewUserTansaction(Connection connection) {
-      return new NoOpUserTransaction();
+      if (transactionManagementType == TransactionManagementType.BEAN) {
+        return new DefaultUserTransaction(connection);
+      } else {
+        return new NoOpUserTransaction();
+      }
     }
   }
 
