@@ -234,7 +234,10 @@ public class SessionContextFactory {
     }
 
     @Override
-    protected UserTransaction getNewUserTansaction(Connection connection) {
+    protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType) throws SystemException {
+      if (transactionManagementType != null) {
+        throw new SystemException("Transaction management type is not supported");
+      }
       return new DefaultUserTransaction(connection);
     }
   }
@@ -296,11 +299,19 @@ public class SessionContextFactory {
     }
 
     @Override
-    protected UserTransaction getNewUserTansaction(Connection connection) {
-      if (transactionManagementType == TransactionManagementType.BEAN) {
-        return new DefaultUserTransaction(connection);
+    protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType) throws SystemException {
+      if (transactionManagementType == null) {
+        if (this.transactionManagementType == TransactionManagementType.BEAN) {
+          return new DefaultUserTransaction(connection);
+        } else {
+          return new NoOpUserTransaction();
+        }
       } else {
-        return new NoOpUserTransaction();
+        if (transactionManagementType == TransactionManagementType.BEAN) {
+          return new DefaultUserTransaction(connection);
+        } else {
+          return new NoOpUserTransaction();
+        }
       }
     }
   }
@@ -311,7 +322,7 @@ public class SessionContextFactory {
    * Uses a <code>ThreadLocal</code> field to handle sessions for different threads.
    * 
    */
-  protected static abstract class BaseSessionContext implements SessionContext {
+  protected static abstract class BaseSessionContext implements SessionContext, SessionContextExt {
 
     protected final static SessionConnectionHandler DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE =
       new DefaultSessionConnectionHandler(true);
@@ -347,7 +358,7 @@ public class SessionContextFactory {
     }
     
     protected abstract DataSource getDataSource() throws SystemException;
-    protected abstract UserTransaction getNewUserTansaction(Connection connection);
+    protected abstract UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType) throws SystemException;
 
     public Connection getConnection() {
       Session session = sessionThreadLocal.get();
@@ -366,8 +377,12 @@ public class SessionContextFactory {
       return session.getUserTransaction();
       }
     }
-    
+
     public void startSession() throws SystemException {
+      startSession(null);
+    }
+    
+    public void startSession(TransactionManagementType transactionManagementType) throws SystemException {
       Session session = sessionThreadLocal.get();
       DataSource dataSource = null;
       if (session.getState() == SessionState.RUNNING) {
@@ -381,14 +396,22 @@ public class SessionContextFactory {
         if (sessionConnectionHandler != null) {
           connection = sessionConnectionHandler.getConnection(dataSource);
         } else {
-          if (setAutoCommitToFalse) {
-            connection = DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE.getConnection(dataSource);
+          if (transactionManagementType == null) {
+            if (setAutoCommitToFalse) {
+              connection = DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE.getConnection(dataSource);
+            } else {
+              connection = DEFAULT_SESSION_CONNECTION_HANDLER.getConnection(dataSource);
+            }
           } else {
-            connection = DEFAULT_SESSION_CONNECTION_HANDLER.getConnection(dataSource);
+            if (transactionManagementType == TransactionManagementType.BEAN) {
+              connection = DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE.getConnection(dataSource);
+            } else {
+              connection = DEFAULT_SESSION_CONNECTION_HANDLER.getConnection(dataSource);
+            }
           }
         }
         session.setConnection(connection);
-        session.setUserTransaction(getNewUserTansaction(connection));
+        session.setUserTransaction(getNewUserTansaction(connection, transactionManagementType));
         session.setState(SessionState.RUNNING);
       }
     }

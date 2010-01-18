@@ -59,7 +59,7 @@ import java.sql.SQLException;
  *
  * @param <T> the type of the result of the <code>run</code> method.
  */
-public abstract class BaseSessionRunner<T> implements SessionRunner<T> {
+public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionRunnerExt<T> {
 
   /**
    * Holds the current session context.
@@ -86,11 +86,37 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T> {
   }
 
   /**
-    * @see SessionRunner#execute(Object[])
+    * @see SessionRunner#execute(Object...)
     */
   public T execute(Object... arguments) throws SystemException {
+    return execute(null, arguments);
+  }
+  
+  /**
+   * @see SessionRunnerExt#executeBeanManaged(Object...)
+   */
+  public T executeBeanManaged(Object... arguments) throws SystemException {
+    return execute(TransactionManagementType.BEAN, arguments);
+  }
+  
+  /**
+   * @see SessionRunnerExt#executeContainerManaged(Object...)
+   */
+  public T executeContainerManaged(Object... arguments) throws SystemException {
+    return execute(TransactionManagementType.CONTAINER, arguments);
+  }
+  
+  protected T execute(TransactionManagementType transactionManagementType, Object... arguments) throws SystemException {
     T result;
-    sessionContext.startSession();
+    if (transactionManagementType == null) {
+      sessionContext.startSession();
+    } else {
+      if (sessionContext instanceof SessionContextExt) {
+        ((SessionContextExt) sessionContext).startSession(transactionManagementType);
+      } else {
+        throw new SystemException("SessionContext does not support transaction management type");
+      }
+    }
     try {
       sessionContext.getUserTransaction().begin();
       try {
