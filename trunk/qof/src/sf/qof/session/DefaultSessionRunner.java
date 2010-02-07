@@ -40,6 +40,8 @@ import java.sql.SQLException;
  * 
  * @param <T> the type of the result of the <code>TransactionRunnable</code>. If
  *            no result is returned this type should be <code>Void</code>
+ *
+ * @since 1.0.0            
  * 
  * @see SessionRunner
  */
@@ -52,6 +54,8 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
    * from the default session context.
    *
    * @param runnable a <code>TransactionRunnable</code>
+   *
+   * @since 1.0.0            
    */
   public DefaultSessionRunner(TransactionRunnable<T> runnable) {
     this(runnable, SessionContext.DEFAULT_CONTEXT_NAME);
@@ -63,6 +67,8 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
    * 
    * @param runnable a <code>TransactionRunnable</code>
    * @param contextName the context name
+   *
+   * @since 1.0.0            
    */
   public DefaultSessionRunner(TransactionRunnable<T> runnable, String contextName) {
     super(contextName);

@@ -64,6 +64,8 @@ import javax.sql.DataSource;
  * ctx.stopSession();
  * </pre></blockquote></p>
  * 
+ * @sine 1.0.0
+ * 
  * @see sf.qof.session.SessionContext
  * @see sf.qof.session.UserTransaction
  * 
@@ -79,6 +81,8 @@ public class SessionContextFactory {
    * Creates and returns the default <code>SessionContext</code>.  
    * 
    * @return the session context
+   * 
+   * @since 1.0.0
    */
   public static SessionContext getContext() {
     return getContext(SessionContext.DEFAULT_CONTEXT_NAME, DefaultSessionContext.class);
@@ -89,12 +93,14 @@ public class SessionContextFactory {
    * 
    * @param contextName the context name
    * @return the session context
+   * 
+   * @since 1.0.0
    */
   public static SessionContext getContext(String contextName) {
     return getContext(contextName, DefaultSessionContext.class);
   }
   
-  protected synchronized static SessionContext getContext(String contextName, Class<?> sessionContextClass) {
+  private synchronized static SessionContext getContext(String contextName, Class<?> sessionContextClass) {
     SessionContext sessionContext = sessionContextMap.get(contextName);
     if (sessionContext == null) {
       sessionContext = createSessionContext(sessionContextClass, contextName);
@@ -117,6 +123,8 @@ public class SessionContextFactory {
    * Registers a <code>DataSource</code> with the default session context.
    * 
    * @param dataSource  the data source
+   * 
+   * @since 1.0.0
    */
   public static void setDataSource(DataSource dataSource) {
     setDataSource(SessionContext.DEFAULT_CONTEXT_NAME, dataSource);
@@ -127,6 +135,8 @@ public class SessionContextFactory {
    * 
    * @param contextName  the session context name
    * @param dataSource   the data source
+   * 
+   * @since 1.0.0
    */
   public static void setDataSource(String contextName, DataSource dataSource) {
     ((DefaultSessionContext) getContext(contextName)).setDataSource(dataSource);
@@ -138,6 +148,8 @@ public class SessionContextFactory {
    * @param jndiName     the JNDI name of the data source
    * @param jndiProperties  the properties for <code>InitialContext</code>
    * @param transactionManagementType the transaction management type
+   * 
+   * @since 1.1.0
    */
   public static void setJndiDataSource(String jndiName, Hashtable<?, ?> jndiProperties, TransactionManagementType transactionManagementType) {
     setJndiDataSource(SessionContext.DEFAULT_CONTEXT_NAME, jndiName, jndiProperties, transactionManagementType);
@@ -150,6 +162,8 @@ public class SessionContextFactory {
    * @param jndiName     the JNDI name of the data source
    * @param jndiProperties  the properties for <code>InitialContext</code>
    * @param transactionManagementType the transaction management type
+   * 
+   * @since 1.1.0
    * 
    * @see TransactionManagementType
    */
@@ -165,6 +179,8 @@ public class SessionContextFactory {
    * 
    * @param sessionConnectionHandler the session connection handler
    * 
+   * @since 1.0.0
+   * 
    * @see DefaultSessionConnectionHandler
    */
   public static void setSessionConnectionHandler(SessionConnectionHandler sessionConnectionHandler) {
@@ -179,6 +195,8 @@ public class SessionContextFactory {
    * @param contextName  the session context name
    * @param sessionConnectionHandler the session connection handler if null use the default handler
    * 
+   * @since 1.0.0
+   * 
    * @see DefaultSessionConnectionHandler
    */
   public static void setSessionConnectionHandler(String contextName, SessionConnectionHandler sessionConnectionHandler) {
@@ -192,6 +210,8 @@ public class SessionContextFactory {
    * 
    * @param setAutoCommitToFalse  If true <code>setAutoCommit(false)</code> of the connection is called. 
    *   If false <code>setAutoCommit</code> of the connection is not called.
+   * 
+   * @since 1.0.0
    */
   public static void setAutoCommitPolicy(boolean setAutoCommitToFalse) {
     setAutoCommitPolicy(SessionContext.DEFAULT_CONTEXT_NAME, setAutoCommitToFalse);
@@ -205,6 +225,8 @@ public class SessionContextFactory {
    * @param contextName  the session context name
    * @param setAutoCommitToFalse  If true <code>setAutoCommit(false)</code> of the connection is called. 
    *   If false <code>setAutoCommit</code> of the connection is not called.
+   * 
+   * @since 1.0.0
    */
   public static void setAutoCommitPolicy(String contextName, boolean setAutoCommitToFalse) {
     ((BaseSessionContext) getContext(contextName)).setAutoCommitPolicy(setAutoCommitToFalse);

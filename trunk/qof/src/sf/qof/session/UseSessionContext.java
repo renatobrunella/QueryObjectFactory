@@ -48,6 +48,8 @@ import java.lang.annotation.Target;
  * }
  * </pre></blockquote></p>
  * 
+ * @since 1.0.0
+ * 
  * @see SessionContext
  * @see SessionContextFactory
  */

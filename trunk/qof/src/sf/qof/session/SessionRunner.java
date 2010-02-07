@@ -29,6 +29,8 @@ package sf.qof.session;
  * @see DefaultSessionRunner
  * @see RetrySessionRunner
  * @see BaseSessionRunner
+ * 
+ * @since 1.0.0
  */
 public interface SessionRunner<T> {
 
@@ -42,6 +44,8 @@ public interface SessionRunner<T> {
    * @param arguments arguments that are passed to the executed code
    * @return the result of the executed code
    * @throws SystemException thrown if an unexpected error occured
+   * 
+   * @since 1.0.0
    */
   T execute(Object... arguments) throws SystemException;
 }

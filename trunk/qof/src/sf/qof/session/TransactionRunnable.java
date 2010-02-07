@@ -41,6 +41,8 @@ import java.sql.SQLException;
  * @param <T> the type of the result of a call to run. If no result is 
  *            returned this type should be <code>Void</code>
  * 
+ * @since 1.0.0
+ *             
  * @see SessionRunner
  */
 public interface TransactionRunnable<T> {
@@ -53,6 +55,8 @@ public interface TransactionRunnable<T> {
    * @return                a result
    * @throws SQLException   thrown if an exception occured. 
    *                        This will force a rollback of the transaction
+   *
+   * @since 1.0.0            
    * 
    * @see SessionRunner
    */

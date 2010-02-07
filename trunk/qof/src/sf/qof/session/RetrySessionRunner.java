@@ -44,6 +44,8 @@ import java.sql.SQLException;
  * @param <T> the type of the result of the <code>TransactionRunnable</code>. If
  *            no result is returned this type should be <code>Void</code>
  * 
+ * @since 1.0.0
+ *             
  * @see SessionRunner
  */
 public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
@@ -58,6 +60,8 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    *
    * @param runnable         a <code>TransactionRunnable</code>
    * @param numberOfRetries  max number of retries
+   *
+   * @since 1.0.0            
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, int numberOfRetries) {
     this(runnable, numberOfRetries, 0);
@@ -70,6 +74,8 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    * @param runnable             a <code>TransactionRunnable</code>
    * @param numberOfRetries      max number of retries
    * @param delayInMilliSeconds  delay inbetween retries in milli seconds
+   *
+   * @since 1.0.0            
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, int numberOfRetries, long delayInMilliSeconds) {
     this(runnable, SessionContext.DEFAULT_CONTEXT_NAME, numberOfRetries, delayInMilliSeconds);
@@ -82,6 +88,8 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    * @param runnable         a <code>TransactionRunnable</code>
    * @param contextName      the context name
    * @param numberOfRetries  max number of retries
+   *
+   * @since 1.0.0            
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, String contextName, int numberOfRetries) {
     this(runnable, contextName, numberOfRetries, 0);
@@ -95,6 +103,8 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    * @param contextName          the context name
    * @param numberOfRetries      max number of retries
    * @param delayInMilliSeconds  delay inbetween retries in milli seconds
+   *
+   * @since 1.0.0            
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, String contextName, int numberOfRetries, long delayInMilliSeconds) {
     super(contextName);

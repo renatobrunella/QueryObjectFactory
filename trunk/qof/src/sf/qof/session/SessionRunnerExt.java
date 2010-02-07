@@ -25,6 +25,8 @@ package sf.qof.session;
  * @param <T> the type of the result of the executed code. If no result is 
  *            returned this type should be <code>Void</code>
  * 
+ * @since 1.1.0
+ * 
  * @see SessionRunner
  */
 public interface SessionRunnerExt<T> extends SessionRunner<T> {
@@ -40,6 +42,8 @@ public interface SessionRunnerExt<T> extends SessionRunner<T> {
    * @param arguments arguments that are passed to the executed code
    * @return the result of the executed code
    * @throws SystemException thrown if an unexpected error occured
+   * 
+   * @since 1.1.0
    */
   T executeContainerManaged(Object... arguments) throws SystemException;
 
@@ -54,6 +58,8 @@ public interface SessionRunnerExt<T> extends SessionRunner<T> {
    * @param arguments arguments that are passed to the executed code
    * @return the result of the executed code
    * @throws SystemException thrown if an unexpected error occured
+   * 
+   * @since 1.1.0
    */
   T executeBeanManaged(Object... arguments) throws SystemException;
 

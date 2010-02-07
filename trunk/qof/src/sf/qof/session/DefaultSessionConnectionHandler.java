@@ -29,6 +29,7 @@ import javax.sql.DataSource;
  * It's default behaviour is to raise an exception if the connection returned
  * from the data source is null and to set auto commit to false.
  *
+ * @since 1.0.0
  */
 public class DefaultSessionConnectionHandler implements SessionConnectionHandler {
 
@@ -43,6 +44,8 @@ public class DefaultSessionConnectionHandler implements SessionConnectionHandler
    * @param dataSource the data source
    * @return a new connection
    * @throws SystemException
+   *
+   * @since 1.0.0            
    */
   public Connection getConnection(DataSource dataSource) throws SystemException {
     try {
@@ -64,6 +67,8 @@ public class DefaultSessionConnectionHandler implements SessionConnectionHandler
    * 
    * @param connection the connection
    * @throws SystemException
+   *
+   * @since 1.0.0            
    */
   public void closeConnection(Connection connection) throws SystemException {
     try {

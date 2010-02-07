@@ -23,6 +23,7 @@ package sf.qof.session;
  * 
  * Add a method to to start a session with a specified transaction management type.
  * 
+ * @since 1.1.0
  */
 public interface SessionContextExt extends SessionContext {
 
@@ -38,6 +39,8 @@ public interface SessionContextExt extends SessionContext {
    * @param transactionManagementType the transaction management type
    * @throws SystemException        Thrown if an unexpected error condition occurs
    * @throws IllegalStateException  Thrown if the session is already started
+   * 
+   * @since 1.1.0
    */
   void startSession(TransactionManagementType transactionManagementType) throws SystemException;
 }

@@ -58,6 +58,8 @@ import java.sql.SQLException;
  * </pre></blockquote></p>
  *
  * @param <T> the type of the result of the <code>run</code> method.
+ * 
+ * @since 1.0.0
  */
 public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionRunnerExt<T> {
 
@@ -70,6 +72,7 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
    * Creates a <code>BaseSessionRunner</code> that creates a session
    * from the default session context.
    *
+   * @since 1.0.0            
    */
   public BaseSessionRunner() {
     this(SessionContext.DEFAULT_CONTEXT_NAME);
@@ -80,20 +83,26 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
    * from the session context with the given name.
    * 
    * @param contextName the context name
+   *
+   * @since 1.0.0            
    */
   public BaseSessionRunner(String contextName) {
     sessionContext = SessionContextFactory.getContext(contextName);
   }
 
   /**
-    * @see SessionRunner#execute(Object...)
-    */
+   * @see SessionRunner#execute(Object...)
+   *
+   * @since 1.0.0            
+   */
   public T execute(Object... arguments) throws SystemException {
     return execute(null, arguments);
   }
   
   /**
    * @see SessionRunnerExt#executeBeanManaged(Object...)
+   *
+   * @since 1.1.0            
    */
   public T executeBeanManaged(Object... arguments) throws SystemException {
     return execute(TransactionManagementType.BEAN, arguments);
@@ -101,6 +110,8 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
   
   /**
    * @see SessionRunnerExt#executeContainerManaged(Object...)
+   *
+   * @since 1.1.0            
    */
   public T executeContainerManaged(Object... arguments) throws SystemException {
     return execute(TransactionManagementType.CONTAINER, arguments);

@@ -21,6 +21,8 @@ package sf.qof.session;
 /**
  * The RollbackTransaction is thrown to indicate that the transaction has been 
  * rolled back rather than committed. 
+ *
+ * @since 1.0.0            
  */
 public class RollbackException extends Exception {
 	
@@ -30,6 +32,8 @@ public class RollbackException extends Exception {
 	 * Constructs a RollbackException object.
 	 *
 	 * @param message  the error message
+   *
+   * @since 1.0.0            
 	 */
 	public RollbackException(String message) {
     super(message);

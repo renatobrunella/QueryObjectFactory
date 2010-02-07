@@ -55,6 +55,7 @@ import java.sql.Connection;
  * ctx.stopSession();
  * </pre></blockquote></p>
  * 
+ * @since 1.0.0
  * @see SessionContextFactory 
  * @see UserTransaction
  * 
@@ -63,6 +64,8 @@ public interface SessionContext {
 
   /**
    * Name of the default session context.
+   * 
+   * @since 1.0.0
    */
   String DEFAULT_CONTEXT_NAME = "DEFAULT_CONTEXT";
 
@@ -77,6 +80,8 @@ public interface SessionContext {
    * 
    * @throws SystemException        Thrown if an unexpected error condition occurs
    * @throws IllegalStateException  Thrown if the session is already started
+   * 
+   * @since 1.0.0
    */
   void startSession() throws SystemException;
 
@@ -87,6 +92,8 @@ public interface SessionContext {
    * 
    * @throws SystemException        Thrown if an unexpected error condition occurs
    * @throws IllegalStateException  Thrown if the session is already stopped
+   * 
+   * @since 1.0.0
    */
   void stopSession() throws SystemException;
 
@@ -97,6 +104,8 @@ public interface SessionContext {
    * @return the current user transaction
    * 
    * @throws IllegalStateException  Thrown if the session is not started
+   * 
+   * @since 1.0.0
    */
   UserTransaction getUserTransaction();
 
@@ -107,6 +116,8 @@ public interface SessionContext {
    * @return the current connection
    * 
    * @throws IllegalStateException  Thrown if the session is not started
+   * 
+   * @since 1.0.0
    */
   Connection getConnection();
 }

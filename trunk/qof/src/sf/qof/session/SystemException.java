@@ -23,6 +23,7 @@ package sf.qof.session;
  * indicate that it has encountered an unexpected error condition that prevents
  * future transaction services from proceeding.
  * 
+ * @since 1.0.0
  */
 public class SystemException extends Exception {
 
@@ -30,6 +31,8 @@ public class SystemException extends Exception {
 
   /**
    * Constructs a SystemException object.
+   *
+   * @since 1.0.0            
    */
   public SystemException() {
     super();
@@ -39,6 +42,8 @@ public class SystemException extends Exception {
    * Constructs a SystemException object.
    *
    * @param cause  a Throwable object
+   *
+   * @since 1.0.0            
    */
   public SystemException(Throwable cause) {
     super(cause);
@@ -48,6 +53,8 @@ public class SystemException extends Exception {
    * Constructs a SystemException object.
    *
    * @param message  the error message
+   *
+   * @since 1.0.0            
    */
   public SystemException(String message) {
     super(message);
@@ -58,6 +65,8 @@ public class SystemException extends Exception {
    * 
    * @param message  the error message
    * @param cause    a Throwable object
+   *
+   * @since 1.0.0            
    */
   public SystemException(String message, Throwable cause) {
     super(message, cause);

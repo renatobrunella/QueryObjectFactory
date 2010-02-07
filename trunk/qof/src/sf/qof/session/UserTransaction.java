@@ -29,6 +29,8 @@ package sf.qof.session;
  * UserTransaction trx = SessionContextFactory.getContext().getUserTransaction();
  * </pre></blockquote></p>
  * 
+ * @since 1.0.0
+ * 
  * @see SessionContext#getUserTransaction()
  * @see SessionContextFactory
  */
@@ -42,6 +44,8 @@ public interface UserTransaction {
    *             error condition.
    * @throws IllegalStateException
    *             Thrown if the transaction is already started
+   *
+   * @since 1.0.0            
    */
   void begin() throws SystemException;
 
@@ -57,6 +61,8 @@ public interface UserTransaction {
    *             rather than committed.
    * @throws IllegalStateException
    *             Thrown if there the transaction was not started
+   *
+   * @since 1.0.0            
    */
   void commit() throws SystemException, RollbackException;
 
@@ -69,6 +75,8 @@ public interface UserTransaction {
    *             error condition.
    * @throws IllegalStateException
    *             Thrown if there the transaction was not started
+   *
+   * @since 1.0.0            
    */
   void rollback() throws SystemException;
 
@@ -81,6 +89,8 @@ public interface UserTransaction {
    *             error condition.
    * @throws IllegalStateException
    *             Thrown if there the transaction was not started
+   *
+   * @since 1.0.0            
    */
   void setRollbackOnly() throws SystemException;
 
@@ -92,6 +102,8 @@ public interface UserTransaction {
    *
    * @throws IllegalStateException
    *             Thrown if there the transaction was not started
+   *
+   * @since 1.0.0            
    */
   boolean isRollbackOnly();
 }

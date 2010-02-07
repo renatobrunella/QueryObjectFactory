@@ -35,6 +35,8 @@ import javax.sql.DataSource;
  * @see DefaultSessionConnectionHandler
  * @see SessionContextFactory#setSessionConnectionHandler(SessionConnectionHandler)
  * @see SessionContextFactory#setSessionConnectionHandler(String, SessionConnectionHandler)
+ *
+ * @since 1.0.0            
  */
 public interface SessionConnectionHandler {
 
@@ -44,6 +46,8 @@ public interface SessionConnectionHandler {
    * @param dataSource the data source
    * @return a new connection
    * @throws SystemException
+   *
+   * @since 1.0.0            
    */
   Connection getConnection(DataSource dataSource) throws SystemException;
   
@@ -52,6 +56,8 @@ public interface SessionConnectionHandler {
    * 
    * @param connection the connection
    * @throws SystemException
+   *
+   * @since 1.0.0            
    */
   void closeConnection(Connection connection) throws SystemException;
 }
