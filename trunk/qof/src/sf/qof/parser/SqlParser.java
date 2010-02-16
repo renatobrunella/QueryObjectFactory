@@ -41,10 +41,11 @@ import sf.qof.exception.SqlParserException;
  * 
  * <p> Result definitions have the following form:
  * <p> <code>{%%}</code> or <code>{type %%}</code>
- * or <code>{%%.field}</code> or <code>{type %%.field}</code> or <code>{%%*}</code>
+ * or <code>{%%.field}</code> or <code>{type %%.field}</code> or <code>{%%*}</code> or <code>{type %%#}</code>
  * <p> <code>field</code> is the name of the field in the mapped Java Bean object 
  * <br> <code>type</code> is the optional name of mapper (<code>int</code>, <code>string</code>, etc)
  * <br> <code>{%%*}</code> denotes the map key if the return result type is <code>Map</code>
+ * <br> <code>{%%#}</code> is used for constructor parameters <code>#</code> being the index of the parameter (1..n)
  *
  * <p> In/out definitions for stored procedure calls have the following form:
  * <p> <code>{result definition,parameter definition}</code> or <code>{parameter definition,result definition}</code>
