@@ -64,7 +64,7 @@ import javax.sql.DataSource;
  * ctx.stopSession();
  * </pre></blockquote></p>
  * 
- * @sine 1.0.0
+ * @since 1.0.0
  * 
  * @see sf.qof.session.SessionContext
  * @see sf.qof.session.UserTransaction
