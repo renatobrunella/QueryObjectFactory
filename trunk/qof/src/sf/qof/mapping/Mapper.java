@@ -21,6 +21,7 @@ package sf.qof.mapping;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class Mapper {
@@ -74,6 +75,15 @@ public class Mapper {
     for (ResultMapping mapping : results) {
       if (mapping.getConstructor() != null) {
         return mapping.getConstructor();
+      }
+    }
+    return null;
+  }
+  
+  public Method getStaticFactoryMethod() {
+    for (ResultMapping mapping : results) {
+      if (mapping.getStaticFactoryMethod() != null) {
+        return mapping.getStaticFactoryMethod();
       }
     }
     return null;

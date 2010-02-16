@@ -37,6 +37,7 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   protected MappingAdapter adapter;
   protected Integer constructorParameter;
   protected Constructor<?> constructor;
+  protected Method staticFactoryMethod;
   protected boolean usesArray;
 
   // implements ParameterMapping
@@ -55,7 +56,8 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
 
   // implements ResultMapping
   public void setParameters(Class<?> type, Class<?> collectionType, Class<?> beanType, Method setter, int[] sqlIndexes,
-      String[] sqlColumns, MappingAdapter adapter, Class<?> mapKeyType, Integer constructorParameter, Constructor<?> constructor) {
+      String[] sqlColumns, MappingAdapter adapter, Class<?> mapKeyType, Integer constructorParameter, 
+      Constructor<?> constructor, Method staticFactoryMethod) {
     this.index = -1;
     this.type = type;
     this.collectionType = collectionType;
@@ -67,6 +69,7 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     this.mapKeyType = mapKeyType;
     this.constructorParameter = constructorParameter;
     this.constructor = constructor;
+    this.staticFactoryMethod = staticFactoryMethod;
   }
 
   public Class<?> getBeanType() {
@@ -110,7 +113,7 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   }
 
   public boolean usesAtomic() {
-    return beanType == null && constructor == null;
+    return beanType == null && constructor == null && staticFactoryMethod == null;
   }
 
   public boolean isMapKey() {
@@ -127,6 +130,10 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
 
   public Constructor<?> getConstructor() {
     return constructor;
+  }
+  
+  public Method getStaticFactoryMethod() {
+    return staticFactoryMethod;
   }
   
   public boolean usesArray() {

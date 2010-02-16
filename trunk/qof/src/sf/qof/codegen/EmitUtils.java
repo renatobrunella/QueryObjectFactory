@@ -46,6 +46,7 @@ import static sf.qof.codegen.Constants.TYPE_long;
 import static sf.qof.codegen.Constants.TYPE_short;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import net.sf.cglib.core.Block;
 import net.sf.cglib.core.CodeEmitter;
@@ -134,17 +135,35 @@ public class EmitUtils {
     ResultMappingGenerator rmp = new ResultMappingGenerator(co, localResultSet, null, null, true, constructorParameters);
     mapper.acceptResultMappers(rmp);
     
-    co.new_instance(localStoreResult.getType());
-    co.dup();
-    
-    for (int i = 0; i < constructorParameters.length; i++) {
-      co.load_local(constructorParameters[i]);
-    }
-    if (mapper.getConstructor() == null) {
-      co.invoke_constructor(localStoreResult.getType());
+    if (mapper.getStaticFactoryMethod() == null) {
+      // create a new instance of the result object
+      co.new_instance(localStoreResult.getType());
+      co.dup();
+      
+      // push constructor parameters on stack (if any)
+      for (int i = 0; i < constructorParameters.length; i++) {
+        co.load_local(constructorParameters[i]);
+      }
+      if (mapper.getConstructor() == null && mapper.getStaticFactoryMethod() == null) {
+        // invoke default constructor
+        co.invoke_constructor(localStoreResult.getType());
+      } else {
+        // invoke constructor with parameters
+        Signature constructorSignature = createConstructorSignature(mapper.getConstructor());
+        co.invoke_constructor(localStoreResult.getType(), constructorSignature);
+      }
+      
     } else {
-      Signature constructorSignature = createConstructorSignature(mapper.getConstructor());
-      co.invoke_constructor(localStoreResult.getType(), constructorSignature);
+      // use a static factory method to create result object
+      
+      // push parameters on stack (if any)
+      for (int i = 0; i < constructorParameters.length; i++) {
+        co.load_local(constructorParameters[i]);
+      }
+      // call static factory method to create result object
+      Signature staticFactoryMethodSignature = createMethodSignature(mapper.getStaticFactoryMethod()); 
+      co.invoke_static(Type.getType(mapper.getStaticFactoryMethod().getDeclaringClass()), staticFactoryMethodSignature);
+
     }
     co.store_local(localStoreResult);
   }
@@ -156,6 +175,15 @@ public class EmitUtils {
       parameterTypes[i] = Type.getType(constructorParameterTypes[i]);
     }
     return new Signature("<init>", Type.getType(void.class), parameterTypes);
+  }
+  
+  private static Signature createMethodSignature(Method method) {
+    Class<?>[] constructorParameterTypes = method.getParameterTypes();
+    Type[] parameterTypes = new Type[constructorParameterTypes.length];
+    for (int i = 0; i < constructorParameterTypes.length; i++) {
+      parameterTypes[i] = Type.getType(constructorParameterTypes[i]);
+    }
+    return new Signature(method.getName(), Type.getType(method.getReturnType()), parameterTypes);
   }
 
 }

@@ -42,9 +42,11 @@ public interface ResultMapping extends Mapping {
    * @param mapKeyType      map key type
    * @param constructorParameter index of a parameter in the constructor
    * @param constructor     constructor
+   * @param staticFactoryMethod static factory method
    */
   void setParameters(Class<?> type, Class<?> collectionType, Class<?> beanType, Method setter, int[] sqlIndexes,
-      String[] sqlColumns, MappingAdapter adapter, Class<?> mapKeyType, Integer constructorParameter, Constructor<?> constructor);
+      String[] sqlColumns, MappingAdapter adapter, Class<?> mapKeyType, Integer constructorParameter, 
+      Constructor<?> constructor, Method staticFactoryMethod);
 
   /**
    * Returns mapping type.
@@ -138,4 +140,11 @@ public interface ResultMapping extends Mapping {
    * @return constructor
    */
   Constructor<?> getConstructor();
+  
+  /**
+   * Returns the static factory method or null.
+   * 
+   * @return static factory method
+   */
+  Method getStaticFactoryMethod();
 }

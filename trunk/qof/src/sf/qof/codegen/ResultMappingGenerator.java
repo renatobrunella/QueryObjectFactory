@@ -172,7 +172,11 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     Local localResult = null;
     
     if (constructorMappings) {
-      type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      if (mapping.getConstructor() != null) {
+        type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      } else {
+        type = mapping.getStaticFactoryMethod().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      }
       localResult = co.make_local(Type.getType(type));
       constructorParameters[mapping.getConstructorParameter() - 1] = localResult;
     } else {
@@ -267,7 +271,11 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     
     Class<?> type;
     if (constructorMappings) {
-      type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      if (mapping.getConstructor() != null) {
+        type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      } else {
+        type = mapping.getStaticFactoryMethod().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      }
     } else {
       type = mapping.getType();
     }
@@ -334,7 +342,11 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     Local localResult = null;
     
     if (constructorMappings) {
-      type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      if (mapping.getConstructor() != null) {
+        type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      } else {
+        type = mapping.getStaticFactoryMethod().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      }
       localResult = co.make_local(Type.getType(type));
       constructorParameters[mapping.getConstructorParameter() - 1] = localResult;
     } else {
@@ -378,7 +390,11 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     Local localResult = null;
     
     if (constructorMappings) {
-      type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      if (mapping.getConstructor() != null) {
+        type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      } else {
+        type = mapping.getStaticFactoryMethod().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      }
       localResult = co.make_local(Type.getType(type));
       constructorParameters[mapping.getConstructorParameter() - 1] = localResult;
     } else {
@@ -448,7 +464,11 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     Local localResult = null;
     
     if (constructorMappings) {
-      type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      if (mapping.getConstructor() != null) {
+        type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      } else {
+        type = mapping.getStaticFactoryMethod().getParameterTypes()[mapping.getConstructorParameter() - 1];
+      }        
       localResult = co.make_local(Type.getType(type));
       constructorParameters[mapping.getConstructorParameter() - 1] = localResult;
     } else {

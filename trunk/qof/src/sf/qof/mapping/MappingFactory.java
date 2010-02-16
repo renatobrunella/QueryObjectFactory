@@ -66,7 +66,7 @@ public class MappingFactory {
   }
 
   public static ResultMapping createResultMapping(ClassLoader classLoader, String mappingType, Class<?> type, Class<?> collectionType, Class<?> beanType,
-      Method setter, int[] sqlIndexes, String[] sqlColumns, Class<?> mapKeyType, Integer constructorParameter, Constructor<?> constructor) {
+      Method setter, int[] sqlIndexes, String[] sqlColumns, Class<?> mapKeyType, Integer constructorParameter, Constructor<?> constructor, Method staticFactoryMethod) {
     MappingClassInfo info = null;
     Class<?> resultType;
     if (mapKeyType == null) {
@@ -97,7 +97,7 @@ public class MappingFactory {
     try {
       ResultMapping mapping = (ResultMapping) mappingClass.newInstance();
       mapping.setParameters(type, collectionType, beanType, setter, sqlIndexes, sqlColumns, 
-    	  info.getAdapter(), mapKeyType, constructorParameter, constructor);
+    	  info.getAdapter(), mapKeyType, constructorParameter, constructor, staticFactoryMethod);
       return (ResultMapping) mapping;
     } catch (InstantiationException e) {
       throw new RuntimeException(e);

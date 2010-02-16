@@ -20,6 +20,7 @@ package sf.qof.codegen;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -75,7 +76,7 @@ public final class AnnotationMapperFactory {
     SqlParser parser = new SqlParser(annotation.sql(), false);
     return new Mapper(methodInfo, QueryType.QUERY, parser.getSql(),
         createParameterMappers(queryDefinitionClass, methodInfo, parser.getParameterDefinitions()),
-        createResultMappers(queryDefinitionClass, methodInfo, parser.getResultDefinitions()));
+        createResultMappers(queryDefinitionClass, methodInfo, parser.getResultDefinitions(), annotation.factoryClass(), annotation.factoryMethod()));
   }
 
   private static Mapper create(Class<?> queryDefinitionClass, MethodInfo methodInfo, Insert annotation) {
@@ -100,7 +101,7 @@ public final class AnnotationMapperFactory {
     SqlParser parser = new SqlParser(annotation.sql(), true);
     return new Mapper(methodInfo, QueryType.CALL, parser.getSql(), 
         createParameterMappers(queryDefinitionClass, methodInfo, parser.getParameterDefinitions()),
-        createResultMappers(queryDefinitionClass, methodInfo, parser.getResultDefinitions()));
+        createResultMappers(queryDefinitionClass, methodInfo, parser.getResultDefinitions(), annotation.factoryClass(), annotation.factoryMethod()));
   }
 
   private static List<ParameterMapping> createParameterMappers(Class<?> queryDefinitionClass, MethodInfo methodInfo, ParameterDefinition[] parameterDefs) {
@@ -160,11 +161,18 @@ public final class AnnotationMapperFactory {
     return list;
   }
 
-  private static List<ResultMapping> createResultMappers(Class<?> queryDefinitionClass, MethodInfo methodInfo, ResultDefinition[] resultDefs) {
+  private static List<ResultMapping> createResultMappers(Class<?> queryDefinitionClass, MethodInfo methodInfo, ResultDefinition[] resultDefs, 
+      Class<?> factoryClass, String factoryMethod) {
     List<ResultMapping> list = new ArrayList<ResultMapping>();
     
     MethodReturnInfo returnInfo = methodInfo.getReturnInfo();
-    Constructor<?> constructor = findConstructor(queryDefinitionClass, returnInfo, resultDefs);
+    Constructor<?> constructor = null;
+    Method staticFactoryMethod = null;
+    if (factoryClass == Object.class) {
+      constructor = findConstructor(queryDefinitionClass, returnInfo, resultDefs);
+    } else {
+      staticFactoryMethod = findStaticMethod(queryDefinitionClass, factoryClass, factoryMethod, returnInfo, resultDefs);
+    }
     
     for (ResultDefinition result : resultDefs) {
       // get fields from annotation
@@ -176,7 +184,7 @@ public final class AnnotationMapperFactory {
       }
       Integer constructorParameter = null;
       if (result.getConstructorParameter() > 0) {
-    	constructorParameter = result.getConstructorParameter();
+        constructorParameter = result.getConstructorParameter();
       }
       String field = result.getField();
       Class<?> type = null;
@@ -228,27 +236,17 @@ public final class AnnotationMapperFactory {
       // create mapping
       ResultMapping mapping = MappingFactory.createResultMapping(queryDefinitionClass.getClassLoader(), mappingType,
           type, collectionType, beanType, setter, sqlIndexes, sqlColumns, mapKeyType, constructorParameter,
-          (constructorParameter != null ? constructor : null));
+          (constructorParameter != null ? constructor : null), (constructorParameter != null ? staticFactoryMethod : null));
       list.add(mapping);
     }
     return list;
   }
 
   private static Constructor<?> findConstructor(Class<?> queryDefinitionClass, MethodReturnInfo returnInfo, ResultDefinition[] resultDefs) {
-    List<ResultDefinition> constructorResultDefs = new ArrayList<ResultDefinition>();
-    for (ResultDefinition resultDef : resultDefs) {
-      if (resultDef.getConstructorParameter() > 0) {
-        constructorResultDefs.add(resultDef);
-      }
-    }
+    List<ResultDefinition> constructorResultDefs = getConstrutorResultDefs(resultDefs);
     if (constructorResultDefs.size() == 0) {
       return null;
     }
-    Collections.sort(constructorResultDefs, new Comparator<ResultDefinition>() {
-      public int compare(ResultDefinition o1, ResultDefinition o2) {
-        return o1.getConstructorParameter() - o2.getConstructorParameter();
-      }
-    });
 
     Class<?> type;
     if (returnInfo.getCollectionType() != null) {
@@ -318,4 +316,109 @@ public final class AnnotationMapperFactory {
     
     return matchingConstructor;
   }
+
+  private static Method findStaticMethod(Class<?> queryDefinitionClass, Class<?> factoryClass,
+      String factoryMethod, MethodReturnInfo returnInfo, ResultDefinition[] resultDefs) {
+    List<ResultDefinition> constructorResultDefs = getConstrutorResultDefs(resultDefs);
+    if (constructorResultDefs.size() == 0) {
+      return null;
+    }
+
+    //TODO check return type of factory method
+//    Class<?> type;
+//    if (returnInfo.getCollectionType() != null) {
+//      type = returnInfo.getCollectionElementType();
+//    } else {
+//      type = returnInfo.getType();
+//    }
+
+    Method[] factoryMethods = factoryClass.getDeclaredMethods();
+    
+    Method matchingFactoryMethod = null;
+    for (Method method : factoryMethods) {
+      // skip non-static or non-public methods
+      if (!(Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()))) {
+        continue;
+      }
+      Class<?>[] parameterTypes = method.getParameterTypes();
+      // do we have the correct number of parameters?
+      if (parameterTypes.length != constructorResultDefs.size()) {
+        continue;
+      }
+      for (int i = 0; i < parameterTypes.length; i++) {
+        ResultDefinition def = constructorResultDefs.get(i);
+        MappingClassInfo info = MappingFactory.getResultMappingInfo(queryDefinitionClass.getClassLoader(), def.getType());
+        if (info == null || !info.getMappableTypes().contains(parameterTypes[i])) {
+          break;
+        }
+        if (i + 1 == parameterTypes.length) {
+          matchingFactoryMethod = method;
+          break;
+        }
+      }
+      if (matchingFactoryMethod != null) {
+        break;
+      }
+    }
+
+    if (matchingFactoryMethod == null) {
+      // try again but relaxed rules
+      for (Method method : factoryMethods) {
+        // skip non-static or non-public methods
+        if (!(Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()))) {
+          continue;
+        }
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        if (parameterTypes.length != constructorResultDefs.size()) {
+          continue;
+        }
+        for (int i = 0; i < parameterTypes.length; i++) {
+          ResultDefinition def = constructorResultDefs.get(i);
+          MappingClassInfo info = MappingFactory.getResultMappingInfo(queryDefinitionClass.getClassLoader(), def.getType());
+          boolean found = false;
+          if (info != null) {
+            for (Class<?> mappableType : info.getMappableTypes()) {
+              if (mappableType.isAssignableFrom(parameterTypes[i])) {
+                found = true;
+                break;
+              }
+            }
+          }
+          if (!found) {
+            break;
+          }
+          if (i + 1 == parameterTypes.length) {
+            matchingFactoryMethod = method;
+            break;
+          }
+        }
+        if (matchingFactoryMethod != null) {
+          break;
+        }
+      }
+    }
+    
+    if (matchingFactoryMethod == null) {
+      throw new RuntimeException("Could not find matching static factory method " + factoryMethod + " in " + factoryClass);
+    }
+    
+    return matchingFactoryMethod;
+  }
+
+  private static List<ResultDefinition> getConstrutorResultDefs(
+      ResultDefinition[] resultDefs) {
+    List<ResultDefinition> constructorResultDefs = new ArrayList<ResultDefinition>();
+    for (ResultDefinition resultDef : resultDefs) {
+      if (resultDef.getConstructorParameter() > 0) {
+        constructorResultDefs.add(resultDef);
+      }
+    }
+    Collections.sort(constructorResultDefs, new Comparator<ResultDefinition>() {
+      public int compare(ResultDefinition o1, ResultDefinition o2) {
+        return o1.getConstructorParameter() - o2.getConstructorParameter();
+      }
+    });
+    return constructorResultDefs;
+  }
+  
 }
