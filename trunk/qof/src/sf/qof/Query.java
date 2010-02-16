@@ -64,4 +64,18 @@ public @interface Query {
    * @see sf.qof.parser.SqlParser
    */
   String sql();
+  
+  /**
+   * This is the class that has the static factory method.
+   * 
+   * @return the static factory class
+   */
+  Class<?> factoryClass() default Object.class;
+  
+  /**
+   * This is the name of the static factory method.
+   * 
+   * @return the static factory method name
+   */
+  String factoryMethod() default "";
 }
