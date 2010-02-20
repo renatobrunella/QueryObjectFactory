@@ -16,6 +16,12 @@ public class SimpleCallTest extends TestCase {
 
   public interface CallQueries extends BaseQuery {
     @Call(sql = "{ {%%} = call func ({%1}, {%2}) }")
+    boolean callBoolean1(boolean a, Boolean b) throws SQLException;
+
+    @Call(sql = "{ {%%} = call func ({%1}, {%2}) }")
+    Boolean callBoolean2(boolean a, Boolean b) throws SQLException;
+
+    @Call(sql = "{ {%%} = call func ({%1}, {%2}) }")
     byte callByte1(byte a, Byte b) throws SQLException;
 
     @Call(sql = "{ {%%} = call func ({%1}, {%2}) }")
@@ -82,6 +88,31 @@ public class SimpleCallTest extends TestCase {
     callQueries.setFetchSize(99);
   }
 
+  public void testCallBoolean() throws SQLException {
+    List<Object> result = new ArrayList<Object>();
+    result.add(Boolean.TRUE);
+    ((MockConnectionData) connection).setResultData(result);
+    assertEquals(true, callQueries.callBoolean1(true, Boolean.TRUE));
+    assertEquals(Boolean.TRUE, callQueries.callBoolean2(false, null));
+    int i = 0;
+    assertEquals(15, log.size());
+    assertEquals("prepareCall({  ? = call func ( ? , ? )  })", log.get(i++));
+    assertEquals("setBoolean(2,true)", log.get(i++));
+    assertEquals("setBoolean(3,true)", log.get(i++));
+    assertEquals("registerOutParameter(1," + java.sql.Types.BOOLEAN + ")", log.get(i++));
+    assertEquals("execute()", log.get(i++));
+    assertEquals("getBoolean(1)", log.get(i++));
+    assertEquals("close()", log.get(i++));
+    assertEquals("prepareCall({  ? = call func ( ? , ? )  })", log.get(i++));
+    assertEquals("setBoolean(2,false)", log.get(i++));
+    assertEquals("setNull(3," + java.sql.Types.BOOLEAN + ")", log.get(i++));
+    assertEquals("registerOutParameter(1," + java.sql.Types.BOOLEAN + ")", log.get(i++));
+    assertEquals("execute()", log.get(i++));
+    assertEquals("getBoolean(1)", log.get(i++));
+    assertEquals("wasNull()", log.get(i++));
+    assertEquals("close()", log.get(i++));
+  }
+  
   public void testCallByte() throws SQLException {
     List<Object> result = new ArrayList<Object>();
     result.add(new Byte((byte) 55));
