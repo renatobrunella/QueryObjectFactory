@@ -12,15 +12,15 @@ import junit.framework.TestCase;
 public class AnnotationMapperFactoryTest extends TestCase {
 
   public interface TestInterface {
-    @Query(sql = "select * from test where id = {%1}")//, parameters = @Parameter(parameter = 0))
+    @Query(sql = "select * from test where id = {%1}")
     int test1();
-    @Query(sql = "select * from test where id = {%2}")//, parameters = @Parameter(parameter = -1))
+    @Query(sql = "select * from test where id = {%2}")
     int test1(int i);
 
-    @Query(sql = "select * from test where id = {%1.field}")//, parameters = @Parameter(parameter = 1, index = 1, field = "field"))
+    @Query(sql = "select * from test where id = {%1.field}")
     int test2(int i);
 
-    @Query(sql = "select col {%%.field} from test where id = {%1}")//, results = @Result(index = 1, column = "col", field = "field"))
+    @Query(sql = "select col {%%.field} from test where id = {%1}")
     int test3(int i);
 }
 
