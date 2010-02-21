@@ -149,12 +149,13 @@
 	</target>
 
 	<target name="build" depends="init">
-		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" source="${source}" target="${target}">
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" 
+			source="${source}" target="${target}" encoding="8859_1">
 			<src path="${src.dir}" />
 			<classpath refid="qof.classpath" />
 		</javac>
 		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.test.dir}" 
-			source="${source}" target="${target}" deprecation="false">
+			source="${source}" target="${target}" deprecation="false" encoding="8859_1">
 			<src path="${src.test.dir}" />
 			<classpath refid="qof.classpath" />
 		</javac>
