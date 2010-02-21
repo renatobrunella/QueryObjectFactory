@@ -290,7 +290,7 @@
 
 	<target name="javadoc" depends="init">
 		<javadoc sourcepath="${src.dir}" destdir="${doc.api.dir}" overview="${src.dir}/overview.html"
-			classpathref="qof.classpath" packagenames="sf.qof.*"
+			classpathref="qof.classpath" encoding="8859_1" packagenames="sf.qof.*"
 			group="Core sf.qof:sf.qof.customizer:sf.qof.session:sf.qof.exception:sf.qof.dialect:sf.qof.adapter">
 			<doctitle>
 				<![CDATA[<h2>QueryObjectFactory</h2>]]></doctitle>
@@ -306,7 +306,7 @@
 		<delete dir="${doc.sfapi.dir}" />
 		<mkdir dir="${doc.sfapi.dir}" />
 		<javadoc sourcepath="${src.dir}" destdir="${doc.sfapi.dir}" overview="${src.dir}/overview.html"
-					classpathref="qof.classpath" packagenames="sf.qof.*"
+					classpathref="qof.classpath" encoding="8859_1" packagenames="sf.qof.*"
 					group="Core sf.qof:sf.qof.customizer:sf.qof.session:sf.qof.exception:sf.qof.dialect:sf.qof.adapter">
 			<doctitle><![CDATA[<h2>QueryObjectFactory</h2>]]></doctitle>
 			<header>
