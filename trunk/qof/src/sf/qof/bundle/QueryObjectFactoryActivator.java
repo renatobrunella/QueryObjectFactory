@@ -65,7 +65,7 @@ public class QueryObjectFactoryActivator implements BundleActivator, ServiceFact
    *         bundle, and release all services used by this bundle.
    */
   public synchronized void start(BundleContext context) throws Exception {
-    logger = new Logger(context);
+    logger = LoggerFactory.getLogger(context);
     logger.open();
     delegator = new QueryObjectFactoryDelegator();
     context.registerService(QueryObjectFactoryService.class.getName(), this, null);

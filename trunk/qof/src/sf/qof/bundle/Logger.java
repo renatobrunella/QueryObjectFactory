@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2010 brunella ltd
+ * Copyright 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,45 +18,58 @@
  */
 package sf.qof.bundle;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.service.log.LogService;
-import org.osgi.util.tracker.ServiceTracker;
-
 /**
- * Internal - Helper class to track OSGi logging service.
+ * Internal - logging service interface.
+ * 
+ * @since 1.1.0
  */
-public class Logger {
+public interface Logger {
 
-  public static final int LOG_ERROR = LogService.LOG_ERROR;
-  public static final int LOG_WARNING = LogService.LOG_WARNING;
-  public static final int LOG_INFO  = LogService.LOG_INFO;
-  public static final int LOG_DEBUG = LogService.LOG_DEBUG;
+  /**
+   * An error message.
+   */
+  public static final int LOG_ERROR = 1; // LogService.LOG_ERROR
+  
+  /**
+   * A warning message.
+   */
+  public static final int LOG_WARNING = 2; // LogService.LOG_WARNING
+  
+  /**
+   * An informational message.
+   */
+  public static final int LOG_INFO = 3; // LogService.LOG_INFO
+  
+  /**
+   * A debugging message.
+   */
+  public static final int LOG_DEBUG = 4; // LogService.LOG_DEBUG
 
-  protected ServiceTracker tracker;
+  /**
+   * Starts the logger.
+   */
+  public abstract void open();
 
-  public Logger(BundleContext context) {
-    tracker = new ServiceTracker(context, LogService.class.getName(), null);
-  }
-  
-  public void open() {
-    tracker.open();
-  }
-  
-  public void close() {
-    tracker.close();
-  }
-  
-  public void log(int level, String message) {
-    LogService logService = (LogService) tracker.getService();
-    if (logService != null) {
-      logService.log(level, message);
-    }
-  }
-  
-  public void log(int level, String message, Throwable exception) {
-    LogService logService = (LogService) tracker.getService();
-    if (logService != null) {
-      logService.log(level, message, exception);
-    }
-  }
+  /**
+   * Stops the logger.
+   */
+  public abstract void close();
+
+  /**
+   * Logs a message.
+   * 
+   * @param level   the log level
+   * @param message the message
+   */
+  public abstract void log(int level, String message);
+
+  /**
+   * Logs a message with an exception.
+   * 
+   * @param level     the log level
+   * @param message   the message
+   * @param exception the exception
+   */
+  public abstract void log(int level, String message, Throwable exception);
+
 }

@@ -53,7 +53,7 @@ public class LoggerTest extends TestCase {
     assertTrue(serviceTracker.closeCalled);
   }
   
-  private class TestableLogger extends Logger {
+  private class TestableLogger extends LoggerImpl {
 
     public TestableLogger(BundleContext context) {
       super(context);
