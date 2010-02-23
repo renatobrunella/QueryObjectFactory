@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="dist" name="qof">
+	<tstamp />
+
+	<!-- jarjar taskdef -->
+	<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="${basedir}/lib/jarjar-0.9.jar" />
+
+	<!-- OSGi BDT taskdefs -->
+	<property name="osgi.bdt.jar" value="${basedir}/lib/uk.co.brunella.osgi.bdt-2.2.0.jar" />
+	<taskdef name="osgi-manifest" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiManifestReader" classpath="${osgi.bdt.jar}" />
+	<taskdef name="osgi-create" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiCreate" classpath="${osgi.bdt.jar}" />
+	<taskdef name="osgi-deploy" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiDeploy" classpath="${osgi.bdt.jar}" />
+	<taskdef name="osgi-undeploy" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiUndeploy" classpath="${osgi.bdt.jar}" />
+	<taskdef name="osgi-list" classname="uk.co.brunella.osgi.bdt.ant.tasks.OSGiList" classpath="${osgi.bdt.jar}" />
+	<typedef name="osgi-path" classname="uk.co.brunella.osgi.bdt.ant.types.OSGiPath" classpath="${osgi.bdt.jar}" />
+
+	<!-- read bundle symbolic name and version from manifest into properties bundle.name, bundle.version -->
+	<osgi-manifest manifest="META-INF/MANIFEST.MF"/>
+	
+	<!-- compiler settings -->
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.5" />
+	<property name="source" value="1.5" />
+
+	<!-- path definitions --> 
+	<property name="bin.path" value="bin" />
+	<property name="bin.dir" value="${basedir}/${bin.path}" />
+	<property name="bin.instr.path" value="bin-instr" />
+	<property name="bin.instr.dir" value="${basedir}/${bin.instr.path}" />
+	<property name="bin.test.path" value="bin-test" />
+	<property name="bin.test.dir" value="${basedir}/${bin.test.path}" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="src.test.dir" value="${basedir}/test" />
+	<property name="lib.path" value="lib" />
+	<property name="lib.dir" value="${basedir}/${lib.path}" />
+	<property name="lib.test.dir" value="${basedir}/lib-test" />
+	<property name="dist.path" value="dist" />
+	<property name="dist.dir" value="${basedir}/${dist.path}" />
+	<property name="doc.path" value="doc" />
+	<property name="doc.dir" value="${basedir}/${doc.path}" />
+	<property name="doc.api.path" value="${doc.path}/api" />
+	<property name="doc.api.dir" value="${doc.dir}/api" />
+	<property name="doc.doccheck.path" value="${doc.path}/doccheck" />
+	<property name="doc.doccheck.dir" value="${doc.dir}/doccheck" />
+	<property name="junit.output.path" value="junit" />
+	<property name="junit.output.dir" value="${basedir}/${junit.output.path}" />
+	<property name="junit.output.nodep.path" value="junit/nodep" />
+	<property name="junit.output.nodep.dir" value="${basedir}/${junit.output.nodep.path}" />
+	<property name="web.path" value="web" />
+	<property name="web.dir" value="${basedir}/${web.path}" />
+	<property name="coverage.path" value="${web.path}/htdocs/coverage" />
+	<property name="coverage.dir" value="${basedir}/${coverage.path}" />
+	<property name="doc.sfapi.path" value="${web.path}/htdocs/api" />
+	<property name="doc.sfapi.dir" value="${basedir}/${doc.sfapi.path}" />
+
+	<path id="qof.classpath">
+		<pathelement location="${bin.dir}" />
+		<pathelement location="${bin.test.dir}" />
+		<pathelement location="${lib.dir}/cglib-2.1_3.jar" />
+		<pathelement location="${lib.dir}/asm-1.5.3.jar" />
+		<pathelement location="${lib.dir}/jarjar-0.9.jar" />
+		<pathelement location="${lib.dir}/osgi.core.jar" />
+		<pathelement location="${lib.dir}/osgi.cmpn.jar" />
+
+		<pathelement location="${lib.test.dir}/hsqldb.jar" />
+		<pathelement location="${lib.test.dir}/junit.jar" />
+	</path>
+
+	<path id="qof.nodep.classpath">
+		<pathelement location="${dist.dir}/${bundle.name}-${bundle.version}.jar" />
+		<pathelement location="${junit.output.nodep.dir}" />
+		<pathelement location="${lib.dir}/osgi.core.jar" />
+		<pathelement location="${lib.dir}/osgi.cmpn.jar" />
+
+		<pathelement location="${lib.test.dir}/hsqldb.jar" />
+		<pathelement location="${lib.test.dir}/junit.jar" />
+	</path>
+
+	<path id="qof.emma.instr.classpath">
+		<pathelement location="${bin.dir}" />
+	</path>
+
+	<path id="qof.emma.classpath">
+		<pathelement location="${bin.instr.dir}" />
+		<pathelement location="${bin.dir}" />
+		<pathelement location="${bin.test.dir}" />
+		<pathelement location="${lib.dir}/cglib-2.1_3.jar" />
+		<pathelement location="${lib.dir}/asm-1.5.3.jar" />
+		<pathelement location="${lib.dir}/jarjar-0.9.jar" />
+		<pathelement location="${lib.dir}/osgi.core.jar" />
+		<pathelement location="${lib.dir}/osgi.cmpn.jar" />
+
+		<pathelement location="${lib.test.dir}/hsqldb.jar" />
+		<pathelement location="${lib.test.dir}/junit.jar" />
+
+		<pathelement location="${lib.dir}/emma.jar" />
+		<pathelement location="${lib.dir}/emma_ant.jar" />
+	</path>
+
+	<path id="emma.lib" >
+		<pathelement location="${lib.dir}/emma.jar" />
+		<pathelement location="${lib.dir}/emma_ant.jar" />
+	</path>
+
+	<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+
+	<target name="init">
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${bin.instr.dir}" />
+		<mkdir dir="${bin.test.dir}" />
+		<mkdir dir="${doc.api.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${junit.output.dir}" />
+		<mkdir dir="${junit.output.nodep.dir}" />
+
+		<mkdir dir="${coverage.dir}" />
+		<mkdir dir="${doc.sfapi.dir}" />
+
+		<copy includeemptydirs="false" todir="${bin.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.launch, **/*.testsuite, **/*.deploy, **/*.location, **/*.execution, **/*.datapool, **/*.artifact, **/*.html, **/*.svg, **/*.java" />
+		</copy>
+		<copy includeemptydirs="false" todir="${bin.test.dir}">
+			<fileset dir="${src.test.dir}" excludes="**/*.launch, **/*.testsuite, **/*.deploy, **/*.location, **/*.execution, **/*.datapool, **/*.artifact, **/*.html, **/*.svg, **/*.java" />
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="${bin.dir}" />
+		<delete dir="${bin.instr.dir}" />
+		<delete dir="${bin.test.dir}" />
+		<delete dir="${doc.api.dir}" />
+		<delete dir="${doc.doccheck.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${junit.output.dir}" failonerror="no" />
+		<delete dir="${junit.output.nodep.dir}" failonerror="no" />
+		<delete dir="${coverage.dir}" />
+		<delete dir="${doc.sfapi.dir}" />
+	</target>
+
+	<target name="build" depends="init">
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" source="${source}" target="${target}">
+			<src path="${src.dir}" />
+			<classpath refid="qof.classpath" />
+		</javac>
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.test.dir}" 
+			source="${source}" target="${target}" deprecation="false">
+			<src path="${src.test.dir}" />
+			<classpath refid="qof.classpath" />
+		</javac>
+	</target>
+
+	<target name="run-unit-tests" depends="build">
+		<junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure" dir="${basedir}">
+			<formatter type="xml" />
+			<test name="sf.qof.AllTests" todir="${junit.output.dir}" />
+			<jvmarg line="-Dcglib.debugLocation=${junit.output.dir}" />
+			<classpath refid="qof.classpath" />
+		</junit>
+		<antcall target="junitreport" />
+		<fail if="junit.failure"/>
+	</target>
+
+	<target name="junitreport">
+		<junitreport todir="${junit.output.dir}">
+			<fileset dir="${junit.output.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${junit.output.dir}" />
+		</junitreport>
+	</target>
+
+	<target name="jar-bin" depends="build">
+		<copy file="qof-license.txt" todir="bin"/>
+		<copy file="lgpl-3_0.txt" todir="bin"/>
+		<jarjar destfile="${dist.dir}/${bundle.name}-${bundle.version}.jar" filesetmanifest="merge">
+			<fileset dir="${bin.dir}">
+				<exclude name="doc-files/**" />
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="META-INF/**"/>
+			</fileset>
+			<manifest>
+				<!-- overwrite Bundle-ClassPath attribute -->
+				<attribute name="Bundle-ClassPath" value="." />
+				<!-- add additional attributes -->
+				<attribute name="Specification-Title" value="QueryObjectFactory" />
+				<attribute name="Specification-Version" value="${bundle.version}" />
+				<attribute name="Specification-Vendor" value="brunella ltd" />
+				<attribute name="Implementation-Title" value="sf.qof" />
+				<attribute name="Implementation-Version" value="${bundle.version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="brunella ltd" />
+			</manifest>
+			<zipfileset src="${lib.dir}/asm-1.5.3.jar" />
+			<zipfileset src="${lib.dir}/cglib-2.1_3.jar" />
+			<rule pattern="org.objectweb.asm.**" result="sf.qof.asm.@1"/>
+			<rule pattern="net.sf.cglib.**" result="sf.qof.cglib.@1"/>
+			<zap pattern="net.sf.cglib.beans.**" />
+			<zap pattern="net.sf.cglib.proxy.**" />
+			<zap pattern="net.sf.cglib.reflect.**" />
+			<zap pattern="net.sf.cglib.transform.**" />
+			<zap pattern="net.sf.cglib.util.**" />
+		</jarjar>
+		<jarjar basedir="${bin.test.path}" destfile="${bin.test.dir}/qof-test.jar" >
+			<rule pattern="org.objectweb.asm.**" result="sf.qof.asm.@1"/>
+			<rule pattern="net.sf.cglib.**" result="sf.qof.cglib.@1"/>
+		</jarjar>
+		<delete dir="${junit.output.nodep.dir}" />
+		<mkdir dir="${junit.output.nodep.dir}" />
+		<unjar src="${bin.test.dir}/qof-test.jar" dest="${junit.output.nodep.dir}" />
+		<delete file="${bin.test.dir}/qof-test.jar" />
+		<!-- run unit tests against the created jar -->
+		<junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
+			<formatter type="xml" />
+			<test name="sf.qof.AllTests" todir="${junit.output.nodep.dir}" />
+			<jvmarg line="-Dcglib.debugLocation=${junit.output.nodep.dir}" />
+			<classpath refid="qof.nodep.classpath" />
+		</junit>
+		<fail if="junit.failure"/>
+	</target>
+
+	<target name="zip-full" depends="javadoc">
+		<zip destfile="${dist.dir}/${bundle.name}-full-${bundle.version}.zip" >
+			<fileset dir="${basedir}">
+				<exclude name="${dist.path}/**" />
+				<exclude name="${bin.path}/**" />
+				<exclude name="${bin.instr.path}/**" />
+				<exclude name="${bin.test.path}/**" />
+				<exclude name="${junit.output.path}/**" />
+				<!-- do not include Doc Check Doclet and output -->
+				<exclude name="${lib.path}/doccheck**" />
+				<exclude name="${doc.api.path}/**" />
+				<exclude name="${coverage.path}/**" />
+				<exclude name="${doc.sfapi.path}/**" />
+				<exclude name="${doc.doccheck.path}/**" />
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="jar-src">
+		<jar 
+			basedir="${basedir}" 
+			destfile="${dist.dir}/${bundle.name}-source-${bundle.version}.jar" 
+			description="create source jar"
+			includes="src/**,qof-license.txt,lgpl-3_0.txt">
+			<manifest>
+				<attribute name="Bundle-ManifestVersion" value="2" />
+				<attribute name="Bundle-Name" value="QueryObjectFactory Source" />
+				<attribute name="Bundle-SymbolicName" value="${bundle.name}.source" />
+				<attribute name="Bundle-Version" value="${bundle.version}" />
+				<attribute name="Eclipse-SourceBundle" value='${bundle.name};version="${bundle.version}";roots:="src"' />
+				
+				<attribute name="Specification-Title" value="QueryObjectFactory" />
+				<attribute name="Specification-Version" value="${bundle.version}" />
+				<attribute name="Specification-Vendor" value="brunella ltd" />
+				<attribute name="Implementation-Title" value="sf.qof" />
+				<attribute name="Implementation-Version" value="${bundle.version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="brunella ltd" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="jar-api" depends="javadoc">
+		<jar 
+			basedir="${doc.api.dir}" 
+			destfile="${dist.dir}/${bundle.name}-api-doc-${bundle.version}.jar" >
+			<manifest>
+				<attribute name="Specification-Title" value="QueryObjectFactory" />
+				<attribute name="Specification-Version" value="${bundle.version}" />
+				<attribute name="Specification-Vendor" value="brunella ltd" />
+				<attribute name="Implementation-Title" value="sf.qof" />
+				<attribute name="Implementation-Version" value="${bundle.version} ${TODAY}" />
+				<attribute name="Implementation-Vendor" value="brunella ltd" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="jars" depends="jar-bin,jar-src,jar-api,zip-full" />
+
+	<target name="javadoc" depends="init">
+		<javadoc sourcepath="${src.dir}" destdir="${doc.api.dir}" overview="${src.dir}/overview.html"
+			classpathref="qof.classpath" packagenames="sf.qof.*"
+			group="Core sf.qof:sf.qof.customizer:sf.qof.session:sf.qof.exception:sf.qof.dialect:sf.qof.adapter">
+			<doctitle>
+				<![CDATA[<h2>QueryObjectFactory</h2>]]></doctitle>
+			<header>
+			<![CDATA[<a href=\"http://qof-jdbc.sourceforge.net\" target=\"_blank\">
+			<img style=\"border: none;\" src=\"{@docRoot}/doc-files/qof-small.png\" >]]></header>
+			<bottom><![CDATA[<i>Copyright &#169; 2007 - 2009 brunella ltd. All Rights Reserved.</i>]]></bottom>
+			<link offline="true" href="http://java.sun.com/j2se/1.5.0/docs/api/" packagelistLoc="${doc.dir}/jre1.5-api" />
+		</javadoc>
+	</target>
+
+	<target name="javadoc-sourceforge" depends="init">
+		<delete dir="${doc.sfapi.dir}" />
+		<mkdir dir="${doc.sfapi.dir}" />
+		<javadoc sourcepath="${src.dir}" destdir="${doc.sfapi.dir}" overview="${src.dir}/overview.html"
+					classpathref="qof.classpath" packagenames="sf.qof.*"
+					group="Core sf.qof:sf.qof.customizer:sf.qof.session:sf.qof.exception:sf.qof.dialect:sf.qof.adapter">
+			<doctitle><![CDATA[<h2>QueryObjectFactory</h2>]]></doctitle>
+			<header>
+			<![CDATA[<a href=\"http://qof-jdbc.sourceforge.net\" target=\"_blank\">
+			<img style=\"border: none;\" src=\"{@docRoot}/doc-files/qof-small.png\" >
+				<a href=\"http://sourceforge.net\">
+					<img src=\"http://sflogo.sourceforge.net/sflogo.php?group_id=204175&amp;type=1\" border=\"0\" alt=\"sf logo\" />]]></header>
+			<bottom><![CDATA[<i>Copyright &#169; 2007 - 2009 brunella ltd. All Rights Reserved.</i>]]></bottom>
+			<link offline="true" href="http://java.sun.com/j2se/1.5.0/docs/api/" packagelistLoc="${doc.dir}/jre1.5-api" />
+		</javadoc>
+	</target>
+	
+	<target name="doccheck">
+		<!-- Doc Check Doclet can be found at http://java.sun.com/j2se/javadoc/doccheck/ -->
+		<delete dir="${doc.doccheck.dir}" />
+		<mkdir dir="${doc.doccheck.dir}" />
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}/doccheck" overview="${src.dir}/overview.html"
+					classpathref="qof.classpath" packagenames="sf.qof.*"
+					doclet="com.sun.tools.doclets.doccheck.DocCheck"
+					docletpath="${basedir}/lib/doccheck.jar">
+		</javadoc>
+	</target>
+	
+	<target name="coverage" depends="build" description="Coverage" >
+		<delete file="${coverage.dir}/metadata.emma" />
+		<delete file="${coverage.dir}/coverage.emma" />
+
+		<emma enabled="true">
+			<instr instrpathref="qof.emma.instr.classpath" destdir="${bin.instr.dir}" 
+				metadatafile="${coverage.dir}/metadata.emma" merge="true" />
+		</emma>
+	
+		<junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
+			<test name="sf.qof.AllTests" />
+			<jvmarg value="-Dcglib.debugLocation=${junit.output.dir}" />
+			<jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
+			<jvmarg value="-Demma.coverage.out.merge=true" />
+			<classpath refid="qof.emma.classpath" />
+		</junit>
+	
+		<emma enabled="true" >
+			<report sourcepath="${src.dir}" >
+				<fileset dir="${coverage.dir}" >
+					<include name="*.emma" />
+				</fileset>
+				<html outfile="${coverage.dir}/coverage.html" />
+			</report>
+		</emma>
+		
+		<emma enabled="true" >
+			<report sourcepath="${src.dir}" >
+				<fileset dir="${coverage.dir}" >
+					<include name="*.emma" />
+				</fileset>
+				<xml outfile="${coverage.dir}/coverage.xml" depth="method"/>
+			</report>
+		</emma>
+
+		<delete file="${coverage.dir}/metadata.emma" />
+		<delete file="${coverage.dir}/coverage.emma" />
+	</target>
+	
+	<target name="dist" depends="clean,build,run-unit-tests,jars" />
+
+	<target name="sitemap" >
+		<exec executable="python" dir="${web.dir}/sitemap_gen-1.4">
+			<arg value="sitemap_gen.py" />
+			<arg value="--config=qof-config.xml" />
+		</exec>
+	</target>
+	
+	<target name="make-website" depends="dist" >
+		<antcall target="coverage" />
+		<antcall target="javadoc-sourceforge" />
+		<antcall target="sitemap" />
+		<zip destfile="${dist.dir}/${bundle.name}-website-${bundle.version}.zip" >
+			<fileset dir="${web.dir}/htdocs">
+				<exclude name="*/CVS**" />
+			</fileset>
+		</zip>
+	</target>
+	
+</project>
