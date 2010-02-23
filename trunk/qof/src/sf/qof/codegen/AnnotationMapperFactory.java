@@ -325,19 +325,26 @@ public final class AnnotationMapperFactory {
     }
 
     //TODO check return type of factory method
-//    Class<?> type;
-//    if (returnInfo.getCollectionType() != null) {
-//      type = returnInfo.getCollectionElementType();
-//    } else {
-//      type = returnInfo.getType();
-//    }
+    Class<?> type;
+    if (returnInfo.getCollectionType() != null) {
+      type = returnInfo.getCollectionElementType();
+    } else {
+      type = returnInfo.getType();
+    }
 
     Method[] factoryMethods = factoryClass.getDeclaredMethods();
     
     Method matchingFactoryMethod = null;
     for (Method method : factoryMethods) {
+      if (!method.getName().equals(factoryMethod)) {
+        continue;
+      }
       // skip non-static or non-public methods
       if (!(Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()))) {
+        continue;
+      }
+      // check return type of factory method
+      if (!type.isAssignableFrom(method.getReturnType())) {
         continue;
       }
       Class<?>[] parameterTypes = method.getParameterTypes();
@@ -364,6 +371,9 @@ public final class AnnotationMapperFactory {
     if (matchingFactoryMethod == null) {
       // try again but relaxed rules
       for (Method method : factoryMethods) {
+        if (!method.getName().equals(factoryMethod)) {
+          continue;
+        }
         // skip non-static or non-public methods
         if (!(Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers()))) {
           continue;
