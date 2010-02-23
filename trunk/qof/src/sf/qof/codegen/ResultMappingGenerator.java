@@ -534,7 +534,7 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
       if (mapping.isMapKey()) {
         co.checkcast(Type.getType(mapping.getMapKeyType()));
       } else {
-        co.checkcast(Type.getType(mapping.getType()));
+        co.checkcast(Type.getType(type));
       }
     } else {
       throw new RuntimeException("Unsupported adapter type " + mapping.getAdapter());
