@@ -134,7 +134,13 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
     }
     // invoke the getter
     if (getter != null) {
-      co.invoke_virtual(Type.getType(getter.getDeclaringClass()), ReflectionUtils.getMethodSignature(getter));
+      Type owner = Type.getType(getter.getDeclaringClass());
+      Signature signature = ReflectionUtils.getMethodSignature(getter);
+      if (getter.getDeclaringClass().isInterface()) {
+        co.invoke_interface(owner, signature);
+      } else {
+        co.invoke_virtual(owner, signature);
+      }
     }
   }
 
