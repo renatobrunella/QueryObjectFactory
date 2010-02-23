@@ -169,9 +169,9 @@ public final class AnnotationMapperFactory {
     Constructor<?> constructor = null;
     Method staticFactoryMethod = null;
     if (factoryClass == Object.class) {
-      constructor = findConstructor(queryDefinitionClass, returnInfo, resultDefs);
+      constructor = findConstructor(queryDefinitionClass, methodInfo, returnInfo, resultDefs);
     } else {
-      staticFactoryMethod = findStaticMethod(queryDefinitionClass, factoryClass, factoryMethod, returnInfo, resultDefs);
+      staticFactoryMethod = findStaticMethod(queryDefinitionClass, methodInfo, factoryClass, factoryMethod, returnInfo, resultDefs);
     }
     
     for (ResultDefinition result : resultDefs) {
@@ -242,12 +242,20 @@ public final class AnnotationMapperFactory {
     return list;
   }
 
-  private static Constructor<?> findConstructor(Class<?> queryDefinitionClass, MethodReturnInfo returnInfo, ResultDefinition[] resultDefs) {
+  private static Constructor<?> findConstructor(Class<?> queryDefinitionClass, MethodInfo methodInfo, MethodReturnInfo returnInfo, ResultDefinition[] resultDefs) {
     List<ResultDefinition> constructorResultDefs = getConstrutorResultDefs(resultDefs);
     if (constructorResultDefs.size() == 0) {
       return null;
     }
 
+    for (ResultDefinition resultDefinition : constructorResultDefs) {
+      if ("auto".equals(resultDefinition.getType())) {
+        String methodName = queryDefinitionClass.getName() + "." + methodInfo.getSignature().getName();
+        throw new ValidationException("Constructor parameters must have a type definition: {%%" +
+            resultDefinition.getConstructorParameter() + "} in method " + methodName);
+      }
+    }
+    
     Class<?> type;
     if (returnInfo.getCollectionType() != null) {
       type = returnInfo.getCollectionElementType();
@@ -317,14 +325,21 @@ public final class AnnotationMapperFactory {
     return matchingConstructor;
   }
 
-  private static Method findStaticMethod(Class<?> queryDefinitionClass, Class<?> factoryClass,
+  private static Method findStaticMethod(Class<?> queryDefinitionClass, MethodInfo methodInfo, Class<?> factoryClass,
       String factoryMethod, MethodReturnInfo returnInfo, ResultDefinition[] resultDefs) {
     List<ResultDefinition> constructorResultDefs = getConstrutorResultDefs(resultDefs);
     if (constructorResultDefs.size() == 0) {
       return null;
     }
 
-    //TODO check return type of factory method
+    for (ResultDefinition resultDefinition : constructorResultDefs) {
+      if ("auto".equals(resultDefinition.getType())) {
+        String methodName = queryDefinitionClass.getName() + "." + methodInfo.getSignature().getName();
+        throw new ValidationException("Static factory method parameters must have a type definition: {%%" +
+            resultDefinition.getConstructorParameter() + "} in method " + methodName);
+      }
+    }
+
     Class<?> type;
     if (returnInfo.getCollectionType() != null) {
       type = returnInfo.getCollectionElementType();
