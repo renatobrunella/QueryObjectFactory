@@ -138,12 +138,13 @@
 	</target>
 
 	<target name="build" depends="init">
-		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" source="${source}" target="${target}">
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" 
+			encoding="8859_1"  source="${source}" target="${target}">
 			<src path="${src.dir}" />
 			<classpath refid="qof.classpath" />
 		</javac>
 		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.test.dir}" 
-			source="${source}" target="${target}" deprecation="false">
+			encoding="8859_1" source="${source}" target="${target}" deprecation="false">
 			<src path="${src.test.dir}" />
 			<classpath refid="qof.classpath" />
 		</javac>
@@ -278,7 +279,7 @@
 
 	<target name="javadoc" depends="init">
 		<javadoc sourcepath="${src.dir}" destdir="${doc.api.dir}" overview="${src.dir}/overview.html"
-			classpathref="qof.classpath" packagenames="sf.qof.*"
+			classpathref="qof.classpath" encoding="8859_1"  packagenames="sf.qof.*"
 			group="Core sf.qof:sf.qof.customizer:sf.qof.session:sf.qof.exception:sf.qof.dialect:sf.qof.adapter">
 			<doctitle>
 				<![CDATA[<h2>QueryObjectFactory</h2>]]></doctitle>
@@ -294,7 +295,7 @@
 		<delete dir="${doc.sfapi.dir}" />
 		<mkdir dir="${doc.sfapi.dir}" />
 		<javadoc sourcepath="${src.dir}" destdir="${doc.sfapi.dir}" overview="${src.dir}/overview.html"
-					classpathref="qof.classpath" packagenames="sf.qof.*"
+					classpathref="qof.classpath" encoding="8859_1"  packagenames="sf.qof.*"
 					group="Core sf.qof:sf.qof.customizer:sf.qof.session:sf.qof.exception:sf.qof.dialect:sf.qof.adapter">
 			<doctitle><![CDATA[<h2>QueryObjectFactory</h2>]]></doctitle>
 			<header>
