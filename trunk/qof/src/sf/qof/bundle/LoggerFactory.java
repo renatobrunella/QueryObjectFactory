@@ -27,6 +27,8 @@ import org.osgi.framework.BundleContext;
  */
 public class LoggerFactory {
 
+  private static final String OSGI_LOG_SERVICE = "org.osgi.service.log.LogService";
+
   /**
    * Return a <code>Logger</code> that uses the OSGi LogService if it is available
    * or a null-logger if not.
@@ -38,7 +40,7 @@ public class LoggerFactory {
    */
   public static Logger getLogger(BundleContext context) {
     try {
-      LoggerFactory.class.getClassLoader().loadClass("org.osgi.service.log.LogService");
+      LoggerFactory.class.getClassLoader().loadClass(OSGI_LOG_SERVICE);
       return new LoggerImpl(context);
     } catch (ClassNotFoundException e) {
       return new NullLogger();

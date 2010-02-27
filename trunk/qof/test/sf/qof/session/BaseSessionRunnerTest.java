@@ -104,6 +104,7 @@ public class BaseSessionRunnerTest extends TestCase {
   }
   
   public void testForcedRollbackDefaultContext() throws SystemException {
+    new SessionContextFactory();
     SessionContextFactory.setDataSource(new MockDataSource());
     new BaseSessionRunner<Void>() {
       @Override

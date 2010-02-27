@@ -53,6 +53,16 @@ public class LoggerTest extends TestCase {
     assertTrue(serviceTracker.closeCalled);
   }
   
+  public void testNullLogger() {
+    // just to get coverage up because NullLogger does nothing
+    new LoggerFactory();
+    NullLogger logger = new NullLogger();
+    logger.open();
+    logger.log(Logger.LOG_INFO, "message");
+    logger.log(Logger.LOG_ERROR, "message", null);
+    logger.close();
+  }
+  
   private class TestableLogger extends LoggerImpl {
 
     public TestableLogger(BundleContext context) {

@@ -395,6 +395,7 @@ public class SqlParserTest extends TestCase {
   }
   
   public void testParsingOneResultConstructor() {
+    new PartialDefinitionCombiner();
     String sql = "select abc_def {int%%1} from test";
     SqlParser parser = new SqlParser(sql, false);
     assertEquals("select abc_def from test", parser.getSql().trim());

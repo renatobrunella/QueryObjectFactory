@@ -74,7 +74,7 @@ public class SessionContextFactory {
 
   private final static Map<String, SessionContext> sessionContextMap = new HashMap<String, SessionContext>();
 
-  private SessionContextFactory() {
+  protected SessionContextFactory() {
   }
 
   /**
