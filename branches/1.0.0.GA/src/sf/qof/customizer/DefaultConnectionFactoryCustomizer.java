@@ -22,6 +22,7 @@ import static sf.qof.codegen.Constants.SIG_getConnection;
 import static sf.qof.codegen.Constants.SIG_setConnection;
 import static sf.qof.codegen.Constants.TYPE_Connection;
 import static sf.qof.codegen.Constants.TYPE_RuntimeException;
+import static sf.qof.codegen.Constants.TYPE_SQLException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -29,6 +30,8 @@ import java.lang.reflect.Modifier;
 import net.sf.cglib.core.ClassEmitter;
 import net.sf.cglib.core.CodeEmitter;
 import net.sf.cglib.core.Constants;
+
+import org.objectweb.asm.Label;
 
 /**
  * Provides the default implementation of a ConnectionFactoryCustomizer.
@@ -52,8 +55,17 @@ public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCust
 	public void emitGetConnection(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
 	  if (!methodExists(superClass, "getConnection", null)) {
   		CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_getConnection, null, null);
+
+  		// check if connection was set
   		co.load_this();
   		co.getfield(FIELD_NAME_CONNECTION);
+  		Label labelNonNull = co.make_label();
+  		co.ifnonnull(labelNonNull);
+  		co.throw_exception(TYPE_SQLException, "Connection was not set");
+  		
+  		co.mark(labelNonNull);
+      co.load_this();
+      co.getfield(FIELD_NAME_CONNECTION);
   		co.return_value();
   		co.end_method();
 	  }
