@@ -607,6 +607,14 @@ public class QofASTVisitor extends ASTVisitor {
           return method;
         }
       }
+      // search interfaces
+      for (ITypeBinding interfaceType : currentType.getInterfaces()) {
+        for (IMethodBinding method : interfaceType.getDeclaredMethods()) {
+          if (method.getName().equals(methodName)) {
+            return method;
+          }
+        }
+      }
       currentType = currentType.getSuperclass();
     }
     return null;
