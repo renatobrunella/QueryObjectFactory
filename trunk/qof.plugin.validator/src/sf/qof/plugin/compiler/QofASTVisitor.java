@@ -602,6 +602,7 @@ public class QofASTVisitor extends ASTVisitor {
   private IMethodBinding findMethod(ITypeBinding type, String methodName) {
     ITypeBinding currentType = type;
     while (currentType != null) {
+      // search current type
       for (IMethodBinding method : currentType.getDeclaredMethods()) {
         if (method.getName().equals(methodName)) {
           return method;
@@ -609,10 +610,9 @@ public class QofASTVisitor extends ASTVisitor {
       }
       // search interfaces
       for (ITypeBinding interfaceType : currentType.getInterfaces()) {
-        for (IMethodBinding method : interfaceType.getDeclaredMethods()) {
-          if (method.getName().equals(methodName)) {
-            return method;
-          }
+        IMethodBinding method = findMethod(interfaceType, methodName);
+        if (method != null) {
+          return method;
         }
       }
       currentType = currentType.getSuperclass();
