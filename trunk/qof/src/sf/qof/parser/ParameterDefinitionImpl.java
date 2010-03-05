@@ -18,13 +18,15 @@
  */
 package sf.qof.parser;
 
+import java.util.Arrays;
+
 /**
  * Default implementation of a parameter definition.
  */
 public class ParameterDefinitionImpl implements ParameterDefinition {
 
   private String[] names;
-  private String field;
+  private String[] fields;
   private int[] indexes;
   private String type;
   private int parameter;
@@ -37,8 +39,8 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
     return names;
   }
 
-  public String getField() {
-    return field;
+  public String[] getFields() {
+    return fields;
   }
 
   public int[] getIndexes() {
@@ -61,12 +63,8 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
     }
   }
 
-  public void setField(String field) {
-    if (field == null || "".equals(field)) {
-      this.field = null;
-    } else {
-      this.field = field;
-    }
+  public void setFields(String[] fields) {
+    this.fields = fields;
   }
 
   public void setIndexes(int[] indexes) {
@@ -118,7 +116,7 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
   }
 
   public String toString() {
-    return "Parameter: " + type + " " + parameter + " (" + getNamesString() + " " + getIndexesString() + ") " + field;
+    return "Parameter: " + type + " " + parameter + " (" + getNamesString() + " " + getIndexesString() + ") " + Arrays.toString(fields);
   }
 
   public String getPartialDefinitionGroup() {

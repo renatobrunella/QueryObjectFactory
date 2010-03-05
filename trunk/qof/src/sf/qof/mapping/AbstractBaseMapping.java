@@ -20,6 +20,7 @@ package sf.qof.mapping;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import sf.qof.adapter.MappingAdapter;
 
@@ -33,7 +34,8 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   protected Class<?> collectionType;
   protected Class<?> mapKeyType;
   protected Class<?> beanType;
-  protected Method method;
+  protected Method[] getters;
+  protected Method setter;
   protected MappingAdapter adapter;
   protected Integer constructorParameter;
   protected Constructor<?> constructor;
@@ -41,13 +43,13 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   protected boolean usesArray;
 
   // implements ParameterMapping
-  public void setParameters(int index, Class<?> type, Class<?> collectionType, Class<?> beanType, Method getter,
+  public void setParameters(int index, Class<?> type, Class<?> collectionType, Class<?> beanType, Method[] getters,
       int[] sqlIndexes, String[] sqlColumns, MappingAdapter adapter, boolean usesArray) {
     this.index = index;
     this.type = type;
     this.collectionType = collectionType;
     this.beanType = beanType;
-    this.method = getter;
+    this.getters = getters;
     this.sqlIndexes = sqlIndexes;
     this.sqlColumns = sqlColumns;
     this.adapter = adapter;
@@ -62,7 +64,7 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     this.type = type;
     this.collectionType = collectionType;
     this.beanType = beanType;
-    this.method = setter;
+    this.setter = setter;
     this.sqlIndexes = sqlIndexes;
     this.sqlColumns = sqlColumns;
     this.adapter = adapter;
@@ -84,12 +86,12 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     return index;
   }
 
-  public Method getGetter() {
-    return method;
+  public Method[] getGetters() {
+    return getters;
   }
 
   public Method getSetter() {
-    return method;
+    return setter;
   }
 
   public String[] getSqlColumns() {
@@ -189,8 +191,8 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     sb.append("Parameter: ").append(stripType(this.getClass())).append('\n');
     sb.append('\t').append(getSqlColumnsString()).append(getSqlIndexesString());
     sb.append(" = parameter ").append(index).append(' ');
-    if (method != null) {
-      sb.append(method);
+    if (getters != null) {
+      sb.append(Arrays.toString(getters));
     } else {
       sb.append(stripType(type));
     }
@@ -206,8 +208,8 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     sb.append("Result: ").append(stripType(this.getClass())).append('\n');
     sb.append('\t').append(getSqlColumnsString()).append(getSqlIndexesString());
     sb.append(" => ");
-    if (method != null) {
-      sb.append(method);
+    if (setter != null) {
+      sb.append(setter);
     } else {
       sb.append(stripType(type));
     }

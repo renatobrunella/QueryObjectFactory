@@ -37,7 +37,8 @@ import sf.qof.exception.SqlParserException;
  * or <code>{%#.field}</code> or <code>{type %#.field}</code>
  * <p> <code>#</code> is the index of the Java parameter (1..n) 
  * <br> <code>field</code> is the name of the field in the mapped Java Bean object 
- * <br> <code>type</code> is the optional name of mapper (<code>int</code>, <code>string</code>, etc)  
+ * <br> <code>type</code> is the optional name of mapper (<code>int</code>, <code>string</code>, etc)
+ * <br> Fields can be chained up to 5 levels i.e. <code>{%#.field1.field2}</code>
  * 
  * <p> Result definitions have the following form:
  * <p> <code>{%%}</code> or <code>{type %%}</code>
@@ -313,12 +314,11 @@ public class SqlParser {
   }
 
   private static final Pattern PARAMETER_DEF_PATTERN = 
-    Pattern.compile("\\{([\\w\\-]+)?%(\\d+)(\\.(\\w+))?(@\\d+)?(\\[[\\w]+\\])?\\}");
+    Pattern.compile("\\{([\\w\\-]+)?%(\\d+)((\\.\\w+)(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?)?(@\\d+)?(\\[[\\w]+\\])?\\}");
 
   private ParameterDefinition parseParameterDefinition(String definition, int curlyBracketIndex) {
     int parameterIndex = -1;
     String mappingType = null;
-    String field = null;
     int partialDefinitionPart = 0;
     String partialDefinitionGroup = null;
     
@@ -326,16 +326,17 @@ public class SqlParser {
     if (matcher.find() && matcher.group().equals(definition)) {
       mappingType = matcher.group(1);
       parameterIndex = Integer.valueOf(matcher.group(2));
-      field = matcher.group(4);
-      if (matcher.group(5) != null) {
-        partialDefinitionPart = Integer.valueOf(matcher.group(5).substring(1));
+      String[] fields;
+      fields = extractFields(matcher);
+      if (matcher.group(9) != null) {
+        partialDefinitionPart = Integer.valueOf(matcher.group(9).substring(1));
       }
-      partialDefinitionGroup = matcher.group(6);
+      partialDefinitionGroup = matcher.group(10);
       
       ParameterDefinitionImpl parameterDef = new ParameterDefinitionImpl();
       parameterDef.setType(mappingType);
       parameterDef.setParameter(parameterIndex);
-      parameterDef.setField(field);
+      parameterDef.setFields(fields);
       parameterDef.setIndexes(new int[] { sqlIndex });
       parameterDef.setPartialDefinitionPart(partialDefinitionPart);
       parameterDef.setPartialDefinitionGroup(partialDefinitionGroup);
@@ -347,6 +348,42 @@ public class SqlParser {
       int end = curlyBracketIndex < closeCurlyBrackets.size() ? closeCurlyBrackets.get(curlyBracketIndex) : sqlLength - 1;
       throw new SqlParserException("Cannot parse definition: " + definition, start, end - start + 1);
     }
+  }
+
+  private String[] extractFields(Matcher matcher) {
+    String field1 = null;
+    String field2 = null;
+    String field3 = null;
+    String field4 = null;
+    String field5 = null;
+    String[] fields;
+    field1 = matcher.group(4);
+    field2 = matcher.group(5);
+    field3 = matcher.group(6);
+    field4 = matcher.group(7);
+    field5 = matcher.group(8);
+    if (field5 == null) {
+      if (field4 == null) {
+        if (field3 == null) {
+          if (field2 == null) {
+            if (field1 == null) {
+              fields = null;
+            } else {
+              fields = new String[] {field1.substring(1)};
+            }
+          } else {
+            fields = new String[] {field1.substring(1), field2.substring(1)};
+          }
+        } else {
+          fields = new String[] {field1.substring(1), field2.substring(1), field3.substring(1)};
+        }
+      } else {
+        fields = new String[] {field1.substring(1), field2.substring(1), field3.substring(1), field4.substring(1)};
+      }
+    } else {
+      fields = new String[] {field1.substring(1), field2.substring(1), field3.substring(1), field4.substring(1), field5.substring(1)};
+    }
+    return fields;
   }
 
   private String mergeStrings(String sql, List<String> stringList) {

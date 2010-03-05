@@ -47,7 +47,7 @@ public class AnnotationMapperFactoryTest extends TestCase {
   public void testInvalidParameterNoGetter() throws SecurityException, NoSuchMethodException {
     Method method = TestInterface.class.getMethod("test2", new Class[] { Integer.TYPE });
     assertEquals(
-        "Cannot find or access getter for field in class int", run(method));
+        "Cannot find or access getter for [field] in class int", run(method));
   }
 
   public void testInvalidResultNoSetter() throws SecurityException, NoSuchMethodException {

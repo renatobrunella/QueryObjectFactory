@@ -35,13 +35,13 @@ public interface ParameterMapping extends Mapping {
    * @param type            mapping type
    * @param collectionType  collection type of method parameter
    * @param beanType        Java Bean object type of method parameter
-   * @param getter          getter form Java Bean object
+   * @param getters         getters from Java Bean objects
    * @param sqlIndexes      array of SQL indexes
    * @param sqlColumns      array of SQL column names
    * @param adapter         custom mapping adapter
    * @param usesArray       parameter is an array
    */
-  void setParameters(int index, Class<?> type, Class<?> collectionType, Class<?> beanType, Method getter, int[] sqlIndexes,
+  void setParameters(int index, Class<?> type, Class<?> collectionType, Class<?> beanType, Method[] getters, int[] sqlIndexes,
       String[] sqlColumns, MappingAdapter adapter, boolean usesArray);
 
   /**
@@ -78,7 +78,7 @@ public interface ParameterMapping extends Mapping {
    * 
    * @return getter
    */
-  Method getGetter();
+  Method[] getGetters();
 
   /**
    * Returns an array with the column names in the SQL statement.

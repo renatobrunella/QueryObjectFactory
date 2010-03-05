@@ -91,7 +91,7 @@ public class PartialDefinitionCombiner {
           ParameterDefinition partialParameterDefiniton = (ParameterDefinition)partialDefinition;
           ParameterDefinitionImpl parameterDefiniton = new ParameterDefinitionImpl();
           parameterDefiniton.setType(partialParameterDefiniton.getType());
-          parameterDefiniton.setField(partialParameterDefiniton.getField());
+          parameterDefiniton.setFields(partialParameterDefiniton.getFields());
           parameterDefiniton.setNames(partialParameterDefiniton.getNames());
           parameterDefiniton.setParameter(partialParameterDefiniton.getParameter());
           int[] indexes = new int[numberOfParts];

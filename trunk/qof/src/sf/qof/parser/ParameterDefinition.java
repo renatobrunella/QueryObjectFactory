@@ -32,11 +32,11 @@ public interface ParameterDefinition extends Definition {
   String[] getNames();
   
   /**
-   * Returns the name a field if the parameter is a Java bean. 
+   * Returns the names of the fields if the parameter is a Java bean. 
    * 
-   * @return name of a field in a Java bean parameter.
+   * @return name of the fields in a Java bean parameter.
    */
-  String getField();
+  String[] getFields();
   
   /**
    * Returns an array of SQL parameter indexes.

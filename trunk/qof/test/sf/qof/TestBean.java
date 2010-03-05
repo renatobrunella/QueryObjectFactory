@@ -9,6 +9,7 @@ public class TestBean {
 	private Date date;
 	private boolean red;
 	private boolean green;
+	private TestBean parent;
 	
 	public Date getDate() {
 		return date;
@@ -45,5 +46,11 @@ public class TestBean {
   }
   public void setGreen(boolean green) {
     this.green = green;
+  }
+  public TestBean getParent() {
+    return parent;
+  }
+  public void setParent(TestBean parent) {
+    this.parent = parent;
   }
 }

@@ -22,6 +22,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -118,13 +119,13 @@ public final class AnnotationMapperFactory {
       if (sqlIndexes == null && sqlColumns == null) {
         throw new ValidationException("Either indexes or columns must be defined");
       }
-      String field = parameter.getField();
+      String[] fields = parameter.getFields();
       Class<?> type = null;
       Class<?> collectionType = null;
       Class<?> collectionElementType = null;
       Class<?> arrayElementType = null;
       Class<?> beanType = null;
-      Method getter = null;
+      Method[] getters = null;
 
       // get types
       MethodParameterInfo parameterInfo = methodInfo.getParameterInfos()[index];
@@ -133,7 +134,7 @@ public final class AnnotationMapperFactory {
       arrayElementType = parameterInfo.getArrayElementType();
       
       boolean usesArray = arrayElementType != null && arrayElementType != Byte.TYPE;
-      if (field == null) {
+      if (fields == null) {
         if (collectionType != null) {
           type = collectionElementType;
         } else if (usesArray) {
@@ -147,15 +148,15 @@ public final class AnnotationMapperFactory {
         } else {
           beanType = parameterInfo.getType();
         }
-        getter = ReflectionUtils.findGetter(beanType, field);
-        if (getter == null) {
-          throw new ValidationException("Cannot find or access getter for " + field + " in class " + beanType.getName());
+        getters = ReflectionUtils.findGetters(beanType, fields);
+        if (getters == null) {
+          throw new ValidationException("Cannot find or access getter for " + Arrays.toString(fields) + " in class " + beanType.getName());
         }
-        type = getter.getReturnType();
+        type = getters[getters.length - 1].getReturnType();
       }
       // create mapping
       ParameterMapping mapping = MappingFactory.createParameterMapping(queryDefinitionClass.getClassLoader(), 
-          mappingType, index, type, collectionType, beanType, getter, sqlIndexes, sqlColumns, usesArray);
+          mappingType, index, type, collectionType, beanType, getters, sqlIndexes, sqlColumns, usesArray);
       list.add(mapping);
     }
     return list;

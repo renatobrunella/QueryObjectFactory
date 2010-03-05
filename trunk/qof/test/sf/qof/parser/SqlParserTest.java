@@ -40,7 +40,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(1, def.getIndexes().length);
     assertEquals(1, def.getIndexes()[0]);
     assertNull(def.getNames());
-    assertNull(def.getField());
+    assertNull(def.getFields());
   }
   
   public void testParsingOneParameterWithField() {
@@ -57,7 +57,8 @@ public class SqlParserTest extends TestCase {
     assertEquals(1, def.getIndexes().length);
     assertEquals(1, def.getIndexes()[0]);
     assertNull(def.getNames());
-    assertEquals("field", def.getField());
+    assertEquals(1, def.getFields().length);
+    assertEquals("field", def.getFields()[0]);
   }
 
   public void testParsingThreeParameters() {
@@ -74,21 +75,23 @@ public class SqlParserTest extends TestCase {
     assertEquals(1, def.getIndexes().length);
     assertEquals(1, def.getIndexes()[0]);
     assertNull(def.getNames());
-    assertNull(def.getField());
+    assertNull(def.getFields());
     def = parser.getParameterDefinitions()[1];
     assertEquals("int", def.getType());
     assertEquals(2, def.getParameter());
     assertEquals(1, def.getIndexes().length);
     assertEquals(2, def.getIndexes()[0]);
     assertNull(def.getNames());
-    assertEquals("field", def.getField());
+    assertEquals(1, def.getFields().length);
+    assertEquals("field", def.getFields()[0]);
     def = parser.getParameterDefinitions()[2];
     assertEquals("double", def.getType());
     assertEquals(3, def.getParameter());
     assertEquals(1, def.getIndexes().length);
     assertEquals(3, def.getIndexes()[0]);
     assertNull(def.getNames());
-    assertEquals("field2", def.getField());
+    assertEquals(1, def.getFields().length);
+    assertEquals("field2", def.getFields()[0]);
   }
 
   public void testParsingOneResult() {
@@ -169,7 +172,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(1, def.getIndexes().length);
     assertEquals(1, def.getIndexes()[0]);
     assertNull(def.getNames());
-    assertNull(def.getField());
+    assertNull(def.getFields());
   }
 
   public void testParsingCallWithReturn() {
@@ -186,7 +189,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(1, paramDef.getIndexes().length);
     assertEquals(2, paramDef.getIndexes()[0]);
     assertNull(paramDef.getNames());
-    assertNull(paramDef.getField());
+    assertNull(paramDef.getFields());
     ResultDefinition resultDef = parser.getResultDefinitions()[0];
     assertEquals("int", resultDef.getType());
     assertNotNull(resultDef.getIndexes());
@@ -210,7 +213,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(1, paramDef.getIndexes().length);
     assertEquals(1, paramDef.getIndexes()[0]);
     assertNull(paramDef.getNames());
-    assertNull(paramDef.getField());
+    assertNull(paramDef.getFields());
     ResultDefinition resultDef = parser.getResultDefinitions()[0];
     assertEquals("auto", resultDef.getType());
     assertNotNull(resultDef.getIndexes());
@@ -234,7 +237,7 @@ public class SqlParserTest extends TestCase {
     assertEquals(1, paramDef.getIndexes().length);
     assertEquals(2, paramDef.getIndexes()[0]);
     assertNull(paramDef.getNames());
-    assertNull(paramDef.getField());
+    assertNull(paramDef.getFields());
   }
 
   public void testParsingSimpleCallFailed() {
@@ -508,5 +511,88 @@ public class SqlParserTest extends TestCase {
     assertEquals(3, def.getIndexes()[1]);
   }
 
+  
+  public void testParsingOneParameterWithTwoFields() {
+    String sql = "select * from test where name = {int%5.field1.field2}";
+    SqlParser parser = new SqlParser(sql, false);
+    assertEquals("select * from test where name = ?", parser.getSql().trim());
+    assertNotNull(parser.getParameterDefinitions());
+    assertEquals(1, parser.getParameterDefinitions().length);
+    assertNotNull(parser.getResultDefinitions());
+    assertEquals(0, parser.getResultDefinitions().length);
+    ParameterDefinition def = parser.getParameterDefinitions()[0];
+    assertEquals("int", def.getType());
+    assertEquals(5, def.getParameter());
+    assertEquals(1, def.getIndexes().length);
+    assertEquals(1, def.getIndexes()[0]);
+    assertNull(def.getNames());
+    assertEquals(2, def.getFields().length);
+    assertEquals("field1", def.getFields()[0]);
+    assertEquals("field2", def.getFields()[1]);
+  }
+  
+  public void testParsingOneParameterWithThreeFields() {
+    String sql = "select * from test where name = {int%5.field1.field2.field3}";
+    SqlParser parser = new SqlParser(sql, false);
+    assertEquals("select * from test where name = ?", parser.getSql().trim());
+    assertNotNull(parser.getParameterDefinitions());
+    assertEquals(1, parser.getParameterDefinitions().length);
+    assertNotNull(parser.getResultDefinitions());
+    assertEquals(0, parser.getResultDefinitions().length);
+    ParameterDefinition def = parser.getParameterDefinitions()[0];
+    assertEquals("int", def.getType());
+    assertEquals(5, def.getParameter());
+    assertEquals(1, def.getIndexes().length);
+    assertEquals(1, def.getIndexes()[0]);
+    assertNull(def.getNames());
+    assertEquals(3, def.getFields().length);
+    assertEquals("field1", def.getFields()[0]);
+    assertEquals("field2", def.getFields()[1]);
+    assertEquals("field3", def.getFields()[2]);
+  }
+  
+  public void testParsingOneParameterWithFourFields() {
+    String sql = "select * from test where name = {int%5.field1.field2.field3.field4}";
+    SqlParser parser = new SqlParser(sql, false);
+    assertEquals("select * from test where name = ?", parser.getSql().trim());
+    assertNotNull(parser.getParameterDefinitions());
+    assertEquals(1, parser.getParameterDefinitions().length);
+    assertNotNull(parser.getResultDefinitions());
+    assertEquals(0, parser.getResultDefinitions().length);
+    ParameterDefinition def = parser.getParameterDefinitions()[0];
+    assertEquals("int", def.getType());
+    assertEquals(5, def.getParameter());
+    assertEquals(1, def.getIndexes().length);
+    assertEquals(1, def.getIndexes()[0]);
+    assertNull(def.getNames());
+    assertEquals(4, def.getFields().length);
+    assertEquals("field1", def.getFields()[0]);
+    assertEquals("field2", def.getFields()[1]);
+    assertEquals("field3", def.getFields()[2]);
+    assertEquals("field4", def.getFields()[3]);
+  }
+  
+  public void testParsingOneParameterWithFiveFields() {
+    String sql = "select * from test where name = {int%5.field1.field2.field3.field4.field5}";
+    SqlParser parser = new SqlParser(sql, false);
+    assertEquals("select * from test where name = ?", parser.getSql().trim());
+    assertNotNull(parser.getParameterDefinitions());
+    assertEquals(1, parser.getParameterDefinitions().length);
+    assertNotNull(parser.getResultDefinitions());
+    assertEquals(0, parser.getResultDefinitions().length);
+    ParameterDefinition def = parser.getParameterDefinitions()[0];
+    assertEquals("int", def.getType());
+    assertEquals(5, def.getParameter());
+    assertEquals(1, def.getIndexes().length);
+    assertEquals(1, def.getIndexes()[0]);
+    assertNull(def.getNames());
+    assertEquals(5, def.getFields().length);
+    assertEquals("field1", def.getFields()[0]);
+    assertEquals("field2", def.getFields()[1]);
+    assertEquals("field3", def.getFields()[2]);
+    assertEquals("field4", def.getFields()[3]);
+    assertEquals("field5", def.getFields()[4]);
+  }
+  
   //TODO add test with multiple result mappings for one column
 }

@@ -40,6 +40,28 @@ public final class ReflectionUtils {
   private ReflectionUtils() { }
   
   /**
+   * Returns the getter methods for field names in a specified class.
+   * 
+   * @param startType  the class
+   * @param fieldNames field names
+   * @return           getter methods for fields or null
+   */
+  public static Method[] findGetters(Class<?> startType, String[] fieldNames) {
+    Class<?> type = startType;
+    Method[] getters = new Method[fieldNames.length];
+    for (int i = 0; i < fieldNames.length; i++) {
+      Method method = findGetter(type, fieldNames[i]);
+      if (method == null) {
+        // missing getter
+        return null;
+      }
+      type = method.getReturnType();
+      getters[i] = method;
+    }
+    return getters;
+  }
+  
+  /**
    * Returns the getter method for a field name in a specified class.
    * 
    * @param type       the class
