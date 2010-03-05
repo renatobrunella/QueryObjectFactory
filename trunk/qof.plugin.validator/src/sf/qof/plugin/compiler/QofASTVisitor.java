@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 brunella ltd
+ * Copyright 2008 - 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 package sf.qof.plugin.compiler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -257,16 +258,15 @@ public class QofASTVisitor extends ASTVisitor {
     }
     
     for (ParameterDefinition definition : parser.getParameterDefinitions()) {
-      if (definition.getField() == null) {
+      if (definition.getFields() == null) {
         
       } else {
         if (definition.getParameter() - 1 < parameterTypes.length) {
           ITypeBinding type = parameterTypes[definition.getParameter() - 1];
           if (!isAtomic[definition.getParameter() - 1]
-               && findMethod(type, getterName(definition.getField())) == null
-               && findMethod(type, isName(definition.getField())) == null) {
+               && findMethods(type, definition.getFields()) == null) {
             ParameterDefinitionImpl paramImpl = (ParameterDefinitionImpl)definition;
-            addSqlStatementProblem(infoList, "No getter defined for field " + definition.getField(), 
+            addSqlStatementProblem(infoList, "No getter defined for field " + Arrays.toString(definition.getFields()), 
                 QofProblem.ERROR, paramImpl.getStartPosition(), paramImpl.getEndPosition() - paramImpl.getStartPosition() + 1);
           }
         }
@@ -599,6 +599,23 @@ public class QofASTVisitor extends ASTVisitor {
     errorList.add(new QofProblem(message, severity, fileName, start, end, line, 0, new String[0]));
   }
   
+  private IMethodBinding[] findMethods(ITypeBinding type, String[] methodNames) {
+    IMethodBinding[] methods = new IMethodBinding[methodNames.length];
+    ITypeBinding currentType = type;
+    for (int i = 0; i < methodNames.length; i++) {
+      IMethodBinding method = findMethod(currentType, getterName(methodNames[i]));
+      if (method == null) {
+        method = findMethod(currentType, isName(methodNames[i]));
+        if (method == null) {
+          return null;
+        }
+      }
+      currentType = method.getReturnType();
+      methods[i] = method;
+    }
+    return methods;
+  }
+    
   private IMethodBinding findMethod(ITypeBinding type, String methodName) {
     ITypeBinding currentType = type;
     while (currentType != null) {
