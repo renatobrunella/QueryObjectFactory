@@ -10,6 +10,7 @@ public class TestBean {
 	private boolean red;
 	private boolean green;
 	private TestBean parent;
+	private Integer boxedId;
 	
 	public Date getDate() {
 		return date;
@@ -52,5 +53,11 @@ public class TestBean {
   }
   public void setParent(TestBean parent) {
     this.parent = parent;
+  }
+  public Integer getBoxedId() {
+    return boxedId;
+  }
+  public void setBoxedId(Integer boxedId) {
+    this.boxedId = boxedId;
   }
 }

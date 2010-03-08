@@ -145,6 +145,8 @@ public final class AnnotationMapperFactory {
       } else {
         if (collectionType != null) {
           beanType = collectionElementType;
+        } else if (usesArray) {
+          beanType = arrayElementType;
         } else {
           beanType = parameterInfo.getType();
         }

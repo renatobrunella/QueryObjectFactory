@@ -123,14 +123,17 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
   }
 
   private void loadValue(int argIndex, Method[] getters, boolean usesCollection, boolean checkForNulls) {
-    // if (currentCollectionObj == null) {
-    if (!usesCollection) {
-      // load value from a method parameter
-      co.load_arg(argIndex);
-    } else {
-      // load value from the current object of the iterator
-      co.load_local(currentCollectionObj[findIndex(argIndex)]);
-      // co.checkcast(Type.getType(getter.getDeclaringClass()));
+    // is the parameter already on the stack?
+    if (argIndex >= 0) {
+      // if (currentCollectionObj == null) {
+      if (!usesCollection) {
+        // load value from a method parameter
+        co.load_arg(argIndex);
+      } else {
+        // load value from the current object of the iterator
+        co.load_local(currentCollectionObj[findIndex(argIndex)]);
+        // co.checkcast(Type.getType(getter.getDeclaringClass()));
+      }
     }
     // invoke the getters
     if (getters != null) {
@@ -256,10 +259,20 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
       co.load_arg(argIndex);
       co.load_local(localIndex);
       if (objectType.isPrimitive()) {
-        co.array_load(unboxedType);
+        if (getters != null) {
+          co.array_load(Type.getType(getters[0].getDeclaringClass()));
+          loadValue(-1, getters, mapping.usesCollection(), false);
+        } else {
+          co.array_load(unboxedType);
+        }
       } else {
         // should we check null values?
-        co.array_load(boxedType);
+        if (getters != null) {
+          co.array_load(Type.getType(getters[0].getDeclaringClass()));
+          loadValue(-1, getters, mapping.usesCollection(), false);
+        } else {
+          co.array_load(boxedType);
+        }
         co.invoke_virtual(boxedType, signatureUnbox);
       }
       
