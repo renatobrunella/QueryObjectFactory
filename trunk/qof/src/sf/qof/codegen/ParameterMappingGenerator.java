@@ -122,7 +122,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
     }
   }
 
-  private void loadValue(int argIndex, Method[] getters, boolean usesCollection) {
+  private void loadValue(int argIndex, Method[] getters, boolean usesCollection, boolean checkForNulls) {
     // if (currentCollectionObj == null) {
     if (!usesCollection) {
       // load value from a method parameter
@@ -134,14 +134,48 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
     }
     // invoke the getters
     if (getters != null) {
-      for (Method getter : getters) {//TODO check for nulls?
-        Type owner = Type.getType(getter.getDeclaringClass());
-        Signature signature = ReflectionUtils.getMethodSignature(getter);
-        if (getter.getDeclaringClass().isInterface()) {
-          co.invoke_interface(owner, signature);
-        } else {
-          co.invoke_virtual(owner, signature);
+      // does it return a primitive or is there no chaining?
+      if (!checkForNulls || getters.length == 1 || getters[getters.length - 1].getReturnType().isPrimitive()) {
+        // cannot return null - might throw NullPointerException
+        for (Method getter : getters) {
+          Type owner = Type.getType(getter.getDeclaringClass());
+          Signature signature = ReflectionUtils.getMethodSignature(getter);
+          if (getter.getDeclaringClass().isInterface()) {
+            co.invoke_interface(owner, signature);
+          } else {
+            co.invoke_virtual(owner, signature);
+          }
         }
+      } else {
+        Label labelNull = co.make_label();
+        Local temp = null;
+        for (int i = 0; i < getters.length; i++) {
+          boolean isLast = i == getters.length - 1;
+            Method getter = getters[i];
+          if (temp != null) {
+            co.load_local(temp);
+          }
+          Type owner = Type.getType(getter.getDeclaringClass());
+          Signature signature = ReflectionUtils.getMethodSignature(getter);
+          if (getter.getDeclaringClass().isInterface()) {
+            co.invoke_interface(owner, signature);
+          } else {
+            co.invoke_virtual(owner, signature);
+          }
+          temp = co.make_local();
+          co.store_local(temp);
+          if (!isLast) {
+            co.load_local(temp);
+            co.ifnull(labelNull);
+          }
+        }
+        Label labelNotNull = co.make_label();
+        co.goTo(labelNotNull);
+        co.mark(labelNull);
+        co.aconst_null();
+        co.store_local(temp);
+        co.mark(labelNotNull);
+        co.load_local(temp);
       }
     }
   }
@@ -249,7 +283,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
         Label lIsNull = co.make_label();
         Label lEnd = co.make_label();
         // if (value != null) ps.setInt(index, value.intValue);
-        loadValue(argIndex, getters, mapping.usesCollection());
+        loadValue(argIndex, getters, mapping.usesCollection(), true);
         co.ifnull(lIsNull);
         co.load_local(preparedStatement);
         co.push(sqlIndex);
@@ -257,7 +291,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
         	co.load_local(parameterIndexOffset);
         	co.math(CodeEmitter.ADD, TYPE_int);
         }
-        loadValue(argIndex, getters, mapping.usesCollection());
+        loadValue(argIndex, getters, mapping.usesCollection(), false);
         co.invoke_virtual(boxedType, signatureUnbox);
         co.invoke_interface(preparedStatement.getType(), signatureSet);
         co.goTo(lEnd);
@@ -280,7 +314,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
         	co.load_local(parameterIndexOffset);
         	co.math(CodeEmitter.ADD, TYPE_int);
         }
-        loadValue(argIndex, getters, mapping.usesCollection());
+        loadValue(argIndex, getters, mapping.usesCollection(), false);
         co.invoke_interface(preparedStatement.getType(), signatureSet);
       }
     }
@@ -331,7 +365,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
         co.load_local(parameterIndexOffset);
     		co.math(CodeEmitter.ADD, TYPE_int);
       }
-      loadValue(argIndex, getters, mapping.usesCollection());
+      loadValue(argIndex, getters, mapping.usesCollection(), true);
       co.invoke_interface(preparedStatement.getType(), SIG_setString);
     }
   }
@@ -401,11 +435,11 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
       if (objectType.isPrimitive()) {
         // it's a char
         // Character.toString(char)
-        loadValue(argIndex, getters, mapping.usesCollection());
+        loadValue(argIndex, getters, mapping.usesCollection(), false);
         co.invoke_static(TYPE_Character, new Signature("toString", "(C)Ljava/lang/String;"));
       } else {
         // it's a Character
-        loadValue(argIndex, getters, mapping.usesCollection());
+        loadValue(argIndex, getters, mapping.usesCollection(), true);
         co.dup();
         Label labelEnd = co.make_label();
         Label labelNull = co.make_label();
@@ -482,7 +516,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
       Label lIsNull = co.make_label();
       Label lEnd = co.make_label();
       // if (value != null) setDate(index, new java.sql.Date(value.getTime()));
-      loadValue(argIndex, getters, mapping.usesCollection());
+      loadValue(argIndex, getters, mapping.usesCollection(), true);
       co.ifnull(lIsNull);
       co.load_local(preparedStatement);
       co.push(sqlIndex);
@@ -492,7 +526,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
       }
       co.new_instance(sqlType);
       co.dup();
-      loadValue(argIndex, getters, mapping.usesCollection());
+      loadValue(argIndex, getters, mapping.usesCollection(), false);
       co.invoke_virtual(TYPE_Date, SIG_getTimeLong);
       co.invoke_constructor(sqlType, new Signature("<init>", "(J)V"));
       co.invoke_interface(preparedStatement.getType(), sqlTypeSet);
@@ -576,7 +610,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
       
     } else {
       if (mapping.getAdapter() instanceof GeneratorMappingAdapter) {
-        loadValue(argIndex, getters, mapping.usesCollection());
+        loadValue(argIndex, getters, mapping.usesCollection(), true);
         ((GeneratorMappingAdapter) mapping.getAdapter()).generateToPreparedStatement(
             mapping, co, preparedStatement, sqlIndexes, parameterIndexOffset);
   
@@ -584,7 +618,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
         co.getfield(QueryObjectGenerator.getAdapterFieldName(mapping.getAdapter().getClass()));
         // set(PreparedStatement ps, Object value, int[] indexes)
         co.load_local(preparedStatement);
-        loadValue(argIndex, getters, mapping.usesCollection());
+        loadValue(argIndex, getters, mapping.usesCollection(), true);
         // new int[] {...}
         co.push(sqlIndexes.length);
         co.newarray(TYPE_int);
