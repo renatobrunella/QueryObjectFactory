@@ -602,6 +602,10 @@ public class QofASTVisitor extends ASTVisitor {
   private IMethodBinding[] findMethods(ITypeBinding type, String[] methodNames) {
     IMethodBinding[] methods = new IMethodBinding[methodNames.length];
     ITypeBinding currentType = type;
+    // for arrays use the component type
+    if (currentType.isArray()) {
+      currentType = currentType.getComponentType();
+    }
     for (int i = 0; i < methodNames.length; i++) {
       IMethodBinding method = findMethod(currentType, getterName(methodNames[i]));
       if (method == null) {
