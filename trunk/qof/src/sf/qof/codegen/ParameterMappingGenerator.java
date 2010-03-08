@@ -134,7 +134,7 @@ public class ParameterMappingGenerator implements MappingVisitor, NumberMappingV
     }
     // invoke the getters
     if (getters != null) {
-      for (Method getter : getters) {//TODO Renato
+      for (Method getter : getters) {//TODO check for nulls?
         Type owner = Type.getType(getter.getDeclaringClass());
         Signature signature = ReflectionUtils.getMethodSignature(getter);
         if (getter.getDeclaringClass().isInterface()) {
