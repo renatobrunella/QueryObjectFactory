@@ -35,15 +35,6 @@ public class SqlParserException extends RuntimeException {
    * Creates a SqlParserException.
    * 
    * @param message  the error message
-   */
-  public SqlParserException(String message) {
-    super(message);
-  }
-  
-  /**
-   * Creates a SqlParserException.
-   * 
-   * @param message  the error message
    * @param start    start position in SQL statement
    * @param length   length of error in SQL statement
    */
