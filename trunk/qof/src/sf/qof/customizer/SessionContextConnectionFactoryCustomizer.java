@@ -51,7 +51,6 @@ public class SessionContextConnectionFactoryCustomizer implements ConnectionFact
 
   private static final Type TYPE_SessionContextFactory = Type.getType("Lsf/qof/session/SessionContextFactory;");
   private static final Type TYPE_SessionContext = Type.getType("Lsf/qof/session/SessionContext;");
-  private static final Signature SIG_getContext = new Signature("getContext", "()Lsf/qof/session/SessionContext;");
   private static final Signature SIG_getContextWithName = new Signature("getContext", "(Ljava/lang/String;)Lsf/qof/session/SessionContext;");
 
   public void emitFields(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
@@ -64,8 +63,6 @@ public class SessionContextConnectionFactoryCustomizer implements ConnectionFact
       UseSessionContext sessionContextAnnotation = queryDefinitionClass.getAnnotation(UseSessionContext.class);
       co.push(sessionContextAnnotation.name());
       co.invoke_static(TYPE_SessionContextFactory, SIG_getContextWithName);
-    } else {
-      co.invoke_static(TYPE_SessionContextFactory, SIG_getContext);
     }
     co.invoke_interface(TYPE_SessionContext, SIG_getConnection);
     co.return_value();
