@@ -23,6 +23,8 @@ package sf.qof.util;
  */
 public class InClauseParameterReplacer {
 
+  InClauseParameterReplacer() {}
+  
   /**
    * Returns a SQL statement that replaces the <code>index</code>-th 
    * parameter '?' with a number <code>numArgs</code> of '?'.

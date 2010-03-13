@@ -29,4 +29,7 @@ public class InClauseParameterReplacerTest extends TestCase {
     assertEquals("select * from test where a = ? and b in (?,?,?) /* Comment * /", InClauseParameterReplacer.replace(sql, 2, 3));
   }
   
+  public void testConstructor() {
+    assertNotNull(new InClauseParameterReplacer());
+  }
 }

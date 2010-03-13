@@ -19,7 +19,6 @@
 package sf.qof.util;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Helper class to instantiate an object.
@@ -37,7 +36,7 @@ public final class ObjectInstantiator {
    * @param clazz    class type
    * @param initArgs constructor arguments
    * @return         an instance of clazz
-   * @throws RuntimeException instanziation failed
+   * @throws RuntimeException instantiation failed
    */
   public static <T> T newInstance(Class<T> clazz, Object[] initArgs) {
     if (initArgs == null || initArgs.length == 0) {
@@ -68,13 +67,7 @@ public final class ObjectInstantiator {
             try {
               @SuppressWarnings("unchecked") T newInstance = (T) constructor.newInstance(initArgs);
               return newInstance;
-            } catch (IllegalArgumentException e) {
-              throw new RuntimeException(e);
-            } catch (InstantiationException e) {
-              throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
-              throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
+            } catch (Exception e) {
               throw new RuntimeException(e);
             }
           }

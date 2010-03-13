@@ -29,7 +29,7 @@ import java.util.WeakHashMap;
  */
 public final class ClassGenerationCache {
   
-  private ClassGenerationCache() { }
+  protected ClassGenerationCache() { }
 
   private static final class GENERATION_PENDING { };
 

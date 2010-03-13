@@ -138,7 +138,7 @@ public class PartialDefinitionCombiner {
     }
   }
 
-  private static class DefinitionComparator implements Comparator<Definition> {
+  static class DefinitionComparator implements Comparator<Definition> {
     public int compare(Definition o1, Definition o2) {
       int cmp;
       String type1 = o1.getType();
