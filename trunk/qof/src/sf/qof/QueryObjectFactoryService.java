@@ -175,6 +175,14 @@ public interface QueryObjectFactoryService {
   void unregisterMapper(String type);
   
   /**
+   * Returns true if a custom mapping adapter is installed in the mapping registry.
+   * 
+   * @param type        mapping type name
+   * @return            true if an adapter is installed 
+   */
+  boolean isMapperRegistered(String type);
+
+  /**
    * Sets the SQL dialect.
    * 
    * @param dialect    SQL dialect

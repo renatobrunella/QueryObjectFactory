@@ -253,6 +253,19 @@ public class QueryObjectFactoryActivator implements BundleActivator, ServiceFact
       }
       logDebug(bundleSignature + " unregisterMapper(" + type + ") successful");
     }
+    
+    public boolean isMapperRegistered(String type) {
+      ClassLoader classLoader = validateClassLoader();
+      boolean result;
+      try {
+        result = delegator.isMapperRegistered_(classLoader, type);
+      } catch (RuntimeException e) {
+        logError(bundleSignature + " isMapperRegistered(" + type + ") failed", e);
+        throw e;
+      }
+      logDebug(bundleSignature + " isMapperRegistered(" + type + ") successful");
+      return result;
+    }
 
     public void setCustomizer(Customizer customizer) {
       ClassLoader classLoader = validateClassLoader();
@@ -349,6 +362,10 @@ public class QueryObjectFactoryActivator implements BundleActivator, ServiceFact
 
     public void unregisterMapper_(ClassLoader classLoader, String type) {
       unregisterMapper(classLoader, type);
+    }
+    
+    public boolean isMapperRegistered_(ClassLoader classLoader, String type) {
+      return isMapperRegistered(classLoader, type);
     }
 
     public void setCustomizer_(ClassLoader classLoader, Customizer customizer) {

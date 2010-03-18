@@ -316,6 +316,21 @@ public class QueryObjectFactory {
   }
   
   /**
+   * Returns true if a custom mapping adapter is installed in the mapping registry.
+   * 
+   * @param type        mapping type name
+   * @return            true if an adapter is installed 
+   */
+  public static boolean isMapperRegistered(String type) {
+    ClassLoader classLoader = CallStackIntrospector.getCaller().getClassLoader();
+    return isMapperRegistered(classLoader, type);
+  }
+  
+  protected static synchronized boolean isMapperRegistered(ClassLoader classLoader, String type) {
+    return MappingFactory.isMapperRegistered(classLoader, type);
+  }
+  
+  /**
    * Sets the SQL dialect.
    * 
    * @param dialect    SQL dialect

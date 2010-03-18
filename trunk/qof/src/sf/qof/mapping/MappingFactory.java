@@ -195,6 +195,10 @@ public class MappingFactory {
     unregisterResultMapper(classLoader, type);
     unregisterParameterMapper(classLoader, type);
   }
+  
+  public static boolean isMapperRegistered(ClassLoader classLoader, String type) {
+    return isMapperResultRegistered(classLoader, type);
+  }
 
   public static void unregisterMappers(ClassLoader classLoader) {
     registeredResultMappers.remove(classLoader);
@@ -242,6 +246,15 @@ public class MappingFactory {
     Map<String, MappingClassInfo> map = registeredParameterMappers.get(classLoader);
     if (map != null) {
       map.remove(type);
+    }
+  }
+  
+  protected static boolean isMapperResultRegistered(ClassLoader classLoader, String type) {
+    Map<String, MappingClassInfo> map = registeredResultMappers.get(classLoader);
+    if (map != null) {
+      return map.containsKey(type);
+    } else {
+      return false;
     }
   }
 
