@@ -37,11 +37,11 @@ public interface SessionRunnerExt<T> extends SessionRunner<T> {
    * transaction management.
    * 
    * If an exception is thrown by the executed code the
-   * transaction is rolled back otherwise it is commited.
+   * transaction is rolled back otherwise it is committed.
    * 
    * @param arguments arguments that are passed to the executed code
    * @return the result of the executed code
-   * @throws SystemException thrown if an unexpected error occured
+   * @throws SystemException thrown if an unexpected error occurred
    * 
    * @since 1.1.0
    */
@@ -53,11 +53,11 @@ public interface SessionRunnerExt<T> extends SessionRunner<T> {
    * transaction management.
    * 
    * If an exception is thrown by the executed code the
-   * transaction is rolled back otherwise it is commited.
+   * transaction is rolled back otherwise it is committed.
    * 
    * @param arguments arguments that are passed to the executed code
    * @return the result of the executed code
-   * @throws SystemException thrown if an unexpected error occured
+   * @throws SystemException thrown if an unexpected error occurred
    * 
    * @since 1.1.0
    */
