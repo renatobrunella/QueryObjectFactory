@@ -103,6 +103,192 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
     this.runnable = runnable;
   }
 
+  /**
+   * A call to <code>execute</code> starts a new session and executes some code
+   * in a transactional context.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>         the result type
+   * @param runnable    a <code>TransactionRunnable</code>
+   * @param arguments   arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T execute(TransactionRunnable<T> runnable, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable).execute(arguments);
+  }
+  
+  /**
+   * A call to <code>executeBeanManaged</code> starts a new session and 
+   * executes some code in a transactional context using bean managed 
+   * transaction management.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>         the result type
+   * @param runnable    a <code>TransactionRunnable</code>
+   * @param arguments   arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T executeBeanManaged(TransactionRunnable<T> runnable, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable).executeBeanManaged(arguments);
+  }
+  
+  /**
+   * A call to <code>executeContainerManaged</code> starts a new session and 
+   * executes some code in a transactional context using container managed 
+   * transaction management.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>         the result type
+   * @param runnable    a <code>TransactionRunnable</code>
+   * @param arguments   arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T executeContainerManaged(TransactionRunnable<T> runnable, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable).executeContainerManaged(arguments);
+  }
+  
+  /**
+   * A call to <code>execute</code> starts a new session and executes some code
+   * in a transactional context.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>           the result type
+   * @param runnable      a <code>TransactionRunnable</code>
+   * @param sessionPolicy the session policy
+   * @param arguments     arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T execute(TransactionRunnable<T> runnable, SessionPolicy sessionPolicy, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable, sessionPolicy).execute(arguments);
+  }
+  
+  /**
+   * A call to <code>executeBeanManaged</code> starts a new session and 
+   * executes some code in a transactional context using bean managed 
+   * transaction management.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>           the result type
+   * @param runnable      a <code>TransactionRunnable</code>
+   * @param sessionPolicy the session policy
+   * @param arguments     arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T executeBeanManaged(TransactionRunnable<T> runnable, SessionPolicy sessionPolicy, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable, sessionPolicy).executeBeanManaged(arguments);
+  }
+  
+  /**
+   * A call to <code>executeContainerManaged</code> starts a new session and 
+   * executes some code in a transactional context using container managed 
+   * transaction management.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>           the result type
+   * @param runnable      a <code>TransactionRunnable</code>
+   * @param sessionPolicy the session policy
+   * @param arguments     arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T executeContainerManaged(TransactionRunnable<T> runnable, SessionPolicy sessionPolicy, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable, sessionPolicy).executeContainerManaged(arguments);
+  }
+  
+  /**
+   * A call to <code>execute</code> starts a new session with a given name and 
+   * executes some code in a transactional context.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>           the result type
+   * @param runnable      a <code>TransactionRunnable</code>
+   * @param contextName   the context name
+   * @param sessionPolicy the session policy
+   * @param arguments     arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T execute(TransactionRunnable<T> runnable, String contextName, SessionPolicy sessionPolicy, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable, contextName, sessionPolicy).execute(arguments);
+  }
+  
+  /**
+   * A call to <code>executeBeanManaged</code> starts a new session with 
+   * a given name and executes some code in a transactional context using
+   * bean managed transaction management.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>           the result type
+   * @param runnable      a <code>TransactionRunnable</code>
+   * @param contextName   the context name
+   * @param sessionPolicy the session policy
+   * @param arguments     arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T executeBeanManaged(TransactionRunnable<T> runnable, String contextName, SessionPolicy sessionPolicy, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable, contextName, sessionPolicy).executeBeanManaged(arguments);
+  }
+  
+  /**
+   * A call to <code>executeContainerManaged</code> starts a new session with 
+   * a given name and executes some code in a transactional context using 
+   * container managed transaction management.
+   * 
+   * If an exception is thrown by the executed code the
+   * transaction is rolled back otherwise it is committed.
+   * 
+   * @param <T>           the result type
+   * @param runnable      a <code>TransactionRunnable</code>
+   * @param contextName   the context name
+   * @param sessionPolicy the session policy
+   * @param arguments     arguments that are passed to the executed code
+   * @return the result of the executed code
+   * @throws SystemException thrown if an unexpected error occurred
+   * 
+   * @since 1.1.0
+   */
+  public static <T> T executeContainerManaged(TransactionRunnable<T> runnable, String contextName, SessionPolicy sessionPolicy, Object...arguments) throws SystemException {
+    return new DefaultSessionRunner<T>(runnable, contextName, sessionPolicy).executeContainerManaged(arguments);
+  }
+  
   @Override
   protected T run(Connection connection, Object... arguments) throws SQLException {
     return runnable.run(connection, arguments);
