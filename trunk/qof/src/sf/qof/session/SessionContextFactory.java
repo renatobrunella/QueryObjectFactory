@@ -601,8 +601,6 @@ public class SessionContextFactory {
    */
   protected static class NoOpUserTransaction extends BaseUserTransaction implements UserTransaction {
 
-    private TransactionState transactionState;
-
     /**
      * Constructs a NoOpUserTransaction object.
      * @param session 
