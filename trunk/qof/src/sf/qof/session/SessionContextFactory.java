@@ -256,11 +256,11 @@ public class SessionContextFactory {
     }
 
     @Override
-    protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType) throws SystemException {
+    protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException {
       if (transactionManagementType != null) {
         throw new SystemException("Transaction management type is not supported");
       }
-      return new DefaultUserTransaction(connection);
+      return new DefaultUserTransaction(session, connection);
     }
   }
 
@@ -321,18 +321,18 @@ public class SessionContextFactory {
     }
 
     @Override
-    protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType) throws SystemException {
+    protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException {
       if (transactionManagementType == null) {
         if (this.transactionManagementType == TransactionManagementType.BEAN) {
-          return new DefaultUserTransaction(connection);
+          return new DefaultUserTransaction(session, connection);
         } else {
-          return new NoOpUserTransaction();
+          return new NoOpUserTransaction(session);
         }
       } else {
         if (transactionManagementType == TransactionManagementType.BEAN) {
-          return new DefaultUserTransaction(connection);
+          return new DefaultUserTransaction(session, connection);
         } else {
-          return new NoOpUserTransaction();
+          return new NoOpUserTransaction(session);
         }
       }
     }
@@ -380,7 +380,7 @@ public class SessionContextFactory {
     }
     
     protected abstract DataSource getDataSource() throws SystemException;
-    protected abstract UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType) throws SystemException;
+    protected abstract UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException;
 
     public Connection getConnection() {
       Session session = sessionThreadLocal.get();
@@ -401,15 +401,28 @@ public class SessionContextFactory {
     }
 
     public void startSession() throws SystemException {
-      startSession(null);
+      startSession(null, SessionPolicy.MUST_START_NEW_SESSION);
+    }
+    
+    public void startSession(SessionPolicy sessionPolicy) throws SystemException {
+      startSession(null, sessionPolicy);
     }
     
     public void startSession(TransactionManagementType transactionManagementType) throws SystemException {
+      startSession(transactionManagementType, SessionPolicy.MUST_START_NEW_SESSION);
+    }
+    
+    public void startSession(TransactionManagementType transactionManagementType, SessionPolicy sessionPolicy) throws SystemException {
       Session session = sessionThreadLocal.get();
       DataSource dataSource = null;
-      if (session.getState() == SessionState.RUNNING) {
-        throw new IllegalStateException("Session already running in thread for context " + contextName);
-      } else {
+      if (sessionPolicy == SessionPolicy.MUST_START_NEW_SESSION && session.getState() == SessionState.RUNNING) {
+        throw new IllegalStateException("Session already running in thread for context "
+            + contextName + " and session policy requires to start new session");
+      } else if (sessionPolicy == SessionPolicy.MUST_JOIN_EXISTING_SESSION && session.getState() == SessionState.STOPPED) {
+        throw new IllegalStateException("Session is not running in thread for context "
+            + contextName + " and session policy requires to join session");
+      }
+      if (session.getState() == SessionState.STOPPED) {
         dataSource = getDataSource();
         if (dataSource == null) {
           throw new SystemException("No data source defined for context " + contextName);
@@ -433,16 +446,17 @@ public class SessionContextFactory {
           }
         }
         session.setConnection(connection);
-        session.setUserTransaction(getNewUserTansaction(connection, transactionManagementType));
+        session.setUserTransaction(getNewUserTansaction(connection, transactionManagementType, session));
         session.setState(SessionState.RUNNING);
       }
+      session.join();
     }
 
     public void stopSession() throws SystemException {
       Session session = sessionThreadLocal.get();
       if (session.getState() == SessionState.STOPPED) {
         throw new IllegalStateException("Session is not running in thread for context " + contextName);
-      } else {
+      } else if (session.unjoin() <= 0) {
         session.setState(SessionState.STOPPED);
         ((BaseUserTransaction) session.getUserTransaction()).close();
         session.setUserTransaction(null);
@@ -461,11 +475,12 @@ public class SessionContextFactory {
   
   }
 
-  private static class Session {
+  static class Session {
 
     private Connection connection;
     private UserTransaction userTransaction;
     private SessionState state = SessionState.STOPPED;
+    private int joinCount = 0;
   
     public Connection getConnection() {
       return connection;
@@ -481,6 +496,9 @@ public class SessionContextFactory {
   
     public void setState(SessionState state) {
       this.state = state;
+      if (state == SessionState.STOPPED) {
+        joinCount = 0;
+      }
     }
   
     public UserTransaction getUserTransaction() {
@@ -489,6 +507,18 @@ public class SessionContextFactory {
   
     public void setUserTransaction(UserTransaction userTransaction) {
       this.userTransaction = userTransaction;
+    }
+    
+    public int join() {
+      return ++joinCount;
+    }
+    
+    public int unjoin() {
+      return --joinCount;
+    }
+    
+    public boolean hasJoinedSession() {
+      return joinCount > 1;
     }
   }
 
@@ -510,46 +540,57 @@ public class SessionContextFactory {
      * @param connection
      *          the current database connection
      */
-    public DefaultUserTransaction(Connection connection) {
-      super();
+    public DefaultUserTransaction(Session session, Connection connection) {
+      super(session);
       this.connection = connection;
     }
 
     public void commit() throws SystemException, RollbackException {
-      if (transactionState == TransactionState.NEW
-          || transactionState == TransactionState.CLOSED) {
-        throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
-      } else {
-        if (transactionState == TransactionState.IN_TRANSACTION_ROLLBACK) {
-          transactionState = TransactionState.NEW;
-          try {
-            connection.rollback();
-          } catch (SQLException e) {
-            throw new SystemException(e);
-          }
-          throw new RollbackException("Transaction was rolled back");
+      if (!session.hasJoinedSession()) {
+        if (transactionState == TransactionState.NEW
+            || transactionState == TransactionState.CLOSED) {
+          throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
         } else {
-          transactionState = TransactionState.NEW;
-          try {
-            connection.commit();
-          } catch (SQLException e) {
-            throw new SystemException(e);
+          if (transactionState == TransactionState.IN_TRANSACTION_ROLLBACK) {
+            transactionState = TransactionState.NEW;
+            try {
+              connection.rollback();
+            } catch (SQLException e) {
+              throw new SystemException(e);
+            }
+            throw new RollbackException("Transaction was rolled back");
+          } else {
+            transactionState = TransactionState.NEW;
+            try {
+              connection.commit();
+            } catch (SQLException e) {
+              throw new SystemException(e);
+            }
           }
+        }
+      } else {
+        if (transactionState != TransactionState.IN_TRANSACTION &&
+            transactionState != TransactionState.IN_TRANSACTION_ROLLBACK) {
+          throw new IllegalStateException("Invalid state: Transaction is closed " + transactionState);
         }
       }
     }
 
     public void rollback() throws SystemException {
-      if (transactionState == TransactionState.NEW
-          || transactionState == TransactionState.CLOSED) {
-        throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
-      } else {
-        try {
-          transactionState = TransactionState.NEW;
-          connection.rollback();
-        } catch (SQLException e) {
-          throw new SystemException(e);
+      if (!session.hasJoinedSession()) {
+        if (transactionState == TransactionState.NEW
+            || transactionState == TransactionState.CLOSED) {
+          throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
+        } else {
+          try {
+            transactionState = TransactionState.NEW;
+            connection.rollback();
+          } catch (SQLException e) {
+            throw new SystemException(e);
+          }
         }
+      } else {
+        setRollbackOnly();
       }
     }
   }
@@ -564,31 +605,43 @@ public class SessionContextFactory {
 
     /**
      * Constructs a NoOpUserTransaction object.
+     * @param session 
      */
-    public NoOpUserTransaction() {
-      super();
+    public NoOpUserTransaction(Session session) {
+      super(session);
     }
 
     public void commit() throws SystemException, RollbackException {
-      if (transactionState == TransactionState.NEW
-          || transactionState == TransactionState.CLOSED) {
-        throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
-      } else {
-        if (transactionState == TransactionState.IN_TRANSACTION_ROLLBACK) {
-          transactionState = TransactionState.NEW;
-          throw new RollbackException("Transaction was rolled back");
+      if (!session.hasJoinedSession()) {
+        if (transactionState == TransactionState.NEW
+            || transactionState == TransactionState.CLOSED) {
+          throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
         } else {
-          transactionState = TransactionState.NEW;
+          if (transactionState == TransactionState.IN_TRANSACTION_ROLLBACK) {
+            transactionState = TransactionState.NEW;
+            throw new RollbackException("Transaction was rolled back");
+          } else {
+            transactionState = TransactionState.NEW;
+          }
+        }
+      } else {
+        if (transactionState != TransactionState.IN_TRANSACTION &&
+            transactionState != TransactionState.IN_TRANSACTION_ROLLBACK) {
+          throw new IllegalStateException("Invalid state: Transaction is closed " + transactionState);
         }
       }
     }
 
     public void rollback() throws SystemException {
-      if (transactionState == TransactionState.NEW
-          || transactionState == TransactionState.CLOSED) {
-        throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
+      if (!session.hasJoinedSession()) {
+        if (transactionState == TransactionState.NEW
+            || transactionState == TransactionState.CLOSED) {
+          throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
+        } else {
+          transactionState = TransactionState.NEW;
+        }
       } else {
-        transactionState = TransactionState.NEW;
+        setRollbackOnly();
       }
     }
   }
@@ -600,16 +653,20 @@ public class SessionContextFactory {
   protected static abstract class BaseUserTransaction implements UserTransaction {
 
   protected TransactionState transactionState;
+  protected Session session;
 
-    public BaseUserTransaction() {
+    public BaseUserTransaction(Session session) {
       this.transactionState = TransactionState.NEW;
+      this.session = session;
     }
 
     public void begin() throws SystemException {
-      if (transactionState == TransactionState.NEW) {
-        transactionState = TransactionState.IN_TRANSACTION;
-      } else {
-        throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
+      if (!session.hasJoinedSession()) {
+        if (transactionState == TransactionState.NEW) {
+          transactionState = TransactionState.IN_TRANSACTION;
+        } else {
+          throw new IllegalStateException("Invalid state: Transaction is " + transactionState);
+        }
       }
     }
 

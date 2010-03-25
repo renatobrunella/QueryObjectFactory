@@ -13,7 +13,7 @@ import sf.qof.testtools.MockConnectionFactory;
 
 public class BaseSessionRunnerTest extends TestCase {
 
-  List<String> log;
+  private static List<String> log;
   
   private class MockDataSource implements DataSource {
 

@@ -43,4 +43,46 @@ public interface SessionContextExt extends SessionContext {
    * @since 1.1.0
    */
   void startSession(TransactionManagementType transactionManagementType) throws SystemException;
+  
+  /**
+   * This method starts a session using the specified <code>TransactionManagementType</code>.
+   *
+   * It creates a new session for the calling thread and assigns a 
+   * database connection to it and it creates a new transaction.
+   * 
+   * It must be called by the calling thread before any other method 
+   * of this session context can be called.
+   * 
+   * Session policy can be specified to require a new session or to join
+   * an existing one.
+   * 
+   * @param transactionManagementType the transaction management type
+   * @param sessionPolicy             the session policy
+   * @throws SystemException        Thrown if an unexpected error condition occurs
+   * @throws IllegalStateException  Thrown if the session is already started
+   * 
+   * @since 1.1.0
+   */
+  void startSession(TransactionManagementType transactionManagementType, SessionPolicy sessionPolicy) throws SystemException;
+  
+  /**
+   * This method starts a session.
+   *
+   * It creates a new session for the calling thread and assigns a 
+   * database connection to it and it creates a new transaction.
+   * 
+   * It must be called by the calling thread before any other method 
+   * of this session context can be called.
+   * 
+   * Session policy can be specified to require a new session or to join
+   * an existing one.
+   * 
+   * @param sessionPolicy  The session policy
+   * 
+   * @throws SystemException        Thrown if an unexpected error condition occurs
+   * @throws IllegalStateException  Thrown if the session is already started
+   * 
+   * @since 1.1.0
+   */
+  void startSession(SessionPolicy sessionPolicy) throws SystemException;
 }

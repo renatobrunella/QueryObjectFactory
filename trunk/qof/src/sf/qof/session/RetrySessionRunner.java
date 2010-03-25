@@ -66,6 +66,20 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
   public RetrySessionRunner(TransactionRunnable<T> runnable, int numberOfRetries) {
     this(runnable, numberOfRetries, 0);
   }
+  
+  /**
+   * Creates a <code>RetrySessionRunner</code> that creates a session
+   * from the default session context.
+   *
+   * @param runnable         a <code>TransactionRunnable</code>
+   * @param numberOfRetries  max number of retries
+   * @param sessionPolicy    the session policy
+   *
+   * @since 1.1.0            
+   */
+  public RetrySessionRunner(TransactionRunnable<T> runnable, int numberOfRetries, SessionPolicy sessionPolicy) {
+    this(runnable, numberOfRetries, 0, sessionPolicy);
+  }
 
   /**
    * Creates a <code>RetrySessionRunner</code> that creates a session
@@ -79,6 +93,21 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, int numberOfRetries, long delayInMilliSeconds) {
     this(runnable, SessionContext.DEFAULT_CONTEXT_NAME, numberOfRetries, delayInMilliSeconds);
+  }
+  
+  /**
+   * Creates a <code>RetrySessionRunner</code> that creates a session
+   * from the default session context.
+   *
+   * @param runnable             a <code>TransactionRunnable</code>
+   * @param numberOfRetries      max number of retries
+   * @param delayInMilliSeconds  delay inbetween retries in milli seconds
+   * @param sessionPolicy        the session policy
+   *
+   * @since 1.1.0            
+   */
+  public RetrySessionRunner(TransactionRunnable<T> runnable, int numberOfRetries, long delayInMilliSeconds, SessionPolicy sessionPolicy) {
+    this(runnable, SessionContext.DEFAULT_CONTEXT_NAME, numberOfRetries, delayInMilliSeconds, sessionPolicy);
   }
 
   /**
@@ -94,6 +123,21 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
   public RetrySessionRunner(TransactionRunnable<T> runnable, String contextName, int numberOfRetries) {
     this(runnable, contextName, numberOfRetries, 0);
   }
+  
+  /**
+   * Creates a <code>RetrySessionRunner</code> that creates a session
+   * from the session context with the given name.
+   *
+   * @param runnable         a <code>TransactionRunnable</code>
+   * @param contextName      the context name
+   * @param numberOfRetries  max number of retries
+   * @param sessionPolicy    the session policy
+   *
+   * @since 1.1.0            
+   */
+  public RetrySessionRunner(TransactionRunnable<T> runnable, String contextName, int numberOfRetries, SessionPolicy sessionPolicy) {
+    this(runnable, contextName, numberOfRetries, 0, sessionPolicy);
+  }
 
   /**
    * Creates a <code>RetrySessionRunner</code> that creates a session
@@ -108,6 +152,25 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
    */
   public RetrySessionRunner(TransactionRunnable<T> runnable, String contextName, int numberOfRetries, long delayInMilliSeconds) {
     super(contextName);
+    this.runnable = runnable;
+    this.numberOfRetries = numberOfRetries;
+    this.delayInMilliSeconds = delayInMilliSeconds;
+  }
+  
+  /**
+   * Creates a <code>RetrySessionRunner</code> that creates a session
+   * from the session context with the given name.
+   *
+   * @param runnable             a <code>TransactionRunnable</code>
+   * @param contextName          the context name
+   * @param numberOfRetries      max number of retries
+   * @param delayInMilliSeconds  delay inbetween retries in milli seconds
+   * @param sessionPolicy        the session policy
+   *
+   * @since 1.1.0
+   */
+  public RetrySessionRunner(TransactionRunnable<T> runnable, String contextName, int numberOfRetries, long delayInMilliSeconds, SessionPolicy sessionPolicy) {
+    super(contextName, sessionPolicy);
     this.runnable = runnable;
     this.numberOfRetries = numberOfRetries;
     this.delayInMilliSeconds = delayInMilliSeconds;

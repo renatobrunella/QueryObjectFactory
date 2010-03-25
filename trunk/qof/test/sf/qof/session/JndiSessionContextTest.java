@@ -85,7 +85,7 @@ public class JndiSessionContextTest extends TestCase {
       ctx.startSession();
       fail("Should raise exception");
     } catch (IllegalStateException e) {
-      assertEquals("Session already running in thread for context JndiSessionContextTest.testStartingTwice", e.getMessage());
+      assertEquals("Session already running in thread for context JndiSessionContextTest.testStartingTwice and session policy requires to start new session", e.getMessage());
     }
     ctx.stopSession();
   }

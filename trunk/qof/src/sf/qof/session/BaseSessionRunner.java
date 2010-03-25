@@ -67,6 +67,8 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
    * Holds the current session context.
    */
   protected SessionContext sessionContext;
+  
+  protected SessionPolicy sessionPolicy;
 
   /**
    * Creates a <code>BaseSessionRunner</code> that creates a session
@@ -76,6 +78,20 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
    */
   public BaseSessionRunner() {
     this(SessionContext.DEFAULT_CONTEXT_NAME);
+  }
+  
+  /**
+   * Creates a <code>BaseSessionRunner</code> that creates or joins a session
+   * from the default session context depending on the session policy.
+   *
+   * @param sessionPolicy the session policy
+   *
+   * @see SessionPolicy
+   *
+   * @since 1.1.0            
+   */
+  public BaseSessionRunner(SessionPolicy sessionPolicy) {
+    this(SessionContext.DEFAULT_CONTEXT_NAME, sessionPolicy);
   }
 
   /**
@@ -87,7 +103,23 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
    * @since 1.0.0            
    */
   public BaseSessionRunner(String contextName) {
+    this(SessionContext.DEFAULT_CONTEXT_NAME, SessionPolicy.MUST_START_NEW_SESSION);
+  }
+  
+  /**
+   * Creates a <code>BaseSessionRunner</code> that creates or joins a session
+   * from the session context with the given name and depending on the session policy.
+   *
+   * @param contextName the context name
+   * @param sessionPolicy the session policy
+   *
+   * @see SessionPolicy
+   *
+   * @since 1.1.0            
+   */
+  public BaseSessionRunner(String contextName, SessionPolicy sessionPolicy) {
     sessionContext = SessionContextFactory.getContext(contextName);
+    this.sessionPolicy = sessionPolicy;
   }
 
   /**
@@ -120,10 +152,10 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
   protected T execute(TransactionManagementType transactionManagementType, Object... arguments) throws SystemException {
     T result;
     if (transactionManagementType == null) {
-      sessionContext.startSession();
+      ((SessionContextExt) sessionContext).startSession(sessionPolicy);
     } else {
       if (sessionContext instanceof SessionContextExt) {
-        ((SessionContextExt) sessionContext).startSession(transactionManagementType);
+        ((SessionContextExt) sessionContext).startSession(transactionManagementType, sessionPolicy);
       } else {
         throw new SystemException("SessionContext does not support transaction management type");
       }

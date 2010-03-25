@@ -74,6 +74,34 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
     super(contextName);
     this.runnable = runnable;
   }
+  
+  /**
+   * Creates a <code>DefaultSessionRunner</code> that creates a session
+   * from the default session context and given session policy.
+   *
+   * @param runnable a <code>TransactionRunnable</code>
+   * @param sessionPolicy the session policy
+   *
+   * @since 1.1.0            
+   */
+  public DefaultSessionRunner(TransactionRunnable<T> runnable, SessionPolicy sessionPolicy) {
+    this(runnable, SessionContext.DEFAULT_CONTEXT_NAME, sessionPolicy);
+  }
+  
+  /**
+   * Creates a <code>DefaultSessionRunner</code> that creates a session
+   * from the session context with the given name and given session policy.
+   * 
+   * @param runnable a <code>TransactionRunnable</code>
+   * @param contextName the context name
+   * @param sessionPolicy the session policy
+   *
+   * @since 1.1.0            
+   */
+  public DefaultSessionRunner(TransactionRunnable<T> runnable, String contextName, SessionPolicy sessionPolicy) {
+    super(contextName, sessionPolicy);
+    this.runnable = runnable;
+  }
 
   @Override
   protected T run(Connection connection, Object... arguments) throws SQLException {

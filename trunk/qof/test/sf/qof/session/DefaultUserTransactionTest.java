@@ -21,7 +21,7 @@ public class DefaultUserTransactionTest extends TestCase {
 	private SessionContextFactory.DefaultUserTransaction trx;
 	
 	public void setUp() throws SQLException {
-		trx = new SessionContextFactory.DefaultUserTransaction(createDataSource().getConnection());
+		trx = new SessionContextFactory.DefaultUserTransaction(new SessionContextFactory.Session(), createDataSource().getConnection());
 	}
 	
 	public void testBegin() throws SystemException {

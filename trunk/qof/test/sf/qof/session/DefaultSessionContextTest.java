@@ -217,7 +217,7 @@ public class DefaultSessionContextTest extends TestCase {
       ctx.startSession();
       fail("Should raise exception");
     } catch (IllegalStateException e) {
-      assertEquals("Session already running in thread for context testStartingTwice", e.getMessage());
+      assertEquals("Session already running in thread for context testStartingTwice and session policy requires to start new session", e.getMessage());
     }
     ctx.stopSession();
   }
@@ -327,9 +327,9 @@ public class DefaultSessionContextTest extends TestCase {
         }
       }
     };
-    SessionContextFactory.setDataSource("testSetSessionConnectionHandlerContext", createDataSource());
-    SessionContextFactory.setSessionConnectionHandler("testSetSessionConnectionHandlerContext", handler);
-    SessionContext ctx = SessionContextFactory.getContext("testSetSessionConnectionHandlerContext");
+    SessionContextFactory.setDataSource("DefaultSessionContextTest.testSetSessionConnectionHandlerContext", createDataSource());
+    SessionContextFactory.setSessionConnectionHandler("DefaultSessionContextTest.testSetSessionConnectionHandlerContext", handler);
+    SessionContext ctx = SessionContextFactory.getContext("DefaultSessionContextTest.testSetSessionConnectionHandlerContext");
     assertFalse(called[0]);
     assertFalse(called[1]);
     ctx.startSession();
