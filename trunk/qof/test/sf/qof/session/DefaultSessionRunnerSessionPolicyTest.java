@@ -238,6 +238,46 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
       };
     };
   }
+  
+  
+  public void testJoinedFailsBeanJndi() throws SystemException, SQLException {
+    SessionContextFactory.removeContext();
+    SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
+    try {
+      DefaultSessionRunner.execute(
+          createTransactionRunnableThatFails("insert into test values (1, 'John')", SessionPolicy.CAN_JOIN_EXISTING_SESSION), 
+          SessionPolicy.MUST_START_NEW_SESSION);
+      fail("must throw exception");
+    } catch (SystemException e) {
+      assertEquals("java.sql.SQLException: sf.qof.session.SystemException: java.sql.SQLException: force rollback", e.getMessage());
+    }
+    Connection connection = createDataSource().getConnection();
+    ResultSet rs = connection.createStatement().executeQuery("select * from test");
+    assertFalse(rs.next());
+    connection.close();
+  }
+
+  private TransactionRunnable<Void> createTransactionRunnableThatFails(final String statement1, 
+      final SessionPolicy sessionPolicy2) {
+    return new TransactionRunnable<Void>() {
+      public Void run(Connection connection, Object... arguments) throws SQLException {
+        Statement stmt = connection.createStatement();
+        try {
+          stmt.execute(statement1);
+          DefaultSessionRunner.execute(new TransactionRunnable<Void>() {
+            public Void run(Connection connection, Object... arguments) throws SQLException {
+              throw new SQLException("force rollback");
+            };
+          }, sessionPolicy2);
+        } catch (SystemException e) {
+          throw new SQLException(e);
+        } finally {
+          stmt.close();
+        }
+        return null;
+      };
+    };
+  }
 
   public static class DataSourceWrapper implements DataSource {
     DataSource dataSource;
