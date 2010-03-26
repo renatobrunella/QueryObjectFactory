@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import sf.qof.BaseQuery;
 import sf.qof.*;
-import sf.qof.QueryObjectFactory;
 import sf.qof.testtools.MockConnectionData;
 import sf.qof.testtools.MockConnectionFactory;
 
@@ -70,5 +68,18 @@ public class ClobAdapterTest extends TestCase {
     assertEquals("getClob(1)", log.get(i++));
     assertEquals("close()", log.get(i++));
   }
+  
+  public void testRegister() {
+    ClobAdapter.register("ClobAdapter");
+    assertTrue(QueryObjectFactory.isMapperRegistered("ClobAdapter"));
+    QueryObjectFactory.unregisterMapper("ClobAdapter");
+  }
+  
+  public void testGetNumberOfColumns() {
+    assertEquals(1, new ClobAdapter().getNumberOfColumns());
+  }
 
+  public void testClobReader() {
+    assertNotNull(new ClobReader());
+  }
 }

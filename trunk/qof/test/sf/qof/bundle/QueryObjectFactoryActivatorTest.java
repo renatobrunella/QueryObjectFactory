@@ -56,6 +56,7 @@ public class QueryObjectFactoryActivatorTest extends TestCase {
     activator.stop(context);
     // because our mock service runs in the same class loader as junit we need to re-register common adapters
     CommonAdapterRegistrar.registerCommonAdapters();
+    new CommonAdapterRegistrar();
   }
 
   private class TestableQueryObjectFactoryActivator extends QueryObjectFactoryActivator { }

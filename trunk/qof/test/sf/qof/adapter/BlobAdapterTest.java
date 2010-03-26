@@ -106,5 +106,18 @@ public class BlobAdapterTest extends TestCase {
     assertEquals("getBlob(1)", log.get(i++));
     assertEquals("close()", log.get(i++));
   }
+  
+  public void testRegister() {
+    BlobAdapter.register("BlobAdapter");
+    assertTrue(QueryObjectFactory.isMapperRegistered("BlobAdapter"));
+    QueryObjectFactory.unregisterMapper("BlobAdapter");
+  }
+  
+  public void testGetNumberOfColumns() {
+    assertEquals(1, new BlobAdapter().getNumberOfColumns());
+  }
 
+  public void testBlobReader() {
+    assertNotNull(new BlobReader());
+  }
 }
