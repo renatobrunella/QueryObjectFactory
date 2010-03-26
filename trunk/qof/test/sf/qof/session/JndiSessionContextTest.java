@@ -3,32 +3,30 @@ package sf.qof.session;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Hashtable;
 
-import javax.naming.Binding;
-import javax.naming.Context;
-import javax.naming.Name;
-import javax.naming.NameClassPair;
-import javax.naming.NameParser;
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.spi.InitialContextFactory;
 import javax.sql.DataSource;
 
-import sf.qof.testtools.MockConnectionFactory;
-
 import junit.framework.TestCase;
+import sf.qof.testtools.MockConnectionFactory;
 
 public class JndiSessionContextTest extends TestCase {
 
   public void setUp() {
-    System.setProperty("java.naming.factory.initial", MockInitialContextFactory.class.getName());
+    MockInitialContextFactory.register();
+    try {
+      MockContext.getInstance().bind("datasource", new MockDataSource());
+    } catch (NamingException e) {
+    }
   }
   
   public void tearDown() {
-    System.getProperties().remove("java.naming.factory.initial");
+    try {
+      MockContext.getInstance().unbind("datasource");
+    } catch (NamingException e) {
+    }
   }
-
+  
   public void testGetConnection() throws SystemException {
     SessionContextFactory.setJndiDataSource("JndiSessionContextTest.testGetConnection", "datasource", null, TransactionManagementType.CONTAINER);
     SessionContext ctx = SessionContextFactory.getContext("JndiSessionContextTest.testGetConnection"); 
@@ -60,7 +58,7 @@ public class JndiSessionContextTest extends TestCase {
     assertNotNull(connectionA);
     Connection connectionB = ctxB.getConnection();
     assertNotNull(connectionB);
-    assertFalse(connectionA == connectionB);
+    assertTrue(connectionA == connectionB);
     ctxA.stopSession();
     ctxB.stopSession();
   }
@@ -137,165 +135,6 @@ public class JndiSessionContextTest extends TestCase {
     ctx.getUserTransaction().setRollbackOnly();
     assertTrue(ctx.getUserTransaction().isRollbackOnly());
     ctx.stopSession();
-  }
-  
-
-  public static class MockInitialContextFactory implements
-      InitialContextFactory {
-
-    public Context getInitialContext(Hashtable<?, ?> environment)
-        throws NamingException {
-      return new MockContext();
-    }
-
-  }
-
-  public static class MockContext implements Context {
-
-
-    public Object lookup(String name) throws NamingException {
-      if (name.equals("datasource")) {
-        return new MockDataSource();
-      } else {
-        throw new NamingException(name + " not found");
-      }
-    }
-
-    public Object addToEnvironment(String propName, Object propVal)
-        throws NamingException {
-
-      return null;
-    }
-
-    public void bind(Name name, Object obj) throws NamingException {
-
-    }
-
-    public void bind(String name, Object obj) throws NamingException {
-
-    }
-
-    public void close() throws NamingException {
-
-    }
-
-    public Name composeName(Name name, Name prefix) throws NamingException {
-
-      return null;
-    }
-
-    public String composeName(String name, String prefix)
-        throws NamingException {
-
-      return null;
-    }
-
-    public Context createSubcontext(Name name) throws NamingException {
-
-      return null;
-    }
-
-    public Context createSubcontext(String name) throws NamingException {
-
-      return null;
-    }
-
-    public void destroySubcontext(Name name) throws NamingException {
-
-    }
-
-    public void destroySubcontext(String name) throws NamingException {
-
-    }
-
-    public Hashtable<?, ?> getEnvironment() throws NamingException {
-
-      return null;
-    }
-
-    public String getNameInNamespace() throws NamingException {
-
-      return null;
-    }
-
-    public NameParser getNameParser(Name name) throws NamingException {
-
-      return null;
-    }
-
-    public NameParser getNameParser(String name) throws NamingException {
-
-      return null;
-    }
-
-    public NamingEnumeration<NameClassPair> list(Name name)
-        throws NamingException {
-
-      return null;
-    }
-
-    public NamingEnumeration<NameClassPair> list(String name)
-        throws NamingException {
-
-      return null;
-    }
-
-    public NamingEnumeration<Binding> listBindings(Name name)
-        throws NamingException {
-
-      return null;
-    }
-
-    public NamingEnumeration<Binding> listBindings(String name)
-        throws NamingException {
-
-      return null;
-    }
-
-    public Object lookup(Name name) throws NamingException {
-
-      return null;
-    }
-
-    public Object lookupLink(Name name) throws NamingException {
-
-      return null;
-    }
-
-    public Object lookupLink(String name) throws NamingException {
-
-      return null;
-    }
-
-    public void rebind(Name name, Object obj) throws NamingException {
-
-    }
-
-    public void rebind(String name, Object obj) throws NamingException {
-
-    }
-
-    public Object removeFromEnvironment(String propName) throws NamingException {
-
-      return null;
-    }
-
-    public void rename(Name oldName, Name newName) throws NamingException {
-
-    }
-
-    public void rename(String oldName, String newName) throws NamingException {
-
-    }
-
-    public void unbind(Name name) throws NamingException {
-
-    }
-
-    public void unbind(String name) throws NamingException {
-
-    }
-
   }
   
   private static class MockDataSource implements DataSource {

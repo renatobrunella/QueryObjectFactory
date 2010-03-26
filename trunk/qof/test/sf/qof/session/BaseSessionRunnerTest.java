@@ -54,6 +54,7 @@ public class BaseSessionRunnerTest extends TestCase {
   }
   
   public void testSuccessDefaultContext() throws SystemException {
+    SessionContextFactory.removeContext();
     SessionContextFactory.setDataSource(new MockDataSource());
     String result = new BaseSessionRunner<String>() {
       @Override
@@ -69,6 +70,7 @@ public class BaseSessionRunnerTest extends TestCase {
   }
   
   public void testSuccessNamedContext() throws SystemException {
+    SessionContextFactory.removeContext("MY_CONTEXT");
     SessionContextFactory.setDataSource("MY_CONTEXT", new MockDataSource());
     String result = new BaseSessionRunner<String>("MY_CONTEXT") {
       @Override
@@ -84,6 +86,7 @@ public class BaseSessionRunnerTest extends TestCase {
   }
   
   public void testFailureDefaultContext() throws SystemException {
+    SessionContextFactory.removeContext();
     SessionContextFactory.setDataSource(new MockDataSource());
     try {
       new BaseSessionRunner<String>() {
@@ -104,6 +107,7 @@ public class BaseSessionRunnerTest extends TestCase {
   }
   
   public void testForcedRollbackDefaultContext() throws SystemException {
+    SessionContextFactory.removeContext();
     new SessionContextFactory();
     SessionContextFactory.setDataSource(new MockDataSource());
     new BaseSessionRunner<Void>() {

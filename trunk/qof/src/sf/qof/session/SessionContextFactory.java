@@ -100,6 +100,26 @@ public class SessionContextFactory {
     return getContext(contextName, DefaultSessionContext.class);
   }
   
+  /**
+   * Removes the default <code>SessionContext</code>.
+   * 
+   * @since 1.1.0
+   */
+  public static void removeContext() {
+    removeContext(SessionContext.DEFAULT_CONTEXT_NAME);
+  }
+  
+  /**
+   * Removes the <code>SessionContext</code> with a given name.
+   *
+   * @param contextName the context name
+   * 
+   * @since 1.1.0
+   */
+  public static void removeContext(String contextName) {
+    sessionContextMap.remove(contextName);
+  }
+  
   private synchronized static SessionContext getContext(String contextName, Class<?> sessionContextClass) {
     SessionContext sessionContext = sessionContextMap.get(contextName);
     if (sessionContext == null) {
