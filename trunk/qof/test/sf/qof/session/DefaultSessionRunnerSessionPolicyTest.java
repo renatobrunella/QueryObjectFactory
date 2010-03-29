@@ -230,7 +230,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
             };
           }, sessionPolicy2);
         } catch (SystemException e) {
-          throw new SQLException(e);
+          throw new SQLException(e.getMessage());
         } finally {
           stmt.close();
         }
@@ -249,7 +249,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
           SessionPolicy.MUST_START_NEW_SESSION);
       fail("must throw exception");
     } catch (SystemException e) {
-      assertEquals("java.sql.SQLException: sf.qof.session.SystemException: java.sql.SQLException: force rollback", e.getMessage());
+      assertEquals("java.sql.SQLException: java.sql.SQLException: forced rollback", e.getMessage());
     }
     Connection connection = createDataSource().getConnection();
     ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -266,11 +266,11 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
           stmt.execute(statement1);
           DefaultSessionRunner.execute(new TransactionRunnable<Void>() {
             public Void run(Connection connection, Object... arguments) throws SQLException {
-              throw new SQLException("force rollback");
+              throw new SQLException("forced rollback");
             };
           }, sessionPolicy2);
         } catch (SystemException e) {
-          throw new SQLException(e);
+          throw new SQLException(e.getMessage());
         } finally {
           stmt.close();
         }
@@ -303,7 +303,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
     }
 
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-      return dataSource.isWrapperFor(iface);
+      return false;
     }
 
     public void setLoginTimeout(int seconds) throws SQLException {
@@ -315,7 +315,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
     }
 
     public <T> T unwrap(Class<T> iface) throws SQLException {
-      return dataSource.unwrap(iface);
+      return null;
     }
 
     public DataSourceWrapper(DataSource dataSource) {

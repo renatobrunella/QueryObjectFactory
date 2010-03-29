@@ -352,7 +352,7 @@ public class DefaultSessionRunnerTest extends TestCase {
     }
 
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
-      return dataSource.isWrapperFor(iface);
+      return false;
     }
 
     public void setLoginTimeout(int seconds) throws SQLException {
@@ -364,7 +364,7 @@ public class DefaultSessionRunnerTest extends TestCase {
     }
 
     public <T> T unwrap(Class<T> iface) throws SQLException {
-      return dataSource.unwrap(iface);
+      return null;
     }
 
     public DataSourceWrapper(DataSource dataSource) {
