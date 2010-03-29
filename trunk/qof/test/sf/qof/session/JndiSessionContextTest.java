@@ -3,11 +3,13 @@ package sf.qof.session;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import junit.framework.TestCase;
+import sf.qof.testtools.LoggingDelegationProxy;
 import sf.qof.testtools.MockConnectionFactory;
 
 public class JndiSessionContextTest extends TestCase {
@@ -137,6 +139,35 @@ public class JndiSessionContextTest extends TestCase {
     ctx.stopSession();
   }
   
+  public void testSetAutoCommitPolicyTrueBeanManaged() throws SystemException, NamingException {
+    SessionContextFactory.removeContext("testSetAutoCommitPolicyTrue");
+    SessionContextFactory.setJndiDataSource("testSetAutoCommitPolicyTrue", "datasource", null, TransactionManagementType.BEAN);
+    SessionContextFactory.setAutoCommitPolicy("testSetAutoCommitPolicyTrue", true);
+    SessionContext ctx = SessionContextFactory.getContext("testSetAutoCommitPolicyTrue");
+    List<String> log = ((LoggingDelegationProxy) ((MockDataSource) MockContext.getInstance().lookup("datasource")).connection).getLog();
+    assertEquals(0, log.size());
+    ctx.startSession();
+    assertEquals(1, log.size());
+    assertEquals("setAutoCommit(false)", log.get(0));
+    ctx.stopSession();
+    assertEquals(2, log.size());
+    assertEquals("close()", log.get(1));
+  }
+  
+  public void testSetAutoCommitPolicyTrueContainerManaged() throws SystemException, NamingException {
+    SessionContextFactory.removeContext("testSetAutoCommitPolicyTrue");
+    SessionContextFactory.setJndiDataSource("testSetAutoCommitPolicyTrue", "datasource", null, TransactionManagementType.CONTAINER);
+    SessionContextFactory.setAutoCommitPolicy("testSetAutoCommitPolicyTrue", true);
+    SessionContext ctx = SessionContextFactory.getContext("testSetAutoCommitPolicyTrue");
+    List<String> log = ((LoggingDelegationProxy) ((MockDataSource) MockContext.getInstance().lookup("datasource")).connection).getLog();
+    assertEquals(0, log.size());
+    ctx.startSession();
+    assertEquals(0, log.size());
+    ctx.stopSession();
+    assertEquals(1, log.size());
+    assertEquals("close()", log.get(0));
+  }
+
   private static class MockDataSource implements DataSource {
 
     public Connection connection;

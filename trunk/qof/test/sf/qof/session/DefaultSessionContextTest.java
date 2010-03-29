@@ -370,6 +370,23 @@ public class DefaultSessionContextTest extends TestCase {
     assertEquals("close()", log.get(1));
   }
   
+  public void testSetAutoCommitPolicyTrueDefault() throws SystemException {
+    SessionContextFactory.removeContext();
+    MockDataSource dataSource = new MockDataSource();
+    SessionContextFactory.setDataSource(dataSource);
+    SessionContextFactory.setAutoCommitPolicy(true);
+    SessionContext ctx = SessionContextFactory.getContext();
+    SessionContextFactory.removeContext();
+    List<String> log = ((LoggingDelegationProxy) dataSource.connection).getLog();
+    assertEquals(0, log.size());
+    ctx.startSession();
+    assertEquals(1, log.size());
+    assertEquals("setAutoCommit(false)", log.get(0));
+    ctx.stopSession();
+    assertEquals(2, log.size());
+    assertEquals("close()", log.get(1));
+  }
+  
   private static class MockDataSource implements DataSource {
 
     public Connection connection;
