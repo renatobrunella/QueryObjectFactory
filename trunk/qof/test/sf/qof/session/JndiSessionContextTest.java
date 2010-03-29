@@ -29,7 +29,7 @@ public class JndiSessionContextTest extends TestCase {
   
   public void testGetConnection() throws SystemException {
     SessionContextFactory.setJndiDataSource("JndiSessionContextTest.testGetConnection", "datasource", null, TransactionManagementType.CONTAINER);
-    SessionContext ctx = SessionContextFactory.getContext("JndiSessionContextTest.testGetConnection"); 
+    SessionContext ctx = SessionContextFactory.getContext("JndiSessionContextTest.testGetConnection");
     try {
       assertNull(ctx.getConnection());
       fail("Should throw exception");
@@ -115,7 +115,7 @@ public class JndiSessionContextTest extends TestCase {
   }
 
   public void testIsRollbackOnly() throws SystemException {
-    SessionContextFactory.setJndiDataSource("JndiSessionContextTest.testIsRollbackOnly", "datasource", null, TransactionManagementType.CONTAINER);
+    SessionContextFactory.setJndiDataSource("JndiSessionContextTest.testIsRollbackOnly", "datasource", null, TransactionManagementType.valueOf("CONTAINER"));
     SessionContext ctx = SessionContextFactory.getContext("JndiSessionContextTest.testIsRollbackOnly");
     try {
       ctx.getUserTransaction().isRollbackOnly();
