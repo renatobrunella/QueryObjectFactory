@@ -58,7 +58,8 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
    * @since 1.0.0            
    */
   public DefaultSessionRunner(TransactionRunnable<T> runnable) {
-    this(runnable, SessionContext.DEFAULT_CONTEXT_NAME);
+    super();
+    this.runnable = runnable;
   }
 
   /**
@@ -85,7 +86,8 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
    * @since 1.1.0            
    */
   public DefaultSessionRunner(TransactionRunnable<T> runnable, SessionPolicy sessionPolicy) {
-    this(runnable, SessionContext.DEFAULT_CONTEXT_NAME, sessionPolicy);
+    super(sessionPolicy);
+    this.runnable = runnable;
   }
   
   /**
