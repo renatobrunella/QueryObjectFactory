@@ -1,6 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
 Bundle-Name: QueryObjectFactory
 Bundle-SymbolicName: sf.qof
-Bundle-Version: 1.0.2.GA
+Bundle-Version: 1.0.3.GA
 Bundle-Vendor: brunella ltd
 Bundle-Copyright: "brunella ltd (c) 2007 - 2010"
 Bundle-DocURL: http://www.queryobjectfactory.com/
