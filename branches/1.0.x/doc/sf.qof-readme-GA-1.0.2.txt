@@ -1,13 +1,13 @@
-This is release 1.0.1.GA of QueryObjectFactory
+This is release 1.0.2.GA of QueryObjectFactory
 
 This release is fully OSGi capable and has no external dependencies.
-It is intended to be the last release before the final production release 1.0.1.GA
+It is intended to be the last release before the final production release 1.0.2.GA
 
 
-sf.qof-full-1.0.1.GA.zip           Full package containing Eclipse project, Source, JUnits tests
-sf.qof-1.0.1.GA.jar                Binary OSGi Bundle - can be used as normal library jar
-sf.qof-api-doc-1.0.1.GA.jar        JavaDoc
-sf.qof-source-1.0.1.GA.jar         Source - does not contain build files, tests, libraries, etc.
+sf.qof-full-1.0.2.GA.zip           Full package containing Eclipse project, Source, JUnits tests
+sf.qof-1.0.2.GA.jar                Binary OSGi Bundle - can be used as normal library jar
+sf.qof-api-doc-1.0.2.GA.jar        JavaDoc
+sf.qof-source-1.0.2.GA.jar         Source - does not contain build files, tests, libraries, etc.
 
 
 Changes:
