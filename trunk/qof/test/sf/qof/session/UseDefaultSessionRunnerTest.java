@@ -21,8 +21,8 @@ public class UseDefaultSessionRunnerTest extends TestCase {
   
   
   public void test() {
-//    Dao2 dao = QueryObjectFactory.createQueryObject(Dao2.class, 10, "string");
-//    assertNotNull(dao);
+    Dao2 dao = QueryObjectFactory.createQueryObject(Dao2.class, 10, "string");
+    assertNotNull(dao);
   }
 
   @UseSessionContext(name = "MY_CONTEXT")
@@ -56,7 +56,7 @@ public class UseDefaultSessionRunnerTest extends TestCase {
     @Override
     public Integer numberOfPerson2(final int id) throws SQLException {
       try {
-        return DefaultSessionRunner.executeContainerManaged(
+        return (Integer) DefaultSessionRunner.executeContainerManaged(
           new TransactionRunnable() {
             public Object run(Connection connection, Object... arguments) throws SQLException {
               return Dao3.super.numberOfPerson2(id);

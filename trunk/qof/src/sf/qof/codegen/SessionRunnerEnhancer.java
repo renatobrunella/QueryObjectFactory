@@ -81,7 +81,7 @@ public class SessionRunnerEnhancer implements Enhancer {
   private void generateStaticAccessorMethod(ClassEmitter ce, Class<?> superClass, Method superMethod, int index) {
     Class<?>[] params = superMethod.getParameterTypes();
     org.objectweb.asm.Type[] paramTypes = new org.objectweb.asm.Type[params.length + 1];
-    paramTypes[0] = org.objectweb.asm.Type.getType(superClass);
+    paramTypes[0] = ce.getClassType();
     for (int i = 0; i < params.length; i++) {
       paramTypes[i + 1] = org.objectweb.asm.Type.getType(params[i]);
     }
