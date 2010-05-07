@@ -128,7 +128,7 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
    * @since 1.0.0            
    */
   public T execute(Object... arguments) throws SystemException {
-    return execute(null, arguments);
+    return execute(TransactionManagementType.NONE, arguments);
   }
   
   /**
@@ -151,7 +151,7 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
   
   protected T execute(TransactionManagementType transactionManagementType, Object... arguments) throws SystemException {
     T result;
-    if (transactionManagementType == null) {
+    if (transactionManagementType == TransactionManagementType.NONE) {
       ((SessionContextExt) sessionContext).startSession(sessionPolicy);
     } else {
       if (sessionContext instanceof SessionContextExt) {

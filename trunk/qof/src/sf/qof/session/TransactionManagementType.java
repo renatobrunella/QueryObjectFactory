@@ -8,6 +8,11 @@ package sf.qof.session;
 public enum TransactionManagementType {
 
   /**
+   * No special transaction management
+   */
+  NONE,
+  
+  /**
    * The bean is managing the transaction.
    */
   BEAN,

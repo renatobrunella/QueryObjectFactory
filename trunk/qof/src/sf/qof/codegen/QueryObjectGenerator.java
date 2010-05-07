@@ -352,11 +352,11 @@ public class QueryObjectGenerator {
 
     Constructor<?>[] superConstructors = superClass.getDeclaredConstructors();
     for (Constructor<?> superConstuctor : superConstructors) {
-      addConstrcutor(ce, superConstuctor);
+      addConstructor(ce, superConstuctor);
     }
   }
 
-  private void addConstrcutor(ClassEmitter ce, Constructor<?> superConstructor) {
+  private void addConstructor(ClassEmitter ce, Constructor<?> superConstructor) {
     Signature sigConstructor = ReflectionUtils.getConstructorSignature(superConstructor);
     CodeEmitter co = ce.begin_method(superConstructor.getModifiers(), sigConstructor, null, null);
     co.load_this();

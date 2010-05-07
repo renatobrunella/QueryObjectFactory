@@ -28,6 +28,7 @@ import java.util.Map;
 import sf.qof.adapter.CommonAdapterRegistrar;
 import sf.qof.adapter.MappingAdapter;
 import sf.qof.codegen.AnnotationMapperFactory;
+import sf.qof.codegen.QueryObjectEnhancer;
 import sf.qof.codegen.QueryObjectGenerator;
 import sf.qof.customizer.Customizer;
 import sf.qof.customizer.DefaultCustomizer;
@@ -239,6 +240,8 @@ public class QueryObjectFactory {
           sqlDialect = DEFAULT_SQL_DIALECT;
         }
         clazz = new QueryObjectGenerator(customizer, sqlDialect).create(queryDefinitionClass, mappers, superClass);
+        
+        clazz = new QueryObjectEnhancer().enhance(queryDefinitionClass, clazz);
         // put the newly created class
         ClassGenerationCache.putCachedClass(clazz, queryDefinitionClass);
       } catch (RuntimeException e) {

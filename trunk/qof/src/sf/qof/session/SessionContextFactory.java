@@ -277,7 +277,10 @@ public class SessionContextFactory {
 
     @Override
     protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException {
-      if (transactionManagementType != null) {
+      if (transactionManagementType == null) {
+        throw new IllegalArgumentException("Transaction management type is null");
+      }
+      if (transactionManagementType != TransactionManagementType.NONE) {
         throw new SystemException("Transaction management type is not supported");
       }
       return new DefaultUserTransaction(session, connection);
@@ -305,6 +308,9 @@ public class SessionContextFactory {
       this.jndiName = jndiName;
       this.jndiProperties = jndiProperties;
       if (transactionManagementType == null) {
+        throw new IllegalArgumentException("Transaction management type is null");
+      }
+      if (transactionManagementType == TransactionManagementType.NONE) {
         this.transactionManagementType = TransactionManagementType.BEAN;
       } else {
         this.transactionManagementType = transactionManagementType;
@@ -343,6 +349,9 @@ public class SessionContextFactory {
     @Override
     protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException {
       if (transactionManagementType == null) {
+        throw new IllegalArgumentException("Transaction management type is null");
+      }
+      if (transactionManagementType == TransactionManagementType.NONE) {
         if (this.transactionManagementType == TransactionManagementType.BEAN) {
           return new DefaultUserTransaction(session, connection);
         } else {
@@ -421,11 +430,11 @@ public class SessionContextFactory {
     }
 
     public void startSession() throws SystemException {
-      startSession(null, SessionPolicy.MUST_START_NEW_SESSION);
+      startSession(TransactionManagementType.NONE, SessionPolicy.MUST_START_NEW_SESSION);
     }
     
     public void startSession(SessionPolicy sessionPolicy) throws SystemException {
-      startSession(null, sessionPolicy);
+      startSession(TransactionManagementType.NONE, sessionPolicy);
     }
     
     public void startSession(TransactionManagementType transactionManagementType) throws SystemException {
@@ -433,6 +442,9 @@ public class SessionContextFactory {
     }
     
     public void startSession(TransactionManagementType transactionManagementType, SessionPolicy sessionPolicy) throws SystemException {
+      if (transactionManagementType == null) {
+        throw new IllegalArgumentException("Transaction management type is null");
+      }
       Session session = sessionThreadLocal.get();
       DataSource dataSource = null;
       if (sessionPolicy == SessionPolicy.MUST_START_NEW_SESSION && session.getState() == SessionState.RUNNING) {
@@ -451,7 +463,7 @@ public class SessionContextFactory {
         if (sessionConnectionHandler != null) {
           connection = sessionConnectionHandler.getConnection(dataSource);
         } else {
-          if (transactionManagementType == null) {
+          if (transactionManagementType == TransactionManagementType.NONE) {
             if (setAutoCommitToFalse) {
               connection = DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE.getConnection(dataSource);
             } else {
