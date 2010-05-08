@@ -16,7 +16,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-package sf.qof.codegen;
+package sf.qof.codegen.enhancer;
 
 import static sf.qof.codegen.Constants.SIG_DefaultSessionRunner_execute;
 import static sf.qof.codegen.Constants.SIG_DefaultSessionRunner_executeBeanManaged;
@@ -46,6 +46,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Type;
 
+import sf.qof.codegen.EmitUtils;
+import sf.qof.codegen.enhancer.QueryObjectClassEnhancer;
 import sf.qof.session.TransactionManagementType;
 import sf.qof.session.UseDefaultSessionRunner;
 import sf.qof.session.UseSessionContext;
