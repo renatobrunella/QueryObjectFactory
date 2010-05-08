@@ -52,7 +52,7 @@ import sf.qof.session.UseSessionContext;
 import sf.qof.util.DefineClassHelper;
 import sf.qof.util.ReflectionUtils;
 
-public class SessionRunnerEnhancer implements Enhancer {
+public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
 
   public <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass) {
     // find methods annotated with @UseDefaultSessionRunner
