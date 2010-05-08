@@ -283,16 +283,6 @@ public final class ReflectionUtils {
 
     return new Signature(method.getName(), org.objectweb.asm.Type.getType(method.getReturnType()), paramTypes);
   }
-
-  public static Signature getSpecialMethodSignature(Method method) {
-    Class<?>[] params = method.getParameterTypes();
-    org.objectweb.asm.Type[] paramTypes = new org.objectweb.asm.Type[params.length];
-    for (int i = 0; i < params.length; i++) {
-      paramTypes[i] = org.objectweb.asm.Type.getType(params[i]);
-    }
-    
-    return new Signature(method.getClass().getName() + "." + method.getName(), org.objectweb.asm.Type.getType(method.getReturnType()), paramTypes);
-  }
   
   /**
    * Returns a constructor <code>Signature</code> object for a <code>Constructor</code> parameter.
