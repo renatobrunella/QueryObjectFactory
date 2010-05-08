@@ -71,6 +71,7 @@ public final class Constants {
 
   public static final Type TYPE_Throwable = Type.getType("Ljava/lang/Throwable;");
   public static final Type TYPE_RuntimeException = Type.getType("Ljava/lang/RuntimeException;");
+  public static final Type TYPE_SystemException = Type.getType("Lsf/qof/session/SystemException;");
 
   public static final Type TYPE_Collection = Type.getType("Ljava/util/Collection;");
   public static final Type TYPE_Map = Type.getType("Ljava/util/Map;");
@@ -188,6 +189,9 @@ public final class Constants {
   public static final Signature SIG_Double_doubleValue = new Signature("doubleValue", "()D");
   public static final Signature SIG_Character_charValue = new Signature("charValue", "()C");
   public static final Signature SIG_Boolean_booleanValue = new Signature("booleanValue", "()Z");
+
+  public static final Signature SIG_getCause = new Signature("getCause", "()Ljava/lang/Throwable;");
+  public static final Signature SIG_getMessage = new Signature("getMessage", "()Ljava/lang/String;");
 
   public static final Type TYPE_SessionPolicy = Type.getType(SessionPolicy.class);
   public static final Type TYPE_TransactionRunnable = Type.getType(TransactionRunnable.class);
