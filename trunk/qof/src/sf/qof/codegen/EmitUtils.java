@@ -18,13 +18,21 @@
  */
 package sf.qof.codegen;
 
+import static sf.qof.codegen.Constants.SIG_Boolean_booleanValue;
 import static sf.qof.codegen.Constants.SIG_Boolean_valueOf;
+import static sf.qof.codegen.Constants.SIG_Byte_byteValue;
 import static sf.qof.codegen.Constants.SIG_Byte_valueOf;
+import static sf.qof.codegen.Constants.SIG_Character_charValue;
 import static sf.qof.codegen.Constants.SIG_Character_valueOf;
+import static sf.qof.codegen.Constants.SIG_Double_doubleValue;
 import static sf.qof.codegen.Constants.SIG_Double_valueOf;
+import static sf.qof.codegen.Constants.SIG_Float_floatValue;
 import static sf.qof.codegen.Constants.SIG_Float_valueOf;
+import static sf.qof.codegen.Constants.SIG_Integer_intValue;
 import static sf.qof.codegen.Constants.SIG_Integer_valueOf;
+import static sf.qof.codegen.Constants.SIG_Long_longValue;
 import static sf.qof.codegen.Constants.SIG_Long_valueOf;
+import static sf.qof.codegen.Constants.SIG_Short_shortValue;
 import static sf.qof.codegen.Constants.SIG_Short_valueOf;
 import static sf.qof.codegen.Constants.SIG_close;
 import static sf.qof.codegen.Constants.SIG_ungetConnection;
@@ -74,25 +82,53 @@ public class EmitUtils {
    * @param primitiveType  primitive type
    */
   public static void boxUsingValueOf(CodeEmitter co, Type primitiveType) {
-    if (primitiveType == TYPE_byte) {
+    if (primitiveType.equals(TYPE_byte)) {
       co.invoke_static(TYPE_Byte, SIG_Byte_valueOf);
-    } else if (primitiveType == TYPE_short) {
+    } else if (primitiveType.equals(TYPE_short)) {
       co.invoke_static(TYPE_Short, SIG_Short_valueOf);
-    } else if (primitiveType == TYPE_int) {
+    } else if (primitiveType.equals(TYPE_int)) {
       co.invoke_static(TYPE_Integer, SIG_Integer_valueOf);
-    } else if (primitiveType == TYPE_long) {
+    } else if (primitiveType.equals(TYPE_long)) {
       co.invoke_static(TYPE_Long, SIG_Long_valueOf);
-    } else if (primitiveType == TYPE_float) {
+    } else if (primitiveType.equals(TYPE_float)) {
       co.invoke_static(TYPE_Float, SIG_Float_valueOf);
-    } else if (primitiveType == TYPE_double) {
+    } else if (primitiveType.equals(TYPE_double)) {
       co.invoke_static(TYPE_Double, SIG_Double_valueOf);
-    } else if (primitiveType == TYPE_char) {
+    } else if (primitiveType.equals(TYPE_char)) {
       co.invoke_static(TYPE_Character, SIG_Character_valueOf);
-    } else if (primitiveType == TYPE_boolean) {
+    } else if (primitiveType.equals(TYPE_boolean)) {
       co.invoke_static(TYPE_Boolean, SIG_Boolean_valueOf);
     }
   }
 
+  /**
+   * Emits code to call the <code>xyzValue</code> method of the boxed
+   * types of numbers
+   * 
+   * @param co             the code emitter
+   * @param boxedType      the boxed type
+   */
+  public static void unboxUsingXValue(CodeEmitter co, Type boxedType) {
+    if (boxedType.equals(TYPE_Byte)) {
+      co.invoke_virtual(TYPE_Byte, SIG_Byte_byteValue);
+    } else if (boxedType.equals(TYPE_Short)) {
+      co.invoke_virtual(TYPE_Short, SIG_Short_shortValue);
+    } else if (boxedType.equals(TYPE_Integer)) {
+      co.invoke_virtual(TYPE_Integer, SIG_Integer_intValue);
+    } else if (boxedType.equals(TYPE_Long)) {
+      co.invoke_virtual(TYPE_Long, SIG_Long_longValue);
+    } else if (boxedType.equals(TYPE_Float)) {
+      co.invoke_virtual(TYPE_Float, SIG_Float_floatValue);
+    } else if (boxedType.equals(TYPE_Double)) {
+      co.invoke_virtual(TYPE_Double, SIG_Double_doubleValue);
+    } else if (boxedType.equals(TYPE_Character)) {
+      co.invoke_virtual(TYPE_Character, SIG_Character_charValue);
+    } else if (boxedType.equals(TYPE_Boolean)) {
+      co.invoke_virtual(TYPE_Boolean, SIG_Boolean_booleanValue);
+    }
+  }
+
+  
   /**
    * Emits code to call <code>close()</code> on the local variable.
    * 

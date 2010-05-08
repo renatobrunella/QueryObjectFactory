@@ -22,6 +22,10 @@ import net.sf.cglib.core.Signature;
 
 import org.objectweb.asm.Type;
 
+import sf.qof.session.DefaultSessionRunner;
+import sf.qof.session.SessionPolicy;
+import sf.qof.session.TransactionRunnable;
+
 /**
  * Internal - holds constants for type and signature definitions.
  */
@@ -43,6 +47,7 @@ public final class Constants {
   public static final String FIELD_NAME_MAX_RESULTS = "maxResults";
 
   // types
+  public static final Type TYPE_Object = Type.getType("Ljava/lang/Object;");
   public static final Type TYPE_Byte = Type.getType("Ljava/lang/Byte;");
   public static final Type TYPE_Boolean = Type.getType("Ljava/lang/Boolean;");
   public static final Type TYPE_Short = Type.getType("Ljava/lang/Short;");
@@ -174,4 +179,25 @@ public final class Constants {
   public static final Signature SIG_Double_valueOf = new Signature("valueOf", "(D)Ljava/lang/Double;");
   public static final Signature SIG_Character_valueOf = new Signature("valueOf", "(C)Ljava/lang/Character;");
   public static final Signature SIG_Boolean_valueOf = new Signature("valueOf", "(Z)Ljava/lang/Boolean;");
+  
+  public static final Signature SIG_Byte_byteValue = new Signature("byteValue", "()B");
+  public static final Signature SIG_Short_shortValue = new Signature("shortValue", "()S");
+  public static final Signature SIG_Integer_intValue = new Signature("intValue", "()I");
+  public static final Signature SIG_Long_longValue = new Signature("longValue", "()J");
+  public static final Signature SIG_Float_floatValue = new Signature("floatValue", "()F");
+  public static final Signature SIG_Double_doubleValue = new Signature("doubleValue", "()D");
+  public static final Signature SIG_Character_charValue = new Signature("charValue", "()C");
+  public static final Signature SIG_Boolean_booleanValue = new Signature("booleanValue", "()Z");
+
+  public static final Type TYPE_SessionPolicy = Type.getType(SessionPolicy.class);
+  public static final Type TYPE_TransactionRunnable = Type.getType(TransactionRunnable.class);
+  public static final Signature SIG_TransactionRunnable_run = new Signature("run", "(Ljava/sql/Connection;[Ljava/lang/Object;)Ljava/lang/Object;");
+  
+  public static final Type TYPE_DefaultSessionRunner = Type.getType(DefaultSessionRunner.class);
+  public static final Signature SIG_DefaultSessionRunner_execute = 
+    new Signature("execute", "(Lsf/qof/session/TransactionRunnable;Ljava/lang/String;Lsf/qof/session/SessionPolicy;[Ljava/lang/Object;)Ljava/lang/Object;");
+  public static final Signature SIG_DefaultSessionRunner_executeBeanManaged = 
+    new Signature("executeBeanManaged", "(Lsf/qof/session/TransactionRunnable;Ljava/lang/String;Lsf/qof/session/SessionPolicy;[Ljava/lang/Object;)Ljava/lang/Object;");
+  public static final Signature SIG_DefaultSessionRunner_executeContainerManaged = 
+    new Signature("executeContainerManaged", "(Lsf/qof/session/TransactionRunnable;Ljava/lang/String;Lsf/qof/session/SessionPolicy;[Ljava/lang/Object;)Ljava/lang/Object;");
 }
