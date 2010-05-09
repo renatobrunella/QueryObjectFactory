@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies that the connection of the query object should be aquired from
+ * Specifies that the connection of the query object should be acquired from
  * a session context.
  * 
  * It allows to specify a session context name that is used in the implementation
