@@ -237,4 +237,38 @@ public class UseDefaultSessionRunnerTest extends TestCase {
     SessionContextFactory.removeContext();
   }
   
+  public static abstract class BaseClass implements BaseQuery {
+    @UseDefaultSessionRunner()
+    protected abstract int numberOfItemsInt() throws SQLException;
+    
+    protected abstract void insertItem(int id, String name) throws SQLException; 
+    
+    @UseDefaultSessionRunner
+    public void doInsert() throws SQLException {
+      insertItem(1, "item");
+    }
+  }
+  
+  @UseSessionContext
+  public static abstract class SuperClass extends BaseClass {
+    @Query(sql = "select count(*) num {int%%} from test")
+    protected abstract int numberOfItemsInt() throws SQLException;
+
+    @Insert(sql = "insert into test (id, name) values ({%1}, {%2})")
+    @Override protected abstract void insertItem(int id, String name) throws SQLException;
+  }
+  
+  public void testAnnotatedBaseClass() throws SQLException {
+    SessionContextFactory.removeContext();
+    SessionContextFactory.setDataSource(dataSource);
+    SessionContextFactory.setAutoCommitPolicy(true);
+    
+    SuperClass dao = QueryObjectFactory.createQueryObject(SuperClass.class);
+    
+    assertEquals(0, dao.numberOfItemsInt());
+    dao.doInsert();
+    assertEquals(1, dao.numberOfItemsInt());
+    
+    SessionContextFactory.removeContext();
+  }
 }

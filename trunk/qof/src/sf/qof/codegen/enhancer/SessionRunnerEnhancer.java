@@ -32,7 +32,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.sf.cglib.core.Block;
 import net.sf.cglib.core.ClassEmitter;
@@ -70,7 +72,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
 
   public <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass) {
     // find methods annotated with @UseDefaultSessionRunner
-    List<Method> annotatedMethods = getAnnotatedMethods(queryDefinitionClass, superClass);
+    List<Method> annotatedMethods = getAllAnnotatedMethods(queryDefinitionClass, superClass);
     if (!annotatedMethods.isEmpty()) {
       if (!queryDefinitionClass.isAnnotationPresent(UseSessionContext.class)) {
         throw new RuntimeException("UseDefaultSessionRunner requires UseSessionContext annotation");
@@ -81,14 +83,28 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
     return superClass;
   }
 
-  private <T> List<Method> getAnnotatedMethods(Class<T> queryDefinitionClass, Class<T> superClass) {
-    List<Method> annotatedMethods = new ArrayList<Method>(); 
-    for (Method method : queryDefinitionClass.getDeclaredMethods()) {
-      if (method.isAnnotationPresent(UseDefaultSessionRunner.class)) {
-        annotatedMethods.add(method);
+  private <T> List<Method> getAllAnnotatedMethods(Class<T> queryDefinitionClass, Class<T> superClass) {
+    Set<Method> annotatedMethods = new HashSet<Method>();
+    Class<?> clazz = queryDefinitionClass;
+    while (clazz != null) {
+      for (Method method : clazz.getDeclaredMethods()) {
+        if (method.isAnnotationPresent(UseDefaultSessionRunner.class)) {
+          annotatedMethods.add(method);
+        }
       }
+      clazz = clazz.getSuperclass();
     }
-    return annotatedMethods;
+    clazz = superClass;
+    while (clazz != null) {
+      for (Method method : clazz.getDeclaredMethods()) {
+        if (method.isAnnotationPresent(UseDefaultSessionRunner.class)) {
+          annotatedMethods.add(method);
+        }
+      }
+      clazz = clazz.getSuperclass();
+    }
+    
+    return new ArrayList<Method>(annotatedMethods);
   }
   
   /*
