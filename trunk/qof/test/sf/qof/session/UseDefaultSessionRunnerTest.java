@@ -1,73 +1,80 @@
 package sf.qof.session;
 
-import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.sql.DataSource;
+
+import org.hsqldb.jdbc.jdbcDataSource;
 
 import junit.framework.TestCase;
 import sf.qof.BaseQuery;
+import sf.qof.Insert;
 import sf.qof.Query;
 import sf.qof.QueryObjectFactory;
+import sf.qof.session.DefaultSessionRunnerTest.DataSourceWrapper;
 
 public class UseDefaultSessionRunnerTest extends TestCase {
 
-  @UseSessionContext(name = "MY_CONTEXT")
-  public interface Dao extends BaseQuery {
-    
-    @Query(sql = "select sum(*) {%%} from person")
-    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION,
-        transactionManagementType = TransactionManagementType.NONE)
-    public Integer numberOfPerson() throws SQLException;
-  }
+  private DataSource dataSource;
   
-  
-  public void test() {
-    Dao2 dao = QueryObjectFactory.createQueryObject(Dao2.class, 10, "string");
-    assertNotNull(dao);
+  private DataSource createDataSource() {
+    jdbcDataSource ds = new jdbcDataSource();
+    ds.setDatabase("jdbc:hsqldb:mem:aname");
+    ds.setUser("sa");
+    ds.setPassword("");
+    return new DataSourceWrapper(ds);
   }
 
-  @UseSessionContext(name = "MY_CONTEXT")
-  public static abstract class Dao2 implements BaseQuery {
-    
-    public Dao2(String s) {
-      
+  public void setUp() throws Exception {
+    dataSource = createDataSource();
+    MockInitialContextFactory.register();
+    MockContext.getInstance().bind("datasource", dataSource);
+    Statement stmt = createDataSource().getConnection().createStatement();
+    try {
+      stmt.execute("create table test (id integer, name varchar(40))");
+    } finally {
+      stmt.close();
     }
-      
-    public Dao2(int id, String s) {
-      
+  }
+
+  public void tearDown() throws Exception {
+    MockContext.getInstance().unbind("datasource");
+    Statement stmt = dataSource.getConnection().createStatement();
+    try {
+      stmt.execute("drop table test");
+    } finally {
+      stmt.close();
     }
+  }
+
+  @UseSessionContext()
+  public interface DaoInterfaceDefaultContextNoTM extends BaseQuery {
     
-    @Query(sql = "select sum(*) {%%} from person")
-    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION,
-        transactionManagementType = TransactionManagementType.NONE)
-    public abstract Integer numberOfPerson(int id) throws SQLException, SystemException;
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION)
+    public Integer numberOfItemsInteger() throws SQLException;
     
-    protected Integer numberOfPerson2(int id) throws SQLException {
-      return -1;
-    }
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION)
+    public int numberOfItemsInt() throws SQLException;
+    
+    @Insert(sql = "insert into test (id, name) values ({%1}, {%2})")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION)
+    public void insertItem(int id, String name) throws SQLException;
   }
   
-  public static abstract class Dao3 extends Dao2 {
-
-    public Dao3(int id, String s) {
-      super(id, s);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Integer numberOfPerson2(final int id) throws SQLException {
-      try {
-        return (Integer) DefaultSessionRunner.executeContainerManaged(
-          new TransactionRunnable() {
-            public Object run(Connection connection, Object... arguments) throws SQLException {
-              return Dao3.super.numberOfPerson2(id);
-            }}, SessionPolicy.CAN_JOIN_EXISTING_SESSION);
-      } catch (SystemException e) {
-        if (e.getCause() instanceof SQLException) {
-          throw (SQLException) e.getCause();
-        } else {
-          throw new SQLException(e.getMessage());
-        }
-      }
-    }
+  public void testDaoInterfaceDefaultContextNoTM() throws SQLException {
+    SessionContextFactory.removeContext();
+    SessionContextFactory.setDataSource(dataSource);
+    
+    DaoInterfaceDefaultContextNoTM dao = QueryObjectFactory.createQueryObject(DaoInterfaceDefaultContextNoTM.class);
+    
+    assertEquals(0, dao.numberOfItemsInteger().intValue());
+    dao.insertItem(1, "Iten 1");
+    assertEquals(1, dao.numberOfItemsInt());
+    
+    SessionContextFactory.removeContext();
   }
+  
 }

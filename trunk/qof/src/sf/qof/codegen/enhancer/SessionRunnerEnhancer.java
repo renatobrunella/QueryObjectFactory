@@ -145,8 +145,8 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
 
     co.load_args(0, paramTypes.length);
     
-    // use invokespecial to call 
-    co.invoke_constructor(paramTypes[0], ReflectionUtils.getMethodSignature(enhancedMethod));
+    // use invokespecial to call
+    co.invoke_constructor(Type.getType(enhancedMethod.getDeclaringClass()), ReflectionUtils.getMethodSignature(enhancedMethod));
     co.return_value();
     
     co.end_method();
@@ -197,7 +197,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
 
     // create run method
     // Object run(Connection connection, Object... arguments) throws SQLException;
-    co = ce.begin_method(0, SIG_TransactionRunnable_run, new Type[] { TYPE_SQLException }, null);
+    co = ce.begin_method(Constants.ACC_PUBLIC, SIG_TransactionRunnable_run, new Type[] { TYPE_SQLException }, null);
 
     Block tryBlock = co.begin_block();
     
@@ -212,7 +212,9 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
     
     co.invoke_static(outerClass, sigAccessMethod);
     
-    if (enhancedMethod.getReturnType().isPrimitive()) {
+    if (enhancedMethod.getReturnType() == Void.TYPE) {
+      co.aconst_null();
+    } else if (enhancedMethod.getReturnType().isPrimitive()) {
       EmitUtils.boxUsingValueOf(co, Type.getType(enhancedMethod.getReturnType()));
     }
     
@@ -224,7 +226,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
     Local localException = co.make_local(TYPE_SystemException);
     Label labelNotSQLException = co.make_label();
     co.store_local(localException);
-    
+
     co.load_local(localException);
     co.invoke_virtual(TYPE_SystemException, SIG_getCause);
     co.instance_of(TYPE_SQLException);
@@ -242,7 +244,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
     co.invoke_virtual(TYPE_SystemException, SIG_getMessage);
     co.invoke_constructor(TYPE_SQLException, new Signature("<init>", "(Ljava/lang/String;)V"));
     co.athrow();
-    
+
     co.end_method();
     
     ce.end_class();
@@ -283,7 +285,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
     co.new_instance(transactionRunnable);
     co.dup();
     co.load_this();
-    co.load_arg(0);
+    co.load_args();
     co.invoke_constructor(transactionRunnable, getTransactionRunnableConstructorSignature(ce.getClassType(), enhancedMethod));
     // SessionContext name
     co.push(sessionContext.name());
