@@ -54,6 +54,18 @@ import sf.qof.session.UseSessionContext;
 import sf.qof.util.DefineClassHelper;
 import sf.qof.util.ReflectionUtils;
 
+/**
+ * <code>SessionRunnerEnhancer</code> enhances methods that are annotated
+ * with <code>@UseDefaultSessionRunner</code>.
+ * 
+ * Annotated methods are wrapped in a <code>TransactionRunnable</code>
+ * anonymous class and executed using the <code>DefaultSessionRunner</code>.
+ * 
+ * @see sf.qof.session.UseDefaultSessionRunner
+ * @see sf.qof.session.DefaultSessionRunner
+ * 
+ * @since 1.1.0
+ */
 public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
 
   public <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass) {

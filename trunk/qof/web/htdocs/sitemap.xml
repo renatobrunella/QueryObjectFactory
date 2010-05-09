@@ -6,1357 +6,1422 @@
                       http://www.google.com/schemas/sitemap/0.84/sitemap.xsd">
  <url>
   <loc>http://qof-jdbc.sourceforge.net/</loc>
-  <lastmod>2007-09-17T19:43:58Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/allclasses-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/allclasses-noframe.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/constant-values.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/deprecated-list.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/doc-files/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/doc-files/lgpl-3_0.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/doc-files/mappings.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/doc-files/qof-small.png</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/help-doc.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/index-all.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/overview-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/overview-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/overview-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/package-list</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/resources/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/resources/inherit.gif</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/serialized-form.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/BaseQuery.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/Call.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/Delete.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/Insert.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/Paging.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/Query.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/QueryObjectFactory.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/QueryObjectFactoryService.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/Update.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/BlobAdapter.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/BlobReader.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/BooleanAdapter.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/ClobAdapter.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/ClobReader.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/CommonAdapterRegistrar.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/DynamicMappingAdapter.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/EnumerationAdapter.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/GeneratorMappingAdapter.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/MappingAdapter.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/adapter/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/Logger.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/LoggerFactory.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/LoggerImpl.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/NullLogger.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/QueryObjectFactoryActivator.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/bundle/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/AnnotationMapperFactory.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/CallQueryMethodGenerator.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:32:59Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/Constants.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/EmitUtils.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/InsertUpdateDeleteQueryMethodGenerator.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/OutputParameterRegistrationMappingGenerator.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/ParameterMappingGenerator.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/QueryObjectGenerator.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/ResultMappingGenerator.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/SelectQueryMethodGenerator.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/enhancer/</loc>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/enhancer/QueryObjectClassEnhancer.html</loc>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/enhancer/QueryObjectEnhancer.html</loc>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/enhancer/SessionRunnerEnhancer.html</loc>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/enhancer/package-frame.html</loc>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/enhancer/package-summary.html</loc>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/enhancer/package-tree.html</loc>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/codegen/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/ConnectionFactoryCustomizer.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/Customizer.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/DefaultConnectionFactoryCustomizer.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/DefaultCustomizer.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/SessionContextConnectionFactoryCustomizer.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/customizer/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/dialect/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/dialect/DefaultDialect.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/dialect/HSQLDbDialect.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/dialect/OracleDialect.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/dialect/SQLDialect.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/dialect/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/dialect/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/dialect/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/exception/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/exception/SqlParserException.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/exception/ValidationException.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:00Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/exception/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/exception/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/exception/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractBaseMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractCharacterMapping.CharacterMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractCharacterMapping.StringMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractCharacterMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractDateTimeMapping.DateMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractDateTimeMapping.TimeMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractDateTimeMapping.TimestampMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractDateTimeMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractNumberMapping.BooleanMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractNumberMapping.ByteMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractNumberMapping.DoubleMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractNumberMapping.FloatMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractNumberMapping.IntegerMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractNumberMapping.LongMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractNumberMapping.ShortMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AbstractNumberMapping.html</loc>
-  <lastmod>2010-03-05T14:27:49Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/AdapterMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/CharacterMappingVisitor.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/DateTimeMappingVisitor.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/Mapper.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/Mapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MappingFactory.MappingClassInfo.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MappingFactory.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MappingVisitor.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MethodInfo.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MethodInfoFactory.MethodInfoImpl.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MethodInfoFactory.MethodParameterInfoImpl.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MethodInfoFactory.MethodReturnInfoImpl.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MethodInfoFactory.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MethodParameterInfo.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/MethodReturnInfo.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/NumberMappingVisitor.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/ParameterMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/QueryType.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/ResultMapping.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/mapping/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/Definition.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/ParameterDefinition.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:01Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/ParameterDefinitionImpl.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/PartialDefinitionCombiner.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/ResultDefinition.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/ResultDefinitionImpl.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/SqlParser.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/parser/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/BaseSessionRunner.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/DefaultSessionConnectionHandler.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/DefaultSessionRunner.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/RetrySessionRunner.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/RollbackException.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionConnectionHandler.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContext.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextExt.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextFactory.BaseSessionContext.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextFactory.BaseUserTransaction.TransactionState.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextFactory.BaseUserTransaction.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextFactory.DefaultSessionContext.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextFactory.DefaultUserTransaction.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextFactory.JndiSessionContext.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextFactory.NoOpUserTransaction.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionContextFactory.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionPolicy.html</loc>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionRunner.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SessionRunnerExt.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/SystemException.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/TransactionManagementType.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/TransactionRunnable.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/UseDefaultSessionRunner.html</loc>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/UseSessionContext.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/UserTransaction.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/session/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/CallStackIntrospector.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/ClassGenerationCache.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/DefineClassHelper.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/DelegatorFactory.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/InClauseParameterReplacer.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/ObjectInstantiator.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/ReflectionUtils.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:02Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/package-frame.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/package-summary.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/sf/qof/util/package-tree.html</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/api/stylesheet.css</loc>
-  <lastmod>2010-03-05T14:27:50Z</lastmod>
+  <lastmod>2010-05-09T12:33:03Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/0.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/1.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/10.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/11.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/12.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/13.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/14.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/15.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/16.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/17.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/18.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/19.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/1a.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/1b.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/1c.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/1d.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/1e.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/1f.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/2.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/20.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/21.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/22.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/23.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/24.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/25.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/26.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/27.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/28.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/29.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/2a.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/2b.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/2c.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/2d.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/2e.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/2f.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/3.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/30.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/31.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/32.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/33.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/34.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/35.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/36.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/37.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/38.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/39.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/3a.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:57Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/3b.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/3c.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/3d.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/3e.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/3f.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/4.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/40.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/41.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/42.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/43.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/44.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/coverage/_files/45.html</loc>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/coverage/_files/46.html</loc>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/coverage/_files/47.html</loc>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
+  <priority>0.5000</priority>
+ </url>
+ <url>
+  <loc>http://qof-jdbc.sourceforge.net/coverage/_files/48.html</loc>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/5.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/6.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/7.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/8.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/9.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/a.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/b.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/c.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/d.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/e.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/_files/f.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/coverage.html</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:56Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/coverage/coverage.xml</loc>
-  <lastmod>2010-03-05T14:27:47Z</lastmod>
+  <lastmod>2010-05-09T12:32:58Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/faq.html</loc>
-  <lastmod>2007-11-03T21:43:20Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/images/</loc>
-  <lastmod>2008-08-07T15:33:05Z</lastmod>
+  <lastmod>2008-08-08T18:06:05Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/images/bg-line.png</loc>
-  <lastmod>2007-09-05T12:07:56Z</lastmod>
+  <lastmod>2008-08-08T18:06:05Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/images/bg.png</loc>
-  <lastmod>2007-09-05T10:27:06Z</lastmod>
+  <lastmod>2008-08-08T18:06:05Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/images/qof-line.png</loc>
-  <lastmod>2007-09-05T12:25:28Z</lastmod>
+  <lastmod>2008-08-08T18:06:05Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/images/sf_logo.png</loc>
-  <lastmod>2007-09-05T10:27:06Z</lastmod>
+  <lastmod>2008-08-08T18:06:05Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/images/titlebar_bg.png</loc>
-  <lastmod>2007-09-05T10:27:06Z</lastmod>
+  <lastmod>2008-08-08T18:06:05Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/introduction.html</loc>
-  <lastmod>2007-11-03T21:41:22Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/license.html</loc>
-  <lastmod>2007-09-17T19:44:50Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/qof-print.css</loc>
-  <lastmod>2007-09-08T09:49:58Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/qof.css</loc>
-  <lastmod>2007-09-17T12:28:38Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/robots.txt</loc>
-  <lastmod>2007-09-10T15:38:38Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/tutorial-immutable.html</loc>
-  <lastmod>2007-11-03T21:46:09Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/tutorial-inclause.html</loc>
-  <lastmod>2007-09-17T19:45:04Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/tutorial-quick-start.html</loc>
-  <lastmod>2007-09-17T19:45:10Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
  <url>
   <loc>http://qof-jdbc.sourceforge.net/tutorials.html</loc>
-  <lastmod>2007-09-28T14:34:42Z</lastmod>
+  <lastmod>2008-08-08T18:06:08Z</lastmod>
   <priority>0.5000</priority>
  </url>
 </urlset>
