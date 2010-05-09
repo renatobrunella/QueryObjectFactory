@@ -67,11 +67,171 @@ public class UseDefaultSessionRunnerTest extends TestCase {
   public void testDaoInterfaceDefaultContextNoTM() throws SQLException {
     SessionContextFactory.removeContext();
     SessionContextFactory.setDataSource(dataSource);
+    SessionContextFactory.setAutoCommitPolicy(true);
     
     DaoInterfaceDefaultContextNoTM dao = QueryObjectFactory.createQueryObject(DaoInterfaceDefaultContextNoTM.class);
     
     assertEquals(0, dao.numberOfItemsInteger().intValue());
     dao.insertItem(1, "Iten 1");
+    assertEquals(1, dao.numberOfItemsInt());
+    
+    SessionContextFactory.removeContext();
+  }
+  
+  @UseSessionContext(name = "TEST_CONTEXT")
+  public interface DaoInterfaceNamedContextNoTM extends BaseQuery {
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION)
+    public Integer numberOfItemsInteger() throws SQLException;
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION)
+    public int numberOfItemsInt() throws SQLException;
+    
+    @Insert(sql = "insert into test (id, name) values ({%1}, {%2})")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION)
+    public void insertItem(int id, String name) throws SQLException;
+  }
+  
+  public void testDaoInterfaceNameContextNoTM() throws SQLException {
+    SessionContextFactory.removeContext("TEST_CONTEXT");
+    SessionContextFactory.setDataSource("TEST_CONTEXT", dataSource);
+    SessionContextFactory.setAutoCommitPolicy("TEST_CONTEXT", true);
+    
+    DaoInterfaceNamedContextNoTM dao = QueryObjectFactory.createQueryObject(DaoInterfaceNamedContextNoTM.class);
+    
+    assertEquals(0, dao.numberOfItemsInteger().intValue());
+    dao.insertItem(1, "Iten 1");
+    assertEquals(1, dao.numberOfItemsInt());
+    
+    SessionContextFactory.removeContext("TEST_CONTEXT");
+  }
+  
+  @UseSessionContext()
+  public interface DaoInterfaceDefaultContextBeanTM extends BaseQuery {
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION, 
+        transactionManagementType = TransactionManagementType.BEAN)
+    public Integer numberOfItemsInteger() throws SQLException;
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION, 
+        transactionManagementType = TransactionManagementType.BEAN)
+    public int numberOfItemsInt() throws SQLException;
+    
+    @Insert(sql = "insert into test (id, name) values ({%1}, {%2})")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION, 
+        transactionManagementType = TransactionManagementType.BEAN)
+    public void insertItem(int id, String name) throws SQLException;
+  }
+  
+  public void testDaoInterfaceDefaultContextBeanTM() throws SQLException {
+    SessionContextFactory.removeContext();
+    SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
+    
+    DaoInterfaceDefaultContextBeanTM dao = QueryObjectFactory.createQueryObject(DaoInterfaceDefaultContextBeanTM.class);
+    
+    assertEquals(0, dao.numberOfItemsInteger().intValue());
+    dao.insertItem(1, "Iten 1");
+    assertEquals(1, dao.numberOfItemsInt());
+    
+    SessionContextFactory.removeContext();
+  }
+  
+  @UseSessionContext()
+  public interface DaoInterfaceDefaultContextContainerTM extends BaseQuery {
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION, 
+        transactionManagementType = TransactionManagementType.CONTAINER)
+    public Integer numberOfItemsInteger() throws SQLException;
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION, 
+        transactionManagementType = TransactionManagementType.CONTAINER)
+    public int numberOfItemsInt() throws SQLException;
+    
+    @Insert(sql = "insert into test (id, name) values ({%1}, {%2})")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION, 
+        transactionManagementType = TransactionManagementType.CONTAINER)
+    public void insertItem(int id, String name) throws SQLException;
+  }
+  
+  public void testDaoInterfaceDefaultContextContainerTM() throws SQLException {
+    SessionContextFactory.removeContext();
+    SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.CONTAINER);
+    
+    DaoInterfaceDefaultContextContainerTM dao = QueryObjectFactory.createQueryObject(DaoInterfaceDefaultContextContainerTM.class);
+    
+    assertEquals(0, dao.numberOfItemsInteger().intValue());
+    dao.insertItem(1, "Iten 1");
+    // no commit!
+    assertEquals(0, dao.numberOfItemsInt());
+    
+    SessionContextFactory.removeContext();
+  }
+  
+  public interface DaoInterfaceFails extends BaseQuery {
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner(sessionPolicy = SessionPolicy.CAN_JOIN_EXISTING_SESSION, 
+        transactionManagementType = TransactionManagementType.CONTAINER)
+        public Integer numberOfItemsInteger() throws SQLException;
+  }
+  
+  public void testDaoInterfaceFails() throws SQLException {
+    try {
+      QueryObjectFactory.createQueryObject(DaoInterfaceFails.class);
+      fail("should throw exception");
+    } catch (RuntimeException e) {
+      assertEquals("UseDefaultSessionRunner requires UseSessionContext annotation", e.getMessage());
+    }
+  }
+
+  @UseSessionContext()
+  public static abstract class DaoClassDefaultContextNoTM implements BaseQuery {
+
+    private String message;
+
+    public DaoClassDefaultContextNoTM(String message) {
+      this.message = message;
+    }
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    @UseDefaultSessionRunner()
+    protected abstract int numberOfItemsInt() throws SQLException;
+    
+    @Query(sql = "select count(*) num {int%%} from test")
+    protected abstract Integer numberOfItemsInteger() throws SQLException;
+    
+    @Insert(sql = "insert into test (id, name) values ({%1}, {%2})")
+    protected abstract void insertItem(int id, String name) throws SQLException;
+    
+    @UseDefaultSessionRunner()
+    public String getMessage() {
+      return message;
+    }
+    
+    @UseDefaultSessionRunner()
+    public void doInsert() throws SQLException {
+      if (numberOfItemsInteger() == 0) {
+        insertItem(1, "item");
+      }
+    }
+  }
+  
+  public void testDaoClassDefaultContextNoTM() throws SQLException {
+    SessionContextFactory.removeContext();
+    SessionContextFactory.setDataSource(dataSource);
+    SessionContextFactory.setAutoCommitPolicy(true);
+    
+    DaoClassDefaultContextNoTM dao = QueryObjectFactory.createQueryObject(DaoClassDefaultContextNoTM.class, "Hi there");
+    assertEquals("Hi there", dao.getMessage());
+    
+    assertEquals(0, dao.numberOfItemsInt());
+    dao.doInsert();
     assertEquals(1, dao.numberOfItemsInt());
     
     SessionContextFactory.removeContext();
