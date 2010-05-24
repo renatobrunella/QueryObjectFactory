@@ -8,6 +8,11 @@ public class InClauseParameterReplacerTest extends TestCase {
     String sql = "select * from test where a = ? and b in (?)";
     assertEquals("select * from test where a = ? and b in (?,?,?)", InClauseParameterReplacer.replace(sql, 2, 3));
   }
+  
+  public void testReplaceWithSeparator() {
+    String sql = "select * from test where a = ? and (b like ?)";
+    assertEquals("select * from test where a = ? and (b like ? or b like ? or b like ?)", InClauseParameterReplacer.replace(sql, 2, 3, " or b like "));
+  }
 
   public void testReplace2() {
     String sql = "select * from test where a = ? and b in (?) and c = ?";

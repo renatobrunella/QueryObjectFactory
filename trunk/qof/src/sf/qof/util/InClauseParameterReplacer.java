@@ -35,6 +35,20 @@ public class InClauseParameterReplacer {
    * @return        new SQL statement with additional parameters
    */
   public static String replace(String sql, int index, int numArgs) {
+    return replace(sql, index, numArgs, ",");
+  }
+  
+  /**
+   * Returns a SQL statement that replaces the <code>index</code>-th 
+   * parameter '?' with a number <code>numArgs</code> of '?'.
+   * 
+   * @param sql     the SQL statement
+   * @param index   the index of the parameter to replace
+   * @param numArgs number of parameters required
+   * @param separator the separator used between arguments
+   * @return        new SQL statement with additional parameters
+   */
+  public static String replace(String sql, int index, int numArgs, String separator) {
     StringBuilder sb = new StringBuilder(sql.length() + (numArgs - 1) * 2);
     int currentIndex = 0;
     boolean replaced = false;
@@ -62,7 +76,7 @@ public class InClauseParameterReplacer {
           currentIndex++;
           if (index == currentIndex) {
             for (int j = 0; j < numArgs - 1; j++) {
-              sb.append(',').append('?');
+              sb.append(separator).append('?');
             }
             replaced = true;
           }
