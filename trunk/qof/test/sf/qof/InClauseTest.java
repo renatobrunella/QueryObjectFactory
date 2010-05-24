@@ -54,6 +54,9 @@ public class InClauseTest extends TestCase {
 
     @Query(sql = "select value {%%} from test where x in ({gen%1}) and y = {gen%2}")
     List<String> selectGen(String[] x, String y) throws SQLException;
+    
+    @Query(sql = "select value {%%} from test where (x like {%1# or x like #}) and y = {gen%2}")
+    List<String> selectWithSeparator(String[] x, String y) throws SQLException;
   }
 
   public interface UpdateQueries extends BaseQuery {
@@ -410,6 +413,34 @@ public class InClauseTest extends TestCase {
     assertEquals(13, log.size());
     int i = 0;
     assertEquals("prepareStatement(select value from test where x in ( ?,? ) and y = ? )", log.get(i++));
+    assertEquals("setFetchSize(99)", log.get(i++));
+    assertEquals("setString(1,a)", log.get(i++));
+    assertEquals("setString(2,b)", log.get(i++));
+    assertEquals("setString(3,c)", log.get(i++));
+    assertEquals("executeQuery()", log.get(i++));
+    assertEquals("next()", log.get(i++));
+    assertEquals("getString(value)", log.get(i++));
+    assertEquals("next()", log.get(i++));
+    assertEquals("getString(value)", log.get(i++));
+    assertEquals("next()", log.get(i++));
+    assertEquals("close()", log.get(i++));
+    assertEquals("close()", log.get(i++));
+  }
+  
+  public void testSelectWithSeparator() throws SQLException {
+    List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
+    Map<String, Object> data = new HashMap<String, Object>();
+    results.add(data);
+    data.put("value", "A");
+    data = new HashMap<String, Object>();
+    results.add(data);
+    data.put("value", "B");
+    ((MockConnectionData)connection).setResultSetData(results);
+    List<String> list = selectQueries.selectWithSeparator(new String[]{"a", "b"}, "c");
+    assertEquals(2, list.size());
+    assertEquals(13, log.size());
+    int i = 0;
+    assertEquals("prepareStatement(select value from test where (x like ?  or x like  ? ) and y = ? )", log.get(i++));
     assertEquals("setFetchSize(99)", log.get(i++));
     assertEquals("setString(1,a)", log.get(i++));
     assertEquals("setString(2,b)", log.get(i++));

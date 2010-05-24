@@ -299,6 +299,29 @@ public class SqlParserTest extends TestCase {
     assertNull(def.getField());
     assertTrue(def.isMapKey());
   }
+  
+  public void testParsingWithParameterSeparator() {
+    String sql = "select id {%%} from test where (x like {%1 #or x like#})";
+    SqlParser parser = new SqlParser(sql, false);
+    assertEquals("select id from test where (x like ? )", parser.getSql().trim());
+    assertNotNull(parser.getParameterDefinitions());
+    assertEquals(1, parser.getParameterDefinitions().length);
+    ParameterDefinition paramDef = parser.getParameterDefinitions()[0];
+    assertEquals("auto", paramDef.getType());
+    assertNull(paramDef.getPartialDefinitionGroup());
+    assertNotNull(paramDef.getParameterSeparator());
+    assertEquals(" or x like ", paramDef.getParameterSeparator());
+    
+    assertNotNull(parser.getResultDefinitions());
+    assertEquals(1, parser.getResultDefinitions().length);
+    ResultDefinition def = parser.getResultDefinitions()[0];
+    assertEquals("auto", def.getType());
+    assertNull(def.getIndexes());
+    assertEquals(1, def.getColumns().length);
+    assertEquals("id", def.getColumns()[0]);
+    assertNull(def.getField());
+    assertFalse(def.isMapKey());
+  }
 
   public void testParsingWithMapKey3() {
     String sql = "select id {%%,%%} from test";

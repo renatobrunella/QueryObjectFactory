@@ -33,7 +33,7 @@ public class MappingFactory {
   private MappingFactory() { }
   
   public static ParameterMapping createParameterMapping(ClassLoader classLoader, String mappingType, int index, Class<?> type, Class<?> collectionType,
-      Class<?> beanType, Method[] getters, int[] sqlIndexes, String[] sqlColumns, boolean usesArray) {
+      Class<?> beanType, Method[] getters, int[] sqlIndexes, String[] sqlColumns, boolean usesArray, String parameterSeparator) {
     MappingClassInfo info;
     if (mappingType.equals("auto")) {
       info = getDefaultParameterMappingInfo(type);
@@ -56,7 +56,7 @@ public class MappingFactory {
     Class<?> mappingClass = info.getMapperClass();
     try {
       ParameterMapping mapping = (ParameterMapping) mappingClass.newInstance();
-      mapping.setParameters(index, type, collectionType, beanType, getters, sqlIndexes, sqlColumns, info.getAdapter(), usesArray);
+      mapping.setParameters(index, type, collectionType, beanType, getters, sqlIndexes, sqlColumns, info.getAdapter(), usesArray, parameterSeparator);
       return (ParameterMapping) mapping;
     } catch (InstantiationException e) {
       throw new RuntimeException(e);

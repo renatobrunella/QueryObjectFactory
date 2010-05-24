@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 brunella ltd
+ * Copyright 2010 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-package sf.qof.util;
+package sf.qof;
 
 /**
- * Helper class with utility method to replace in-clause parameters.
+ * Helper class with utility method to replace parameters for 'dynamic' SQL.
+ * 
+ * @since 1.1.0
  */
-@Deprecated
-public class InClauseParameterReplacer {
+public class ParameterReplacer {
 
-  InClauseParameterReplacer() {}
-  
-  /**
-   * Returns a SQL statement that replaces the <code>index</code>-th 
-   * parameter '?' with a number <code>numArgs</code> of '?'.
-   * 
-   * @param sql     the SQL statement
-   * @param index   the index of the parameter to replace
-   * @param numArgs number of parameters required
-   * @return        new SQL statement with additional parameters
-   */
-  public static String replace(String sql, int index, int numArgs) {
-    return replace(sql, index, numArgs, ",");
-  }
+  ParameterReplacer() {}
   
   /**
    * Returns a SQL statement that replaces the <code>index</code>-th 

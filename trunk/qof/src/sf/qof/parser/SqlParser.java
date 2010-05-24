@@ -39,6 +39,7 @@ import sf.qof.exception.SqlParserException;
  * <br> <code>field</code> is the name of the field in the mapped Java Bean object 
  * <br> <code>type</code> is the optional name of mapper (<code>int</code>, <code>string</code>, etc)
  * <br> Fields can be chained up to 5 levels i.e. <code>{%#.field1.field2}</code>
+ * <br> Array parameters can be separated i.e. ...<code>where name like {%1#or name like#}</code>
  * 
  * <p> Result definitions have the following form:
  * <p> <code>{%%}</code> or <code>{type %%}</code>
@@ -314,13 +315,14 @@ public class SqlParser {
   }
 
   private static final Pattern PARAMETER_DEF_PATTERN = 
-    Pattern.compile("\\{([\\w\\-]+)?%(\\d+)((\\.\\w+)(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?)?(@\\d+)?(\\[[\\w]+\\])?\\}");
+    Pattern.compile("\\{([\\w\\-]+)?%(\\d+)((\\.\\w+)(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?)?(@\\d+)?(\\[[\\w]+\\])?(#.*#)?\\}");
 
   private ParameterDefinition parseParameterDefinition(String definition, int curlyBracketIndex) {
     int parameterIndex = -1;
     String mappingType = null;
     int partialDefinitionPart = 0;
     String partialDefinitionGroup = null;
+    String parameterSeparator = null;
     
     Matcher matcher = PARAMETER_DEF_PATTERN.matcher(definition);
     if (matcher.find() && matcher.group().equals(definition)) {
@@ -332,6 +334,12 @@ public class SqlParser {
         partialDefinitionPart = Integer.valueOf(matcher.group(9).substring(1));
       }
       partialDefinitionGroup = matcher.group(10);
+      parameterSeparator = matcher.group(11);
+      if (parameterSeparator != null) {
+        // space were replaced by REPLACEMENT_CHAR
+        parameterSeparator = parameterSeparator.replace(REPLACEMENT_CHAR, ' ');
+        parameterSeparator = parameterSeparator.replace('#', ' ');
+      }
       
       ParameterDefinitionImpl parameterDef = new ParameterDefinitionImpl();
       parameterDef.setType(mappingType);
@@ -340,6 +348,7 @@ public class SqlParser {
       parameterDef.setIndexes(new int[] { sqlIndex });
       parameterDef.setPartialDefinitionPart(partialDefinitionPart);
       parameterDef.setPartialDefinitionGroup(partialDefinitionGroup);
+      parameterDef.setParameterSeparator(parameterSeparator);
       parameterDef.setStartPosition(openCurlyBrackets.get(curlyBracketIndex));
       parameterDef.setEndPosition(closeCurlyBrackets.get(curlyBracketIndex));
       return parameterDef;
@@ -404,6 +413,7 @@ public class SqlParser {
 
   private String extractStrings(String sql, List<String> stringList) {
     char quoteChar = '\0';
+    boolean inHash = false;
     StringBuffer sb = new StringBuffer();
     StringBuffer sbString = null;
 
@@ -425,9 +435,15 @@ public class SqlParser {
         }
       } else {
         if (quoteChar == '{') {
-          // remove white space from {...}
+          // remove white space from {...} unless it is between #...#
+          if (c == '#') {
+            // toggle inHash
+            inHash = !inHash;
+          }
           if (c != ' ' && c != '\t' && c != '\n' && c != '\r') {
             sb.append(c);
+          } else if (inHash) {
+            sb.append(REPLACEMENT_CHAR);
           }
           if (c == '}') {
             quoteChar = '\0';

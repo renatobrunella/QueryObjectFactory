@@ -158,7 +158,7 @@ public final class AnnotationMapperFactory {
       }
       // create mapping
       ParameterMapping mapping = MappingFactory.createParameterMapping(queryDefinitionClass.getClassLoader(), 
-          mappingType, index, type, collectionType, beanType, getters, sqlIndexes, sqlColumns, usesArray);
+          mappingType, index, type, collectionType, beanType, getters, sqlIndexes, sqlColumns, usesArray, parameter.getParameterSeparator());
       list.add(mapping);
     }
     return list;

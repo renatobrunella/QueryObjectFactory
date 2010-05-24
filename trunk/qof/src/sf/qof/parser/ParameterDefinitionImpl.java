@@ -31,6 +31,7 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
   private String type;
   private int parameter;
   private String partialDefinitionGroup;
+  private String parameterSeparator;
   private int partialDefinitionPart;
   private int startPosition;
   private int endPosition;
@@ -126,7 +127,15 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
   public void setPartialDefinitionGroup(String partialDefinitionGroup) {
     this.partialDefinitionGroup = partialDefinitionGroup;
   }
+  
+  public String getParameterSeparator() {
+    return parameterSeparator;
+  }
 
+  public void setParameterSeparator(String parameterSeparator) {
+    this.parameterSeparator = parameterSeparator;
+  }
+  
   public int getPartialDefinitionPart() {
     return partialDefinitionPart;
   }

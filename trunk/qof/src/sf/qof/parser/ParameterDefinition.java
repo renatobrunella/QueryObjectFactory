@@ -59,4 +59,11 @@ public interface ParameterDefinition extends Definition {
    * @return type of the parameter
    */
   String getType();
+  
+  /**
+   * Returns the parameter separator for array parameter types.
+   * 
+   * @return parameter separator
+   */
+  String getParameterSeparator();
 }

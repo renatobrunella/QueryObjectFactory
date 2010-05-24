@@ -53,13 +53,13 @@ import net.sf.cglib.core.Signature;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Type;
 
+import sf.qof.ParameterReplacer;
 import sf.qof.customizer.Customizer;
 import sf.qof.dialect.SQLDialect;
 import sf.qof.exception.ValidationException;
 import sf.qof.mapping.Mapper;
 import sf.qof.mapping.ParameterMapping;
 import sf.qof.mapping.ResultMapping;
-import sf.qof.util.InClauseParameterReplacer;
 
 /**
  * Internal - SelectQueryMethodGenerator is the main generator class for select query methods.
@@ -598,8 +598,13 @@ public class SelectQueryMethodGenerator {
           co.push(mapping.getSqlIndexes()[0]); // index
           co.load_arg(mapping.getIndex());
           co.arraylength(); // numArgs
-          co.invoke_static(Type.getType(InClauseParameterReplacer.class), 
-              new Signature("replace", "(Ljava/lang/String;II)Ljava/lang/String;"));
+          if (mapping.getParameterSeparator() == null) {
+            co.push(",");
+          } else {
+            co.push(mapping.getParameterSeparator());
+          }
+          co.invoke_static(Type.getType(ParameterReplacer.class), 
+              new Signature("replace", "(Ljava/lang/String;IILjava/lang/String;)Ljava/lang/String;"));
         }
       }
     } else {

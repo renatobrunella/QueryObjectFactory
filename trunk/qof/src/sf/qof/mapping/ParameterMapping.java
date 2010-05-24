@@ -40,9 +40,10 @@ public interface ParameterMapping extends Mapping {
    * @param sqlColumns      array of SQL column names
    * @param adapter         custom mapping adapter
    * @param usesArray       parameter is an array
+   * @param parameterSeparator parameter separator
    */
   void setParameters(int index, Class<?> type, Class<?> collectionType, Class<?> beanType, Method[] getters, int[] sqlIndexes,
-      String[] sqlColumns, MappingAdapter adapter, boolean usesArray);
+      String[] sqlColumns, MappingAdapter adapter, boolean usesArray, String parameterSeparator);
 
   /**
    * Returns the method parameter index.
@@ -122,4 +123,11 @@ public interface ParameterMapping extends Mapping {
    * @return uses an array
    */
   boolean usesArray();
+  
+  /**
+   * The parameter separator.
+   * 
+   * @return parameter separator
+   */
+  String getParameterSeparator();
 }

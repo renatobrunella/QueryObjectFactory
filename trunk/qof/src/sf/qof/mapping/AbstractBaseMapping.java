@@ -41,10 +41,11 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   protected Constructor<?> constructor;
   protected Method staticFactoryMethod;
   protected boolean usesArray;
+  protected String parameterSeparator;
 
   // implements ParameterMapping
   public void setParameters(int index, Class<?> type, Class<?> collectionType, Class<?> beanType, Method[] getters,
-      int[] sqlIndexes, String[] sqlColumns, MappingAdapter adapter, boolean usesArray) {
+      int[] sqlIndexes, String[] sqlColumns, MappingAdapter adapter, boolean usesArray, String parameterSeparator) {
     this.index = index;
     this.type = type;
     this.collectionType = collectionType;
@@ -54,6 +55,7 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     this.sqlColumns = sqlColumns;
     this.adapter = adapter;
     this.usesArray = usesArray;
+    this.parameterSeparator = parameterSeparator;
   }
 
   // implements ResultMapping
@@ -140,6 +142,10 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   
   public boolean usesArray() {
     return usesArray;
+  }
+  
+  public String getParameterSeparator() {
+    return parameterSeparator;
   }
 
   private String getSqlColumnsString() {
