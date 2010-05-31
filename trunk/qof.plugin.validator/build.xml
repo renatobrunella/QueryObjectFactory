@@ -122,13 +122,14 @@
 	</target>
 
 	<target name="build" depends="init">
-		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" source="${source}" target="${target}">
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" 
+			source="${source}" target="${target}" includeantruntime="false">
 			<src path="${src.dir}" />
 			<classpath refid="buildclasspath" />
 		</javac>
 		<antcall target="instrument" />
 		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.test.dir}" 
-			source="${source}" target="${target}" deprecation="false">
+			source="${source}" target="${target}" deprecation="false" includeantruntime="false">
 			<src path="${src.test.dir}" />
 			<classpath refid="testclasspath" />
 		</javac>
