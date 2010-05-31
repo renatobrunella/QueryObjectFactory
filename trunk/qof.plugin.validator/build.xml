@@ -205,7 +205,6 @@
 		<if>
 			<isset property="qof.jar" />
 			<then>
-				<echo message="ISSET lib/${qof.jar},lib,." />
 				<jar destfile="${dist.dir}/${bundle.name}-${bundle.version}${bundle.version.postfix}.jar"
 					filesetmanifest="merge">
 					<fileset dir="${bin.dir}">
@@ -226,7 +225,6 @@
 				</jar>
 			</then>
 			<else>
-				<echo message="NOTSET" />
 				<jar destfile="${dist.dir}/${bundle.name}-${bundle.version}${bundle.version.postfix}.jar"
 					manifest="${basedir}/META-INF/MANIFEST.MF" >
 					<fileset dir="${bin.dir}">
