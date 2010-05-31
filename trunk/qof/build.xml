@@ -150,12 +150,13 @@
 
 	<target name="build" depends="init">
 		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.dir}" 
-			source="${source}" target="${target}" encoding="8859_1">
+			source="${source}" target="${target}" encoding="8859_1" includeantruntime="false">
 			<src path="${src.dir}" />
 			<classpath refid="qof.classpath" />
 		</javac>
 		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin.test.dir}" 
-			source="${source}" target="${target}" deprecation="false" encoding="8859_1">
+			source="${source}" target="${target}" deprecation="false" encoding="8859_1"
+			includeantruntime="false">
 			<src path="${src.test.dir}" />
 			<classpath refid="qof.classpath" />
 		</javac>
