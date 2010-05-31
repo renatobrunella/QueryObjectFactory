@@ -19,7 +19,6 @@
 package sf.qof.plugin.common.dialogs;
 
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.jdt.internal.ui.IJavaHelpContextIds;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -41,9 +40,11 @@ import org.eclipse.ui.dialogs.NewFolderDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
 
-@SuppressWarnings("restriction")
 public class FolderSelectionDialog extends ElementTreeSelectionDialog implements ISelectionChangedListener {
 
+  // org.eclipse.jdt.internal.ui.IJavaHelpContextIds.BP_SELECT_DEFAULT_OUTPUT_FOLDER_DIALOG
+  private static String BP_SELECT_DEFAULT_OUTPUT_FOLDER_DIALOG = "org.eclipse.jdt.ui.bp_select_default_output_folder_dialog";
+  
   private Button fNewFolderButton;
   private IContainer fSelectedContainer;
 
@@ -74,8 +75,7 @@ public class FolderSelectionDialog extends ElementTreeSelectionDialog implements
 
     applyDialogFont(result);
 
-    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,
-        IJavaHelpContextIds.BP_SELECT_DEFAULT_OUTPUT_FOLDER_DIALOG);
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, BP_SELECT_DEFAULT_OUTPUT_FOLDER_DIALOG);
 
     return result;
   }
