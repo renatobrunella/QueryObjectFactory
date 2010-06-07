@@ -190,11 +190,13 @@ public class DelegatorFactory {
     co.push(true);
     co.putfield("$$initialized");
     co.load_this();
-    String desc = "(L" + Type.getType(delegateeClass).getInternalName() + ";";
+    StringBuilder sb = new StringBuilder();
+    sb.append("(L").append(Type.getType(delegateeClass).getInternalName()).append(';');
     for (int i = 0; i < constructorParameters.length; i++) {
-      desc += "L" + Type.getType(constructorParameters[i].getClass()).getInternalName() + ";";
+      sb.append('L').append(Type.getType(constructorParameters[i].getClass()).getInternalName()).append(';');
     }
-    desc += ")V";
+    sb.append(")V");
+    String desc = sb.toString();
     for (int i = 0; i < constructorParameters.length; i++) {
       co.load_this();
       co.getfield("$$" + i);
