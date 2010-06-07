@@ -146,24 +146,20 @@ public class PartialDefinitionCombiner {
       int cmp;
       String type1 = o1.getType();
       String type2 = o2.getType();
-      if (type1 != null) {
-        cmp = type1.compareTo(type2);
-      } else if (type2 != null) {
-        cmp = -type2.compareTo(type1);
-      } else {
+      if (type1 == null || type2 == null) {
         cmp = 0;
+      } else {
+        cmp = type1.compareTo(type2);
       }
       if (cmp != 0) {
         return cmp;
       }
       String group1 = o1.getPartialDefinitionGroup();
       String group2 = o2.getPartialDefinitionGroup();
-      if (group1 != null) {
-        cmp = group1.compareTo(group2);
-      } else if (group2 != null) {
-        cmp = -group2.compareTo(group1);
+      if (group1 == null || group2 == null) {
+        cmp= 0;
       } else {
-        cmp = 0;
+        cmp = group1.compareTo(group2);
       }
       if (cmp != 0) {
         return cmp;
