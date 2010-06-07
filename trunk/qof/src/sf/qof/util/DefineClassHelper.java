@@ -75,7 +75,7 @@ public class DefineClassHelper {
    * @see java.lang.ClassLoader
    */
   public static <T> Class<T> defineClass(String className, byte[] byteCode, ClassLoader loader) throws Exception {
-    Object[] args = new Object[] { className, byteCode, new Integer(0), new Integer(byteCode.length),
+    Object[] args = new Object[] { className, byteCode, new Integer(0), Integer.valueOf(byteCode.length),
         PROTECTION_DOMAIN };
     @SuppressWarnings("unchecked") Class<T> definedClass = (Class<T>) DEFINE_CLASS.invoke(loader, args);
     return definedClass;
