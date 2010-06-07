@@ -322,11 +322,11 @@ public class QueryObjectGenerator {
     // fields
     if (!isFieldInDefinitionClass(FIELD_NAME_DEFAULT_BATCH_SIZE)) {
       ce.declare_field(Constants.ACC_PUBLIC + Constants.ACC_FINAL + Constants.ACC_STATIC, 
-        FIELD_NAME_DEFAULT_BATCH_SIZE, TYPE_int, new Integer(DEFAULT_BATCH_SIZE), null);
+        FIELD_NAME_DEFAULT_BATCH_SIZE, TYPE_int, Integer.valueOf(DEFAULT_BATCH_SIZE), null);
     }
     if (!isFieldInDefinitionClass(FIELD_NAME_DEFAULT_FETCH_SIZE)) {
       ce.declare_field(Constants.ACC_PUBLIC + Constants.ACC_FINAL + Constants.ACC_STATIC, 
-        FIELD_NAME_DEFAULT_FETCH_SIZE, TYPE_int, new Integer(DEFAULT_FETCH_SIZE), null);
+        FIELD_NAME_DEFAULT_FETCH_SIZE, TYPE_int, Integer.valueOf(DEFAULT_FETCH_SIZE), null);
     }
 
   	customizer.getConnectionFactoryCustomizer(queryDefinitionClass).emitFields(queryDefinitionClass, superClass, ce);
