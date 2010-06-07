@@ -18,6 +18,7 @@
  */
 package sf.qof.parser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -138,7 +139,9 @@ public class PartialDefinitionCombiner {
     }
   }
 
-  static class DefinitionComparator implements Comparator<Definition> {
+  static class DefinitionComparator implements Comparator<Definition>, Serializable {
+    private static final long serialVersionUID = 8857988829813169427L;
+
     public int compare(Definition o1, Definition o2) {
       int cmp;
       String type1 = o1.getType();
