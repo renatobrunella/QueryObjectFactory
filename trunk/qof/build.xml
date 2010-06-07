@@ -406,7 +406,8 @@
 			<then>
 				<!-- FindBugs taskdef -->
 				<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${env.FINDBUGS_HOME}/lib/findbugs-ant.jar"/>
-				<findbugs home="${env.FINDBUGS_HOME}" output="xml" outputFile="${findbugs.dir}/findbugs.xml" >
+				<findbugs home="${env.FINDBUGS_HOME}" output="xml" outputFile="${findbugs.dir}/findbugs.xml" 
+					excludeFilter="${basedir}/findbugsExclusions.xml">
 					<auxClasspath path="${lib.dir}/osgi.core.jar" />
 					<sourcePath path="${src.dir}" />
 					<class location="${dist.dir}/${bundle.name}-${bundle.version}${bundle.version.postfix}.jar" />
