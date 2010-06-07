@@ -61,11 +61,11 @@
 	<property name="junit.output.nodep.dir" value="${basedir}/${junit.output.nodep.path}" />
 	<property name="web.path" value="web" />
 	<property name="web.dir" value="${basedir}/${web.path}" />
-	<property name="coverage.path" value="${web.path}/htdocs/coverage" />
-	<property name="coverage.dir" value="${basedir}/${coverage.path}" />
+	<property name="web.coverage.dir" value="${web.dir}/htdocs/coverage" />
 	<property name="doc.sfapi.path" value="${web.path}/htdocs/api" />
 	<property name="doc.sfapi.dir" value="${basedir}/${doc.sfapi.path}" />
 	<property name="reports.dir" value="${basedir}/reports" />
+	<property name="coverage.dir" value="${reports.dir}/coverage" />
 	<property name="findbugs.dir" value="${reports.dir}/findbugs" />
 
 	<path id="qof.classpath">
@@ -127,7 +127,9 @@
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${junit.output.dir}" />
 		<mkdir dir="${junit.output.nodep.dir}" />
+		<mkdir dir="${web.coverage.dir}" />
 		<mkdir dir="${reports.dir}" />
+		<mkdir dir="${coverage.dir}" />
 		<mkdir dir="${findbugs.dir}" />
 
 		<mkdir dir="${coverage.dir}" />
@@ -150,7 +152,7 @@
 		<delete dir="${dist.dir}" />
 		<delete dir="${junit.output.dir}" failonerror="no" />
 		<delete dir="${junit.output.nodep.dir}" failonerror="no" />
-		<delete dir="${coverage.dir}" />
+		<delete dir="${web.coverage.dir}" />
 		<delete dir="${doc.sfapi.dir}" />
 		<delete dir="${reports.dir}" />
 	</target>
@@ -338,7 +340,7 @@
 		</javadoc>
 	</target>
 	
-	<target name="coverage" depends="build" description="Coverage" >
+	<target name="coverage">
 		<delete file="${coverage.dir}/metadata.emma" />
 		<delete file="${coverage.dir}/coverage.emma" />
 
@@ -360,7 +362,7 @@
 				<fileset dir="${coverage.dir}" >
 					<include name="*.emma" />
 				</fileset>
-				<html outfile="${coverage.dir}/coverage.html" />
+				<html outfile="${web.coverage.dir}/coverage.html" />
 			</report>
 		</emma>
 		
@@ -398,7 +400,7 @@
 		</zip>
 	</target>
 
-	<target name="findbugs" depends="dist">
+	<target name="findbugs">
 		<if>
 			<isset property="env.FINDBUGS_HOME"/>
 			<then>
