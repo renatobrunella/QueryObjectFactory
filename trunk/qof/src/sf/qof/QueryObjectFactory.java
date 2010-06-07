@@ -97,8 +97,8 @@ public class QueryObjectFactory {
   
   protected static final Customizer DEFAULT_CUSTOMIZER = new DefaultCustomizer(); 
   protected static final SQLDialect DEFAULT_SQL_DIALECT = new DefaultDialect();; 
-  protected static Map<ClassLoader, Customizer> customizerMap = new HashMap<ClassLoader, Customizer>();
-  protected static Map<ClassLoader, SQLDialect> sqlDialectMap = new HashMap<ClassLoader, SQLDialect>();
+  protected static final Map<ClassLoader, Customizer> customizerMap = new HashMap<ClassLoader, Customizer>();
+  protected static final Map<ClassLoader, SQLDialect> sqlDialectMap = new HashMap<ClassLoader, SQLDialect>();
 
   /**
    * Creates a query object class defined by a query definition and returns a new instance. 
