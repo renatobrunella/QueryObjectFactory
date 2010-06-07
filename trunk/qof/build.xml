@@ -2,9 +2,11 @@
 <project basedir="." default="dist" name="qof">
 	<tstamp />
 
+	<property environment="env"/>
+	
 	<!-- jarjar taskdef -->
 	<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="${basedir}/lib/jarjar-0.9.jar" />
-
+	
 	<!-- Ant-Contrib taskdefs -->
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${basedir}/lib/ant-contrib-1.0b3.jar" />
 	
@@ -63,6 +65,8 @@
 	<property name="coverage.dir" value="${basedir}/${coverage.path}" />
 	<property name="doc.sfapi.path" value="${web.path}/htdocs/api" />
 	<property name="doc.sfapi.dir" value="${basedir}/${doc.sfapi.path}" />
+	<property name="reports.dir" value="${basedir}/reports" />
+	<property name="findbugs.dir" value="${reports.dir}/findbugs" />
 
 	<path id="qof.classpath">
 		<pathelement location="${bin.dir}" />
@@ -123,6 +127,8 @@
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${junit.output.dir}" />
 		<mkdir dir="${junit.output.nodep.dir}" />
+		<mkdir dir="${reports.dir}" />
+		<mkdir dir="${findbugs.dir}" />
 
 		<mkdir dir="${coverage.dir}" />
 		<mkdir dir="${doc.sfapi.dir}" />
@@ -146,6 +152,7 @@
 		<delete dir="${junit.output.nodep.dir}" failonerror="no" />
 		<delete dir="${coverage.dir}" />
 		<delete dir="${doc.sfapi.dir}" />
+		<delete dir="${reports.dir}" />
 	</target>
 
 	<target name="build" depends="init">
@@ -383,11 +390,31 @@
 		<antcall target="coverage" />
 		<antcall target="javadoc-sourceforge" />
 		<antcall target="sitemap" />
+		<antcall target="findbugs" />
 		<zip destfile="${dist.dir}/${bundle.name}-website-${bundle.version}${bundle.version.postfix}.zip" >
 			<fileset dir="${web.dir}/htdocs">
 				<exclude name="*/CVS**" />
 			</fileset>
 		</zip>
+	</target>
+
+	<target name="findbugs" depends="dist">
+		<if>
+			<isset property="env.FINDBUGS_HOME"/>
+			<then>
+				<!-- FindBugs taskdef -->
+				<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${env.FINDBUGS_HOME}/lib/findbugs-ant.jar"/>
+				<findbugs home="${env.FINDBUGS_HOME}" output="xml" outputFile="${findbugs.dir}/findbugs.xml" >
+					<auxClasspath path="${lib.dir}/osgi.core.jar" />
+					<sourcePath path="${src.dir}" />
+					<class location="${dist.dir}/${bundle.name}-${bundle.version}${bundle.version.postfix}.jar" />
+			    </findbugs>
+			</then>
+			<else>
+				<echo level="warning" message="Cannot run FindBugs" />
+				<echo level="warning" message="Environment variable FINDBUGS_HOME must be set" />
+			</else>
+		</if>
 	</target>
 	
 </project>
