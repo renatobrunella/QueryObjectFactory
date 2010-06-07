@@ -166,9 +166,13 @@ public class QueryObjectGenerator {
   private void printDebugInfo(Class<?> queryDefinitionClass, List<Mapper> mappers) {
     String dirs = customizer.getClassName(queryDefinitionClass).replace('.', File.separatorChar);
     try {
-      new File(debugLocation + File.separatorChar + dirs).getParentFile().mkdirs();
-
       File file = new File(new File(debugLocation), dirs + ".map");
+      if (!file.getParentFile().exists()) {
+        if (!file.getParentFile().mkdirs()) {
+          throw new RuntimeException("Could not create directory " + file.getParentFile());
+        }
+      }
+
       OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
 
       try {
