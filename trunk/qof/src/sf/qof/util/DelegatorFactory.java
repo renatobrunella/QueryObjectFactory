@@ -135,7 +135,7 @@ public class DelegatorFactory {
     ce.begin_class(Constants.V1_2, Constants.ACC_PUBLIC, className, Type.getType(delegateeClass), delegateeInterfaces,
         "<generated>");
 
-    createConstructorAndFields(ce, delegateeClass, constructorParameters);
+    createConstructorAndFields(ce, constructorParameters);
 
     createInitializeMethod(ce, delegateeFactory, delegateeClass, constructorParameters);
     createMethods(ce, delegateeClass);
@@ -150,8 +150,7 @@ public class DelegatorFactory {
     return DefineClassHelper.defineClass(className, cw.toByteArray(), classLoader);
   }
 
-  private static void createConstructorAndFields(ClassEmitter ce, Class<?> delegateeClass,
-      Object[] constructorParameters) {
+  private static void createConstructorAndFields(ClassEmitter ce, Object[] constructorParameters) {
     ce.declare_field(Constants.ACC_PRIVATE, "$$initialized", TYPE_boolean, false, null);
     for (int i = 0; i < constructorParameters.length; i++) {
       ce.declare_field(Constants.ACC_PRIVATE, "$$" + i, Type.getType(constructorParameters[i].getClass()), null, null);
@@ -173,7 +172,7 @@ public class DelegatorFactory {
 
   private static void createMethods(ClassEmitter ce, Class<?> delegateeClass) {
     for (Method method : delegateeClass.getMethods()) {
-      createMethod(ce, delegateeClass, method);
+      createMethod(ce, method);
     }
   }
 
@@ -209,7 +208,7 @@ public class DelegatorFactory {
     co.end_method();
   }
 
-  private static void createMethod(ClassEmitter ce, Class<?> delegateeClass, Method method) {
+  private static void createMethod(ClassEmitter ce, Method method) {
     if (Modifier.isFinal(method.getModifiers())) {
       return;
     }
