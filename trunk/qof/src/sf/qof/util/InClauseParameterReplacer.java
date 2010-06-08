@@ -18,6 +18,8 @@
  */
 package sf.qof.util;
 
+import sf.qof.ParameterReplacer;
+
 /**
  * Helper class with utility method to replace in-clause parameters.
  */
@@ -36,56 +38,7 @@ public class InClauseParameterReplacer {
    * @return        new SQL statement with additional parameters
    */
   public static String replace(String sql, int index, int numArgs) {
-    return replace(sql, index, numArgs, ",");
-  }
-  
-  /**
-   * Returns a SQL statement that replaces the <code>index</code>-th 
-   * parameter '?' with a number <code>numArgs</code> of '?'.
-   * 
-   * @param sql     the SQL statement
-   * @param index   the index of the parameter to replace
-   * @param numArgs number of parameters required
-   * @param separator the separator used between arguments
-   * @return        new SQL statement with additional parameters
-   */
-  public static String replace(String sql, int index, int numArgs, String separator) {
-    StringBuilder sb = new StringBuilder(sql.length() + (numArgs - 1) * 2);
-    int currentIndex = 0;
-    boolean replaced = false;
-    int i = 0;
-    while (i < sql.length()) {
-      char c = sql.charAt(i);
-      sb.append(c);
-      if (!replaced) {
-        if (c == '/' && i + 1 < sql.length() && sql.charAt(i + 1) == '*') {
-          // skip until end of comment
-          i += 2;
-          sb.append('*');
-          while (i < sql.length()) {
-            c = sql.charAt(i);
-            sb.append(c);
-            if (c == '*' && i + 1 < sql.length() && sql.charAt(i + 1) == '/') {
-              sb.append('/');
-              i++;
-              break;
-            }
-            i++;
-          }
-        }
-        if (c == '?') {
-          currentIndex++;
-          if (index == currentIndex) {
-            for (int j = 0; j < numArgs - 1; j++) {
-              sb.append(separator).append('?');
-            }
-            replaced = true;
-          }
-        }
-      }
-      i++;
-    }
-    return sb.toString();
+    return ParameterReplacer.replace(sql, index, numArgs, ",");
   }
 
 }
