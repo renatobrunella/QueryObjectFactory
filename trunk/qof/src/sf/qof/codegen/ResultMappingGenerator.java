@@ -102,7 +102,7 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
   private Local result;
   private Local mapKey;
   private boolean constructorMappings;
-  private Local[] constructorParameters;
+  private Local[] constructorParameters; //NOPMD
 
   public ResultMappingGenerator(CodeEmitter co, Local resultSetOrCallableStatement, Local result, Local mapKey, 
       boolean constructorMappings, Local[] constructorParameters) {
