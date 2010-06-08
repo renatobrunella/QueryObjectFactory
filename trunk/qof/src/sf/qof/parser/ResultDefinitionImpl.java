@@ -56,7 +56,7 @@ public class ResultDefinitionImpl implements ResultDefinition {
 
   public void setColumns(String[] columns) {
     if (columns == null || columns.length == 0) {
-      this.columns = null;
+      this.columns = null; //NOPMD
     } else {
       this.columns = columns;
     }
@@ -64,7 +64,7 @@ public class ResultDefinitionImpl implements ResultDefinition {
 
   public void setField(String field) {
     if (field == null || "".equals(field)) {
-      this.field = null;
+      this.field = null; //NOPMD
     } else {
       this.field = field;
     }
@@ -76,7 +76,7 @@ public class ResultDefinitionImpl implements ResultDefinition {
 
   public void setIndexes(int[] indexes) {
     if (indexes == null || indexes.length == 0) {
-      this.indexes = null;
+      this.indexes = null; //NOPMD
     } else {
       this.indexes = indexes;
     }

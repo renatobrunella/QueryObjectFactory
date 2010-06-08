@@ -94,7 +94,7 @@ public class QueryObjectFactoryActivator implements BundleActivator, ServiceFact
     }
     trackedClassLoaders.clear();
 
-    delegator = null;
+    delegator = null; //NOPMD
     logger.close();
   }
 

@@ -232,7 +232,7 @@ public class SelectQueryMethodGenerator {
     
     Class<?> resultMapKeyType = mapper.getMethod().getReturnInfo().getMapKeyType();
     if (resultMapKeyType == null) {
-      localMapKey = null;
+      localMapKey = null; //NOPMD
     } else {
       localMapKey = co.make_local(Type.getType(resultMapKeyType));
     }

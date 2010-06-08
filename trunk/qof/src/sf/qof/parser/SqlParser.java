@@ -376,7 +376,7 @@ public class SqlParser {
         if (field3 == null) {
           if (field2 == null) {
             if (field1 == null) {
-              fields = null;
+              fields = null; //NOPMD
             } else {
               fields = new String[] {field1.substring(1)};
             }

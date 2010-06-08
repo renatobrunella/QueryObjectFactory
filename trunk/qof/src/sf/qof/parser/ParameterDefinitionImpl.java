@@ -58,7 +58,7 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
 
   public void setNames(String[] names) {
     if (names == null || names.length == 0) {
-      this.names = null;
+      this.names = null; //NOPMD
     } else {
       this.names = names;
     }
@@ -70,7 +70,7 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
 
   public void setIndexes(int[] indexes) {
     if (indexes == null || indexes.length == 0) {
-      this.indexes = null;
+      this.indexes = null; //NOPMD
     } else {
       this.indexes = indexes;
     }

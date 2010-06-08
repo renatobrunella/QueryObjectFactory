@@ -551,7 +551,7 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
   }
 
   private String getSqlColumn(ResultMapping mapping) {
-    return mapping.getSqlColumns() != null && mapping.getSqlColumns().length == 1 ? mapping.getSqlColumns()[0] : null;
+    return mapping.getSqlColumns() != null && mapping.getSqlColumns().length == 1 ? mapping.getSqlColumns()[0] : null; //NOPMD
   }
 
   private int getSqlIndex(ResultMapping mapping) {

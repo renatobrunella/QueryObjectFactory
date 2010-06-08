@@ -392,13 +392,12 @@ public class SessionContextFactory {
   
     private BaseSessionContext(String contextName) {
       this.contextName = contextName;
-      this.sessionConnectionHandler = null;
       this.setAutoCommitToFalse = true;
     }
 
     protected void setSessionConnectionHandler(SessionConnectionHandler sessionConnectionHandler) {
       if (sessionConnectionHandler == null) {
-        this.sessionConnectionHandler = null;
+        this.sessionConnectionHandler = null; //NOPMD
       } else {
         this.sessionConnectionHandler = sessionConnectionHandler;
       }
