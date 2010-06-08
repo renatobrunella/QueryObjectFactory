@@ -432,7 +432,7 @@
 			<then>
 				<!-- PMD taskdef -->
 				<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpath="${env.PMD_HOME}/lib/pmd-4.2.5.jar"/>
-				<pmd shortFilenames="true">
+				<pmd>
 					<ruleset>rulesets/favorites.xml</ruleset>
 					<ruleset>basic</ruleset>
 					<formatter type="xml" toFile="${pmd.dir}/pmd.xml"/>
