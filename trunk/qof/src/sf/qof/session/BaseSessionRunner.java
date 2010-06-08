@@ -103,7 +103,7 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
    * @since 1.0.0            
    */
   public BaseSessionRunner(String contextName) {
-    this(SessionContext.DEFAULT_CONTEXT_NAME, SessionPolicy.MUST_START_NEW_SESSION);
+    this(contextName, SessionPolicy.MUST_START_NEW_SESSION);
   }
   
   /**

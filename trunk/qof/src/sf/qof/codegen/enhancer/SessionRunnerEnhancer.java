@@ -140,7 +140,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
       Type runnable = generateTransactionRunnable(queryDefinitionClass, ce.getClassType(), enhancedMethod, index, sigAccessMethod);
 
       UseDefaultSessionRunner annotation = method.getAnnotation(UseDefaultSessionRunner.class);
-      generateEnhancedMethod(ce, enhancedMethod, sessionContext, annotation, runnable, sigAccessMethod);
+      generateEnhancedMethod(ce, enhancedMethod, sessionContext, annotation, runnable);
       
       index++;
     }
@@ -304,7 +304,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
    * - Exception handling: SystemException is unwrapped
    */
   private void generateEnhancedMethod(ClassEmitter ce, Method enhancedMethod, 
-      UseSessionContext sessionContext, UseDefaultSessionRunner annotation, Type transactionRunnable, Signature sigAccessMethod) {
+      UseSessionContext sessionContext, UseDefaultSessionRunner annotation, Type transactionRunnable) {
     Signature sigMethod = ReflectionUtils.getMethodSignature(enhancedMethod);
 
     Type[] exceptionTypes = getExceptionTypes(enhancedMethod);
