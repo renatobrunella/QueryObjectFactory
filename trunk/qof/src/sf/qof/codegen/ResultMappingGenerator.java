@@ -377,7 +377,7 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     generateParameterMapping(mapping, TYPE_sqlTimestamp, SIG_getTimestamp, SIG_getTimestampNamed);
   }
 
-  public final void generateParameterMapping(AbstractDateTimeMapping mapping, Type sqlType, Signature sqlTypeGet, Signature sqlTypeGetNamed) {
+  private void generateParameterMapping(AbstractDateTimeMapping mapping, Type sqlType, Signature sqlTypeGet, Signature sqlTypeGetNamed) {
     if ((constructorMappings && mapping.getConstructorParameter() == null)
         ||(!constructorMappings && mapping.getConstructorParameter() != null)) {
       return;
