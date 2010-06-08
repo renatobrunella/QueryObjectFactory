@@ -162,7 +162,6 @@ public class QueryObjectFactoryActivator implements BundleActivator, ServiceFact
 
     public QueryObjectFactoryServiceImpl(Bundle bundle) {
       this.bundleSignature = bundleSignature(bundle);
-      this.bundleClassLoader = null;
     }
 
     private String bundleSignature(Bundle bundle) {
@@ -335,9 +334,6 @@ public class QueryObjectFactoryActivator implements BundleActivator, ServiceFact
    * Delegator object to access protected static methods in sf.qof.QueryObjectFactory
    */
   private static class QueryObjectFactoryDelegator extends QueryObjectFactory {
-
-    public QueryObjectFactoryDelegator() {
-    }
 
     public <T> T createQueryObject_(Class<T> queryDefinitionClass) {
       return createQueryObject(queryDefinitionClass);

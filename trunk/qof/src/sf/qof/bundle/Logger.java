@@ -28,32 +28,32 @@ public interface Logger {
   /**
    * An error message.
    */
-  public static final int LOG_ERROR = 1; // LogService.LOG_ERROR
+  int LOG_ERROR = 1; // LogService.LOG_ERROR
   
   /**
    * A warning message.
    */
-  public static final int LOG_WARNING = 2; // LogService.LOG_WARNING
+  int LOG_WARNING = 2; // LogService.LOG_WARNING
   
   /**
    * An informational message.
    */
-  public static final int LOG_INFO = 3; // LogService.LOG_INFO
+  int LOG_INFO = 3; // LogService.LOG_INFO
   
   /**
    * A debugging message.
    */
-  public static final int LOG_DEBUG = 4; // LogService.LOG_DEBUG
+  int LOG_DEBUG = 4; // LogService.LOG_DEBUG
 
   /**
    * Starts the logger.
    */
-  public abstract void open();
+  void open();
 
   /**
    * Stops the logger.
    */
-  public abstract void close();
+  void close();
 
   /**
    * Logs a message.
@@ -61,7 +61,7 @@ public interface Logger {
    * @param level   the log level
    * @param message the message
    */
-  public abstract void log(int level, String message);
+  void log(int level, String message);
 
   /**
    * Logs a message with an exception.
@@ -70,6 +70,6 @@ public interface Logger {
    * @param message   the message
    * @param exception the exception
    */
-  public abstract void log(int level, String message, Throwable exception);
+  void log(int level, String message, Throwable exception);
 
 }

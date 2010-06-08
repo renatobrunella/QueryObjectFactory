@@ -65,17 +65,17 @@ public class ClobAdapter implements GeneratorMappingAdapter {
     co.load_local(result);
     co.push(indexes[0]);
     co.invoke_interface(result.getType(), SIG_getClob);
-    emitProcessResult(resultMapping, co);
+    emitProcessResult(co);
   }
 
   public void generateFromResultSet(ResultMapping resultMapping, CodeEmitter co, Local resultSet, String[] columns) {
     co.load_local(resultSet);
     co.push(columns[0]);
     co.invoke_interface(TYPE_ResultSet, SIG_getClobNamed);
-    emitProcessResult(resultMapping, co);
+    emitProcessResult(co);
   }
 
-  private void emitProcessResult(ResultMapping resultMapping, CodeEmitter co) {
+  private void emitProcessResult(CodeEmitter co) {
     Local localBlob = co.make_local(TYPE_Blob);
     co.store_local(localBlob);
     Label labelNull = co.make_label();
