@@ -46,7 +46,7 @@ public class MethodInfoFactory {
       Class<?> collectionType = ReflectionUtils.getCollectionType(genericTypes[i]);
       Class<?> collectionElementType;
       if (collectionType == null) {
-        collectionElementType = null;
+        collectionElementType = null; //NOPMD
       } else {
         collectionElementType = ReflectionUtils.getCollectionParameterizedType(genericTypes[i]);
       }
@@ -79,7 +79,7 @@ public class MethodInfoFactory {
     Class<?> collectionType = ReflectionUtils.getCollectionType(method.getGenericReturnType());
     Class<?> collectionElementType;
     if (collectionType == null) {
-      collectionElementType = null;
+      collectionElementType = null; //NOPMD
     } else {
       collectionElementType = ReflectionUtils.getCollectionParameterizedType(method.getGenericReturnType());
     }

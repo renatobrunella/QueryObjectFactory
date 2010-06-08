@@ -37,6 +37,6 @@ public interface QueryObjectClassEnhancer {
    * @param superClass            the super class
    * @return                      the enhanced class or super class
    */
-  public abstract <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass);
+  <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass);
 
 }
