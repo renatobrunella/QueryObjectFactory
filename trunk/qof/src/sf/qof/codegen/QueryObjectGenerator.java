@@ -167,10 +167,8 @@ public class QueryObjectGenerator {
     String dirs = customizer.getClassName(queryDefinitionClass).replace('.', File.separatorChar);
     try {
       File file = new File(new File(debugLocation), dirs + ".map");
-      if (!file.getParentFile().exists()) {
-        if (!file.getParentFile().mkdirs()) {
-          throw new RuntimeException("Could not create directory " + file.getParentFile());
-        }
+      if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+        throw new RuntimeException("Could not create directory " + file.getParentFile());
       }
 
       OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
@@ -183,6 +181,7 @@ public class QueryObjectGenerator {
         out.close();
       }
     } catch (IOException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -387,9 +386,9 @@ public class QueryObjectGenerator {
         throw new ValidationException("Class has private field '" + fieldName + "'");
       }
     } catch (SecurityException e) {
-     // ignore
+     //NOPMD ignore 
     } catch (NoSuchFieldException e) {
-     // ignore
+     //NOPMD ignore
     }
     if (field == null) {
       ce.declare_field(Constants.ACC_PRIVATE, fieldName, fieldType, null, null);
