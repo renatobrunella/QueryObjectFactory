@@ -61,12 +61,15 @@
 	<property name="junit.output.nodep.dir" value="${basedir}/${junit.output.nodep.path}" />
 	<property name="web.path" value="web" />
 	<property name="web.dir" value="${basedir}/${web.path}" />
-	<property name="web.coverage.dir" value="${web.dir}/htdocs/coverage" />
+	<property name="web.coverage.path" value="${web.path}/htdocs/coverage" />
+	<property name="web.coverage.dir" value="${basedir}/${web.coverage.path}" />
 	<property name="doc.sfapi.path" value="${web.path}/htdocs/api" />
 	<property name="doc.sfapi.dir" value="${basedir}/${doc.sfapi.path}" />
-	<property name="reports.dir" value="${basedir}/reports" />
+	<property name="reports.path" value="reports" />
+	<property name="reports.dir" value="${basedir}/${reports.path}" />
 	<property name="coverage.dir" value="${reports.dir}/coverage" />
 	<property name="findbugs.dir" value="${reports.dir}/findbugs" />
+	<property name="pmd.dir" value="${reports.dir}/pmd" />
 
 	<path id="qof.classpath">
 		<pathelement location="${bin.dir}" />
@@ -131,6 +134,7 @@
 		<mkdir dir="${reports.dir}" />
 		<mkdir dir="${coverage.dir}" />
 		<mkdir dir="${findbugs.dir}" />
+		<mkdir dir="${pmd.dir}" />
 
 		<mkdir dir="${coverage.dir}" />
 		<mkdir dir="${doc.sfapi.dir}" />
@@ -251,7 +255,8 @@
 				<!-- do not include Doc Check Doclet and output -->
 				<exclude name="${lib.path}/doccheck**" />
 				<exclude name="${doc.api.path}/**" />
-				<exclude name="${coverage.path}/**" />
+				<exclude name="${reports.path}/**" />
+				<exclude name="${web.coverage.path}/**" />
 				<exclude name="${doc.sfapi.path}/**" />
 				<exclude name="${doc.doccheck.path}/**" />
 			</fileset>
@@ -393,6 +398,7 @@
 		<antcall target="javadoc-sourceforge" />
 		<antcall target="sitemap" />
 		<antcall target="findbugs" />
+		<antcall target="pmd" />
 		<zip destfile="${dist.dir}/${bundle.name}-website-${bundle.version}${bundle.version.postfix}.zip" >
 			<fileset dir="${web.dir}/htdocs">
 				<exclude name="*/CVS**" />
@@ -416,6 +422,28 @@
 			<else>
 				<echo level="warning" message="Cannot run FindBugs" />
 				<echo level="warning" message="Environment variable FINDBUGS_HOME must be set" />
+			</else>
+		</if>
+	</target>
+
+	<target name="pmd">
+		<if>
+			<isset property="env.PMD_HOME"/>
+			<then>
+				<!-- PMD taskdef -->
+				<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpath="${env.PMD_HOME}/lib/pmd-4.2.5.jar"/>
+				<pmd shortFilenames="true">
+					<ruleset>rulesets/favorites.xml</ruleset>
+					<ruleset>basic</ruleset>
+					<formatter type="xml" toFile="${pmd.dir}/pmd.xml"/>
+					<fileset dir="${src.dir}">
+						<include name="**/*.java" />
+					</fileset>
+				</pmd>
+			</then>
+			<else>
+				<echo level="warning" message="Cannot run PMD" />
+				<echo level="warning" message="Environment variable PMD_HOME must be set" />
 			</else>
 		</if>
 	</target>
