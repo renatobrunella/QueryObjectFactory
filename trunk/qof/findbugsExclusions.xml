@@ -6,4 +6,29 @@
 	<Match>
 		<Package name="sf.qof.cglib.core" />
 	</Match>
+	<!-- Ignore EI_EXPOSE_REP & EI_EXPOSE_REP2 for classes that are not exposed -->
+	<Match>
+		<Class name="sf.qof.mapping.AbstractBaseMapping" />
+		<Bug code="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Class name="sf.qof.mapping.MethodInfoFactory" />
+		<Bug code="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Class name="sf.qof.parser.ParameterDefinitionImpl" />
+		<Bug code="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Class name="sf.qof.parser.ResultDefinitionImpl" />
+		<Bug code="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Class name="sf.qof.codegen.ParameterMappingGenerator" />
+		<Bug code="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+	</Match>
+	<Match>
+		<Class name="sf.qof.codegen.ResultMappingGenerator" />
+		<Bug code="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+	</Match>
 </FindBugsFilter>
