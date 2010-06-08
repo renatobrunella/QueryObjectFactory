@@ -70,6 +70,7 @@
 	<property name="coverage.dir" value="${reports.dir}/coverage" />
 	<property name="findbugs.dir" value="${reports.dir}/findbugs" />
 	<property name="pmd.dir" value="${reports.dir}/pmd" />
+	<property name="cpd.dir" value="${reports.dir}/cpd" />
 
 	<path id="qof.classpath">
 		<pathelement location="${bin.dir}" />
@@ -135,6 +136,7 @@
 		<mkdir dir="${coverage.dir}" />
 		<mkdir dir="${findbugs.dir}" />
 		<mkdir dir="${pmd.dir}" />
+		<mkdir dir="${cpd.dir}" />
 
 		<mkdir dir="${coverage.dir}" />
 		<mkdir dir="${doc.sfapi.dir}" />
@@ -399,6 +401,7 @@
 		<antcall target="sitemap" />
 		<antcall target="findbugs" />
 		<antcall target="pmd" />
+		<antcall target="cpd" />
 		<zip destfile="${dist.dir}/${bundle.name}-website-${bundle.version}${bundle.version.postfix}.zip" >
 			<fileset dir="${web.dir}/htdocs">
 				<exclude name="*/CVS**" />
@@ -443,6 +446,25 @@
 			</then>
 			<else>
 				<echo level="warning" message="Cannot run PMD" />
+				<echo level="warning" message="Environment variable PMD_HOME must be set" />
+			</else>
+		</if>
+	</target>
+
+	<target name="cpd">
+		<if>
+			<isset property="env.PMD_HOME"/>
+			<then>
+				<!-- CPD taskdef -->
+				<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpath="${env.PMD_HOME}/lib/pmd-4.2.5.jar"/>
+				<cpd minimumTokenCount="100" format="xml" outputFile="${cpd.dir}/cpd.xml">
+					<fileset dir="${src.dir}">
+						<include name="**/*.java" />
+					</fileset>
+				</cpd>
+			</then>
+			<else>
+				<echo level="warning" message="Cannot run CPD" />
 				<echo level="warning" message="Environment variable PMD_HOME must be set" />
 			</else>
 		</if>
