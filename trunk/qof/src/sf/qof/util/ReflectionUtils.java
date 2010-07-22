@@ -100,6 +100,12 @@ public final class ReflectionUtils {
         return method;
       }
     }
+    methods = type.getMethods();
+    for (Method method : methods) {
+      if (method.getName().equals(setterName)) {
+        return method;
+      }
+    }
     return null;
   }
 
