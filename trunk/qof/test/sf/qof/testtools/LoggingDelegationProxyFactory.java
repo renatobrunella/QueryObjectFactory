@@ -68,6 +68,8 @@ public class LoggingDelegationProxyFactory {
       } else if (method.getName().equals("setLogClass")) {
         logClass = (Boolean) args[0];
         return null;
+      } else if (method.getName().equals("equals")) {
+        return args.length == 1 && proxy == args[0];
       } else {
         StringBuilder sb = new StringBuilder();
         if (logClass) {
