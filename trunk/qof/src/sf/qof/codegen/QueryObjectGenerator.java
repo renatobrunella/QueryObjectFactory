@@ -25,6 +25,7 @@ import static sf.qof.codegen.Constants.FIELD_NAME_FETCH_SIZE;
 import static sf.qof.codegen.Constants.FIELD_NAME_FIRST_RESULT;
 import static sf.qof.codegen.Constants.FIELD_NAME_MAX_RESULTS;
 import static sf.qof.codegen.Constants.SIG_init;
+import static sf.qof.codegen.Constants.SIG_postGetConnection;
 import static sf.qof.codegen.Constants.SIG_toString;
 import static sf.qof.codegen.Constants.TYPE_SQLException;
 import static sf.qof.codegen.Constants.TYPE_int;
@@ -36,7 +37,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -89,6 +92,7 @@ public class QueryObjectGenerator {
   private Map<String, FieldInfo> fields = new HashMap<String, FieldInfo>();
   private SQLDialect sqlDialect;
   private boolean implementPaging;
+  private Method postGetConnectionMethod;
 
   public QueryObjectGenerator(Customizer customizer, SQLDialect sqlDialect) {
   	this.customizer = customizer;
@@ -103,6 +107,10 @@ public class QueryObjectGenerator {
     return implementPaging;
   }
   
+  public Method getPostGetConnectionMethod() {
+    return postGetConnectionMethod;
+  }
+  
   public String getClassNameType() {
     return classNameType;
   }
@@ -114,11 +122,12 @@ public class QueryObjectGenerator {
   public <T> Class<T> create(Class<T> queryDefinitionClass, List<Mapper> mappers) {
     return create(queryDefinitionClass, mappers, Object.class);
   }
-
+  
   public <T> Class<T> create(Class<T> queryDefinitionClass, List<Mapper> mappers, Class<?> superClass) {
     this.queryDefinitionClass = queryDefinitionClass;
     this.superClass = superClass;
     implementPaging = Paging.class.isAssignableFrom(queryDefinitionClass);
+    postGetConnectionMethod = findPostGetConnectionMethod(queryDefinitionClass);
     try {
       String className = customizer.getClassName(queryDefinitionClass);
       classNameType = createClassNameType(className);
@@ -484,4 +493,20 @@ public class QueryObjectGenerator {
     FieldInfo info = fields.get(fieldName);
     co.putfield(info.owner, info.name, info.type);
   }
+
+  private Method findPostGetConnectionMethod(Class<?> queryDefinitionClass) {
+    Class<?> clazz = queryDefinitionClass;
+    while (clazz != null) {
+      try {
+        Method method = clazz.getDeclaredMethod(SIG_postGetConnection.getName(), Connection.class);
+        return method;
+      } catch (SecurityException e) {
+      } catch (NoSuchMethodException e) {
+      }
+      
+      clazz = clazz.getSuperclass();
+    }
+    return null;
+  }
+
 }

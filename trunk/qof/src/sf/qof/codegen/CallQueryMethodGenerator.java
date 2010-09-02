@@ -24,7 +24,6 @@ import static sf.qof.codegen.Constants.SIG_addBatch;
 import static sf.qof.codegen.Constants.SIG_execute;
 import static sf.qof.codegen.Constants.SIG_executeBatch;
 import static sf.qof.codegen.Constants.SIG_executeUpdate;
-import static sf.qof.codegen.Constants.SIG_getConnection;
 import static sf.qof.codegen.Constants.SIG_hasNext;
 import static sf.qof.codegen.Constants.SIG_iterator;
 import static sf.qof.codegen.Constants.SIG_iterator_next;
@@ -70,9 +69,7 @@ public class CallQueryMethodGenerator {
     Local localException = co.make_local(TYPE_Throwable);
 
     // connection = getConnection();
-    co.load_this();
-    co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
-    co.store_local(localConnection);
+    EmitUtils.emitGetConnection(co, generator, localConnection);
     
     // try {
     Block tryBlockConnection = co.begin_block();
@@ -119,7 +116,7 @@ public class CallQueryMethodGenerator {
     EmitUtils.emitClose(co, localCallableStatement);
     
     tryBlockConnection.end();
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
   
     // return result
     if (localResult != null) {
@@ -140,7 +137,7 @@ public class CallQueryMethodGenerator {
     EmitUtils.emitCatchException(co, tryBlockConnection, null);
     EmitUtils.emitCatchException(co, tryBlockStatement2, null);
     co.store_local(localException);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
     co.load_local(localException);
     co.athrow();
   }
@@ -191,9 +188,7 @@ public class CallQueryMethodGenerator {
     Local localException = co.make_local(TYPE_Throwable);
 
     // connection = getConnection();
-    co.load_this();
-    co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
-    co.store_local(localConnection);
+    EmitUtils.emitGetConnection(co, generator, localConnection);
     
     // try {
     Block tryBlockConnection = co.begin_block();
@@ -315,7 +310,7 @@ public class CallQueryMethodGenerator {
     EmitUtils.emitClose(co, localCallableStatement);
     
     tryBlockConnection.end();
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
   
     // return result
     co.return_value();
@@ -333,7 +328,7 @@ public class CallQueryMethodGenerator {
     EmitUtils.emitCatchException(co, tryBlockConnection, null);
     EmitUtils.emitCatchException(co, tryBlockStatement2, null);
     co.store_local(localException);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
     co.load_local(localException);
     co.athrow();
   }

@@ -24,7 +24,6 @@ import static sf.qof.codegen.Constants.SIG_addBatch;
 import static sf.qof.codegen.Constants.SIG_arraycopy;
 import static sf.qof.codegen.Constants.SIG_executeBatch;
 import static sf.qof.codegen.Constants.SIG_executeUpdate;
-import static sf.qof.codegen.Constants.SIG_getConnection;
 import static sf.qof.codegen.Constants.SIG_hasNext;
 import static sf.qof.codegen.Constants.SIG_iterator;
 import static sf.qof.codegen.Constants.SIG_iterator_next;
@@ -85,9 +84,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     }
     
     // connection = getConnection();
-    co.load_this();
-    co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
-    co.store_local(localConnection);
+    EmitUtils.emitGetConnection(co, generator, localConnection);
     
     // try {
     Block tryBlockConnection = co.begin_block();
@@ -127,7 +124,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     EmitUtils.emitClose(co, localPreparedStatement);
     
     tryBlockConnection.end();
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
   
     // return result
     if (localResult != null) {
@@ -148,7 +145,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     EmitUtils.emitCatchException(co, tryBlockConnection, null);
     EmitUtils.emitCatchException(co, tryBlockStatement2, null);
     co.store_local(localException);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
     co.load_local(localException);
     co.athrow();
   }
@@ -203,9 +200,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     Local localException = co.make_local(TYPE_Throwable);
 
     // connection = getConnection();
-    co.load_this();
-    co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
-    co.store_local(localConnection);
+    EmitUtils.emitGetConnection(co, generator, localConnection);
     
     // try {
     Block tryBlockConnection = co.begin_block();
@@ -395,7 +390,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     EmitUtils.emitClose(co, localPreparedStatement);
     
     tryBlockConnection.end();
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
   
     // return result
     if (returnType.isArray()) {
@@ -416,7 +411,7 @@ public class InsertUpdateDeleteQueryMethodGenerator {
     EmitUtils.emitCatchException(co, tryBlockConnection, null);
     EmitUtils.emitCatchException(co, tryBlockStatement2, null);
     co.store_local(localException);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
     co.load_local(localException);
     co.athrow();
   }

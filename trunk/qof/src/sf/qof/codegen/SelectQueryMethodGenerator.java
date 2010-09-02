@@ -25,7 +25,6 @@ import static sf.qof.codegen.Constants.FIELD_NAME_FIRST_RESULT;
 import static sf.qof.codegen.Constants.FIELD_NAME_MAX_RESULTS;
 import static sf.qof.codegen.Constants.SIG_add;
 import static sf.qof.codegen.Constants.SIG_executeQuery;
-import static sf.qof.codegen.Constants.SIG_getConnection;
 import static sf.qof.codegen.Constants.SIG_next;
 import static sf.qof.codegen.Constants.SIG_prepareStatement;
 import static sf.qof.codegen.Constants.SIG_put;
@@ -94,9 +93,7 @@ public class SelectQueryMethodGenerator {
     co.store_local(localResultSet);
 
     // connection = getConnection();
-    co.load_this();
-    co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
-    co.store_local(localConnection);
+    EmitUtils.emitGetConnection(co, generator, localConnection);
     
     // try {
     Block tryBlockConnection = co.begin_block();
@@ -180,7 +177,7 @@ public class SelectQueryMethodGenerator {
     EmitUtils.emitClose(co, localPreparedStatement);
     
     tryBlockConnection.end();
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
   
     // return result
     co.load_local(localResult);
@@ -208,7 +205,7 @@ public class SelectQueryMethodGenerator {
     EmitUtils.emitCatchException(co, tryBlockConnection, null);
     EmitUtils.emitCatchException(co, tryBlockStatement2, null);
     co.store_local(localException);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
     co.load_local(localException);
     co.athrow();
   }
@@ -227,7 +224,6 @@ public class SelectQueryMethodGenerator {
     
     SQLDialect sqlDialect = generator.getSqlDialect();
     boolean implementPaging = generator.getImplementPaging();
-    String classNameType = generator.getClassNameType();
     Customizer customizer = generator.getCustomizer();
     
     Class<?> resultMapKeyType = mapper.getMethod().getReturnInfo().getMapKeyType();
@@ -282,9 +278,8 @@ public class SelectQueryMethodGenerator {
       co.if_jump(CodeEmitter.NE, label1);
       
       // connection = getConnection();
-      co.load_this();
-      co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
-      co.store_local(localConnection);
+      EmitUtils.emitGetConnection(co, generator, localConnection);
+      
       // ps = connection.prepareStatement(sql);
       co.load_local(localConnection);
       pushSql(co, mapper, sql);
@@ -302,10 +297,8 @@ public class SelectQueryMethodGenerator {
       co.load_this();
       co.getfield(FIELD_NAME_FIRST_RESULT);
       co.if_jump(CodeEmitter.NE, label3);
-  
-      co.load_this();
-      co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
-      co.store_local(localConnection);
+
+      EmitUtils.emitGetConnection(co, generator, localConnection);
       
       // try {
       tryBlockConnection = co.begin_block();
@@ -339,10 +332,8 @@ public class SelectQueryMethodGenerator {
       co.goTo(label2);
   
       co.mark(label3);
-  
-      co.load_this();
-      co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
-      co.store_local(localConnection);
+
+      EmitUtils.emitGetConnection(co, generator, localConnection);
       
       // try {
       tryBlockConnection = co.begin_block();
@@ -464,14 +455,12 @@ public class SelectQueryMethodGenerator {
       co.putfield(FIELD_NAME_MAX_RESULTS);
   
     } else {
-      // ps = connection.prepareStatement(sql);
-      co.load_this();
-      co.invoke_virtual(Type.getType(classNameType), SIG_getConnection);
-      co.store_local(localConnection);
+      EmitUtils.emitGetConnection(co, generator, localConnection);
       
       // try {
       tryBlockConnection = co.begin_block();
 
+      // ps = connection.prepareStatement(sql);
       co.load_local(localConnection);
       pushSql(co, mapper, mapper.getSql());
       co.invoke_interface(TYPE_Connection, SIG_prepareStatement);
@@ -554,7 +543,7 @@ public class SelectQueryMethodGenerator {
     EmitUtils.emitClose(co, localPreparedStatement);
     
     tryBlockConnection.end();
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
   
     // return result
     co.load_local(localResultCollection);
@@ -582,7 +571,7 @@ public class SelectQueryMethodGenerator {
     EmitUtils.emitCatchException(co, tryBlockConnection, null);
     EmitUtils.emitCatchException(co, tryBlockStatement2, null);
     co.store_local(localException);
-    EmitUtils.emitUngetConnection(co, Type.getType(generator.getClassNameType()), localConnection);
+    EmitUtils.emitUngetConnection(co, generator, localConnection);
     co.load_local(localException);
     co.athrow();
 

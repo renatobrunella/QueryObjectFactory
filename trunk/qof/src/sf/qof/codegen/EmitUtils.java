@@ -35,6 +35,8 @@ import static sf.qof.codegen.Constants.SIG_Long_valueOf;
 import static sf.qof.codegen.Constants.SIG_Short_shortValue;
 import static sf.qof.codegen.Constants.SIG_Short_valueOf;
 import static sf.qof.codegen.Constants.SIG_close;
+import static sf.qof.codegen.Constants.SIG_getConnection;
+import static sf.qof.codegen.Constants.SIG_postGetConnection;
 import static sf.qof.codegen.Constants.SIG_ungetConnection;
 import static sf.qof.codegen.Constants.TYPE_Boolean;
 import static sf.qof.codegen.Constants.TYPE_Byte;
@@ -141,18 +143,40 @@ public class EmitUtils {
   }
   
   /**
+   * Emits code to call <code>getConnection()</code> and stores returned connection
+   *  in the local connection variable.
+   * 
+   * @param co                 the code emitter
+   * @param generator          the query object generator
+   * @param localConnection    the local to store the connection
+   * 
+   * @see sf.qof.BaseQuery#getConnection()
+   */
+  public static void emitGetConnection(CodeEmitter co, QueryObjectGenerator generator, Local localConnection) {
+    co.load_this();
+    co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_getConnection);
+    co.store_local(localConnection);
+    if (generator.getPostGetConnectionMethod() != null) {
+      // emit a call to postGetConnection(connection)
+      co.load_this();
+      co.load_local(localConnection);
+      co.invoke_virtual(Type.getType(generator.getPostGetConnectionMethod().getDeclaringClass()), SIG_postGetConnection);
+    }
+  }
+  
+  /**
    * Emits code to call <code>ungetConnection(Connection)</code> on the local connection variable.
    * 
    * @param co                 the code emitter
-   * @param classType          the class type
-   * @param local              the local
+   * @param generator          the query object generator
+   * @param localConnection    the local that holds the connection
    * 
    * @see sf.qof.BaseQuery#ungetConnection(java.sql.Connection)
    */
-  public static void emitUngetConnection(CodeEmitter co, Type classType, Local local) {
+  public static void emitUngetConnection(CodeEmitter co, QueryObjectGenerator generator, Local localConnection) {
     co.load_this();
-    co.load_local(local);
-    co.invoke_virtual(classType, SIG_ungetConnection);
+    co.load_local(localConnection);
+    co.invoke_virtual(Type.getType(generator.getClassNameType()), SIG_ungetConnection);
   }
 
   public static void emitCatchException(CodeEmitter co, Block tryBlock, Type exception) {
