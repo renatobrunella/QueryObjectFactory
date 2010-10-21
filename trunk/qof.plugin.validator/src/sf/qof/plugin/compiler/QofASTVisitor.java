@@ -56,6 +56,7 @@ import sf.qof.parser.ParameterDefinitionImpl;
 import sf.qof.parser.ResultDefinition;
 import sf.qof.parser.ResultDefinitionImpl;
 import sf.qof.parser.SqlParser;
+import sf.qof.session.UseDefaultSessionRunner;
 
 public class QofASTVisitor extends ASTVisitor {
 
@@ -84,6 +85,9 @@ public class QofASTVisitor extends ASTVisitor {
     String name = getQualifiedName(annotation);
     if (isQofAnnotation(name)) {
       validate(annotation);
+    }
+    if (UseDefaultSessionRunner.class.getName().equals(name)) {
+      validateThrowsSystemException(annotation);
     }
     return true;
   }
@@ -138,6 +142,38 @@ public class QofASTVisitor extends ASTVisitor {
     }
   }
 
+  private void validateThrowsSystemException(NormalAnnotation annotation) {
+    annotationQualifiedName = getQualifiedName(annotation);
+    sql = getInfoString(infoList);
+    if (annotation.getParent() instanceof MethodDeclaration) {
+      MethodDeclaration methodDeclaration = (MethodDeclaration)annotation.getParent();
+      @SuppressWarnings("unchecked") List<Name> exceptions = (List<Name>) methodDeclaration.thrownExceptions();
+      boolean throwsSqlException = false;
+      boolean throwsSystemException = false;
+      for (Name exception : exceptions) {
+        IBinding binding = ((Name)exception).resolveBinding();
+        if (binding != null && binding instanceof ITypeBinding) {
+          if (java.sql.SQLException.class.getName().equals(((ITypeBinding)binding).getQualifiedName())) {
+            throwsSqlException = true;
+          }
+          if (sf.qof.session.SystemException.class.getName().equals(((ITypeBinding)binding).getQualifiedName())) {
+            throwsSystemException = true;
+          }
+        }
+      }
+      if (!throwsSystemException) {
+        int start = methodDeclaration.getStartPosition();
+        int end = start + methodDeclaration.getLength() - 1;
+        addProblem("Must throw SystemException", QofProblem.ERROR, start, end);
+      } else if (throwsSqlException) {
+        int start = methodDeclaration.getStartPosition();
+        int end = start + methodDeclaration.getLength() - 1;
+        addProblem("Should not throw SQLException", QofProblem.WARNING, start, end);
+      }
+    }
+
+  }
+  
   private void validateSelect() {
     validateParameterDefinitions();
     validateResultDefinitions();
@@ -171,16 +207,19 @@ public class QofASTVisitor extends ASTVisitor {
     @SuppressWarnings("unchecked") List<Name> exceptions = 
         (List<Name>) methodDeclaration.thrownExceptions();
     boolean throwsSqlException = false;
+    boolean throwsSystemException = false;
     for (Name exception : exceptions) {
       IBinding binding = ((Name)exception).resolveBinding();
       if (binding != null && binding instanceof ITypeBinding) {
         if (java.sql.SQLException.class.getName().equals(((ITypeBinding)binding).getQualifiedName())) {
           throwsSqlException = true;
-          break;
+        }
+        if (sf.qof.session.SystemException.class.getName().equals(((ITypeBinding)binding).getQualifiedName())) {
+          throwsSystemException = true;
         }
       }
     }
-    if (!throwsSqlException) {
+    if (!throwsSqlException && !throwsSystemException) {
       int start = methodDeclaration.getStartPosition();
       int end = start + methodDeclaration.getLength() - 1;
       addProblem("Should throw SQLException", QofProblem.WARNING, start, end);
