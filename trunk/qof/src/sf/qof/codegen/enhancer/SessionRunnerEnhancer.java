@@ -22,10 +22,13 @@ import static sf.qof.codegen.Constants.SIG_DefaultSessionRunner_execute;
 import static sf.qof.codegen.Constants.SIG_DefaultSessionRunner_executeBeanManaged;
 import static sf.qof.codegen.Constants.SIG_DefaultSessionRunner_executeContainerManaged;
 import static sf.qof.codegen.Constants.SIG_TransactionRunnable_run;
+import static sf.qof.codegen.Constants.SIG_getCause;
+import static sf.qof.codegen.Constants.SIG_getMessage;
 import static sf.qof.codegen.Constants.TYPE_DefaultSessionRunner;
 import static sf.qof.codegen.Constants.TYPE_Object;
-import static sf.qof.codegen.Constants.*;
+import static sf.qof.codegen.Constants.TYPE_SQLException;
 import static sf.qof.codegen.Constants.TYPE_SessionPolicy;
+import static sf.qof.codegen.Constants.TYPE_SystemException;
 import static sf.qof.codegen.Constants.TYPE_TransactionRunnable;
 
 import java.lang.reflect.Constructor;
@@ -49,7 +52,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.Type;
 
 import sf.qof.codegen.EmitUtils;
-import sf.qof.codegen.enhancer.QueryObjectClassEnhancer;
+import sf.qof.session.SystemException;
 import sf.qof.session.TransactionManagementType;
 import sf.qof.session.UseDefaultSessionRunner;
 import sf.qof.session.UseSessionContext;
@@ -90,6 +93,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
       for (Method method : clazz.getDeclaredMethods()) {
         if (method.isAnnotationPresent(UseDefaultSessionRunner.class)) {
           annotatedMethods.add(method);
+          checkThrowsSystemException(method);
         }
       }
       clazz = clazz.getSuperclass();
@@ -99,6 +103,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
       for (Method method : clazz.getDeclaredMethods()) {
         if (method.isAnnotationPresent(UseDefaultSessionRunner.class)) {
           annotatedMethods.add(method);
+          checkThrowsSystemException(method);
         }
       }
       clazz = clazz.getSuperclass();
@@ -107,6 +112,27 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
     return new ArrayList<Method>(annotatedMethods);
   }
   
+  private void checkThrowsSystemException(Method method) {
+    boolean foundSystemException = false;
+//    boolean foundSQLException = false;
+    for (Class<?> exceptionClass : method.getExceptionTypes()) {
+      if (SystemException.class == exceptionClass) {
+        foundSystemException = true;
+      }
+//      if (SQLException.class == exceptionClass) {
+//        foundSQLException = true;
+//      }
+    }
+    if (!foundSystemException) {
+      throw new RuntimeException(method.getDeclaringClass().getName() + "." + method.getName() +
+          " must throw " + SystemException.class.getName());
+    }
+//    if (foundSQLException) {
+//      throw new RuntimeException(method.getDeclaringClass().getName() + "." + method.getName() + 
+//          " does not throw " + SQLException.class.getName());
+//    }
+  }
+
   /*
    * Generates a class that inherits from the super class and implements all methods annotated by @UseDefaultSessionRunner
    */
