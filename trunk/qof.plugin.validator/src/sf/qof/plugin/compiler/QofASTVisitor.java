@@ -143,19 +143,17 @@ public class QofASTVisitor extends ASTVisitor {
   }
 
   private void validateThrowsSystemException(NormalAnnotation annotation) {
-    annotationQualifiedName = getQualifiedName(annotation);
-    sql = getInfoString(infoList);
     if (annotation.getParent() instanceof MethodDeclaration) {
       MethodDeclaration methodDeclaration = (MethodDeclaration)annotation.getParent();
       @SuppressWarnings("unchecked") List<Name> exceptions = (List<Name>) methodDeclaration.thrownExceptions();
-      boolean throwsSqlException = false;
+//      boolean throwsSqlException = false;
       boolean throwsSystemException = false;
       for (Name exception : exceptions) {
         IBinding binding = ((Name)exception).resolveBinding();
         if (binding != null && binding instanceof ITypeBinding) {
-          if (java.sql.SQLException.class.getName().equals(((ITypeBinding)binding).getQualifiedName())) {
-            throwsSqlException = true;
-          }
+//          if (java.sql.SQLException.class.getName().equals(((ITypeBinding)binding).getQualifiedName())) {
+//            throwsSqlException = true;
+//          }
           if (sf.qof.session.SystemException.class.getName().equals(((ITypeBinding)binding).getQualifiedName())) {
             throwsSystemException = true;
           }
@@ -165,10 +163,10 @@ public class QofASTVisitor extends ASTVisitor {
         int start = methodDeclaration.getStartPosition();
         int end = start + methodDeclaration.getLength() - 1;
         addProblem("Must throw SystemException", QofProblem.ERROR, start, end);
-      } else if (throwsSqlException) {
-        int start = methodDeclaration.getStartPosition();
-        int end = start + methodDeclaration.getLength() - 1;
-        addProblem("Should not throw SQLException", QofProblem.WARNING, start, end);
+//      } else if (throwsSqlException) {
+//        int start = methodDeclaration.getStartPosition();
+//        int end = start + methodDeclaration.getLength() - 1;
+//        addProblem("Should not throw SQLException", QofProblem.WARNING, start, end);
       }
     }
 
