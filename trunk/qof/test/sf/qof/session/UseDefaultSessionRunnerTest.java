@@ -247,15 +247,29 @@ public class UseDefaultSessionRunnerTest extends TestCase {
     public void doInsert() throws SystemException, SQLException {
       insertItem(1, "item");
     }
+    
+    @UseDefaultSessionRunner
+    public void doInsertDuplicateName() throws SystemException, SQLException {
+      // this is never called!!!
+      insertItem(2, "item");
+      insertItem(3, "item");
+    }
   }
   
   @UseSessionContext
-  public static abstract class SuperClass extends BaseClass {
+  public static abstract class SubClass extends BaseClass {
     @Query(sql = "select count(*) num {int%%} from test")
     protected abstract int numberOfItemsInt() throws SystemException;
 
     @Insert(sql = "insert into test (id, name) values ({%1}, {%2})")
     @Override protected abstract void insertItem(int id, String name) throws SQLException;
+
+    @UseDefaultSessionRunner
+    public void doInsertDuplicateName() throws SystemException, SQLException {
+      insertItem(2, "item");
+      insertItem(3, "item");
+      insertItem(4, "item");
+    }
   }
   
   public void testAnnotatedBaseClass() throws SystemException, SQLException {
@@ -263,11 +277,13 @@ public class UseDefaultSessionRunnerTest extends TestCase {
     SessionContextFactory.setDataSource(dataSource);
     SessionContextFactory.setAutoCommitPolicy(true);
     
-    SuperClass dao = QueryObjectFactory.createQueryObject(SuperClass.class);
+    SubClass dao = QueryObjectFactory.createQueryObject(SubClass.class);
     
     assertEquals(0, dao.numberOfItemsInt());
     dao.doInsert();
     assertEquals(1, dao.numberOfItemsInt());
+    dao.doInsertDuplicateName();
+    assertEquals(4, dao.numberOfItemsInt());
     
     SessionContextFactory.removeContext();
   }

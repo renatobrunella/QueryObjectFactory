@@ -35,9 +35,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import net.sf.cglib.core.Block;
 import net.sf.cglib.core.ClassEmitter;
@@ -87,31 +87,47 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
   }
 
   private <T> List<Method> getAllAnnotatedMethods(Class<T> queryDefinitionClass, Class<T> superClass) {
-    Set<Method> annotatedMethods = new HashSet<Method>();
-    Class<?> clazz = queryDefinitionClass;
+    Map<String, Method> annotatedMethods = new HashMap<String, Method>();
+
+    // find annotated methods starting with super class
+    findAnnotatedMethods(superClass, annotatedMethods);
+    findAnnotatedMethods(queryDefinitionClass, annotatedMethods);
+   
+    return new ArrayList<Method>(annotatedMethods.values());
+  }
+
+  private void findAnnotatedMethods(Class<?> clazz,
+      Map<String, Method> annotatedMethods) {
     while (clazz != null) {
       for (Method method : clazz.getDeclaredMethods()) {
         if (method.isAnnotationPresent(UseDefaultSessionRunner.class)) {
-          annotatedMethods.add(method);
           checkThrowsSystemException(method);
+          String signature = methodSignature(method);
+          if (!annotatedMethods.containsKey(signature)) {
+            annotatedMethods.put(signature, method);
+          }
         }
       }
       clazz = clazz.getSuperclass();
     }
-    clazz = superClass;
-    while (clazz != null) {
-      for (Method method : clazz.getDeclaredMethods()) {
-        if (method.isAnnotationPresent(UseDefaultSessionRunner.class)) {
-          annotatedMethods.add(method);
-          checkThrowsSystemException(method);
-        }
-      }
-      clazz = clazz.getSuperclass();
-    }
-    
-    return new ArrayList<Method>(annotatedMethods);
   }
   
+  private String methodSignature(Method method) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(method.getName());
+    sb.append('(');
+    boolean first = true;
+    for (Class<?> parameter : method.getParameterTypes()) {
+      if (!first) {
+        sb.append(',');
+      }
+      sb.append(parameter.getName());
+      first = false;
+    }
+    sb.append(')');
+    return sb.toString();
+  }
+
   private void checkThrowsSystemException(Method method) {
     boolean foundSystemException = false;
 //    boolean foundSQLException = false;
@@ -158,7 +174,11 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
         clazz = clazz.getSuperclass();
       }
       if (enhancedMethod == null) {
-        throw new RuntimeException("Could not find matching method");
+        throw new RuntimeException("Could not find matching method for " + method);
+      }
+      
+      if (Modifier.isAbstract(enhancedMethod.getModifiers())) {
+        throw new RuntimeException("Abstract method cannot be enhanced: " + enhancedMethod);
       }
       
       Signature sigAccessMethod = generateStaticAccessorMethod(ce, enhancedMethod, index);
