@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 brunella ltd
+ * Copyright 2007 - 2011 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,8 @@ public class MappingFactory {
   }
 
   public static ResultMapping createResultMapping(ClassLoader classLoader, String mappingType, Class<?> type, Class<?> collectionType, Class<?> beanType,
-      Method setter, int[] sqlIndexes, String[] sqlColumns, Class<?> mapKeyType, Integer constructorParameter, Constructor<?> constructor, Method staticFactoryMethod) {
+      Method setter, int[] sqlIndexes, String[] sqlColumns, Class<?> mapKeyType, Integer constructorParameter, Constructor<?> constructor, Method staticFactoryMethod,
+      Class<?> collectionClass, int collectionInitialCapacity) {
     MappingClassInfo info = null;
     Class<?> resultType;
     if (mapKeyType == null) {
@@ -97,7 +98,8 @@ public class MappingFactory {
     try {
       ResultMapping mapping = (ResultMapping) mappingClass.newInstance();
       mapping.setParameters(type, collectionType, beanType, setter, sqlIndexes, sqlColumns, 
-    	  info.getAdapter(), mapKeyType, constructorParameter, constructor, staticFactoryMethod);
+    	  info.getAdapter(), mapKeyType, constructorParameter, constructor, staticFactoryMethod,
+    	  collectionClass, collectionInitialCapacity);
       return (ResultMapping) mapping;
     } catch (InstantiationException e) {
       throw new RuntimeException(e);

@@ -19,6 +19,7 @@
 package sf.qof.codegen;
 
 import net.sf.cglib.core.Signature;
+import net.sf.cglib.core.TypeUtils;
 
 import org.objectweb.asm.Type;
 
@@ -156,6 +157,8 @@ public final class Constants {
 
   public static final Signature SIG_getTimeLong = new Signature("getTime", "()J");
 
+  public static final Signature SIG_Constructor_int = TypeUtils.parseConstructor("int");
+  
   public static final Signature SIG_size = new Signature("size", "()I");
   public static final Signature SIG_iterator = new Signature("iterator", "()Ljava/util/Iterator;");
   public static final Signature SIG_hasNext = new Signature("hasNext", "()Z");

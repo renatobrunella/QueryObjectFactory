@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 brunella ltd
+ * Copyright 2007 - 2011 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,4 +80,20 @@ public @interface Query {
    * @return the static factory method name
    */
   String factoryMethod() default "";
+  
+  /**
+   * This is the actual collection type to be used for the result.
+   * 
+   * @return the collection type returned
+   */
+  Class<?> collectionClass() default Object.class;
+  
+  /**
+   * This is the initial capacity of collection.
+   * 
+   * Set to 0 for default capacity.
+   * 
+   * @return initial capacity
+   */
+  int collectionInitialCapacity() default 0;
 }

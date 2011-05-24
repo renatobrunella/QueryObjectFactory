@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 brunella ltd
+ * Copyright 2007 - 2011 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import static sf.qof.codegen.Constants.SIG_next;
 import static sf.qof.codegen.Constants.SIG_prepareStatement;
 import static sf.qof.codegen.Constants.SIG_put;
 import static sf.qof.codegen.Constants.SIG_setFetchSize;
-import static sf.qof.codegen.Constants.SIG_setInt;
+import static sf.qof.codegen.Constants.*;
 import static sf.qof.codegen.Constants.TYPE_Collection;
 import static sf.qof.codegen.Constants.TYPE_Connection;
 import static sf.qof.codegen.Constants.TYPE_Map;
@@ -238,20 +238,33 @@ public class SelectQueryMethodGenerator {
     co.store_local(localResultSet);
     // list = new ArrayList();
     Type collectionType = null;
-    Class<?> resultCollectionType = mapper.getMethod().getReturnInfo().getCollectionType();
-    if (resultCollectionType == List.class) {
-    	collectionType = customizer.getListType();
-    } else if (resultCollectionType == Set.class) {
-    	collectionType = customizer.getSetType();
-    } else if (resultCollectionType == Map.class) {
-      usesMap = true;
-      collectionType = customizer.getMapType();
+    // is there a user specified collection class?
+    ResultMapping result = mapper.getResults().size() > 0 ? mapper.getResults().get(0) : null;
+    int collectionInitialCapacity = result.getInitialCollectionCapacity();
+    if (result.getCollectionClass() != null) {
+      collectionType = Type.getType(result.getCollectionClass());
+      usesMap = Map.class.isAssignableFrom(result.getCollectionClass());
     } else {
-    	throw new ValidationException("Collection type " + resultCollectionType + " is not allowed");
+      Class<?> resultCollectionType = mapper.getMethod().getReturnInfo().getCollectionType();
+      if (resultCollectionType == List.class) {
+      	collectionType = customizer.getListType();
+      } else if (resultCollectionType == Set.class) {
+      	collectionType = customizer.getSetType();
+      } else if (resultCollectionType == Map.class) {
+        usesMap = true;
+        collectionType = customizer.getMapType();
+      } else {
+      	throw new ValidationException("Collection type " + resultCollectionType + " is not allowed");
+      }
     }
     co.new_instance(collectionType);
     co.dup();
-    co.invoke_constructor(collectionType);
+    if (collectionInitialCapacity == 0) {
+      co.invoke_constructor(collectionType);
+    } else {
+      co.push(collectionInitialCapacity);
+      co.invoke_constructor(collectionType, SIG_Constructor_int);
+    }
     co.store_local(localResultCollection);
   
     Local localParameterIndexOffset = null;

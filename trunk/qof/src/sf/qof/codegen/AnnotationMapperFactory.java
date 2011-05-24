@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 brunella ltd
+ * Copyright 2007 - 2011 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -77,7 +77,9 @@ public final class AnnotationMapperFactory {
     SqlParser parser = new SqlParser(annotation.sql(), false);
     return new Mapper(methodInfo, QueryType.QUERY, parser.getSql(),
         createParameterMappers(queryDefinitionClass, methodInfo, parser.getParameterDefinitions()),
-        createResultMappers(queryDefinitionClass, methodInfo, parser.getResultDefinitions(), annotation.factoryClass(), annotation.factoryMethod()));
+        createResultMappers(queryDefinitionClass, methodInfo, parser.getResultDefinitions(), 
+            annotation.factoryClass(), annotation.factoryMethod(),
+            annotation.collectionClass(), annotation.collectionInitialCapacity()));
   }
 
   private static Mapper create(Class<?> queryDefinitionClass, MethodInfo methodInfo, Insert annotation) {
@@ -102,7 +104,8 @@ public final class AnnotationMapperFactory {
     SqlParser parser = new SqlParser(annotation.sql(), true);
     return new Mapper(methodInfo, QueryType.CALL, parser.getSql(), 
         createParameterMappers(queryDefinitionClass, methodInfo, parser.getParameterDefinitions()),
-        createResultMappers(queryDefinitionClass, methodInfo, parser.getResultDefinitions(), annotation.factoryClass(), annotation.factoryMethod()));
+        createResultMappers(queryDefinitionClass, methodInfo, parser.getResultDefinitions(), 
+            annotation.factoryClass(), annotation.factoryMethod(), Object.class, 0));
   }
 
   private static List<ParameterMapping> createParameterMappers(Class<?> queryDefinitionClass, MethodInfo methodInfo, ParameterDefinition[] parameterDefs) {
@@ -165,7 +168,7 @@ public final class AnnotationMapperFactory {
   }
 
   private static List<ResultMapping> createResultMappers(Class<?> queryDefinitionClass, MethodInfo methodInfo, ResultDefinition[] resultDefs, 
-      Class<?> factoryClass, String factoryMethod) {
+      Class<?> factoryClass, String factoryMethod, Class<?> collectionClass, int collectionInitialCapacity) {
     List<ResultMapping> list = new ArrayList<ResultMapping>();
     
     MethodReturnInfo returnInfo = methodInfo.getReturnInfo();
@@ -176,7 +179,6 @@ public final class AnnotationMapperFactory {
     } else {
       staticFactoryMethod = findStaticMethod(queryDefinitionClass, methodInfo, factoryClass, factoryMethod, returnInfo, resultDefs);
     }
-    
     for (ResultDefinition result : resultDefs) {
       // get fields from annotation
       String mappingType = result.getType();
@@ -197,6 +199,31 @@ public final class AnnotationMapperFactory {
       Class<?> beanType = null;
       Method setter = null;
 
+      // check user defined collection class
+      Class<?> collection = null;
+      if (collectionClass != Object.class) {
+        collection = collectionClass;
+        if (collectionType == null) {
+          throw new ValidationException("Return type of method must be a collection if collectionClass is defined");
+        }
+        if (!collectionType.isAssignableFrom(collection)) {
+          throw new ValidationException("Cannot assign " + collection.getName() + " to return type " + collectionType.getName());
+        }
+        if (collection.isInterface()) {
+          throw new ValidationException("collectionClass cannot be an interface " + collection.getName());
+        }
+        if (Modifier.isAbstract(collection.getModifiers())) {
+          throw new ValidationException("collectionClass cannot be an abstract class " + collection.getName());
+        }
+        if (collectionInitialCapacity != 0) {
+          try {
+            collection.getConstructor(int.class);
+          } catch (Exception e) {
+            throw new ValidationException("Type " + collection.getName() + " does not have constructor to set initial capacity");
+          }
+        }
+      }
+      
       // get types
       
       if (field == null) {
@@ -239,7 +266,8 @@ public final class AnnotationMapperFactory {
       // create mapping
       ResultMapping mapping = MappingFactory.createResultMapping(queryDefinitionClass.getClassLoader(), mappingType,
           type, collectionType, beanType, setter, sqlIndexes, sqlColumns, mapKeyType, constructorParameter,
-          (constructorParameter != null ? constructor : null), (constructorParameter != null ? staticFactoryMethod : null));
+          (constructorParameter != null ? constructor : null), (constructorParameter != null ? staticFactoryMethod : null),
+          collection, collectionInitialCapacity);
       list.add(mapping);
     }
     return list;

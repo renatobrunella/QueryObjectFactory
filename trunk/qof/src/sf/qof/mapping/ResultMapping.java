@@ -43,10 +43,12 @@ public interface ResultMapping extends Mapping {
    * @param constructorParameter index of a parameter in the constructor
    * @param constructor     constructor
    * @param staticFactoryMethod static factory method
+   * @param collectionClass class of collection
+   * @param collectionInitialCapacity initial capacity of collection
    */
   void setParameters(Class<?> type, Class<?> collectionType, Class<?> beanType, Method setter, int[] sqlIndexes,
       String[] sqlColumns, MappingAdapter adapter, Class<?> mapKeyType, Integer constructorParameter, 
-      Constructor<?> constructor, Method staticFactoryMethod);
+      Constructor<?> constructor, Method staticFactoryMethod, Class<?> collectionClass, int collectionInitialCapacity);
 
   /**
    * Returns mapping type.
@@ -147,4 +149,18 @@ public interface ResultMapping extends Mapping {
    * @return static factory method
    */
   Method getStaticFactoryMethod();
+  
+  /**
+   * Returns the user defined collection class or null.
+   * 
+   * @return collection class
+   */
+  Class<?> getCollectionClass();
+  
+  /**
+   * Returns the initial collection size.
+   * 
+   * @return initial collection size
+   */
+  int getInitialCollectionCapacity();
 }

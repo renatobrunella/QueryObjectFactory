@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 - 2010 brunella ltd
+ * Copyright 2007 - 2011 brunella ltd
  *
  * Licensed under the LGPL Version 3 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   protected Integer constructorParameter;
   protected Constructor<?> constructor;
   protected Method staticFactoryMethod;
+  protected Class<?> collectionClass;
+  protected int collectionInitialCapacity;
   protected boolean usesArray;
   protected String parameterSeparator;
 
@@ -61,7 +63,7 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   // implements ResultMapping
   public void setParameters(Class<?> type, Class<?> collectionType, Class<?> beanType, Method setter, int[] sqlIndexes,
       String[] sqlColumns, MappingAdapter adapter, Class<?> mapKeyType, Integer constructorParameter, 
-      Constructor<?> constructor, Method staticFactoryMethod) {
+      Constructor<?> constructor, Method staticFactoryMethod, Class<?> collectionClass, int collectionInitialCapacity) {
     this.index = -1;
     this.type = type;
     this.collectionType = collectionType;
@@ -74,6 +76,8 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     this.constructorParameter = constructorParameter;
     this.constructor = constructor;
     this.staticFactoryMethod = staticFactoryMethod;
+    this.collectionClass = collectionClass;
+    this.collectionInitialCapacity = collectionInitialCapacity;
   }
 
   public Class<?> getBeanType() {
@@ -138,6 +142,14 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
   
   public Method getStaticFactoryMethod() {
     return staticFactoryMethod;
+  }
+  
+  public Class<?> getCollectionClass() {
+    return collectionClass;
+  }
+  
+  public int getInitialCollectionCapacity() {
+    return collectionInitialCapacity;
   }
   
   public boolean usesArray() {
