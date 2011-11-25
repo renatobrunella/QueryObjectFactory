@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: QueryObjectFactory Eclipse Validator Plugin
 Bundle-SymbolicName: sf.qof.plugin.validator;singleton:=true
-Bundle-Version: 1.1.0.SNAPSHOT
+Bundle-Version: 1.1.2.SNAPSHOT
 Bundle-Activator: sf.qof.plugin.Activator
 Bundle-Vendor: brunella ltd
 Eclipse-LazyStart: true
-Bundle-ClassPath: lib/sf.qof-1.1.0.SNAPSHOT.jar,
+Bundle-ClassPath: lib/sf.qof-1.1.2.SNAPSHOT.jar,
  lib,
  .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
