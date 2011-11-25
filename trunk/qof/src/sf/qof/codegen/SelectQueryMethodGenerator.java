@@ -126,10 +126,14 @@ public class SelectQueryMethodGenerator {
     
     Class<?> returnType = mapper.getMethod().getReturnInfo().getType();
   
-    Label labelThrowNoResult = co.make_label();
+    Label labelThrowNoResult = null;
     Label labelThrowMoreThanOneResult = co.make_label();
     Label labelFinally = co.make_label();
-  
+
+	if (returnType.isPrimitive()) {
+      labelThrowNoResult = co.make_label();
+	}
+	
     Local localResult = null;
   
     localResult = co.make_local(Type.getType(returnType));
@@ -163,9 +167,12 @@ public class SelectQueryMethodGenerator {
     co.mark(labelThrowMoreThanOneResult);
     // throw new SQLException("More than one result in result set");
     co.throw_exception(TYPE_SQLException, EXCEPTION_MORE_THAN_ONE_RESULT);
-    // throw new SQLException("Empty result set returned");
-    co.mark(labelThrowNoResult);
-    co.throw_exception(TYPE_SQLException, EXCEPTION_EMPTY_RESULT);
+	
+	if (returnType.isPrimitive()) {
+      // throw new SQLException("Empty result set returned");
+      co.mark(labelThrowNoResult);
+      co.throw_exception(TYPE_SQLException, EXCEPTION_EMPTY_RESULT);
+    }
   
     // finally blocks
     co.mark(labelFinally);
