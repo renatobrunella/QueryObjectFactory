@@ -1,10 +1,8 @@
 package sf.qof.session;
 
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.logging.Logger;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -345,6 +343,10 @@ public class DefaultSessionRunnerTest extends TestCase {
 
     public int getLoginTimeout() throws SQLException {
       return dataSource.getLoginTimeout();
+    }
+
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+      return null;
     }
 
     public PrintWriter getLogWriter() throws SQLException {
