@@ -4,7 +4,7 @@
     <groupId>uk.co.brunella.qof</groupId>
     <artifactId>qof</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <name>qof</name>
     <url>https://github.com/renatobrunella/QueryObjectFactory</url>
 
@@ -179,7 +179,7 @@
         <connection>scm:git:git://github.com/renatobrunella/QueryObjectFactory.git</connection>
         <developerConnection>scm:git:git@github.com:renatobrunella/QueryObjectFactory.git</developerConnection>
         <url>https://github.com/renatobrunella/QueryObjectFactory</url>
-        <tag>qof-1.0.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
 </project>
