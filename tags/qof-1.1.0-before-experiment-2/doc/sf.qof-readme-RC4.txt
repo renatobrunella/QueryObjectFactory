@@ -1,4 +1,0 @@
-sf.qof-full-1.0.0.RC4.zip           Full package containing Eclipse project, Source, JUnits tests
-sf.qof-1.0.0.RC4.jar                OSGi Bundle - can be used a normal library jar
-sf.qof-api-doc-1.0.0.RC4.jar        JavaDoc
-sf.qof-src-1.0.0.RC4.jar            Source - does not contain build files, tests, libraries, etc.
