@@ -21,11 +21,17 @@ package uk.co.brunella.qof.mapping;
 import uk.co.brunella.qof.mapping.AbstractNumberMapping.*;
 
 public interface NumberMappingVisitor {
-  void visit(Mapper mapper, ByteMapping mapping);
-  void visit(Mapper mapper, ShortMapping mapping);
-  void visit(Mapper mapper, IntegerMapping mapping);
-  void visit(Mapper mapper, LongMapping mapping);
-  void visit(Mapper mapper, FloatMapping mapping);
-  void visit(Mapper mapper, DoubleMapping mapping);
-  void visit(Mapper mapper, BooleanMapping mapping);
+    void visit(Mapper mapper, ByteMapping mapping);
+
+    void visit(Mapper mapper, ShortMapping mapping);
+
+    void visit(Mapper mapper, IntegerMapping mapping);
+
+    void visit(Mapper mapper, LongMapping mapping);
+
+    void visit(Mapper mapper, FloatMapping mapping);
+
+    void visit(Mapper mapper, DoubleMapping mapping);
+
+    void visit(Mapper mapper, BooleanMapping mapping);
 }

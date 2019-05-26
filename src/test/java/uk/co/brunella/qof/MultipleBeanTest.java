@@ -10,14 +10,6 @@ import java.util.List;
 
 public class MultipleBeanTest extends TestCase {
 
-    public interface Queries extends BaseQuery {
-        @Insert(sql = "insert into test values ({%1.parent.green})")
-        void insert2(TestBean bean) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1.parent.parent.name})")
-        void insert3(TestBean bean) throws SQLException;
-    }
-
     Connection connection;
     Queries queries;
     List<String> log;
@@ -84,6 +76,14 @@ public class MultipleBeanTest extends TestCase {
         assertEquals("setString(1,null)", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface Queries extends BaseQuery {
+        @Insert(sql = "insert into test values ({%1.parent.green})")
+        void insert2(TestBean bean) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1.parent.parent.name})")
+        void insert3(TestBean bean) throws SQLException;
     }
 
 }

@@ -12,17 +12,6 @@ import java.util.List;
 public class DefaultCustomizerTest extends TestCase {
 
 
-    public interface TestInterface1 extends BaseQuery {
-        @Query(sql = "select id {%%} from test")
-        List<Integer> selectList() throws SQLException;
-    }
-
-    @UseSessionContext()
-    public interface TestInterface2 extends BaseQuery {
-        @Query(sql = "select id {%%} from test")
-        List<Integer> selectList() throws SQLException;
-    }
-
     public void testGetListType() {
         Type type = new DefaultCustomizer().getListType();
         assertEquals("java.util.ArrayList", type.getClassName());
@@ -48,5 +37,16 @@ public class DefaultCustomizerTest extends TestCase {
         assertTrue(customizer instanceof DefaultConnectionFactoryCustomizer);
         customizer = new DefaultCustomizer().getConnectionFactoryCustomizer(TestInterface2.class);
         assertTrue(customizer instanceof SessionContextConnectionFactoryCustomizer);
+    }
+
+    public interface TestInterface1 extends BaseQuery {
+        @Query(sql = "select id {%%} from test")
+        List<Integer> selectList() throws SQLException;
+    }
+
+    @UseSessionContext()
+    public interface TestInterface2 extends BaseQuery {
+        @Query(sql = "select id {%%} from test")
+        List<Integer> selectList() throws SQLException;
     }
 }

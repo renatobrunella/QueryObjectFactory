@@ -22,10 +22,15 @@ import net.sf.cglib.core.Signature;
 
 public interface MethodInfo {
 
-  Signature getSignature();
-  int getModifiers();
-  MethodParameterInfo[] getParameterInfos();
-  MethodParameterInfo[] getCollectionParameterInfos();
-  MethodReturnInfo getReturnInfo();
-  String getDescription();
+    Signature getSignature();
+
+    int getModifiers();
+
+    MethodParameterInfo[] getParameterInfos();
+
+    MethodParameterInfo[] getCollectionParameterInfos();
+
+    MethodReturnInfo getReturnInfo();
+
+    String getDescription();
 }

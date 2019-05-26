@@ -6,12 +6,6 @@ import java.sql.SQLException;
 
 public class ConnectionNotSetTest extends TestCase {
 
-    public interface Queries extends BaseQuery {
-
-        @Query(sql = "select abc {%%} from test")
-        String select() throws SQLException;
-    }
-
     public void testNoConnection() throws SQLException {
         Queries dao = QueryObjectFactory.createQueryObject(Queries.class);
         try {
@@ -22,5 +16,11 @@ public class ConnectionNotSetTest extends TestCase {
         } catch (Exception e) {
             fail("Invalid exception " + e);
         }
+    }
+
+    public interface Queries extends BaseQuery {
+
+        @Query(sql = "select abc {%%} from test")
+        String select() throws SQLException;
     }
 }

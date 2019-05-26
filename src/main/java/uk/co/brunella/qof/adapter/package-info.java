@@ -19,7 +19,7 @@
 
 /**
  * Provides adapter classes and interfaces.
- * 
+ *
  * @since 1.0.0
  */
 package uk.co.brunella.qof.adapter;

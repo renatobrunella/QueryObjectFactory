@@ -9,14 +9,6 @@ import java.util.List;
 
 public class BeanInsertTest extends TestCase {
 
-    public interface InsertQueries extends BaseQuery {
-        @Insert(sql = "insert into test values ({%1.id},{%1.num},{%1.name},{%1.date})")
-        void insertBean(TestBean bean);
-
-        @Insert(sql = "insert into test values ({%1.id},{%1.num},{%1.name},{%1.date})")
-        int insertBean2(TestBean bean);
-    }
-
     Connection connection;
     InsertQueries insertQueries;
     List<String> log;
@@ -87,5 +79,13 @@ public class BeanInsertTest extends TestCase {
         assertEquals("setDate(4,1970-01-01)", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface InsertQueries extends BaseQuery {
+        @Insert(sql = "insert into test values ({%1.id},{%1.num},{%1.name},{%1.date})")
+        void insertBean(TestBean bean);
+
+        @Insert(sql = "insert into test values ({%1.id},{%1.num},{%1.name},{%1.date})")
+        int insertBean2(TestBean bean);
     }
 }

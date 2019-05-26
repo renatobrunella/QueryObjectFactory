@@ -20,69 +20,65 @@ package uk.co.brunella.qof.session;
 
 /**
  * Extension interface for <code>SessionContext</code>.
- * 
+ * <p>
  * Add a method to to start a session with a specified transaction management type.
- * 
+ *
  * @since 1.1.0
  */
 public interface SessionContextExt extends SessionContext {
 
-  /**
-   * This method starts a session using the specified <code>TransactionManagementType</code>.
-   *
-   * It creates a new session for the calling thread and assigns a 
-   * database connection to it and it creates a new transaction.
-   * 
-   * It must be called by the calling thread before any other method 
-   * of this session context can be called.
-   * 
-   * @param transactionManagementType the transaction management type
-   * @throws SystemException        Thrown if an unexpected error condition occurs
-   * @throws IllegalStateException  Thrown if the session is already started
-   * 
-   * @since 1.1.0
-   */
-  void startSession(TransactionManagementType transactionManagementType) throws SystemException;
-  
-  /**
-   * This method starts a session using the specified <code>TransactionManagementType</code>.
-   *
-   * It creates a new session for the calling thread and assigns a 
-   * database connection to it and it creates a new transaction.
-   * 
-   * It must be called by the calling thread before any other method 
-   * of this session context can be called.
-   * 
-   * Session policy can be specified to require a new session or to join
-   * an existing one.
-   * 
-   * @param transactionManagementType the transaction management type
-   * @param sessionPolicy             the session policy
-   * @throws SystemException        Thrown if an unexpected error condition occurs
-   * @throws IllegalStateException  Thrown if the session is already started
-   * 
-   * @since 1.1.0
-   */
-  void startSession(TransactionManagementType transactionManagementType, SessionPolicy sessionPolicy) throws SystemException;
-  
-  /**
-   * This method starts a session.
-   *
-   * It creates a new session for the calling thread and assigns a 
-   * database connection to it and it creates a new transaction.
-   * 
-   * It must be called by the calling thread before any other method 
-   * of this session context can be called.
-   * 
-   * Session policy can be specified to require a new session or to join
-   * an existing one.
-   * 
-   * @param sessionPolicy  The session policy
-   * 
-   * @throws SystemException        Thrown if an unexpected error condition occurs
-   * @throws IllegalStateException  Thrown if the session is already started
-   * 
-   * @since 1.1.0
-   */
-  void startSession(SessionPolicy sessionPolicy) throws SystemException;
+    /**
+     * This method starts a session using the specified <code>TransactionManagementType</code>.
+     * <p>
+     * It creates a new session for the calling thread and assigns a
+     * database connection to it and it creates a new transaction.
+     * <p>
+     * It must be called by the calling thread before any other method
+     * of this session context can be called.
+     *
+     * @param transactionManagementType the transaction management type
+     * @throws SystemException       Thrown if an unexpected error condition occurs
+     * @throws IllegalStateException Thrown if the session is already started
+     * @since 1.1.0
+     */
+    void startSession(TransactionManagementType transactionManagementType) throws SystemException;
+
+    /**
+     * This method starts a session using the specified <code>TransactionManagementType</code>.
+     * <p>
+     * It creates a new session for the calling thread and assigns a
+     * database connection to it and it creates a new transaction.
+     * <p>
+     * It must be called by the calling thread before any other method
+     * of this session context can be called.
+     * <p>
+     * Session policy can be specified to require a new session or to join
+     * an existing one.
+     *
+     * @param transactionManagementType the transaction management type
+     * @param sessionPolicy             the session policy
+     * @throws SystemException       Thrown if an unexpected error condition occurs
+     * @throws IllegalStateException Thrown if the session is already started
+     * @since 1.1.0
+     */
+    void startSession(TransactionManagementType transactionManagementType, SessionPolicy sessionPolicy) throws SystemException;
+
+    /**
+     * This method starts a session.
+     * <p>
+     * It creates a new session for the calling thread and assigns a
+     * database connection to it and it creates a new transaction.
+     * <p>
+     * It must be called by the calling thread before any other method
+     * of this session context can be called.
+     * <p>
+     * Session policy can be specified to require a new session or to join
+     * an existing one.
+     *
+     * @param sessionPolicy The session policy
+     * @throws SystemException       Thrown if an unexpected error condition occurs
+     * @throws IllegalStateException Thrown if the session is already started
+     * @since 1.1.0
+     */
+    void startSession(SessionPolicy sessionPolicy) throws SystemException;
 }

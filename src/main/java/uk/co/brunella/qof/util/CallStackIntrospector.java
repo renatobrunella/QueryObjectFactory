@@ -28,79 +28,79 @@ import java.security.PrivilegedAction;
  */
 public class CallStackIntrospector {
 
-  private static Method GET_CLASS_CONTEXT;
-  private static SecurityManager SECURITY_MANAGER;
+    private static Method GET_CLASS_CONTEXT;
+    private static SecurityManager SECURITY_MANAGER;
 
-  static {
-    SECURITY_MANAGER = System.getSecurityManager();
-    if (SECURITY_MANAGER == null) {
-      SECURITY_MANAGER = new SecurityManager();
+    static {
+        SECURITY_MANAGER = System.getSecurityManager();
+        if (SECURITY_MANAGER == null) {
+            SECURITY_MANAGER = new SecurityManager();
+        }
+
+        AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            public Object run() {
+                Class<?> securityManagerClass;
+                try {
+                    securityManagerClass = Class.forName("java.lang.SecurityManager");
+                    GET_CLASS_CONTEXT = securityManagerClass.getDeclaredMethod("getClassContext");
+                    GET_CLASS_CONTEXT.setAccessible(true);
+                } catch (ClassNotFoundException e) {
+                } catch (SecurityException e) {
+                } catch (NoSuchMethodException e) {
+                }
+                return null;
+            }
+        });
     }
 
-    AccessController.doPrivileged(new PrivilegedAction<Object>() {
-      public Object run() {
-        Class<?> securityManagerClass;
-        try {
-          securityManagerClass = Class.forName("java.lang.SecurityManager");
-          GET_CLASS_CONTEXT = securityManagerClass.getDeclaredMethod("getClassContext");
-          GET_CLASS_CONTEXT.setAccessible(true);
-        } catch (ClassNotFoundException e) {
-        } catch (SecurityException e) {
-        } catch (NoSuchMethodException e) {
+    /**
+     * Returns the current call stack as an array of <code>Class</code>.
+     *
+     * @return Array of classes
+     */
+    public static Class<?>[] getCallStack() {
+        if (GET_CLASS_CONTEXT != null) {
+            try {
+                return (Class<?>[]) GET_CLASS_CONTEXT.invoke(SECURITY_MANAGER, (Object[]) null);
+            } catch (IllegalArgumentException e) {
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e) {
+            }
         }
         return null;
-      }
-    });
-  }
+    }
 
-  /**
-   * Returns the current call stack as an array of <code>Class</code>.
-   * 
-   * @return Array of classes
-   */
-  public static Class<?>[] getCallStack() {
-    if (GET_CLASS_CONTEXT != null) {
-      try {
-        return (Class<?>[]) GET_CLASS_CONTEXT.invoke(SECURITY_MANAGER, (Object[]) null);
-      } catch (IllegalArgumentException e) {
-      } catch (IllegalAccessException e) {
-      } catch (InvocationTargetException e) {
-      }
+    /**
+     * Returns the class of the caller.
+     *
+     * @return Caller class
+     */
+    public static Class<?> getCaller() {
+        return getCaller(1);
     }
-    return null;
-  }
 
-  /**
-   * Returns the class of the caller.
-   * 
-   * @return Caller class
-   */
-  public static Class<?> getCaller() {
-    return getCaller(1);
-  }
-  
-  /**
-   * Returns the class of the caller at a given stack level.
-   * 
-   * @param level Stack level starting at 0 for the immediate caller
-   * @return Caller class at given level or <code>null</code>
-   */
-  public static Class<?> getCaller(int level) {
-    Class<?>[] callStack = getCallStack();
-    int baseLevel = findBaseLevel(callStack);
-    if (baseLevel + level + 1 < 0 || baseLevel + level + 1 >= callStack.length) {
-      return null;
-    } else {
-      return callStack[baseLevel + level + 1];
+    /**
+     * Returns the class of the caller at a given stack level.
+     *
+     * @param level Stack level starting at 0 for the immediate caller
+     * @return Caller class at given level or <code>null</code>
+     */
+    public static Class<?> getCaller(int level) {
+        Class<?>[] callStack = getCallStack();
+        int baseLevel = findBaseLevel(callStack);
+        if (baseLevel + level + 1 < 0 || baseLevel + level + 1 >= callStack.length) {
+            return null;
+        } else {
+            return callStack[baseLevel + level + 1];
+        }
     }
-  }
-  
-  private static int findBaseLevel(Class<?>[] callStack) {
-    for (int i = callStack.length - 1; i >= 0; i--) {
-      if (callStack[i] == CallStackIntrospector.class) {
-        return i;
-      }
+
+    private static int findBaseLevel(Class<?>[] callStack) {
+        for (int i = callStack.length - 1; i >= 0; i--) {
+            if (callStack[i] == CallStackIntrospector.class) {
+                return i;
+            }
+        }
+        return -1;
     }
-    return -1;
-  }
 }

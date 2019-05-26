@@ -23,41 +23,41 @@ package uk.co.brunella.qof.parser;
  */
 public interface ResultDefinition extends Definition {
 
-  /**
-   * Returns an array of SQL column names.
-   * Can be empty.
-   * 
-   * @return array of SQL column names
-   */
-  String[] getColumns();
-  
-  /**
-   * Returns the name a field if the result is a Java bean. 
-   * 
-   * @return name of a field in a Java bean result.
-   */
-  String getField();
-  
-  /**
-   * Returns the index of a parameter in a constructor.
-   *  
-   * @return parameter index in the constructor 
-   */
-  int getConstructorParameter();
-  
-  /**
-   * Returns an array of SQL column indexes.
-   * Can be empty.
-   * 
-   * @return array of SQL column indexes
-   */
-  int[] getIndexes();
-  
-  /**
-   * Returns true if the result definition is for the key if the 
-   * result is a map.
-   * 
-   * @return map key
-   */
-  boolean isMapKey();
+    /**
+     * Returns an array of SQL column names.
+     * Can be empty.
+     *
+     * @return array of SQL column names
+     */
+    String[] getColumns();
+
+    /**
+     * Returns the name a field if the result is a Java bean.
+     *
+     * @return name of a field in a Java bean result.
+     */
+    String getField();
+
+    /**
+     * Returns the index of a parameter in a constructor.
+     *
+     * @return parameter index in the constructor
+     */
+    int getConstructorParameter();
+
+    /**
+     * Returns an array of SQL column indexes.
+     * Can be empty.
+     *
+     * @return array of SQL column indexes
+     */
+    int[] getIndexes();
+
+    /**
+     * Returns true if the result definition is for the key if the
+     * result is a map.
+     *
+     * @return map key
+     */
+    boolean isMapKey();
 }

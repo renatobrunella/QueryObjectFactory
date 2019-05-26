@@ -4,6 +4,25 @@ import junit.framework.TestCase;
 
 public class DefaultFieldTest extends TestCase {
 
+    public void testBatchFetchIntf() {
+        TestBatchFetchIntf test = QueryObjectFactory.createQueryObject(TestBatchFetchIntf.class);
+        assertEquals(88, test.getBatchSize());
+        assertEquals(99, test.getFetchSize());
+    }
+
+    public void testBatchFetchClass() {
+        TestBatchFetchClass test = QueryObjectFactory.createQueryObject(TestBatchFetchClass.class);
+        assertEquals(88, test.getBatchSize());
+        assertEquals(99, test.getFetchSize());
+    }
+
+    public void testBatchFetchClass2() {
+        TestBatchFetchClass2 test = QueryObjectFactory.createQueryObject(TestBatchFetchClass2.class);
+        test.test();
+        assertEquals(10, test.getBatchSize());
+        assertEquals(20, test.getFetchSize());
+    }
+
     public interface TestBatchFetchIntf extends BaseQuery {
         int DEFAULT_FETCH_SIZE = 99;
         int DEFAULT_BATCH_SIZE = 88;
@@ -31,24 +50,5 @@ public class DefaultFieldTest extends TestCase {
 
         @Query(sql = "select id {%%} from test")
         protected abstract int select();
-    }
-
-    public void testBatchFetchIntf() {
-        TestBatchFetchIntf test = QueryObjectFactory.createQueryObject(TestBatchFetchIntf.class);
-        assertEquals(88, test.getBatchSize());
-        assertEquals(99, test.getFetchSize());
-    }
-
-    public void testBatchFetchClass() {
-        TestBatchFetchClass test = QueryObjectFactory.createQueryObject(TestBatchFetchClass.class);
-        assertEquals(88, test.getBatchSize());
-        assertEquals(99, test.getFetchSize());
-    }
-
-    public void testBatchFetchClass2() {
-        TestBatchFetchClass2 test = QueryObjectFactory.createQueryObject(TestBatchFetchClass2.class);
-        test.test();
-        assertEquals(10, test.getBatchSize());
-        assertEquals(20, test.getFetchSize());
     }
 }

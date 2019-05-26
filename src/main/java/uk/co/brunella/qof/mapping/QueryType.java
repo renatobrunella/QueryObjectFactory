@@ -24,5 +24,5 @@ public enum QueryType {
     INSERT,
     UPDATE,
     DELETE,
-    CALL;
+    CALL
 }

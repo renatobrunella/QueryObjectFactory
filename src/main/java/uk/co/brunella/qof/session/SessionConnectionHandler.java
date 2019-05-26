@@ -22,41 +22,38 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 /**
- * Defines methods to get a connection from a data source and perform 
+ * Defines methods to get a connection from a data source and perform
  * additional configuration of the connection and to close connections.
- * 
+ * <p>
  * A <code>SessionConnectionHandler</code> is used during starting of a
- * session to get a connection from a data source. 
- * 
- * <p>The <code>DefaultSessionConnectionHandler</code> gets a connection 
+ * session to get a connection from a data source.
+ *
+ * <p>The <code>DefaultSessionConnectionHandler</code> gets a connection
  * from the data source and sets auto commit to false.</p>
- * 
+ *
  * @see DefaultSessionConnectionHandler
  * @see SessionContextFactory#setSessionConnectionHandler(SessionConnectionHandler)
  * @see SessionContextFactory#setSessionConnectionHandler(String, SessionConnectionHandler)
- *
- * @since 1.0.0            
+ * @since 1.0.0
  */
 public interface SessionConnectionHandler {
 
-  /**
-   * Returns a new connection from the data source.
-   * 
-   * @param dataSource the data source
-   * @return a new connection
-   * @throws SystemException
-   *
-   * @since 1.0.0            
-   */
-  Connection getConnection(DataSource dataSource) throws SystemException;
-  
-  /**
-   * Closes a connection.
-   * 
-   * @param connection the connection
-   * @throws SystemException
-   *
-   * @since 1.0.0            
-   */
-  void closeConnection(Connection connection) throws SystemException;
+    /**
+     * Returns a new connection from the data source.
+     *
+     * @param dataSource the data source
+     * @return a new connection
+     * @throws SystemException
+     * @since 1.0.0
+     */
+    Connection getConnection(DataSource dataSource) throws SystemException;
+
+    /**
+     * Closes a connection.
+     *
+     * @param connection the connection
+     * @throws SystemException
+     * @since 1.0.0
+     */
+    void closeConnection(Connection connection) throws SystemException;
 }

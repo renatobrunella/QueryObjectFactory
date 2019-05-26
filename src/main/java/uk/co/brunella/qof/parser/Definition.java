@@ -22,32 +22,32 @@ package uk.co.brunella.qof.parser;
  * Specification of a definition.
  */
 public interface Definition {
-  
-  /**
-   * Returns the type of the parameter (string, int, etc.).
-   * 
-   * @return type of the parameter
-   */
-  String getType();
 
-  /**
-   * Returns true is the definition is a partial definition that needs to be combined.
-   * 
-   * @return true if definition is partial
-   */
-  boolean isPartialDefinition();
-  
-  /**
-   * Returns the part number of the partial definition.
-   * 
-   * @return part number of the partial definition or 0
-   */
-  int getPartialDefinitionPart();
-  
-  /**
-   * Returns group name of the partial definition or null.
-   * 
-   * @return group name of partial definition or null
-   */
-  String getPartialDefinitionGroup();
+    /**
+     * Returns the type of the parameter (string, int, etc.).
+     *
+     * @return type of the parameter
+     */
+    String getType();
+
+    /**
+     * Returns true is the definition is a partial definition that needs to be combined.
+     *
+     * @return true if definition is partial
+     */
+    boolean isPartialDefinition();
+
+    /**
+     * Returns the part number of the partial definition.
+     *
+     * @return part number of the partial definition or 0
+     */
+    int getPartialDefinitionPart();
+
+    /**
+     * Returns group name of the partial definition or null.
+     *
+     * @return group name of partial definition or null
+     */
+    String getPartialDefinitionGroup();
 }

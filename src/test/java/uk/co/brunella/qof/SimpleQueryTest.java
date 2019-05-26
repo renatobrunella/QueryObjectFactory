@@ -13,68 +13,6 @@ import java.util.Map;
 
 public class SimpleQueryTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
-        byte selectByte1(byte a, Byte b) throws SQLException;
-
-        @Query(sql = "select value {byte %%} from test where id1 = {%1} and id2 = {%2})")
-        Byte selectByte2(byte a, Byte b) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
-        boolean selectBoolean1(boolean a, Boolean b) throws SQLException;
-
-        @Query(sql = "select value {boolean %%} from test where id1 = {%1} and id2 = {%2})")
-        Boolean selectBoolean2(boolean a, Boolean b) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
-        char selectChar1(char a, Character b) throws SQLException;
-
-        @Query(sql = "select value {char %%} from test where id1 = {%1} and id2 = {%2})")
-        Character selectChar2(char a, Character b) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
-        short selectShort1(short a, Short b) throws SQLException;
-
-        @Query(sql = "select value {short %%} from test where id1 = {%1} and id2 = {%2})")
-        Short selectShort2(short a, Short b) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
-        int selectInteger1(int a, Integer b) throws SQLException;
-
-        @Query(sql = "select value {int %%} from test where id1 = {%1} and id2 = {%2})")
-        Integer selectInteger2(int a, Integer b) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
-        long selectLong1(long a, Long b) throws SQLException;
-
-        @Query(sql = "select value {long %%} from test where id1 = {%1} and id2 = {%2})")
-        Long selectLong2(long a, Long b) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
-        float selectFloat1(float a, Float b) throws SQLException;
-
-        @Query(sql = "select value {float %%} from test where id1 = {%1} and id2 = {%2})")
-        Float selectFloat2(float a, Float b) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
-        double selectDouble1(double a, Double b) throws SQLException;
-
-        @Query(sql = "select value {double %%} from test where id1 = {%1} and id2 = {%2})")
-        Double selectDouble2(double a, Double b) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1})")
-        String selectString(String a) throws SQLException;
-
-        @Query(sql = "select value {date %%} from test where id1 = {date %1})")
-        java.util.Date selectDate(java.util.Date a) throws SQLException;
-
-        @Query(sql = "select value {time %%} from test where id1 = {time %1})")
-        java.util.Date selectTime(java.util.Date a) throws SQLException;
-
-        @Query(sql = "select value {timestamp %%} from test where id1 = {timestamp %1})")
-        java.util.Date selectTimestamp(java.util.Date a) throws SQLException;
-    }
-
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
@@ -107,7 +45,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, ((Byte) selectQueries.selectByte2((byte) 33, null)).byteValue());
+        assertEquals(55, selectQueries.selectByte2((byte) 33, null).byteValue());
         assertEquals(11, log.size());
         i = 0;
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -144,7 +82,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertTrue(((Boolean) selectQueries.selectBoolean2(false, null)).booleanValue());
+        assertTrue(selectQueries.selectBoolean2(false, null).booleanValue());
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -180,7 +118,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals('A', ((Character) selectQueries.selectChar2('c', null)).charValue());
+        assertEquals('A', selectQueries.selectChar2('c', null).charValue());
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -215,7 +153,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, ((Short) selectQueries.selectShort2((short) 33, null)).shortValue());
+        assertEquals(55, selectQueries.selectShort2((short) 33, null).shortValue());
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -236,7 +174,7 @@ public class SimpleQueryTest extends TestCase {
         results.add(data);
         data.put("value", new Integer(55));
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, selectQueries.selectInteger1((int) 11, new Integer((int) 22)));
+        assertEquals(55, selectQueries.selectInteger1(11, new Integer(22)));
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -251,7 +189,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, ((Integer) selectQueries.selectInteger2((int) 33, null)).intValue());
+        assertEquals(55, selectQueries.selectInteger2(33, null).intValue());
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -287,7 +225,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, ((Long) selectQueries.selectLong2((long) 33, null)).longValue());
+        assertEquals(55, selectQueries.selectLong2((long) 33, null).longValue());
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -323,7 +261,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals((float) 55.5, ((Float) selectQueries.selectFloat2((float) 33.3, null)).floatValue());
+        assertEquals((float) 55.5, selectQueries.selectFloat2((float) 33.3, null).floatValue());
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -343,7 +281,7 @@ public class SimpleQueryTest extends TestCase {
         results.add(data);
         data.put("value", new Double(55.5));
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55.5, selectQueries.selectDouble1((double) 11.1, new Double((double) 22.2)));
+        assertEquals(55.5, selectQueries.selectDouble1(11.1, new Double(22.2)));
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -358,7 +296,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55.5, ((Double) selectQueries.selectDouble2((double) 33.3, null)).doubleValue());
+        assertEquals(55.5, selectQueries.selectDouble2(33.3, null).doubleValue());
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -503,5 +441,67 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
+        byte selectByte1(byte a, Byte b) throws SQLException;
+
+        @Query(sql = "select value {byte %%} from test where id1 = {%1} and id2 = {%2})")
+        Byte selectByte2(byte a, Byte b) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
+        boolean selectBoolean1(boolean a, Boolean b) throws SQLException;
+
+        @Query(sql = "select value {boolean %%} from test where id1 = {%1} and id2 = {%2})")
+        Boolean selectBoolean2(boolean a, Boolean b) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
+        char selectChar1(char a, Character b) throws SQLException;
+
+        @Query(sql = "select value {char %%} from test where id1 = {%1} and id2 = {%2})")
+        Character selectChar2(char a, Character b) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
+        short selectShort1(short a, Short b) throws SQLException;
+
+        @Query(sql = "select value {short %%} from test where id1 = {%1} and id2 = {%2})")
+        Short selectShort2(short a, Short b) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
+        int selectInteger1(int a, Integer b) throws SQLException;
+
+        @Query(sql = "select value {int %%} from test where id1 = {%1} and id2 = {%2})")
+        Integer selectInteger2(int a, Integer b) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
+        long selectLong1(long a, Long b) throws SQLException;
+
+        @Query(sql = "select value {long %%} from test where id1 = {%1} and id2 = {%2})")
+        Long selectLong2(long a, Long b) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
+        float selectFloat1(float a, Float b) throws SQLException;
+
+        @Query(sql = "select value {float %%} from test where id1 = {%1} and id2 = {%2})")
+        Float selectFloat2(float a, Float b) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1} and id2 = {%2})")
+        double selectDouble1(double a, Double b) throws SQLException;
+
+        @Query(sql = "select value {double %%} from test where id1 = {%1} and id2 = {%2})")
+        Double selectDouble2(double a, Double b) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1})")
+        String selectString(String a) throws SQLException;
+
+        @Query(sql = "select value {date %%} from test where id1 = {date %1})")
+        java.util.Date selectDate(java.util.Date a) throws SQLException;
+
+        @Query(sql = "select value {time %%} from test where id1 = {time %1})")
+        java.util.Date selectTime(java.util.Date a) throws SQLException;
+
+        @Query(sql = "select value {timestamp %%} from test where id1 = {timestamp %1})")
+        java.util.Date selectTimestamp(java.util.Date a) throws SQLException;
     }
 }

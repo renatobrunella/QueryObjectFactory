@@ -22,102 +22,95 @@ import java.sql.Connection;
 
 /**
  * Defines methods for session handling.
- * 
+ * <p>
  * This includes methods to start and stop a session as well as retrieving the
  * current database connection and user transaction.
- * 
+ *
  * <p>A session context is created by a session context factory.</p>
  * <p>A session context creates a separate session for each calling thread.
  * Therefore session can not be shared between sessions.</p>
- * 
+ *
  * <p>A <code>SessionContext</code> can be used in the following way:</p>
- * 
+ *
  * <p><blockquote><pre>
  * // get the default session context
  * SessionContext ctx = SessionContextFactory.getContext();
- * 
- * // start a new session 
+ *
+ * // start a new session
  * ctx.startSession();
- * 
+ *
  * // start a new transaction
  * ctx.getUserTransaction().begin();
- * 
+ *
  * // get the database connection for the current session
  * Connection con = ctx.getConnection();
- * 
+ *
  * // do something with the connection
  * ...
- * 
+ *
  * // commit and end the current transaction
  * ctx.getUserTransaction().commit();
- * 
+ *
  * // stop the session
  * ctx.stopSession();
  * </pre></blockquote></p>
- * 
- * @since 1.0.0
- * @see SessionContextFactory 
+ *
+ * @see SessionContextFactory
  * @see UserTransaction
- * 
+ * @since 1.0.0
  */
 public interface SessionContext {
 
-  /**
-   * Name of the default session context.
-   * 
-   * @since 1.0.0
-   */
-  String DEFAULT_CONTEXT_NAME = "DEFAULT_CONTEXT";
+    /**
+     * Name of the default session context.
+     *
+     * @since 1.0.0
+     */
+    String DEFAULT_CONTEXT_NAME = "DEFAULT_CONTEXT";
 
-  /**
-   * This method starts a session.
-   *
-   * It creates a new session for the calling thread and assigns a 
-   * database connection to it and it creates a new transaction.
-   * 
-   * It must be called by the calling thread before any other method 
-   * of this session context can be called.
-   * 
-   * @throws SystemException        Thrown if an unexpected error condition occurs
-   * @throws IllegalStateException  Thrown if the session is already started
-   * 
-   * @since 1.0.0
-   */
-  void startSession() throws SystemException;
+    /**
+     * This method starts a session.
+     * <p>
+     * It creates a new session for the calling thread and assigns a
+     * database connection to it and it creates a new transaction.
+     * <p>
+     * It must be called by the calling thread before any other method
+     * of this session context can be called.
+     *
+     * @throws SystemException       Thrown if an unexpected error condition occurs
+     * @throws IllegalStateException Thrown if the session is already started
+     * @since 1.0.0
+     */
+    void startSession() throws SystemException;
 
-  /**
-   * This method stops a session.
-   * 
-   * It closes the database connection of the session owned by the calling thread. 
-   * 
-   * @throws SystemException        Thrown if an unexpected error condition occurs
-   * @throws IllegalStateException  Thrown if the session is already stopped
-   * 
-   * @since 1.0.0
-   */
-  void stopSession() throws SystemException;
+    /**
+     * This method stops a session.
+     * <p>
+     * It closes the database connection of the session owned by the calling thread.
+     *
+     * @throws SystemException       Thrown if an unexpected error condition occurs
+     * @throws IllegalStateException Thrown if the session is already stopped
+     * @since 1.0.0
+     */
+    void stopSession() throws SystemException;
 
-  /**
-   * Returns the user transaction of the session belonging to the calling
-   * thread.
-   * 
-   * @return the current user transaction
-   * 
-   * @throws IllegalStateException  Thrown if the session is not started
-   * 
-   * @since 1.0.0
-   */
-  UserTransaction getUserTransaction();
+    /**
+     * Returns the user transaction of the session belonging to the calling
+     * thread.
+     *
+     * @return the current user transaction
+     * @throws IllegalStateException Thrown if the session is not started
+     * @since 1.0.0
+     */
+    UserTransaction getUserTransaction();
 
-  /**
-   * Returns the database connection of the session belonging to the calling
-   * thread.
-   * 
-   * @return the current connection
-   * 
-   * @throws IllegalStateException  Thrown if the session is not started
-   * 
-   * @since 1.0.0
-   */
-  Connection getConnection();
+    /**
+     * Returns the database connection of the session belonging to the calling
+     * thread.
+     *
+     * @return the current connection
+     * @throws IllegalStateException Thrown if the session is not started
+     * @since 1.0.0
+     */
+    Connection getConnection();
 }

@@ -12,6 +12,8 @@ import java.util.Set;
 
 public class DynamicNameAdapter implements DynamicMappingAdapter {
 
+    private final static int[] types = new int[]{java.sql.Types.VARCHAR, java.sql.Types.VARCHAR};
+
     public Set<Class<?>> getTypes() {
         Set<Class<?>> types = new HashSet<Class<?>>();
         types.add(Name.class);
@@ -49,8 +51,6 @@ public class DynamicNameAdapter implements DynamicMappingAdapter {
     public int getNumberOfColumns() {
         return 2;
     }
-
-    private final static int[] types = new int[]{java.sql.Types.VARCHAR, java.sql.Types.VARCHAR};
 
     public int[] preferredSqlTypes() {
         return types;

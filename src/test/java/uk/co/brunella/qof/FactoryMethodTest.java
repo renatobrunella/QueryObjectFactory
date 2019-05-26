@@ -13,44 +13,19 @@ import java.util.Map;
 
 public class FactoryMethodTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
+    static boolean factoryCalled1;
+    static boolean factoryCalled2;
+    private Connection connection;
+    private SelectQueries selectQueries;
 
-        @Query(sql = "select id {int%%1} from person",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        Person getPerson1() throws SQLException;
+    public static Person personFactory(int id) {
+        factoryCalled1 = true;
+        return new Person(id);
+    }
 
-        @Query(sql = "select id {int%%1}, name {string%%2} from person",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        Person getPerson2() throws SQLException;
-
-        @Query(sql = "select id {int%%1}, name {%%.name} from person",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        Person getPerson3() throws SQLException;
-
-        @Query(sql = "select id {int%%1} from person",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        List<Person> getPersons1() throws SQLException;
-
-        @Query(sql = "select id {int%%1}, name {string%%2} from person",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        List<Person> getPersons2() throws SQLException;
-
-        @Query(sql = "select id {int%%1}, name {%%.name} from person",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        List<Person> getPersons3() throws SQLException;
-
-        @Call(sql = "{ {int%%1} = call func () }",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        Person callPerson1() throws SQLException;
-
-        @Call(sql = "{ call func ({int%%1}, {string%%2}) }",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        Person callPerson2() throws SQLException;
-
-        @Call(sql = "{ call func ({int%%1}, {%%.name}) }",
-                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
-        Person callPerson3() throws SQLException;
-
+    public static Person personFactory(int id, String name) {
+        factoryCalled2 = true;
+        return new Person(id, name);
     }
 
     public void testGetPerson1() throws SQLException {
@@ -203,9 +178,6 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled1);
     }
 
-    private Connection connection;
-    private SelectQueries selectQueries;
-
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -215,17 +187,44 @@ public class FactoryMethodTest extends TestCase {
         factoryCalled2 = false;
     }
 
-    static boolean factoryCalled1;
-    static boolean factoryCalled2;
+    public interface SelectQueries extends BaseQuery {
 
-    public static Person personFactory(int id) {
-        factoryCalled1 = true;
-        return new Person(id);
-    }
+        @Query(sql = "select id {int%%1} from person",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        Person getPerson1() throws SQLException;
 
-    public static Person personFactory(int id, String name) {
-        factoryCalled2 = true;
-        return new Person(id, name);
+        @Query(sql = "select id {int%%1}, name {string%%2} from person",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        Person getPerson2() throws SQLException;
+
+        @Query(sql = "select id {int%%1}, name {%%.name} from person",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        Person getPerson3() throws SQLException;
+
+        @Query(sql = "select id {int%%1} from person",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        List<Person> getPersons1() throws SQLException;
+
+        @Query(sql = "select id {int%%1}, name {string%%2} from person",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        List<Person> getPersons2() throws SQLException;
+
+        @Query(sql = "select id {int%%1}, name {%%.name} from person",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        List<Person> getPersons3() throws SQLException;
+
+        @Call(sql = "{ {int%%1} = call func () }",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        Person callPerson1() throws SQLException;
+
+        @Call(sql = "{ call func ({int%%1}, {string%%2}) }",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        Person callPerson2() throws SQLException;
+
+        @Call(sql = "{ call func ({int%%1}, {%%.name}) }",
+                factoryClass = FactoryMethodTest.class, factoryMethod = "personFactory")
+        Person callPerson3() throws SQLException;
+
     }
 
     public static class Person {

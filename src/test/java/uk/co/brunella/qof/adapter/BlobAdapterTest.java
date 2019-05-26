@@ -17,17 +17,6 @@ import java.util.Map;
 
 public class BlobAdapterTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select blob {blob%%} from test")
-        byte[] select() throws SQLException;
-
-        @Query(sql = "select blob {blob%%} from test where blob = {blob%1}")
-        byte[] select(byte[] blob) throws SQLException;
-
-        @Call(sql = "{ {blob%%} = call ( {blob%1} )}")
-        byte[] call(byte[] blob) throws SQLException;
-    }
-
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
@@ -119,5 +108,16 @@ public class BlobAdapterTest extends TestCase {
 
     public void testBlobReader() {
         assertNotNull(new BlobReader());
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select blob {blob%%} from test")
+        byte[] select() throws SQLException;
+
+        @Query(sql = "select blob {blob%%} from test where blob = {blob%1}")
+        byte[] select(byte[] blob) throws SQLException;
+
+        @Call(sql = "{ {blob%%} = call ( {blob%1} )}")
+        byte[] call(byte[] blob) throws SQLException;
     }
 }

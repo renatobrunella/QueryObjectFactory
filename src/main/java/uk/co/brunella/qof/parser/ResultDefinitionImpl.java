@@ -23,148 +23,148 @@ package uk.co.brunella.qof.parser;
  */
 public class ResultDefinitionImpl implements ResultDefinition {
 
-  private String[] columns;
-  private String field;
-  private int[] indexes;
-  private String type;
-  private boolean isMapKey;
-  private int constructorParameter;
-  private String partialDefinitionGroup;
-  private int partialDefinitionPart;
-  private int startPosition;
-  private int endPosition;
+    private String[] columns;
+    private String field;
+    private int[] indexes;
+    private String type;
+    private boolean isMapKey;
+    private int constructorParameter;
+    private String partialDefinitionGroup;
+    private int partialDefinitionPart;
+    private int startPosition;
+    private int endPosition;
 
-  public String[] getColumns() {
-    return columns;
-  }
-
-  public String getField() {
-    return field;
-  }
-
-  public int getConstructorParameter() {
-	return constructorParameter;
-  }
-  
-  public int[] getIndexes() {
-    return indexes;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setColumns(String[] columns) {
-    if (columns == null || columns.length == 0) {
-      this.columns = null; //NOPMD
-    } else {
-      this.columns = columns;
+    public String[] getColumns() {
+        return columns;
     }
-  }
 
-  public void setField(String field) {
-    if (field == null || "".equals(field)) {
-      this.field = null; //NOPMD
-    } else {
-      this.field = field;
+    public void setColumns(String[] columns) {
+        if (columns == null || columns.length == 0) {
+            this.columns = null; //NOPMD
+        } else {
+            this.columns = columns;
+        }
     }
-  }
 
-  public void setConstructorParameter(int parameter) {
-	this.constructorParameter = parameter;
-  }
-
-  public void setIndexes(int[] indexes) {
-    if (indexes == null || indexes.length == 0) {
-      this.indexes = null; //NOPMD
-    } else {
-      this.indexes = indexes;
+    public String getField() {
+        return field;
     }
-  }
 
-  public void setType(String type) {
-    if (type == null || "".equals(type)) {
-      this.type = "auto";
-    } else {
-      this.type = type;
+    public void setField(String field) {
+        if (field == null || "".equals(field)) {
+            this.field = null; //NOPMD
+        } else {
+            this.field = field;
+        }
     }
-  }
-  
-  public void setIsMapKey(boolean isMapKey) {
-    this.isMapKey = isMapKey;
-  }
 
-  private String getColumnsString() {
-    if (columns == null) {
-      return "";
+    public int getConstructorParameter() {
+        return constructorParameter;
     }
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < columns.length; i++) {
-      if (i > 0) {
-        sb.append(',');
-      }
-      sb.append('"').append(columns[i]).append('"');
+
+    public void setConstructorParameter(int parameter) {
+        this.constructorParameter = parameter;
     }
-    return sb.toString();
-  }
 
-  private String getIndexesString() {
-    if (indexes == null) {
-      return "";
+    public int[] getIndexes() {
+        return indexes;
     }
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < indexes.length; i++) {
-      if (i > 0) {
-        sb.append(',');
-      }
-      sb.append(indexes[i]);
+
+    public void setIndexes(int[] indexes) {
+        if (indexes == null || indexes.length == 0) {
+            this.indexes = null; //NOPMD
+        } else {
+            this.indexes = indexes;
+        }
     }
-    return sb.toString();
-  }
-  
-  public String toString() {
-    return "Result: " + type + " (" + getColumnsString() + " " + getIndexesString() + ") " + field;
 
-  }
+    public String getType() {
+        return type;
+    }
 
-  public boolean isMapKey() {
-    return isMapKey;
-  }
+    public void setType(String type) {
+        if (type == null || "".equals(type)) {
+            this.type = "auto";
+        } else {
+            this.type = type;
+        }
+    }
 
-  public String getPartialDefinitionGroup() {
-    return partialDefinitionGroup;
-  }
-  
-  public void setPartialDefinitionGroup(String partialDefinitionGroup) {
-    this.partialDefinitionGroup = partialDefinitionGroup;
-  }
+    public void setIsMapKey(boolean isMapKey) {
+        this.isMapKey = isMapKey;
+    }
 
-  public int getPartialDefinitionPart() {
-    return partialDefinitionPart;
-  }
-  
-  public void setPartialDefinitionPart(int partialDefinitionPart) {
-    this.partialDefinitionPart = partialDefinitionPart;
-  }
+    private String getColumnsString() {
+        if (columns == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < columns.length; i++) {
+            if (i > 0) {
+                sb.append(',');
+            }
+            sb.append('"').append(columns[i]).append('"');
+        }
+        return sb.toString();
+    }
 
-  public boolean isPartialDefinition() {
-    return partialDefinitionPart > 0;
-  }
+    private String getIndexesString() {
+        if (indexes == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < indexes.length; i++) {
+            if (i > 0) {
+                sb.append(',');
+            }
+            sb.append(indexes[i]);
+        }
+        return sb.toString();
+    }
 
-  public int getStartPosition() {
-    return startPosition;
-  }
+    public String toString() {
+        return "Result: " + type + " (" + getColumnsString() + " " + getIndexesString() + ") " + field;
 
-  public void setStartPosition(int startPosition) {
-    this.startPosition = startPosition;
-  }
+    }
 
-  public int getEndPosition() {
-    return endPosition;
-  }
+    public boolean isMapKey() {
+        return isMapKey;
+    }
 
-  public void setEndPosition(int endPosition) {
-    this.endPosition = endPosition;
-  }
+    public String getPartialDefinitionGroup() {
+        return partialDefinitionGroup;
+    }
+
+    public void setPartialDefinitionGroup(String partialDefinitionGroup) {
+        this.partialDefinitionGroup = partialDefinitionGroup;
+    }
+
+    public int getPartialDefinitionPart() {
+        return partialDefinitionPart;
+    }
+
+    public void setPartialDefinitionPart(int partialDefinitionPart) {
+        this.partialDefinitionPart = partialDefinitionPart;
+    }
+
+    public boolean isPartialDefinition() {
+        return partialDefinitionPart > 0;
+    }
+
+    public int getStartPosition() {
+        return startPosition;
+    }
+
+    public void setStartPosition(int startPosition) {
+        this.startPosition = startPosition;
+    }
+
+    public int getEndPosition() {
+        return endPosition;
+    }
+
+    public void setEndPosition(int endPosition) {
+        this.endPosition = endPosition;
+    }
 
 }

@@ -11,17 +11,6 @@ import java.util.List;
 
 public class BeanCallTest extends TestCase {
 
-    public interface CallQueries extends BaseQuery {
-        @Call(sql = "{ call xyz ({%1.id},{%1.num},{%1.name},{%1.date}) }")
-        void callBean(TestBean bean) throws SQLException;
-
-        @Call(sql = "{ call xyz ({%%.id},{%%.num},{%%.name},{%%.date}) }")
-        TestBean callBean2() throws SQLException;
-
-        @Call(sql = "{ call xyz ({%%.id,%1},{%%.num},{%%.name},{%%.date}) }")
-        TestBean callBean3(int id) throws SQLException;
-    }
-
     Connection connection;
     CallQueries callQueries;
     List<String> log;
@@ -126,5 +115,16 @@ public class BeanCallTest extends TestCase {
         assertEquals("getString(3)", log.get(i++));
         assertEquals("getDate(4)", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface CallQueries extends BaseQuery {
+        @Call(sql = "{ call xyz ({%1.id},{%1.num},{%1.name},{%1.date}) }")
+        void callBean(TestBean bean) throws SQLException;
+
+        @Call(sql = "{ call xyz ({%%.id},{%%.num},{%%.name},{%%.date}) }")
+        TestBean callBean2() throws SQLException;
+
+        @Call(sql = "{ call xyz ({%%.id,%1},{%%.num},{%%.name},{%%.date}) }")
+        TestBean callBean3(int id) throws SQLException;
     }
 }

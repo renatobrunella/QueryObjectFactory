@@ -14,35 +14,6 @@ import java.util.Map;
 
 public class AdapterSqlTest extends TestCase {
 
-    public interface AdapterQueries extends BaseQuery {
-        @Query(sql = "select id {%%.id}, first_name {name-gen%%.name@1}, last_name {name-gen%%.name@2} from test")
-        TestBean2 selectBeanGen() throws SQLException;
-
-        @Query(sql = "select id {%%.id}, first_name {name-dyn%%.name@1}, last_name {name-dyn%%.name@2} from test")
-        TestBean2 selectBeanDyn() throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1.id}, {name-gen%1.name@1}, {name-gen%1.name@2})")
-        void insertBeanGen(TestBean2 bean) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1.id}, {name-dyn%1.name@1}, {name-dyn%1.name@2})")
-        void insertBeanDyn(TestBean2 bean) throws SQLException;
-
-        @Query(sql = "select first_name {name-gen%%@1}, last_name {name-gen%%@2} from test")
-        Name selectNameGen() throws SQLException;
-
-        @Query(sql = "select first_name {name-gen%%*@1}, last_name {name-gen%%*@2}, dummy {%%} from test")
-        Map<Name, String> selectNameGenMap() throws SQLException;
-
-        @Query(sql = "select first_name {name-dyn%%*@1}, last_name {name-dyn%%*@2}, dummy {%%} from test")
-        Map<Name, String> selectNameDynMap() throws SQLException;
-
-        @Call(sql = "{ call proc({name-gen%1.name@1,name-gen%%@1}, {name-gen%1.name@2,name-gen%%@2}) }")
-        Name callGen(TestBean2 bean) throws SQLException;
-
-        @Call(sql = "{ call proc({name-dyn%1.name@1,name-dyn%%@1}, {name-dyn%1.name@2,name-dyn%%@2}) }")
-        Name callDyn(TestBean2 bean) throws SQLException;
-    }
-
     Connection connection;
     AdapterQueries adapterQueries;
     List<String> log;
@@ -146,11 +117,6 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("setString(3,Smith)", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
-    }
-
-    public interface AdapterQueriesFail extends BaseQuery {
-        @Query(sql = "select id {%%.id}, first_name {name-gen%%.name@1}, last_name {name-gen%%.name@2} from test")
-        TestBean2 selectBeanGen() throws SQLException;
     }
 
     public void testCreationFails() {
@@ -323,6 +289,40 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("getString(1)", log.get(i++));
         assertEquals("getString(2)", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface AdapterQueries extends BaseQuery {
+        @Query(sql = "select id {%%.id}, first_name {name-gen%%.name@1}, last_name {name-gen%%.name@2} from test")
+        TestBean2 selectBeanGen() throws SQLException;
+
+        @Query(sql = "select id {%%.id}, first_name {name-dyn%%.name@1}, last_name {name-dyn%%.name@2} from test")
+        TestBean2 selectBeanDyn() throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1.id}, {name-gen%1.name@1}, {name-gen%1.name@2})")
+        void insertBeanGen(TestBean2 bean) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1.id}, {name-dyn%1.name@1}, {name-dyn%1.name@2})")
+        void insertBeanDyn(TestBean2 bean) throws SQLException;
+
+        @Query(sql = "select first_name {name-gen%%@1}, last_name {name-gen%%@2} from test")
+        Name selectNameGen() throws SQLException;
+
+        @Query(sql = "select first_name {name-gen%%*@1}, last_name {name-gen%%*@2}, dummy {%%} from test")
+        Map<Name, String> selectNameGenMap() throws SQLException;
+
+        @Query(sql = "select first_name {name-dyn%%*@1}, last_name {name-dyn%%*@2}, dummy {%%} from test")
+        Map<Name, String> selectNameDynMap() throws SQLException;
+
+        @Call(sql = "{ call proc({name-gen%1.name@1,name-gen%%@1}, {name-gen%1.name@2,name-gen%%@2}) }")
+        Name callGen(TestBean2 bean) throws SQLException;
+
+        @Call(sql = "{ call proc({name-dyn%1.name@1,name-dyn%%@1}, {name-dyn%1.name@2,name-dyn%%@2}) }")
+        Name callDyn(TestBean2 bean) throws SQLException;
+    }
+
+    public interface AdapterQueriesFail extends BaseQuery {
+        @Query(sql = "select id {%%.id}, first_name {name-gen%%.name@1}, last_name {name-gen%%.name@2} from test")
+        TestBean2 selectBeanGen() throws SQLException;
     }
 
 }

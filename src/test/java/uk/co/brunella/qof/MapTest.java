@@ -13,12 +13,6 @@ import java.util.Map;
 
 public class MapTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select id {%%*}, name {%%} from test")
-        Map<Integer, String> selectMap() throws SQLException;
-    }
-
-
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
@@ -63,6 +57,11 @@ public class MapTest extends TestCase {
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select id {%%*}, name {%%} from test")
+        Map<Integer, String> selectMap() throws SQLException;
     }
 
 }

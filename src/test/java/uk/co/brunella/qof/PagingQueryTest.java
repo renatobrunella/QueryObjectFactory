@@ -11,35 +11,6 @@ import java.util.List;
 
 public class PagingQueryTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery, Paging {
-        @Query(sql = "select value {%%} from test where id = {%1} and d={%2} and s={%3}")
-        List<String> select(int id, java.util.Date d, String s) throws SQLException;
-    }
-
-    public interface SelectQueries1 extends SelectQueries {
-    }
-
-    public interface SelectQueries2 extends SelectQueries {
-    }
-
-    public interface SelectQueries3 extends SelectQueries {
-    }
-
-    public interface SelectQueries4 extends SelectQueries {
-    }
-
-    public interface SelectQueries5 extends SelectQueries {
-    }
-
-    public interface SelectQueries6 extends SelectQueries {
-    }
-
-    public interface SelectQueries7 extends SelectQueries {
-    }
-
-    public interface SelectQueries8 extends SelectQueries {
-    }
-
     private Connection connection;
     private List<String> log;
 
@@ -625,5 +596,34 @@ public class PagingQueryTest extends TestCase {
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface SelectQueries extends BaseQuery, Paging {
+        @Query(sql = "select value {%%} from test where id = {%1} and d={%2} and s={%3}")
+        List<String> select(int id, java.util.Date d, String s) throws SQLException;
+    }
+
+    public interface SelectQueries1 extends SelectQueries {
+    }
+
+    public interface SelectQueries2 extends SelectQueries {
+    }
+
+    public interface SelectQueries3 extends SelectQueries {
+    }
+
+    public interface SelectQueries4 extends SelectQueries {
+    }
+
+    public interface SelectQueries5 extends SelectQueries {
+    }
+
+    public interface SelectQueries6 extends SelectQueries {
+    }
+
+    public interface SelectQueries7 extends SelectQueries {
+    }
+
+    public interface SelectQueries8 extends SelectQueries {
     }
 }

@@ -19,10 +19,13 @@
 package uk.co.brunella.qof.mapping;
 
 public interface MappingVisitor {
-	// Built in mappings
-	void visit(Mapper mapper, AbstractCharacterMapping mapping);
-	void visit(Mapper mapper, AbstractNumberMapping mapping);
-	void visit(Mapper mapper, AbstractDateTimeMapping mapping);
-	// Adapter mappings
-	void visit(Mapper mapper, AdapterMapping mapping);
+    // Built in mappings
+    void visit(Mapper mapper, AbstractCharacterMapping mapping);
+
+    void visit(Mapper mapper, AbstractNumberMapping mapping);
+
+    void visit(Mapper mapper, AbstractDateTimeMapping mapping);
+
+    // Adapter mappings
+    void visit(Mapper mapper, AdapterMapping mapping);
 }

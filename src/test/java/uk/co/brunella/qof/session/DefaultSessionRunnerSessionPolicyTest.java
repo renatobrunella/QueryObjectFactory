@@ -225,7 +225,6 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
                             return null;
                         }
 
-                        ;
                     }, sessionPolicy2);
                 } catch (SystemException e) {
                     throw new SQLException(e.getMessage());
@@ -235,7 +234,6 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
                 return null;
             }
 
-            ;
         };
     }
 
@@ -269,7 +267,6 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
                             throw new SQLException("forced rollback");
                         }
 
-                        ;
                     }, sessionPolicy2);
                 } catch (SystemException e) {
                     throw new SQLException(e.getMessage());
@@ -279,12 +276,15 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
                 return null;
             }
 
-            ;
         };
     }
 
     public static class DataSourceWrapper implements DataSource {
         DataSource dataSource;
+
+        public DataSourceWrapper(DataSource dataSource) {
+            this.dataSource = dataSource;
+        }
 
         public Connection getConnection() throws SQLException {
             Connection connection = dataSource.getConnection();
@@ -302,6 +302,10 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
             return dataSource.getLoginTimeout();
         }
 
+        public void setLoginTimeout(int seconds) throws SQLException {
+            dataSource.setLoginTimeout(seconds);
+        }
+
         public Logger getParentLogger() throws SQLFeatureNotSupportedException {
             return null;
         }
@@ -310,24 +314,16 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
             return dataSource.getLogWriter();
         }
 
-        public boolean isWrapperFor(Class<?> iface) throws SQLException {
-            return false;
-        }
-
-        public void setLoginTimeout(int seconds) throws SQLException {
-            dataSource.setLoginTimeout(seconds);
-        }
-
         public void setLogWriter(PrintWriter out) throws SQLException {
             dataSource.setLogWriter(out);
         }
 
-        public <T> T unwrap(Class<T> iface) throws SQLException {
-            return null;
+        public boolean isWrapperFor(Class<?> iface) throws SQLException {
+            return false;
         }
 
-        public DataSourceWrapper(DataSource dataSource) {
-            this.dataSource = dataSource;
+        public <T> T unwrap(Class<T> iface) throws SQLException {
+            return null;
         }
     }
 }

@@ -29,113 +29,113 @@ import uk.co.brunella.qof.mapping.*;
 import static uk.co.brunella.qof.codegen.Constants.*;
 
 /**
- * Internal - OutputParameterRegistrationMappingGenerator is the generator class for output parameter registration. 
+ * Internal - OutputParameterRegistrationMappingGenerator is the generator class for output parameter registration.
  */
 public class OutputParameterRegistrationMappingGenerator implements MappingVisitor, NumberMappingVisitor,
         CharacterMappingVisitor, DateTimeMappingVisitor {
 
-  private CodeEmitter co;
-  private Local callableStatement;
+    private CodeEmitter co;
+    private Local callableStatement;
 
-  public OutputParameterRegistrationMappingGenerator(CodeEmitter co, Local callableStatement) {
-    this.co = co;
-    this.callableStatement = callableStatement;
-  }
-
-  public void visit(Mapper mapper, AbstractCharacterMapping mapping) {
-    mapping.accept(mapper, (CharacterMappingVisitor) this);
-  }
-
-  public void visit(Mapper mapper, AbstractNumberMapping mapping) {
-    mapping.accept(mapper, (NumberMappingVisitor) this);
-  }
-
-  public void visit(Mapper mapper, AbstractDateTimeMapping mapping) {
-    mapping.accept(mapper, (DateTimeMappingVisitor) this);
-  }
-  
-  public void visit(Mapper mapper, AdapterMapping mapping) {
-    int[] sqlIndexes = mapping.getSqlIndexes();
-
-    if (mapping.getAdapter() instanceof GeneratorMappingAdapter) {
-      ((GeneratorMappingAdapter) mapping.getAdapter()).generateRegisterOutputParameters(mapping, co, callableStatement, sqlIndexes);
-    } else if (mapping.getAdapter() instanceof DynamicMappingAdapter) {
-      co.getfield(QueryObjectGenerator.getAdapterFieldName(mapping.getAdapter().getClass()));
-      co.load_local(callableStatement);
-      // push indexes
-      co.push(sqlIndexes.length);
-      co.newarray(TYPE_int);
-      for (int i = 0; i < sqlIndexes.length; i++) {
-        co.dup();
-        co.push(i);
-        co.push(sqlIndexes[i]);
-        co.array_store(TYPE_int);
-      }
-      co.invoke_interface(Type.getType(DynamicMappingAdapter.class), new Signature("registerOutputParameter",
-          "(Ljava/sql/CallableStatement;[I)V"));
-    } else {
-      throw new RuntimeException("Unsupported adapter type " + mapping.getAdapter());
+    public OutputParameterRegistrationMappingGenerator(CodeEmitter co, Local callableStatement) {
+        this.co = co;
+        this.callableStatement = callableStatement;
     }
-  }
 
-  // NumberMappingVisitor
+    public void visit(Mapper mapper, AbstractCharacterMapping mapping) {
+        mapping.accept(mapper, (CharacterMappingVisitor) this);
+    }
 
-  public void visit(Mapper mapper, AbstractNumberMapping.ByteMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.TINYINT);
-  }
+    public void visit(Mapper mapper, AbstractNumberMapping mapping) {
+        mapping.accept(mapper, (NumberMappingVisitor) this);
+    }
 
-  public void visit(Mapper mapper, AbstractNumberMapping.ShortMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.SMALLINT);
-  }
+    public void visit(Mapper mapper, AbstractDateTimeMapping mapping) {
+        mapping.accept(mapper, (DateTimeMappingVisitor) this);
+    }
 
-  public void visit(Mapper mapper, AbstractNumberMapping.IntegerMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.INTEGER);
-  }
+    public void visit(Mapper mapper, AdapterMapping mapping) {
+        int[] sqlIndexes = mapping.getSqlIndexes();
 
-  public void visit(Mapper mapper, AbstractNumberMapping.LongMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.BIGINT);
-  }
+        if (mapping.getAdapter() instanceof GeneratorMappingAdapter) {
+            ((GeneratorMappingAdapter) mapping.getAdapter()).generateRegisterOutputParameters(mapping, co, callableStatement, sqlIndexes);
+        } else if (mapping.getAdapter() instanceof DynamicMappingAdapter) {
+            co.getfield(QueryObjectGenerator.getAdapterFieldName(mapping.getAdapter().getClass()));
+            co.load_local(callableStatement);
+            // push indexes
+            co.push(sqlIndexes.length);
+            co.newarray(TYPE_int);
+            for (int i = 0; i < sqlIndexes.length; i++) {
+                co.dup();
+                co.push(i);
+                co.push(sqlIndexes[i]);
+                co.array_store(TYPE_int);
+            }
+            co.invoke_interface(Type.getType(DynamicMappingAdapter.class), new Signature("registerOutputParameter",
+                    "(Ljava/sql/CallableStatement;[I)V"));
+        } else {
+            throw new RuntimeException("Unsupported adapter type " + mapping.getAdapter());
+        }
+    }
 
-  public void visit(Mapper mapper, AbstractNumberMapping.FloatMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.REAL);
-  }
+    // NumberMappingVisitor
 
-  public void visit(Mapper mapper, AbstractNumberMapping.DoubleMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.DOUBLE);
-  }
+    public void visit(Mapper mapper, AbstractNumberMapping.ByteMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.TINYINT);
+    }
 
-  public void visit(Mapper mapper, AbstractNumberMapping.BooleanMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.BOOLEAN);
-  }
-  
-  // CharacterMappingVisitor
+    public void visit(Mapper mapper, AbstractNumberMapping.ShortMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.SMALLINT);
+    }
 
-  public void visit(Mapper mapper, AbstractCharacterMapping.StringMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.VARCHAR);    
-  }
+    public void visit(Mapper mapper, AbstractNumberMapping.IntegerMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.INTEGER);
+    }
 
-  public void visit(Mapper mapper, AbstractCharacterMapping.CharacterMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.VARCHAR);
-  }
+    public void visit(Mapper mapper, AbstractNumberMapping.LongMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.BIGINT);
+    }
 
-  // DateTimeMappingVisitor
-  
-  public void visit(Mapper mapper, AbstractDateTimeMapping.DateMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.DATE);
-  }
+    public void visit(Mapper mapper, AbstractNumberMapping.FloatMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.REAL);
+    }
 
-  public void visit(Mapper mapper, AbstractDateTimeMapping.TimeMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.TIME);
-  }
+    public void visit(Mapper mapper, AbstractNumberMapping.DoubleMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.DOUBLE);
+    }
 
-  public void visit(Mapper mapper, AbstractDateTimeMapping.TimestampMapping mapping) {
-    emitRegisterOutputParameter(mapping, java.sql.Types.TIMESTAMP);
-  }
+    public void visit(Mapper mapper, AbstractNumberMapping.BooleanMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.BOOLEAN);
+    }
 
-  private void emitRegisterOutputParameter(ResultMapping resultMapping, int sqlType) {
-    co.load_local(callableStatement);
-    co.push(resultMapping.getSqlIndexes()[0]);
-    co.push(sqlType);
-    co.invoke_interface(TYPE_CallableStatement, SIG_registerOutParameter);
-  }
+    // CharacterMappingVisitor
+
+    public void visit(Mapper mapper, AbstractCharacterMapping.StringMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.VARCHAR);
+    }
+
+    public void visit(Mapper mapper, AbstractCharacterMapping.CharacterMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.VARCHAR);
+    }
+
+    // DateTimeMappingVisitor
+
+    public void visit(Mapper mapper, AbstractDateTimeMapping.DateMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.DATE);
+    }
+
+    public void visit(Mapper mapper, AbstractDateTimeMapping.TimeMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.TIME);
+    }
+
+    public void visit(Mapper mapper, AbstractDateTimeMapping.TimestampMapping mapping) {
+        emitRegisterOutputParameter(mapping, java.sql.Types.TIMESTAMP);
+    }
+
+    private void emitRegisterOutputParameter(ResultMapping resultMapping, int sqlType) {
+        co.load_local(callableStatement);
+        co.push(resultMapping.getSqlIndexes()[0]);
+        co.push(sqlType);
+        co.invoke_interface(TYPE_CallableStatement, SIG_registerOutParameter);
+    }
 }

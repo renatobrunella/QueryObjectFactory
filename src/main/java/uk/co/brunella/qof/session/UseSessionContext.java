@@ -23,43 +23,42 @@ import java.lang.annotation.*;
 /**
  * Specifies that the connection of the query object should be acquired from
  * a session context.
- * 
+ * <p>
  * It allows to specify a session context name that is used in the implementation
  * of the <code>getConnection()</code> method in the query object.
- * 
+ *
  * <p><blockquote><pre>
  * &#64;UseSessionContext(name = "PERSON_CONTEXT")
- * public interface PersonQuery implements BaseQuery { 
+ * public interface PersonQuery implements BaseQuery {
  *   &#64;Query(sql = "select id {%%.id,%%*}, name {%%.name} from person where id = {%1}")
  *   Map&lt;Integer, Person&gt; getPerson(int id);
  * }
  * </pre></blockquote></p>
- * 
+ *
  * <p>This specifies that the session context with the name "PERSON_CONTEXT"
  * should be used. The implementation of <code>getConnection()</code> will look
  * similar to this:
- * 
+ *
  * <p><blockquote><pre>
  * public Connection getConnection() {
  *   return SessionContextFactory.getContext("PERSON_CONTEXT").getConnection();
  * }
  * </pre></blockquote></p>
- * 
- * @since 1.0.0
- * 
+ *
  * @see SessionContext
  * @see SessionContextFactory
+ * @since 1.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
 public @interface UseSessionContext {
-  /**
-   * This is the session context name
-   * 
-   * It defaults to the default session context name.
-   * 
-   * @return session context name
-   */
-  String name() default SessionContext.DEFAULT_CONTEXT_NAME;
+    /**
+     * This is the session context name
+     * <p>
+     * It defaults to the default session context name.
+     *
+     * @return session context name
+     */
+    String name() default SessionContext.DEFAULT_CONTEXT_NAME;
 }

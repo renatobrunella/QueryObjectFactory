@@ -28,40 +28,40 @@ import uk.co.brunella.qof.parser.SqlParser;
  */
 public class SqlParserException extends RuntimeException {
 
-  private static final long serialVersionUID = -4719857605238942051L;
-  
-  private int start;
-  private int length;
+    private static final long serialVersionUID = -4719857605238942051L;
 
-  /**
-   * Creates a SqlParserException.
-   * 
-   * @param message  the error message
-   * @param start    start position in SQL statement
-   * @param length   length of error in SQL statement
-   */
-  public SqlParserException(String message, int start, int length) {
-    super(message);
-    this.start = start;
-    this.length = length;
-  }
+    private int start;
+    private int length;
 
-  /**
-   * Returns start position of error in SQL statement.
-   * 
-   * @return start position
-   */
-  public int getStart() {
-    return start;
-  }
+    /**
+     * Creates a SqlParserException.
+     *
+     * @param message the error message
+     * @param start   start position in SQL statement
+     * @param length  length of error in SQL statement
+     */
+    public SqlParserException(String message, int start, int length) {
+        super(message);
+        this.start = start;
+        this.length = length;
+    }
 
-  /**
-   * Returns length of error in SQL statement.
-   * 
-   * @return length
-   */
-  public int getLength() {
-    return length;
-  }
-  
+    /**
+     * Returns start position of error in SQL statement.
+     *
+     * @return start position
+     */
+    public int getStart() {
+        return start;
+    }
+
+    /**
+     * Returns length of error in SQL statement.
+     *
+     * @return length
+     */
+    public int getLength() {
+        return length;
+    }
+
 }

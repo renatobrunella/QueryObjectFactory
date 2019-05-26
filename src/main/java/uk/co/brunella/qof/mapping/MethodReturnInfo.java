@@ -20,9 +20,12 @@ package uk.co.brunella.qof.mapping;
 
 public interface MethodReturnInfo {
 
-  Class<?> getType();
-  Class<?> getCollectionType();
-  Class<?> getCollectionElementType();
-  Class<?> getMapKeyType();
+    Class<?> getType();
+
+    Class<?> getCollectionType();
+
+    Class<?> getCollectionElementType();
+
+    Class<?> getMapKeyType();
 
 }

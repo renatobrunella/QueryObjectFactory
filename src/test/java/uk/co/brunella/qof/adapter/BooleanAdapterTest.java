@@ -17,35 +17,6 @@ import java.util.Map;
 
 public class BooleanAdapterTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select yesno {yesno%%} from test where xyz = {yesno%1}")
-        Boolean selectBoolean(Boolean xyz) throws SQLException;
-
-        @Query(sql = "select yesno {yesno%%} from test where xyz = {yesno%1}")
-        boolean selectBool(boolean xyz) throws SQLException;
-
-        @Query(sql = "select yesno {tf%%} from test where xyz = {tf%1}")
-        Boolean selectBoolean2(Boolean xyz) throws SQLException;
-
-        @Query(sql = "select yesno {tf%%} from test where xyz = {tf%1}")
-        boolean selectBool2(boolean xyz) throws SQLException;
-
-        @Query(sql = "select yesno {t-null%%} from test where xyz = {t-null%1}")
-        Boolean selectBoolean3(Boolean xyz) throws SQLException;
-
-        @Query(sql = "select yesno {t-null%%} from test where xyz = {t-null%1}")
-        boolean selectBool3(boolean xyz) throws SQLException;
-
-        @Query(sql = "select yesno {t2-null%%} from test where xyz = {t2-null%1}")
-        Boolean selectBoolean4(Boolean xyz) throws SQLException;
-
-        @Query(sql = "select yesno {t2-null%%} from test where xyz = {t2-null%1}")
-        boolean selectBool4(boolean xyz) throws SQLException;
-
-        @Call(sql = "{ {yesno%%} = call({yesno%1}) }")
-        boolean call(boolean xyz) throws SQLException;
-    }
-
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
@@ -206,7 +177,6 @@ public class BooleanAdapterTest extends TestCase {
             assertEquals("Empty result set returned", e.getMessage());
         }
     }
-
 
     public void testSelectBooleanTrue2() throws SQLException {
         List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
@@ -490,7 +460,6 @@ public class BooleanAdapterTest extends TestCase {
         }
     }
 
-
     public void testCall() throws SQLException {
         List<Object> results = new ArrayList<Object>();
         results.add("y");
@@ -504,6 +473,36 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("execute()", log.get(i++));
         assertEquals("getString(1)", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select yesno {yesno%%} from test where xyz = {yesno%1}")
+        Boolean selectBoolean(Boolean xyz) throws SQLException;
+
+        @Query(sql = "select yesno {yesno%%} from test where xyz = {yesno%1}")
+        boolean selectBool(boolean xyz) throws SQLException;
+
+        @Query(sql = "select yesno {tf%%} from test where xyz = {tf%1}")
+        Boolean selectBoolean2(Boolean xyz) throws SQLException;
+
+        @Query(sql = "select yesno {tf%%} from test where xyz = {tf%1}")
+        boolean selectBool2(boolean xyz) throws SQLException;
+
+        @Query(sql = "select yesno {t-null%%} from test where xyz = {t-null%1}")
+        Boolean selectBoolean3(Boolean xyz) throws SQLException;
+
+        @Query(sql = "select yesno {t-null%%} from test where xyz = {t-null%1}")
+        boolean selectBool3(boolean xyz) throws SQLException;
+
+        @Query(sql = "select yesno {t2-null%%} from test where xyz = {t2-null%1}")
+        Boolean selectBoolean4(Boolean xyz) throws SQLException;
+
+        @Query(sql = "select yesno {t2-null%%} from test where xyz = {t2-null%1}")
+        boolean selectBool4(boolean xyz) throws SQLException;
+
+        @Call(sql = "{ {yesno%%} = call({yesno%1}) }")
+        boolean call(boolean xyz) throws SQLException;
     }
 
 }

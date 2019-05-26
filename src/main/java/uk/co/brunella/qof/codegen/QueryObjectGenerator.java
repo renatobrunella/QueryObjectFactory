@@ -58,6 +58,12 @@ public class QueryObjectGenerator {
      * Default batch size used if not defined in query definition class.
      */
     public static final int DEFAULT_BATCH_SIZE = 100;
+    private static final String DEBUG_LOCATION_PROPERTY = "cglib.debugLocation";
+    private static String debugLocation;
+
+    static {
+        debugLocation = System.getProperty(DEBUG_LOCATION_PROPERTY);
+    }
 
     private Customizer customizer;
     private Class<?> queryDefinitionClass;
@@ -71,6 +77,10 @@ public class QueryObjectGenerator {
     public QueryObjectGenerator(Customizer customizer, SQLDialect sqlDialect) {
         this.customizer = customizer;
         this.sqlDialect = sqlDialect;
+    }
+
+    public static String getAdapterFieldName(Class<?> adapterClass) {
+        return adapterClass.getName().replace('.', '$');
     }
 
     public SQLDialect getSqlDialect() {
@@ -137,14 +147,6 @@ public class QueryObjectGenerator {
         return "L" + className.replace('.', '/') + ";";
     }
 
-    private static final String DEBUG_LOCATION_PROPERTY = "cglib.debugLocation";
-
-    private static String debugLocation;
-
-    static {
-        debugLocation = System.getProperty(DEBUG_LOCATION_PROPERTY);
-    }
-
     private void printDebugInfo(Class<?> queryDefinitionClass, List<Mapper> mappers) {
         String dirs = customizer.getClassName(queryDefinitionClass).replace('.', File.separatorChar);
         try {
@@ -173,7 +175,7 @@ public class QueryObjectGenerator {
             interfaceTypes.add(Type.getType(Paging.class));
         }
         ce.begin_class(Constants.V1_2, Constants.ACC_PUBLIC, customizer.getClassName(queryDefinitionClass), Type
-                .getType(superClass), (Type[]) interfaceTypes.toArray(new Type[interfaceTypes.size()]), "<generated>");
+                .getType(superClass), interfaceTypes.toArray(new Type[interfaceTypes.size()]), "<generated>");
     }
 
     private void endClass(ClassEmitter ce) {
@@ -403,10 +405,6 @@ public class QueryObjectGenerator {
         return dynamicAdapters;
     }
 
-    public static String getAdapterFieldName(Class<?> adapterClass) {
-        return adapterClass.getName().replace('.', '$');
-    }
-
     private boolean isFieldInDefinitionClass(String name) {
         Field field;
         try {
@@ -441,18 +439,6 @@ public class QueryObjectGenerator {
         }
     }
 
-    private static class FieldInfo {
-        String name;
-        Type type;
-        Type owner;
-
-        public FieldInfo(String name, Type owner, Type type) {
-            this.name = name;
-            this.owner = owner;
-            this.type = type;
-        }
-    }
-
     public void emitGetField(CodeEmitter co, String fieldName) {
         FieldInfo info = fields.get(fieldName);
         co.getfield(info.owner, info.name, info.type);
@@ -476,6 +462,18 @@ public class QueryObjectGenerator {
             clazz = clazz.getSuperclass();
         }
         return null;
+    }
+
+    private static class FieldInfo {
+        String name;
+        Type type;
+        Type owner;
+
+        public FieldInfo(String name, Type owner, Type type) {
+            this.name = name;
+            this.owner = owner;
+            this.type = type;
+        }
     }
 
 }

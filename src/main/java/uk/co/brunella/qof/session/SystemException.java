@@ -22,53 +22,50 @@ package uk.co.brunella.qof.session;
  * The SystemException is thrown by the transaction and session manager to
  * indicate that it has encountered an unexpected error condition that prevents
  * future transaction services from proceeding.
- * 
+ *
  * @since 1.0.0
  */
 public class SystemException extends Exception {
 
-  private static final long serialVersionUID = -6158015852271864712L;
+    private static final long serialVersionUID = -6158015852271864712L;
 
-  /**
-   * Constructs a SystemException object.
-   *
-   * @since 1.0.0            
-   */
-  public SystemException() {
-    super();
-  }
+    /**
+     * Constructs a SystemException object.
+     *
+     * @since 1.0.0
+     */
+    public SystemException() {
+        super();
+    }
 
-  /**
-   * Constructs a SystemException object.
-   *
-   * @param cause  a Throwable object
-   *
-   * @since 1.0.0            
-   */
-  public SystemException(Throwable cause) {
-    super(cause);
-  }
+    /**
+     * Constructs a SystemException object.
+     *
+     * @param cause a Throwable object
+     * @since 1.0.0
+     */
+    public SystemException(Throwable cause) {
+        super(cause);
+    }
 
-  /**
-   * Constructs a SystemException object.
-   *
-   * @param message  the error message
-   *
-   * @since 1.0.0            
-   */
-  public SystemException(String message) {
-    super(message);
-  }
+    /**
+     * Constructs a SystemException object.
+     *
+     * @param message the error message
+     * @since 1.0.0
+     */
+    public SystemException(String message) {
+        super(message);
+    }
 
-  /**
-   * Constructs a SystemException object.
-   * 
-   * @param message  the error message
-   * @param cause    a Throwable object
-   *
-   * @since 1.0.0            
-   */
-  public SystemException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    /**
+     * Constructs a SystemException object.
+     *
+     * @param message the error message
+     * @param cause   a Throwable object
+     * @since 1.0.0
+     */
+    public SystemException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -19,7 +19,7 @@
 
 /**
  * Internal package.<!-- --> Provides utility classes
- * 
+ *
  * @since 1.0.0
  */
 package uk.co.brunella.qof.util;

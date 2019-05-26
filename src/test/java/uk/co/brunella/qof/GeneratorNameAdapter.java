@@ -17,16 +17,17 @@ import static uk.co.brunella.qof.codegen.Constants.*;
 
 public class GeneratorNameAdapter implements GeneratorMappingAdapter {
 
+    final static Type TYPE_Name = Type.getType(Name.class);
+    final static Signature SIG_Name_Constructor = new Signature("<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+    final static Signature SIG_getFirstName = new Signature("getFirstName", "()Ljava/lang/String;");
+    final static Signature SIG_getLastName = new Signature("getLastName", "()Ljava/lang/String;");
+    private final static int[] types = new int[]{java.sql.Types.VARCHAR, java.sql.Types.VARCHAR};
+
     public Set<Class<?>> getTypes() {
         Set<Class<?>> types = new HashSet<Class<?>>();
         types.add(Name.class);
         return types;
     }
-
-    final static Type TYPE_Name = Type.getType(Name.class);
-    final static Signature SIG_Name_Constructor = new Signature("<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
-    final static Signature SIG_getFirstName = new Signature("getFirstName", "()Ljava/lang/String;");
-    final static Signature SIG_getLastName = new Signature("getLastName", "()Ljava/lang/String;");
 
     public void generateFromResult(ResultMapping resultMapping, CodeEmitter co, Local result, int[] indexes) {
         co.new_instance(TYPE_Name);
@@ -121,8 +122,6 @@ public class GeneratorNameAdapter implements GeneratorMappingAdapter {
     public int getNumberOfColumns() {
         return 2;
     }
-
-    private final static int[] types = new int[]{java.sql.Types.VARCHAR, java.sql.Types.VARCHAR};
 
     public int[] preferredSqlTypes() {
         return types;

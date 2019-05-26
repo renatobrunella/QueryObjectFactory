@@ -5,20 +5,20 @@ package uk.co.brunella.qof.dialect;
  */
 public class DefaultDialect implements SQLDialect {
 
-  public String getLimitString(String sql, boolean hasOffset) {
-    throw new RuntimeException("Not supported");
-  }
+    public String getLimitString(String sql, boolean hasOffset) {
+        throw new RuntimeException("Not supported");
+    }
 
-  public boolean limitParametersBeforeQueryParameters() {
-    throw new RuntimeException("Not supported");
-  }
+    public boolean limitParametersBeforeQueryParameters() {
+        throw new RuntimeException("Not supported");
+    }
 
-  public boolean limitAddOffset() {
-    throw new RuntimeException("Not supported");
-  }
+    public boolean limitAddOffset() {
+        throw new RuntimeException("Not supported");
+    }
 
-  public boolean limitOffsetFirst() {
-    throw new RuntimeException("Not supported");
-  }
+    public boolean limitOffsetFirst() {
+        throw new RuntimeException("Not supported");
+    }
 
 }

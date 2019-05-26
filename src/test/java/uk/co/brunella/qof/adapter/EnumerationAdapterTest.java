@@ -17,60 +17,6 @@ import java.util.Map;
 
 public class EnumerationAdapterTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select value {enum%%} from test where e = {enum%1}")
-        MyEnum selectEnum(MyEnum e) throws SQLException;
-
-        @Query(sql = "select value {enum%%1} from test where e = {enum%1}")
-        MyClass selectEnumConstructor(MyEnum e) throws SQLException;
-
-        @Query(sql = "select value {enum%%*,enum%%} from test where e = {enum%1}")
-        Map<MyEnum, MyEnum> selectEnumMap(MyEnum e) throws SQLException;
-
-        @Call(sql = "{ {enum%%} = call proc( {enum%1} ) }")
-        MyEnum callEnum(MyEnum e) throws SQLException;
-
-        @Query(sql = "select value {my-enum%%} from test where e = {my-enum%1}")
-        MyEnum selectEnum2(MyEnum e) throws SQLException;
-    }
-
-    public static class MyClass {
-        private MyEnum value;
-
-        public MyClass(MyEnum value) {
-            this.value = value;
-        }
-
-        public MyEnum getValue() {
-            return value;
-        }
-    }
-
-    public enum MyEnum {
-        A("a"),
-        B("b"),
-        C("c");
-
-        private final String value;
-
-        private MyEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public static MyEnum getEnum(String value) {
-            for (MyEnum e : values()) {
-                if (e.getValue().equals(value)) {
-                    return e;
-                }
-            }
-            return null;
-        }
-    }
-
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
@@ -183,5 +129,59 @@ public class EnumerationAdapterTest extends TestCase {
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public enum MyEnum {
+        A("a"),
+        B("b"),
+        C("c");
+
+        private final String value;
+
+        MyEnum(String value) {
+            this.value = value;
+        }
+
+        public static MyEnum getEnum(String value) {
+            for (MyEnum e : values()) {
+                if (e.getValue().equals(value)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select value {enum%%} from test where e = {enum%1}")
+        MyEnum selectEnum(MyEnum e) throws SQLException;
+
+        @Query(sql = "select value {enum%%1} from test where e = {enum%1}")
+        MyClass selectEnumConstructor(MyEnum e) throws SQLException;
+
+        @Query(sql = "select value {enum%%*,enum%%} from test where e = {enum%1}")
+        Map<MyEnum, MyEnum> selectEnumMap(MyEnum e) throws SQLException;
+
+        @Call(sql = "{ {enum%%} = call proc( {enum%1} ) }")
+        MyEnum callEnum(MyEnum e) throws SQLException;
+
+        @Query(sql = "select value {my-enum%%} from test where e = {my-enum%1}")
+        MyEnum selectEnum2(MyEnum e) throws SQLException;
+    }
+
+    public static class MyClass {
+        private MyEnum value;
+
+        public MyClass(MyEnum value) {
+            this.value = value;
+        }
+
+        public MyEnum getValue() {
+            return value;
+        }
     }
 }

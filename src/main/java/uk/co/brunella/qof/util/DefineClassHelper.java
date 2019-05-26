@@ -28,57 +28,55 @@ import java.security.ProtectionDomain;
 
 /**
  * Helper class to call the defineClass method of the ClassLoader.
- * 
+ *
  * @see ClassLoader
  */
 public class DefineClassHelper {
 
-  private static Method DEFINE_CLASS;
+    private static final ProtectionDomain PROTECTION_DOMAIN;
+    private static Method DEFINE_CLASS;
 
-  private static final ProtectionDomain PROTECTION_DOMAIN;
+    static {
+        PROTECTION_DOMAIN = (ProtectionDomain) AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            public Object run() {
+                return QueryObjectGenerator.class.getProtectionDomain();
+            }
+        });
 
-  static {
-    PROTECTION_DOMAIN = (ProtectionDomain) AccessController.doPrivileged(new PrivilegedAction<Object>() {
-      public Object run() {
-        return QueryObjectGenerator.class.getProtectionDomain();
-      }
-    });
+        AccessController.doPrivileged(new PrivilegedAction<Object>() {
+            public Object run() {
+                try {
+                    Class<?> loader = Class.forName("java.lang.ClassLoader"); // JVM crash w/o this
+                    DEFINE_CLASS = loader.getDeclaredMethod("defineClass", String.class, byte[].class,
+                            Integer.TYPE, Integer.TYPE, ProtectionDomain.class);
+                    DEFINE_CLASS.setAccessible(true);
+                } catch (ClassNotFoundException e) {
+                    throw new CodeGenerationException(e);
+                } catch (NoSuchMethodException e) {
+                    throw new CodeGenerationException(e);
+                }
+                return null;
+            }
+        });
+    }
 
-    AccessController.doPrivileged(new PrivilegedAction<Object>() {
-      public Object run() {
-        try {
-          Class<?> loader = Class.forName("java.lang.ClassLoader"); // JVM crash w/o this
-          DEFINE_CLASS = loader.getDeclaredMethod("defineClass", new Class[] { String.class, byte[].class,
-              Integer.TYPE, Integer.TYPE, ProtectionDomain.class });
-          DEFINE_CLASS.setAccessible(true);
-        } catch (ClassNotFoundException e) {
-          throw new CodeGenerationException(e);
-        } catch (NoSuchMethodException e) {
-          throw new CodeGenerationException(e);
-        }
-        return null;
-      }
-    });
-  }
-
-  /**
-   * Calls <code>ClassLoader.defineClass</code> and returns a <code>Class</code>
-   * instance if successful.
-   * 
-   * @param <T>         type of the class
-   * @param className   class name
-   * @param byteCode    array containing the byte code of the class
-   * @param loader      class loader
-   * @return            newly defined class
-   * @throws Exception  error occurred
-   * 
-   * @see ClassLoader
-   */
-  public static <T> Class<T> defineClass(String className, byte[] byteCode, ClassLoader loader) throws Exception {
-    Object[] args = new Object[] { className, byteCode, Integer.valueOf(0), Integer.valueOf(byteCode.length),
-        PROTECTION_DOMAIN };
-    @SuppressWarnings("unchecked") Class<T> definedClass = (Class<T>) DEFINE_CLASS.invoke(loader, args);
-    return definedClass;
-  }
+    /**
+     * Calls <code>ClassLoader.defineClass</code> and returns a <code>Class</code>
+     * instance if successful.
+     *
+     * @param <T>       type of the class
+     * @param className class name
+     * @param byteCode  array containing the byte code of the class
+     * @param loader    class loader
+     * @return newly defined class
+     * @throws Exception error occurred
+     * @see ClassLoader
+     */
+    public static <T> Class<T> defineClass(String className, byte[] byteCode, ClassLoader loader) throws Exception {
+        Object[] args = new Object[]{className, byteCode, Integer.valueOf(0), Integer.valueOf(byteCode.length),
+                PROTECTION_DOMAIN};
+        @SuppressWarnings("unchecked") Class<T> definedClass = (Class<T>) DEFINE_CLASS.invoke(loader, args);
+        return definedClass;
+    }
 
 }

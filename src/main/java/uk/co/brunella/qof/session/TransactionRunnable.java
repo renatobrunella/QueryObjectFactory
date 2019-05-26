@@ -23,10 +23,10 @@ import java.sql.SQLException;
 
 /**
  * The <code>TransactionRunnable</code> interface should be implemented for
- * code that needs to be run in a transactional context. 
+ * code that needs to be run in a transactional context.
  *
  * <p>Typical usage is like this:</p>
- * 
+ *
  * <p><blockquote><pre>
  * TransactionRunnable&lt;Void&gt; runnable = new TransactionRunnable&lt;Void&gt;() {
  * 	 public Void run(Connection connection, Object... arguments) throws SQLException {
@@ -37,29 +37,25 @@ import java.sql.SQLException;
  *   }
  * };
  * </pre></blockquote></p>
- * 
- * @param <T> the type of the result of a call to run. If no result is 
+ *
+ * @param <T> the type of the result of a call to run. If no result is
  *            returned this type should be <code>Void</code>
- * 
- * @since 1.0.0
- *             
  * @see SessionRunner
+ * @since 1.0.0
  */
 public interface TransactionRunnable<T> {
 
-  /**
-   * This method is called by a <code>SessionRunner</code>.
-   * 
-   * @param connection      the database connection
-   * @param arguments       a variable list of arguments
-   * @return                a result
-   * @throws SQLException   thrown if an exception occured. 
-   *                        This will force a rollback of the transaction
-   *
-   * @since 1.0.0            
-   * 
-   * @see SessionRunner
-   */
-  T run(Connection connection, Object... arguments) throws SQLException;
+    /**
+     * This method is called by a <code>SessionRunner</code>.
+     *
+     * @param connection the database connection
+     * @param arguments  a variable list of arguments
+     * @return a result
+     * @throws SQLException thrown if an exception occured.
+     *                      This will force a rollback of the transaction
+     * @see SessionRunner
+     * @since 1.0.0
+     */
+    T run(Connection connection, Object... arguments) throws SQLException;
 
 }

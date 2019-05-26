@@ -52,7 +52,6 @@ public class RetrySessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, 1).execute();
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -82,7 +81,6 @@ public class RetrySessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, 1).execute();
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -112,7 +110,6 @@ public class RetrySessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, "TEST", 1).execute();
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -131,7 +128,6 @@ public class RetrySessionRunnerTest extends TestCase {
                     throw new SQLException("retry");
                 }
 
-                ;
             }, 1).execute();
             fail("exception expected");
         } catch (SystemException e) {
@@ -161,7 +157,6 @@ public class RetrySessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, 1, 100).execute();
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -191,7 +186,6 @@ public class RetrySessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, "TEST", 1, 100).execute();
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");

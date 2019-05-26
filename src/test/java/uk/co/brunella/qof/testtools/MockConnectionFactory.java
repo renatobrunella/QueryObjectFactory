@@ -96,8 +96,38 @@ public class MockConnectionFactory {
             return !isOpen;
         }
 
+        private static class MockClob {
+
+            private String data;
+
+            public MockClob(String data) {
+                this.data = data;
+            }
+
+            @SuppressWarnings("unused")
+            public java.io.Reader getCharacterStream() throws SQLException {
+                return new java.io.StringReader(data);
+            }
+        }
+
+        private static class MockBlob {
+
+            private byte[] data;
+
+            public MockBlob(byte[] data) {
+                this.data = data;
+            }
+
+            @SuppressWarnings("unused")
+            public java.io.InputStream getBinaryStream() throws SQLException {
+                return new java.io.ByteArrayInputStream(data);
+            }
+        }
+
         private class MockCallableStatement {
             private LoggingDelegationProxy proxy;
+            private boolean wasNull;
+            private int batches = 0;
 
             private void setProxy(LoggingDelegationProxy proxy) {
                 this.proxy = proxy;
@@ -235,14 +265,10 @@ public class MockConnectionFactory {
                         new MockBlob((byte[]) getIndexedValue(parameterIndex - 1)), Blob.class);
             }
 
-            private boolean wasNull;
-
             @SuppressWarnings("unused")
             public boolean wasNull() throws SQLException {
                 return wasNull;
             }
-
-            private int batches = 0;
 
             @SuppressWarnings("unused")
             public void addBatch() throws SQLException {
@@ -291,6 +317,8 @@ public class MockConnectionFactory {
         }
 
         private class MockResultSet {
+
+            private boolean wasNull;
 
             @SuppressWarnings("unused")
             public boolean getBoolean(int columnIndex) throws SQLException {
@@ -423,8 +451,6 @@ public class MockConnectionFactory {
                 return resultSetDataIndex < resultSetData.size();
             }
 
-            private boolean wasNull;
-
             @SuppressWarnings("unused")
             public boolean wasNull() throws SQLException {
                 return wasNull;
@@ -458,34 +484,6 @@ public class MockConnectionFactory {
                 } else {
                     throw new SQLException("No more rows");
                 }
-            }
-        }
-
-        private static class MockClob {
-
-            private String data;
-
-            public MockClob(String data) {
-                this.data = data;
-            }
-
-            @SuppressWarnings("unused")
-            public java.io.Reader getCharacterStream() throws SQLException {
-                return new java.io.StringReader(data);
-            }
-        }
-
-        private static class MockBlob {
-
-            private byte[] data;
-
-            public MockBlob(byte[] data) {
-                this.data = data;
-            }
-
-            @SuppressWarnings("unused")
-            public java.io.InputStream getBinaryStream() throws SQLException {
-                return new java.io.ByteArrayInputStream(data);
             }
         }
     }

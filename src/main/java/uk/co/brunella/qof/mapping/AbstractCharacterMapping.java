@@ -22,42 +22,44 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractCharacterMapping extends AbstractBaseMapping implements Mapping, ParameterMapping,
-    ResultMapping {
+        ResultMapping {
 
-  public void accept(Mapper mapper, MappingVisitor visitor) {
-    visitor.visit(mapper, this);
-  }
-
-  public abstract void accept(Mapper mapper, CharacterMappingVisitor visitor);
-
-  public static class StringMapping extends AbstractCharacterMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(String.class);
+    public void accept(Mapper mapper, MappingVisitor visitor) {
+        visitor.visit(mapper, this);
     }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
+    public abstract void accept(Mapper mapper, CharacterMappingVisitor visitor);
+
+    public static class StringMapping extends AbstractCharacterMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+
+        static {
+            types.add(String.class);
+        }
+
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
+
+        public void accept(Mapper mapper, CharacterMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
 
-    public void accept(Mapper mapper, CharacterMappingVisitor visitor) {
-      visitor.visit(mapper, this);
-    }
-  }
+    public static class CharacterMapping extends AbstractCharacterMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
 
-  public static class CharacterMapping extends AbstractCharacterMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(char.class);
-      types.add(Character.class);
-    }
+        static {
+            types.add(char.class);
+            types.add(Character.class);
+        }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
-    }
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
 
-    public void accept(Mapper mapper, CharacterMappingVisitor visitor) {
-      visitor.visit(mapper, this);
+        public void accept(Mapper mapper, CharacterMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
-  }
 }

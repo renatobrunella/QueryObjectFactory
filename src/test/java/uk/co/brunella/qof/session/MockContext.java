@@ -8,12 +8,11 @@ import java.util.Map;
 public class MockContext implements Context {
 
     private static final MockContext INSTANCE = new MockContext();
+    public static Map<String, Object> registry = new HashMap<String, Object>();
 
     public static MockContext getInstance() {
         return INSTANCE;
     }
-
-    public static Map<String, Object> registry = new HashMap<String, Object>();
 
     public Object lookup(String name) throws NamingException {
         if (registry.containsKey(name)) {

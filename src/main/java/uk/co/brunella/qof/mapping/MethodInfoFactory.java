@@ -26,186 +26,185 @@ import java.lang.reflect.Type;
 
 public class MethodInfoFactory {
 
-  public static MethodInfo createMethodInfo(Method method) {
-    Signature signature = ReflectionUtils.getMethodSignature(method);
-    int modifiers = method.getModifiers();
-    MethodParameterInfo[] parameterInfos = createParameterInfos(method);
-    MethodParameterInfo[] collectionParameterInfos = createCollectionParameterInfos(parameterInfos);
-    MethodReturnInfo returnInfo = createReturnInfos(method);
-    
-    return new MethodInfoImpl(signature, modifiers, parameterInfos, collectionParameterInfos, returnInfo, method.toGenericString());
-  }
+    public static MethodInfo createMethodInfo(Method method) {
+        Signature signature = ReflectionUtils.getMethodSignature(method);
+        int modifiers = method.getModifiers();
+        MethodParameterInfo[] parameterInfos = createParameterInfos(method);
+        MethodParameterInfo[] collectionParameterInfos = createCollectionParameterInfos(parameterInfos);
+        MethodReturnInfo returnInfo = createReturnInfos(method);
 
-  private static MethodParameterInfo[] createParameterInfos(Method method) {
-    Type[] genericTypes = method.getGenericParameterTypes();
-    Class<?>[] types = method.getParameterTypes();
-    MethodParameterInfo[] parameterInfos = new MethodParameterInfo[genericTypes.length];
-    
-    for (int i = 0; i < genericTypes.length; i++) {
-      Class<?> type = types[i];
-      Class<?> collectionType = ReflectionUtils.getCollectionType(genericTypes[i]);
-      Class<?> collectionElementType;
-      if (collectionType == null) {
-        collectionElementType = null; //NOPMD
-      } else {
-        collectionElementType = ReflectionUtils.getCollectionParameterizedType(genericTypes[i]);
-      }
-      Class<?> arrayElementType = ReflectionUtils.getArrayComponentType(genericTypes[i]);
-      parameterInfos[i] = new MethodParameterInfoImpl(i, type, collectionType, collectionElementType, arrayElementType);
-    }
-    
-    return parameterInfos;
-  }
-
-  private static MethodParameterInfo[] createCollectionParameterInfos(MethodParameterInfo[] parameterInfos) {
-    int num = 0;
-    for (int i = 0; i < parameterInfos.length; i++) {
-      if (parameterInfos[i].getCollectionType() != null) {
-        num++;
-      }
-    }
-    MethodParameterInfo[] collectionParameterInfos = new MethodParameterInfo[num];
-    int index = 0;
-    for (int i = 0; i < parameterInfos.length; i++) {
-      if (parameterInfos[i].getCollectionType() != null) {
-        collectionParameterInfos[index++] = parameterInfos[i];
-      }
-    }
-    return collectionParameterInfos;
-  }
-  
-  private static MethodReturnInfo createReturnInfos(Method method) {
-    Class<?> type = method.getReturnType();
-    Class<?> collectionType = ReflectionUtils.getCollectionType(method.getGenericReturnType());
-    Class<?> collectionElementType;
-    if (collectionType == null) {
-      collectionElementType = null; //NOPMD
-    } else {
-      collectionElementType = ReflectionUtils.getCollectionParameterizedType(method.getGenericReturnType());
-    }
-    Class<?> mapKeyType = ReflectionUtils.getCollectionParameterizedKeyType(method.getGenericReturnType());
-    return new MethodReturnInfoImpl(type, collectionType, collectionElementType, mapKeyType);
-  }
-
-  protected static class MethodInfoImpl implements MethodInfo {
-
-    public MethodInfoImpl(Signature signature, int modifiers, MethodParameterInfo[] parameterInfos,
-        MethodParameterInfo[] collectionParameterInfos, MethodReturnInfo returnInfo, String description) {
-      super();
-      this.signature = signature;
-      this.modifiers = modifiers;
-      this.parameterInfos = parameterInfos;
-      this.collectionParameterInfos = collectionParameterInfos;
-      this.returnInfo = returnInfo;
-      this.description = description;
+        return new MethodInfoImpl(signature, modifiers, parameterInfos, collectionParameterInfos, returnInfo, method.toGenericString());
     }
 
-    private Signature signature;
-    private int modifiers;
-    private MethodParameterInfo[] parameterInfos;
-    private MethodParameterInfo[] collectionParameterInfos;
-    private MethodReturnInfo returnInfo;
-    private String description;
+    private static MethodParameterInfo[] createParameterInfos(Method method) {
+        Type[] genericTypes = method.getGenericParameterTypes();
+        Class<?>[] types = method.getParameterTypes();
+        MethodParameterInfo[] parameterInfos = new MethodParameterInfo[genericTypes.length];
 
-    public Signature getSignature() {
-      return signature;
+        for (int i = 0; i < genericTypes.length; i++) {
+            Class<?> type = types[i];
+            Class<?> collectionType = ReflectionUtils.getCollectionType(genericTypes[i]);
+            Class<?> collectionElementType;
+            if (collectionType == null) {
+                collectionElementType = null; //NOPMD
+            } else {
+                collectionElementType = ReflectionUtils.getCollectionParameterizedType(genericTypes[i]);
+            }
+            Class<?> arrayElementType = ReflectionUtils.getArrayComponentType(genericTypes[i]);
+            parameterInfos[i] = new MethodParameterInfoImpl(i, type, collectionType, collectionElementType, arrayElementType);
+        }
+
+        return parameterInfos;
     }
 
-    public int getModifiers() {
-      return modifiers;
+    private static MethodParameterInfo[] createCollectionParameterInfos(MethodParameterInfo[] parameterInfos) {
+        int num = 0;
+        for (int i = 0; i < parameterInfos.length; i++) {
+            if (parameterInfos[i].getCollectionType() != null) {
+                num++;
+            }
+        }
+        MethodParameterInfo[] collectionParameterInfos = new MethodParameterInfo[num];
+        int index = 0;
+        for (int i = 0; i < parameterInfos.length; i++) {
+            if (parameterInfos[i].getCollectionType() != null) {
+                collectionParameterInfos[index++] = parameterInfos[i];
+            }
+        }
+        return collectionParameterInfos;
     }
 
-    public MethodParameterInfo[] getParameterInfos() {
-      return parameterInfos;
+    private static MethodReturnInfo createReturnInfos(Method method) {
+        Class<?> type = method.getReturnType();
+        Class<?> collectionType = ReflectionUtils.getCollectionType(method.getGenericReturnType());
+        Class<?> collectionElementType;
+        if (collectionType == null) {
+            collectionElementType = null; //NOPMD
+        } else {
+            collectionElementType = ReflectionUtils.getCollectionParameterizedType(method.getGenericReturnType());
+        }
+        Class<?> mapKeyType = ReflectionUtils.getCollectionParameterizedKeyType(method.getGenericReturnType());
+        return new MethodReturnInfoImpl(type, collectionType, collectionElementType, mapKeyType);
     }
 
-    public MethodReturnInfo getReturnInfo() {
-      return returnInfo;
+    protected static class MethodInfoImpl implements MethodInfo {
+
+        private Signature signature;
+        private int modifiers;
+        private MethodParameterInfo[] parameterInfos;
+        private MethodParameterInfo[] collectionParameterInfos;
+        private MethodReturnInfo returnInfo;
+        private String description;
+        public MethodInfoImpl(Signature signature, int modifiers, MethodParameterInfo[] parameterInfos,
+                              MethodParameterInfo[] collectionParameterInfos, MethodReturnInfo returnInfo, String description) {
+            super();
+            this.signature = signature;
+            this.modifiers = modifiers;
+            this.parameterInfos = parameterInfos;
+            this.collectionParameterInfos = collectionParameterInfos;
+            this.returnInfo = returnInfo;
+            this.description = description;
+        }
+
+        public Signature getSignature() {
+            return signature;
+        }
+
+        public int getModifiers() {
+            return modifiers;
+        }
+
+        public MethodParameterInfo[] getParameterInfos() {
+            return parameterInfos;
+        }
+
+        public MethodReturnInfo getReturnInfo() {
+            return returnInfo;
+        }
+
+        public MethodParameterInfo[] getCollectionParameterInfos() {
+            return collectionParameterInfos;
+        }
+
+        public String toString() {
+            return description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
     }
 
-    public MethodParameterInfo[] getCollectionParameterInfos() {
-      return collectionParameterInfos;
-    }
-    
-    public String toString() {
-      return description;
-    }
+    protected static class MethodParameterInfoImpl implements MethodParameterInfo {
 
-    public String getDescription() {
-      return description;
-    }
-  }
+        private int index;
+        private Class<?> type;
+        private Class<?> collectionType;
+        private Class<?> collectionElementType;
+        private Class<?> arrayElementType;
 
-  protected static class MethodParameterInfoImpl implements MethodParameterInfo {
+        public MethodParameterInfoImpl(int index, Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
+                                       Class<?> arrayElementType) {
+            super();
+            this.index = index;
+            this.type = type;
+            this.collectionType = collectionType;
+            this.collectionElementType = collectionElementType;
+            this.arrayElementType = arrayElementType;
+        }
 
-    private int index;
-    private Class<?> type;
-    private Class<?> collectionType;
-    private Class<?> collectionElementType;
-    private Class<?> arrayElementType;
+        public int getIndex() {
+            return index;
+        }
 
-    public MethodParameterInfoImpl(int index, Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
-        Class<?> arrayElementType) {
-      super();
-      this.index = index;
-      this.type = type;
-      this.collectionType = collectionType;
-      this.collectionElementType = collectionElementType;
-      this.arrayElementType = arrayElementType;
-    }
+        public Class<?> getType() {
+            return type;
+        }
 
-    public int getIndex() {
-      return index;
-    }
+        public Class<?> getCollectionType() {
+            return collectionType;
+        }
 
-    public Class<?> getType() {
-      return type;
-    }
+        public Class<?> getCollectionElementType() {
+            return collectionElementType;
+        }
 
-    public Class<?> getCollectionType() {
-      return collectionType;
+        public Class<?> getArrayElementType() {
+            return arrayElementType;
+        }
     }
 
-    public Class<?> getCollectionElementType() {
-      return collectionElementType;
+    protected static class MethodReturnInfoImpl implements MethodReturnInfo {
+
+        private Class<?> type;
+        private Class<?> collectionType;
+        private Class<?> collectionElementType;
+        private Class<?> mapKeyType;
+
+        public MethodReturnInfoImpl(Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
+                                    Class<?> mapKeyType) {
+            super();
+            this.type = type;
+            this.collectionType = collectionType;
+            this.collectionElementType = collectionElementType;
+            this.mapKeyType = mapKeyType;
+        }
+
+        public Class<?> getType() {
+            return type;
+        }
+
+        public Class<?> getCollectionType() {
+            return collectionType;
+        }
+
+        public Class<?> getCollectionElementType() {
+            return collectionElementType;
+        }
+
+        public Class<?> getMapKeyType() {
+            return mapKeyType;
+        }
+
     }
-
-    public Class<?> getArrayElementType() {
-      return arrayElementType;
-    }
-  }
-
-  protected static class MethodReturnInfoImpl implements MethodReturnInfo {
-
-    private Class<?> type;
-    private Class<?> collectionType;
-    private Class<?> collectionElementType;
-    private Class<?> mapKeyType;
-
-    public MethodReturnInfoImpl(Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
-        Class<?> mapKeyType) {
-      super();
-      this.type = type;
-      this.collectionType = collectionType;
-      this.collectionElementType = collectionElementType;
-      this.mapKeyType = mapKeyType;
-    }
-
-    public Class<?> getType() {
-      return type;
-    }
-
-    public Class<?> getCollectionType() {
-      return collectionType;
-    }
-
-    public Class<?> getCollectionElementType() {
-      return collectionElementType;
-    }
-
-    public Class<?> getMapKeyType() {
-      return mapKeyType;
-    }
-
-  }
 }

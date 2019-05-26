@@ -23,38 +23,39 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractDateTimeMapping extends AbstractBaseMapping implements Mapping, ParameterMapping,
-    ResultMapping {
+        ResultMapping {
 
-  private static final Set<Class<?>> types = new HashSet<Class<?>>();
-  static {
-    types.add(Date.class);
-  }
+    private static final Set<Class<?>> types = new HashSet<Class<?>>();
 
-  public static Set<Class<?>> getTypes() {
-    return types;
-  }
-
-  public void accept(Mapper mapper, MappingVisitor visitor) {
-    visitor.visit(mapper, this);
-  }
-
-  public abstract void accept(Mapper mapper, DateTimeMappingVisitor visitor);
-
-  public static class DateMapping extends AbstractDateTimeMapping {
-    public void accept(Mapper mapper, DateTimeMappingVisitor visitor) {
-      visitor.visit(mapper, this);
+    static {
+        types.add(Date.class);
     }
-  }
 
-  public static class TimeMapping extends AbstractDateTimeMapping {
-    public void accept(Mapper mapper, DateTimeMappingVisitor visitor) {
-      visitor.visit(mapper, this);
+    public static Set<Class<?>> getTypes() {
+        return types;
     }
-  }
 
-  public static class TimestampMapping extends AbstractDateTimeMapping {
-    public void accept(Mapper mapper, DateTimeMappingVisitor visitor) {
-      visitor.visit(mapper, this);
+    public void accept(Mapper mapper, MappingVisitor visitor) {
+        visitor.visit(mapper, this);
     }
-  }
+
+    public abstract void accept(Mapper mapper, DateTimeMappingVisitor visitor);
+
+    public static class DateMapping extends AbstractDateTimeMapping {
+        public void accept(Mapper mapper, DateTimeMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
+    }
+
+    public static class TimeMapping extends AbstractDateTimeMapping {
+        public void accept(Mapper mapper, DateTimeMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
+    }
+
+    public static class TimestampMapping extends AbstractDateTimeMapping {
+        public void accept(Mapper mapper, DateTimeMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
+    }
 }

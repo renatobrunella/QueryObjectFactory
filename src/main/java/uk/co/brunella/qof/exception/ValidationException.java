@@ -20,18 +20,17 @@ package uk.co.brunella.qof.exception;
 
 /**
  * A validation exception. Thrown during the validation and generation process.
- *
  */
 public class ValidationException extends RuntimeException {
 
-  private static final long serialVersionUID = 2211047030497359370L;
+    private static final long serialVersionUID = 2211047030497359370L;
 
-  /**
-   * Creates a ValidationException.
-   * 
-   * @param message  the error message
-   */
-  public ValidationException(String message) {
-    super(message);
-  }
+    /**
+     * Creates a ValidationException.
+     *
+     * @param message the error message
+     */
+    public ValidationException(String message) {
+        super(message);
+    }
 }

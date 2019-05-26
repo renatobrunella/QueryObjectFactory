@@ -20,23 +20,23 @@ package uk.co.brunella.qof.codegen.enhancer;
 
 /**
  * Defines methods to enhance generated query object classes.
- *
+ * <p>
  * This can be used to process additional annotations.
- * 
+ *
  * @see SessionRunnerEnhancer
  */
 public interface QueryObjectClassEnhancer {
 
-  /**
-   * Called during the creation of query object classes to enable enhancement.
-   * 
-   * Returns either a class that inherits from the <code>superClass</code> or the 
-   * <code>superClass</code> if no enhancements were made.
-   * 
-   * @param queryDefinitionClass  the query definition class or interface
-   * @param superClass            the super class
-   * @return                      the enhanced class or super class
-   */
-  <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass);
+    /**
+     * Called during the creation of query object classes to enable enhancement.
+     * <p>
+     * Returns either a class that inherits from the <code>superClass</code> or the
+     * <code>superClass</code> if no enhancements were made.
+     *
+     * @param queryDefinitionClass the query definition class or interface
+     * @param superClass           the super class
+     * @return the enhanced class or super class
+     */
+    <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass);
 
 }

@@ -22,50 +22,47 @@ import org.objectweb.asm.Type;
 
 /**
  * Defines methods to customize the generation process.
- * 
+ *
  * @see DefaultCustomizer
  */
 public interface Customizer {
-  /**
-   * Customizes the type of <code>List</code> implementations.
-   * 
-   * @return list type
-   * 
-   * @see java.util.List
-   */
-  Type getListType();
+    /**
+     * Customizes the type of <code>List</code> implementations.
+     *
+     * @return list type
+     * @see java.util.List
+     */
+    Type getListType();
 
-  /**
-   * Customizes the type of <code>Set</code> implementations.
-   * 
-   * @return set type
-   * 
-   * @see java.util.Set
-   */
-  Type getSetType();
+    /**
+     * Customizes the type of <code>Set</code> implementations.
+     *
+     * @return set type
+     * @see java.util.Set
+     */
+    Type getSetType();
 
-  /**
-   * Customizes the type of <code>Map</code> implementations. 
-   * 
-   * @return map type
-   * 
-   * @see java.util.Map
-   */
-  Type getMapType();
+    /**
+     * Customizes the type of <code>Map</code> implementations.
+     *
+     * @return map type
+     * @see java.util.Map
+     */
+    Type getMapType();
 
-  /**
-   * Customizes the class name of the generated query object. 
-   * 
-   * @param queryDefinitionClass query definition class or interface
-   * @return class name of the query object
-   */
-  String getClassName(Class<?> queryDefinitionClass);
-  
-  /**
-   * Customizes the way the query class gets its database connection.
-   * 
-   * @param queryDefinitionClass query definition class or interface
-   * @return connection factory customizer instance
-   */
-  ConnectionFactoryCustomizer getConnectionFactoryCustomizer(Class<?> queryDefinitionClass);
+    /**
+     * Customizes the class name of the generated query object.
+     *
+     * @param queryDefinitionClass query definition class or interface
+     * @return class name of the query object
+     */
+    String getClassName(Class<?> queryDefinitionClass);
+
+    /**
+     * Customizes the way the query class gets its database connection.
+     *
+     * @param queryDefinitionClass query definition class or interface
+     * @return connection factory customizer instance
+     */
+    ConnectionFactoryCustomizer getConnectionFactoryCustomizer(Class<?> queryDefinitionClass);
 }

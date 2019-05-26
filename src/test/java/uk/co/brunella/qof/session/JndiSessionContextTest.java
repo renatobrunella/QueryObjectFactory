@@ -185,7 +185,7 @@ public class JndiSessionContextTest extends TestCase {
         }
 
         public Connection getConnection() throws SQLException {
-            return (Connection) connection;
+            return connection;
         }
 
         public Connection getConnection(String username, String password)
@@ -197,18 +197,18 @@ public class JndiSessionContextTest extends TestCase {
             return null;
         }
 
+        public void setLogWriter(PrintWriter arg0) throws SQLException {
+        }
+
         public int getLoginTimeout() throws SQLException {
             return 0;
         }
 
+        public void setLoginTimeout(int arg0) throws SQLException {
+        }
+
         public Logger getParentLogger() throws SQLFeatureNotSupportedException {
             return null;
-        }
-
-        public void setLogWriter(PrintWriter arg0) throws SQLException {
-        }
-
-        public void setLoginTimeout(int arg0) throws SQLException {
         }
 
         @SuppressWarnings("unused")

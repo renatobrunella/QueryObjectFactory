@@ -8,15 +8,15 @@ import java.sql.SQLException;
 
 public class DefaultUserTransactionTest extends TestCase {
 
+    private SessionContextFactory.DefaultUserTransaction trx;
+
     private DataSource createDataSource() {
-        JDBCDataSource  ds = new JDBCDataSource ();
+        JDBCDataSource ds = new JDBCDataSource();
         ds.setDatabase("jdbc:hsqldb:mem:aname");
         ds.setUser("sa");
         ds.setPassword("");
         return ds;
     }
-
-    private SessionContextFactory.DefaultUserTransaction trx;
 
     public void setUp() throws SQLException {
         trx = new SessionContextFactory.DefaultUserTransaction(new SessionContextFactory.Session(), createDataSource().getConnection());

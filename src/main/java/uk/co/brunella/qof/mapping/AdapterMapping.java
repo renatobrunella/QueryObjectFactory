@@ -20,7 +20,7 @@ package uk.co.brunella.qof.mapping;
 
 public class AdapterMapping extends AbstractBaseMapping implements Mapping, ParameterMapping, ResultMapping {
 
-	public void accept(Mapper mapper, MappingVisitor visitor) {
-		visitor.visit(mapper, this);
-	}
+    public void accept(Mapper mapper, MappingVisitor visitor) {
+        visitor.visit(mapper, this);
+    }
 }

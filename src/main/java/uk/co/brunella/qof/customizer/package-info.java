@@ -19,7 +19,7 @@
 
 /**
  * Provides classes, interfaces for customizing the code generation.
- * 
+ *
  * @since 1.0.0
  */
 package uk.co.brunella.qof.customizer;

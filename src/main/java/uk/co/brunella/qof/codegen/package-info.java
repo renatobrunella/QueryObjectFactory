@@ -19,7 +19,7 @@
 
 /**
  * Internal package.<!-- --> Provides code generation classes using cglib/asm
- * 
+ *
  * @since 1.0.0
  */
 package uk.co.brunella.qof.codegen;

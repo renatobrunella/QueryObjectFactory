@@ -23,5 +23,6 @@ import uk.co.brunella.qof.mapping.AbstractCharacterMapping.StringMapping;
 
 public interface CharacterMappingVisitor {
     void visit(Mapper mapper, StringMapping mapping);
+
     void visit(Mapper mapper, CharacterMapping mapping);
 }

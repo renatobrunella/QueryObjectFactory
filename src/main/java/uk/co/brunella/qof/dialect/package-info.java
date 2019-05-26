@@ -19,7 +19,7 @@
 
 /**
  * Provides classes, interfaces for database specific SQL syntax.
- * 
+ *
  * @since 1.0.0
  */
 package uk.co.brunella.qof.dialect;

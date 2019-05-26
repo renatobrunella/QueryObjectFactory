@@ -13,32 +13,6 @@ import java.util.Map;
 
 public class InClauseBeanTest extends TestCase {
 
-    public interface Queries extends BaseQuery {
-        @Query(sql = "select value {%%} from test where x in ({%1.id}) and y = {%2.id}")
-        List<String> selectBean1(TestBean[] x, TestBean y) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where x in ({%1.parent.id}) and y = {%2.parent.id}")
-        List<String> selectBean2(TestBean[] x, TestBean y) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where x in ({%1.boxedId}) and y = {%2.boxedId}")
-        List<String> selectBean3(TestBean[] x, TestBean y) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where x in ({%1.parent.boxedId}) and y = {%2.parent.boxedId}")
-        List<String> selectBean4(TestBean[] x, TestBean y) throws SQLException;
-
-        @Delete(sql = "delete from test where x in ({%1.id})")
-        void deleteBean1(TestBean[] x) throws SQLException;
-
-        @Delete(sql = "delete from test where x in ({%1.parent.id})")
-        void deleteBean2(TestBean[] x) throws SQLException;
-
-        @Delete(sql = "delete from test where x in ({%1.boxedId})")
-        void deleteBean3(TestBean[] x) throws SQLException;
-
-        @Delete(sql = "delete from test where x in ({%1.parent.boxedId})")
-        void deleteBean4(TestBean[] x) throws SQLException;
-    }
-
     private Connection connection;
     private Queries selectQueries;
     private List<String> log;
@@ -253,5 +227,31 @@ public class InClauseBeanTest extends TestCase {
         assertEquals("setInt(2,55)", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface Queries extends BaseQuery {
+        @Query(sql = "select value {%%} from test where x in ({%1.id}) and y = {%2.id}")
+        List<String> selectBean1(TestBean[] x, TestBean y) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where x in ({%1.parent.id}) and y = {%2.parent.id}")
+        List<String> selectBean2(TestBean[] x, TestBean y) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where x in ({%1.boxedId}) and y = {%2.boxedId}")
+        List<String> selectBean3(TestBean[] x, TestBean y) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where x in ({%1.parent.boxedId}) and y = {%2.parent.boxedId}")
+        List<String> selectBean4(TestBean[] x, TestBean y) throws SQLException;
+
+        @Delete(sql = "delete from test where x in ({%1.id})")
+        void deleteBean1(TestBean[] x) throws SQLException;
+
+        @Delete(sql = "delete from test where x in ({%1.parent.id})")
+        void deleteBean2(TestBean[] x) throws SQLException;
+
+        @Delete(sql = "delete from test where x in ({%1.boxedId})")
+        void deleteBean3(TestBean[] x) throws SQLException;
+
+        @Delete(sql = "delete from test where x in ({%1.parent.boxedId})")
+        void deleteBean4(TestBean[] x) throws SQLException;
     }
 }

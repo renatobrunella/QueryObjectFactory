@@ -10,47 +10,6 @@ import java.util.List;
 
 public class SimpleUpdateTest extends TestCase {
 
-    public interface UpdateQueries extends BaseQuery {
-        @Update(sql = "update test set column = {%2} where column = {%1}")
-        void updateByte(byte b1, Byte b2) throws SQLException;
-
-        @Update(sql = "update test set column = {%2} where column = {%1}")
-        void updateShort(short s1, Short s2) throws SQLException;
-
-        @Update(sql = "update test set column = {%2} where column = {%1}")
-        void updateInt(int i1, Integer i2) throws SQLException;
-
-        @Update(sql = "update test set column = {%2} where column = {%1}")
-        void updateLong(long l1, Long l2) throws SQLException;
-
-        @Update(sql = "update test set column = {%2} where column = {%1}")
-        void updateFloat(float f1, Float f2) throws SQLException;
-
-        @Update(sql = "update test set column = {%2} where column = {%1}")
-        void updateDouble(double d1, Double d2) throws SQLException;
-
-        @Update(sql = "update test values ({%1}")
-        void updateString(String s1) throws SQLException;
-
-        @Update(sql = "update test set column = {%2} where column = {%1}")
-        void updateChar(char c1, Character c2) throws SQLException;
-
-        @Update(sql = "update test set column = {%1}")
-        void updateDate0(java.util.Date d) throws SQLException;
-
-        @Update(sql = "update test set column = {%1}")
-        void updateDate1(java.util.Date d) throws SQLException;
-
-        @Update(sql = "update test set column = {time%1}")
-        void updateDate2(java.util.Date d) throws SQLException;
-
-        @Update(sql = "update test set column = {timestamp%1}")
-        void updateDate3(java.util.Date d) throws SQLException;
-
-        @Update(sql = "update test set column = {%1}")
-        int updateIntReturnUpdateCount(int i1) throws SQLException;
-    }
-
     Connection connection;
     UpdateQueries updateQueries;
     List<String> log;
@@ -105,8 +64,8 @@ public class SimpleUpdateTest extends TestCase {
     }
 
     public void testUpdateInt() throws SQLException {
-        updateQueries.updateInt((int) 11, new Integer((int) 22));
-        updateQueries.updateInt((int) 33, null);
+        updateQueries.updateInt(11, new Integer(22));
+        updateQueries.updateInt(33, null);
         int i = 0;
         assertEquals(10, log.size());
         assertEquals(
@@ -168,8 +127,8 @@ public class SimpleUpdateTest extends TestCase {
     }
 
     public void testUpdateDouble() throws SQLException {
-        updateQueries.updateDouble((double) 11.1, new Double((double) 22.2));
-        updateQueries.updateDouble((double) 33.3, null);
+        updateQueries.updateDouble(11.1, new Double(22.2));
+        updateQueries.updateDouble(33.3, null);
         int i = 0;
         assertEquals(10, log.size());
         assertEquals(
@@ -293,6 +252,47 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("setInt(1,10)", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface UpdateQueries extends BaseQuery {
+        @Update(sql = "update test set column = {%2} where column = {%1}")
+        void updateByte(byte b1, Byte b2) throws SQLException;
+
+        @Update(sql = "update test set column = {%2} where column = {%1}")
+        void updateShort(short s1, Short s2) throws SQLException;
+
+        @Update(sql = "update test set column = {%2} where column = {%1}")
+        void updateInt(int i1, Integer i2) throws SQLException;
+
+        @Update(sql = "update test set column = {%2} where column = {%1}")
+        void updateLong(long l1, Long l2) throws SQLException;
+
+        @Update(sql = "update test set column = {%2} where column = {%1}")
+        void updateFloat(float f1, Float f2) throws SQLException;
+
+        @Update(sql = "update test set column = {%2} where column = {%1}")
+        void updateDouble(double d1, Double d2) throws SQLException;
+
+        @Update(sql = "update test values ({%1}")
+        void updateString(String s1) throws SQLException;
+
+        @Update(sql = "update test set column = {%2} where column = {%1}")
+        void updateChar(char c1, Character c2) throws SQLException;
+
+        @Update(sql = "update test set column = {%1}")
+        void updateDate0(java.util.Date d) throws SQLException;
+
+        @Update(sql = "update test set column = {%1}")
+        void updateDate1(java.util.Date d) throws SQLException;
+
+        @Update(sql = "update test set column = {time%1}")
+        void updateDate2(java.util.Date d) throws SQLException;
+
+        @Update(sql = "update test set column = {timestamp%1}")
+        void updateDate3(java.util.Date d) throws SQLException;
+
+        @Update(sql = "update test set column = {%1}")
+        int updateIntReturnUpdateCount(int i1) throws SQLException;
     }
 
 }

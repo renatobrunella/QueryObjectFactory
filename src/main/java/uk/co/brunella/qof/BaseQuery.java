@@ -23,88 +23,83 @@ import uk.co.brunella.qof.codegen.QueryObjectGenerator;
 import java.sql.Connection;
 
 /**
- * Defines the basic methods to get and set connections, batch size and fetch size for 
- * query objects. <code>BaseQuery</code> is implemented by all query objects.   
- * 
+ * Defines the basic methods to get and set connections, batch size and fetch size for
+ * query objects. <code>BaseQuery</code> is implemented by all query objects.
  */
 public interface BaseQuery {
-  
-  /**
-   * Set the connection to be used in the query object.
-   * 
-   * @param connection the connection
-   * 
-   * @see #getConnection
-   */
-  void setConnection(Connection connection);
 
-  /**
-   * Returns the connection used in the query object.
-   * 
-   * @return the connection
-   * 
-   * @see #setConnection(Connection)
-   * @see #ungetConnection(Connection)
-   */
-  Connection getConnection();
+    /**
+     * Returns the connection used in the query object.
+     *
+     * @return the connection
+     * @see #setConnection(Connection)
+     * @see #ungetConnection(Connection)
+     */
+    Connection getConnection();
 
-  /**
-   * This method is called to return a connection after a <code>getConnection</code> call.
-   * 
-   * @param connection the connection
-   * 
-   * @see #getConnection()
-   */
-  void ungetConnection(Connection connection);
-  
-  /**
-   * Sets the fetch size to be used in select queries.
-   * 
-   * <p> If the query definition class or interface defines the static field <code>DEFAULT_FETCH_SIZE</code>
-   * then batch size will <code>QueryObjectGenerator.DEFAULT_FETCH_SIZE</code>
-   * 
-   * <p> <blockquote><pre>
-   *    public static final int DEFAULT_FETCH_SIZE = 100;
-   * </pre></blockquote>
-   * @param size fetch size
-   * 
-   * @see QueryObjectGenerator#DEFAULT_FETCH_SIZE
-   * @see #getFetchSize()
-   */
-  void setFetchSize(int size);
+    /**
+     * Set the connection to be used in the query object.
+     *
+     * @param connection the connection
+     * @see #getConnection
+     */
+    void setConnection(Connection connection);
 
-  /**
-   * Returns the fetch size.
-   * 
-   * @return fetch size
-   * @see #setFetchSize(int)
-   */
-  int getFetchSize();
+    /**
+     * This method is called to return a connection after a <code>getConnection</code> call.
+     *
+     * @param connection the connection
+     * @see #getConnection()
+     */
+    void ungetConnection(Connection connection);
 
-  /**
-   * Sets the batch size to be used in insert, update, delete and call queries.
-   * 
-   * <p> A batch size of 0 disables batch processing.
-   * 
-   * <p> If the query definition class or interface defines the static field <code>DEFAULT_BATCH_SIZE</code>
-   * then batch size will <code>QueryObjectGenerator.DEFAULT_BATCH_SIZE</code>
-   * 
-   * <p> <blockquote><pre>
-   *    public static final int DEFAULT_BATCH_SIZE = 100;
-   * </pre></blockquote>
-   * 
-   * @param size batch size
-   * 
-   * @see QueryObjectGenerator#DEFAULT_BATCH_SIZE
-   * @see #getBatchSize()
-   */
-  void setBatchSize(int size);
+    /**
+     * Returns the fetch size.
+     *
+     * @return fetch size
+     * @see #setFetchSize(int)
+     */
+    int getFetchSize();
 
-  /**
-   * Returns the batch size.
-   * 
-   * @return batch size
-   * @see #setBatchSize(int)
-   */
-  int getBatchSize();
+    /**
+     * Sets the fetch size to be used in select queries.
+     *
+     * <p> If the query definition class or interface defines the static field <code>DEFAULT_FETCH_SIZE</code>
+     * then batch size will <code>QueryObjectGenerator.DEFAULT_FETCH_SIZE</code>
+     *
+     * <p> <blockquote><pre>
+     *    public static final int DEFAULT_FETCH_SIZE = 100;
+     * </pre></blockquote>
+     *
+     * @param size fetch size
+     * @see QueryObjectGenerator#DEFAULT_FETCH_SIZE
+     * @see #getFetchSize()
+     */
+    void setFetchSize(int size);
+
+    /**
+     * Returns the batch size.
+     *
+     * @return batch size
+     * @see #setBatchSize(int)
+     */
+    int getBatchSize();
+
+    /**
+     * Sets the batch size to be used in insert, update, delete and call queries.
+     *
+     * <p> A batch size of 0 disables batch processing.
+     *
+     * <p> If the query definition class or interface defines the static field <code>DEFAULT_BATCH_SIZE</code>
+     * then batch size will <code>QueryObjectGenerator.DEFAULT_BATCH_SIZE</code>
+     *
+     * <p> <blockquote><pre>
+     *    public static final int DEFAULT_BATCH_SIZE = 100;
+     * </pre></blockquote>
+     *
+     * @param size batch size
+     * @see QueryObjectGenerator#DEFAULT_BATCH_SIZE
+     * @see #getBatchSize()
+     */
+    void setBatchSize(int size);
 }

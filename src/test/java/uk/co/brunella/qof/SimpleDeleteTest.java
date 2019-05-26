@@ -10,47 +10,6 @@ import java.util.List;
 
 public class SimpleDeleteTest extends TestCase {
 
-    public interface DeleteQueries extends BaseQuery {
-        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
-        void deleteByte(byte b1, Byte b2) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
-        void deleteShort(short s1, Short s2) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
-        void deleteInt(int i1, Integer i2) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
-        void deleteLong(long l1, Long l2) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
-        void deleteFloat(float f1, Float f2) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
-        void deleteDouble(double d1, Double d2) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1})")
-        void deleteString(String s1) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
-        void deleteChar(char c1, Character c2) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1}")
-        void deleteDate0(java.util.Date d) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {date%1}")
-        void deleteDate1(java.util.Date d) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {time%1}")
-        void deleteDate2(java.util.Date d) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {timestamp%1}")
-        void deleteDate3(java.util.Date d) throws SQLException;
-
-        @Delete(sql = "delete from test where column = {%1}")
-        int deleteIntReturnUpdateCount(int i1) throws SQLException;
-    }
-
     Connection connection;
     DeleteQueries deleteQueries;
     List<String> log;
@@ -105,8 +64,8 @@ public class SimpleDeleteTest extends TestCase {
     }
 
     public void testDeleteInt() throws SQLException {
-        deleteQueries.deleteInt((int) 11, new Integer((int) 22));
-        deleteQueries.deleteInt((int) 33, null);
+        deleteQueries.deleteInt(11, new Integer(22));
+        deleteQueries.deleteInt(33, null);
         int i = 0;
         assertEquals(10, log.size());
         assertEquals(
@@ -168,8 +127,8 @@ public class SimpleDeleteTest extends TestCase {
     }
 
     public void testDeleteDouble() throws SQLException {
-        deleteQueries.deleteDouble((double) 11.1, new Double((double) 22.2));
-        deleteQueries.deleteDouble((double) 33.3, null);
+        deleteQueries.deleteDouble(11.1, new Double(22.2));
+        deleteQueries.deleteDouble(33.3, null);
         int i = 0;
         assertEquals(10, log.size());
         assertEquals(
@@ -304,6 +263,47 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("setInt(1,10)", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface DeleteQueries extends BaseQuery {
+        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
+        void deleteByte(byte b1, Byte b2) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
+        void deleteShort(short s1, Short s2) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
+        void deleteInt(int i1, Integer i2) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
+        void deleteLong(long l1, Long l2) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
+        void deleteFloat(float f1, Float f2) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
+        void deleteDouble(double d1, Double d2) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1})")
+        void deleteString(String s1) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1} or column = {%2}")
+        void deleteChar(char c1, Character c2) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1}")
+        void deleteDate0(java.util.Date d) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {date%1}")
+        void deleteDate1(java.util.Date d) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {time%1}")
+        void deleteDate2(java.util.Date d) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {timestamp%1}")
+        void deleteDate3(java.util.Date d) throws SQLException;
+
+        @Delete(sql = "delete from test where column = {%1}")
+        int deleteIntReturnUpdateCount(int i1) throws SQLException;
     }
 
 }

@@ -24,54 +24,54 @@ import uk.co.brunella.qof.BaseQuery;
 /**
  * Defines the methods of a customizer for the implementation of the
  * <code>getConnection()</code> and <code>setConnection()</code>.
- * 
+ * <p>
  * The emit methods are called during the code generation to implement
  * connection handling in the generated query object class. It allows query
  * object classes to aquire the database connection from different data sources.
  */
 public interface ConnectionFactoryCustomizer {
 
-  /**
-   * This method can add fields to the generated query object if needed by the
-   * <code>getConnection()</code> and <code>setConnection()</code> implementation.
-   * 
-   * @param queryDefinitionClass   the annotated query definition class
-   * @param superClass             the super class
-   * @param ce                     the class emitter
-   */
-  void emitFields(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
+    /**
+     * This method can add fields to the generated query object if needed by the
+     * <code>getConnection()</code> and <code>setConnection()</code> implementation.
+     *
+     * @param queryDefinitionClass the annotated query definition class
+     * @param superClass           the super class
+     * @param ce                   the class emitter
+     */
+    void emitFields(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
 
-  /**
-   * This method must implement the <code>getConnection()</code>
-   * method as specified in the <code>BaseQuery</code> interface.
-   * 
-   * @param queryDefinitionClass   the annotated query definition class
-   * @param superClass             the super class
-   * @param ce                     the class emitter
-   * @see BaseQuery#getConnection()
-   */
-  void emitGetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
-  
-  /**
-   * This method must implement the <code>ungetConnection(Connection)</code>
-   * method as specified in the <code>BaseQuery</code> interface.
-   * 
-   * @param queryDefinitionClass   the annotated query definition class
-   * @param superClass             the super class
-   * @param ce                     the class emitter
-   * @see BaseQuery#ungetConnection(java.sql.Connection)
-   */
-  void emitUngetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
+    /**
+     * This method must implement the <code>getConnection()</code>
+     * method as specified in the <code>BaseQuery</code> interface.
+     *
+     * @param queryDefinitionClass the annotated query definition class
+     * @param superClass           the super class
+     * @param ce                   the class emitter
+     * @see BaseQuery#getConnection()
+     */
+    void emitGetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
 
-  /**
-   * This method must implement the <code>setConnection()</code>
-   * method as specified in the <code>BaseQuery</code> interface.
-   * 
-   * @param queryDefinitionClass  the annotated query definition class
-   * @param superClass             the super class
-   * @param ce                    the class emitter
-   * @see BaseQuery#setConnection(java.sql.Connection)
-   */
-  void emitSetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
+    /**
+     * This method must implement the <code>ungetConnection(Connection)</code>
+     * method as specified in the <code>BaseQuery</code> interface.
+     *
+     * @param queryDefinitionClass the annotated query definition class
+     * @param superClass           the super class
+     * @param ce                   the class emitter
+     * @see BaseQuery#ungetConnection(java.sql.Connection)
+     */
+    void emitUngetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
+
+    /**
+     * This method must implement the <code>setConnection()</code>
+     * method as specified in the <code>BaseQuery</code> interface.
+     *
+     * @param queryDefinitionClass the annotated query definition class
+     * @param superClass           the super class
+     * @param ce                   the class emitter
+     * @see BaseQuery#setConnection(java.sql.Connection)
+     */
+    void emitSetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce);
 
 }

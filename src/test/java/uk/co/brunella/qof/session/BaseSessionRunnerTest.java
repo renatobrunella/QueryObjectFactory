@@ -16,48 +16,6 @@ public class BaseSessionRunnerTest extends TestCase {
 
     private static List<String> log;
 
-    private class MockDataSource implements DataSource {
-
-        public Connection getConnection() throws SQLException {
-            Connection connection = MockConnectionFactory.getConnection();
-            log = ((MockConnectionData) connection).getLog();
-            return connection;
-        }
-
-        public Connection getConnection(String username, String password) throws SQLException {
-            return null;
-        }
-
-        public PrintWriter getLogWriter() throws SQLException {
-            return null;
-        }
-
-        public int getLoginTimeout() throws SQLException {
-            return 0;
-        }
-
-        public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-            return null;
-        }
-
-        public void setLogWriter(PrintWriter out) throws SQLException {
-        }
-
-        public void setLoginTimeout(int seconds) throws SQLException {
-        }
-
-        @SuppressWarnings("unused")
-        public boolean isWrapperFor(Class<?> iface) throws SQLException {
-            return false;
-        }
-
-        @SuppressWarnings("unused")
-        public <T> T unwrap(Class<T> iface) throws SQLException {
-            return null;
-        }
-
-    }
-
     public void testSuccessDefaultContext() throws SystemException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(new MockDataSource());
@@ -133,5 +91,47 @@ public class BaseSessionRunnerTest extends TestCase {
         assertEquals("setAutoCommit(false)", log.get(0));
         assertEquals("rollback()", log.get(1));
         assertEquals("close()", log.get(2));
+    }
+
+    private class MockDataSource implements DataSource {
+
+        public Connection getConnection() throws SQLException {
+            Connection connection = MockConnectionFactory.getConnection();
+            log = ((MockConnectionData) connection).getLog();
+            return connection;
+        }
+
+        public Connection getConnection(String username, String password) throws SQLException {
+            return null;
+        }
+
+        public PrintWriter getLogWriter() throws SQLException {
+            return null;
+        }
+
+        public void setLogWriter(PrintWriter out) throws SQLException {
+        }
+
+        public int getLoginTimeout() throws SQLException {
+            return 0;
+        }
+
+        public void setLoginTimeout(int seconds) throws SQLException {
+        }
+
+        public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+            return null;
+        }
+
+        @SuppressWarnings("unused")
+        public boolean isWrapperFor(Class<?> iface) throws SQLException {
+            return false;
+        }
+
+        @SuppressWarnings("unused")
+        public <T> T unwrap(Class<T> iface) throws SQLException {
+            return null;
+        }
+
     }
 }

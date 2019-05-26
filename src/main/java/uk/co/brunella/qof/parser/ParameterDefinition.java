@@ -22,48 +22,48 @@ package uk.co.brunella.qof.parser;
  * Specification of a parameter definition.
  */
 public interface ParameterDefinition extends Definition {
-  
-  /**
-   * Returns an array of SQL parameter names (for callable statements).
-   * Can be empty.
-   * 
-   * @return array of SQL parameter names
-   */
-  String[] getNames();
-  
-  /**
-   * Returns the names of the fields if the parameter is a Java bean. 
-   * 
-   * @return name of the fields in a Java bean parameter.
-   */
-  String[] getFields();
-  
-  /**
-   * Returns an array of SQL parameter indexes.
-   * Can be empty.
-   * 
-   * @return array of SQL parameter indexes
-   */
-  int[] getIndexes();
-  
-  /**
-   * Returns the index of the parameter in the query method.
-   * 
-   * @return parameter index in query method 
-   */
-  int getParameter();
-  
-  /**
-   * Returns the type of the parameter (string, int, etc.).
-   * 
-   * @return type of the parameter
-   */
-  String getType();
-  
-  /**
-   * Returns the parameter separator for array parameter types.
-   * 
-   * @return parameter separator
-   */
-  String getParameterSeparator();
+
+    /**
+     * Returns an array of SQL parameter names (for callable statements).
+     * Can be empty.
+     *
+     * @return array of SQL parameter names
+     */
+    String[] getNames();
+
+    /**
+     * Returns the names of the fields if the parameter is a Java bean.
+     *
+     * @return name of the fields in a Java bean parameter.
+     */
+    String[] getFields();
+
+    /**
+     * Returns an array of SQL parameter indexes.
+     * Can be empty.
+     *
+     * @return array of SQL parameter indexes
+     */
+    int[] getIndexes();
+
+    /**
+     * Returns the index of the parameter in the query method.
+     *
+     * @return parameter index in query method
+     */
+    int getParameter();
+
+    /**
+     * Returns the type of the parameter (string, int, etc.).
+     *
+     * @return type of the parameter
+     */
+    String getType();
+
+    /**
+     * Returns the parameter separator for array parameter types.
+     *
+     * @return parameter separator
+     */
+    String getParameterSeparator();
 }

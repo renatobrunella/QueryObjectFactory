@@ -20,47 +20,43 @@ package uk.co.brunella.qof.session;
 
 /**
  * The <code>SessionRunnerExt</code> interface extends <code>SessionRunner</code>
- * and adds new methods that allow to specify the transaction management type. 
- * 
- * @param <T> the type of the result of the executed code. If no result is 
+ * and adds new methods that allow to specify the transaction management type.
+ *
+ * @param <T> the type of the result of the executed code. If no result is
  *            returned this type should be <code>Void</code>
- * 
- * @since 1.1.0
- * 
  * @see SessionRunner
+ * @since 1.1.0
  */
 public interface SessionRunnerExt<T> extends SessionRunner<T> {
 
-  /**
-   * A call to <code>executeContainerManaged</code> starts a new session and 
-   * executes some code in a transactional context using container managed 
-   * transaction management.
-   * 
-   * If an exception is thrown by the executed code the
-   * transaction is rolled back otherwise it is committed.
-   * 
-   * @param arguments arguments that are passed to the executed code
-   * @return the result of the executed code
-   * @throws SystemException thrown if an unexpected error occurred
-   * 
-   * @since 1.1.0
-   */
-  T executeContainerManaged(Object... arguments) throws SystemException;
+    /**
+     * A call to <code>executeContainerManaged</code> starts a new session and
+     * executes some code in a transactional context using container managed
+     * transaction management.
+     * <p>
+     * If an exception is thrown by the executed code the
+     * transaction is rolled back otherwise it is committed.
+     *
+     * @param arguments arguments that are passed to the executed code
+     * @return the result of the executed code
+     * @throws SystemException thrown if an unexpected error occurred
+     * @since 1.1.0
+     */
+    T executeContainerManaged(Object... arguments) throws SystemException;
 
-  /**
-   * A call to <code>executeBeanManaged</code> starts a new session and 
-   * executes some code in a transactional context using bean managed 
-   * transaction management.
-   * 
-   * If an exception is thrown by the executed code the
-   * transaction is rolled back otherwise it is committed.
-   * 
-   * @param arguments arguments that are passed to the executed code
-   * @return the result of the executed code
-   * @throws SystemException thrown if an unexpected error occurred
-   * 
-   * @since 1.1.0
-   */
-  T executeBeanManaged(Object... arguments) throws SystemException;
+    /**
+     * A call to <code>executeBeanManaged</code> starts a new session and
+     * executes some code in a transactional context using bean managed
+     * transaction management.
+     * <p>
+     * If an exception is thrown by the executed code the
+     * transaction is rolled back otherwise it is committed.
+     *
+     * @param arguments arguments that are passed to the executed code
+     * @return the result of the executed code
+     * @throws SystemException thrown if an unexpected error occurred
+     * @since 1.1.0
+     */
+    T executeBeanManaged(Object... arguments) throws SystemException;
 
 }

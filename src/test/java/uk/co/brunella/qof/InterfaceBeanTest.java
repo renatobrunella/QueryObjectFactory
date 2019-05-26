@@ -14,33 +14,13 @@ import java.util.Map;
 
 public class InterfaceBeanTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select name {string%%1} where name = {%1.name})")
-        Person select1(IPerson person) throws SQLException;
-
-        @Query(sql = "select name {string%%1} where name = {%1.name})",
-                factoryClass = InterfaceBeanTest.class, factoryMethod = "newPerson")
-        IPerson select2(IPerson person) throws SQLException;
-    }
-
-    public interface SelectQueriesMissingType1 extends BaseQuery {
-        @Query(sql = "select name {%%1} where name = {%1.name})")
-        Person select1(IPerson person) throws SQLException;
-    }
-
-    public interface SelectQueriesMissingType2 extends BaseQuery {
-        @Query(sql = "select name {%%1} where name = {%1.name})",
-                factoryClass = InterfaceBeanTest.class, factoryMethod = "newPerson")
-        IPerson select2(IPerson person) throws SQLException;
-    }
+    Connection connection;
+    SelectQueries selectQueries;
+    List<String> log;
 
     public static IPerson newPerson(String name) {
         return new Person(name);
     }
-
-    Connection connection;
-    SelectQueries selectQueries;
-    List<String> log;
 
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
@@ -120,6 +100,30 @@ public class InterfaceBeanTest extends TestCase {
         }
     }
 
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select name {string%%1} where name = {%1.name})")
+        Person select1(IPerson person) throws SQLException;
+
+        @Query(sql = "select name {string%%1} where name = {%1.name})",
+                factoryClass = InterfaceBeanTest.class, factoryMethod = "newPerson")
+        IPerson select2(IPerson person) throws SQLException;
+    }
+
+    public interface SelectQueriesMissingType1 extends BaseQuery {
+        @Query(sql = "select name {%%1} where name = {%1.name})")
+        Person select1(IPerson person) throws SQLException;
+    }
+
+    public interface SelectQueriesMissingType2 extends BaseQuery {
+        @Query(sql = "select name {%%1} where name = {%1.name})",
+                factoryClass = InterfaceBeanTest.class, factoryMethod = "newPerson")
+        IPerson select2(IPerson person) throws SQLException;
+    }
+
+    public interface IPerson {
+        String getName();
+    }
+
     public static class Person implements IPerson {
         private String name;
 
@@ -130,9 +134,5 @@ public class InterfaceBeanTest extends TestCase {
         public String getName() {
             return name;
         }
-    }
-
-    public interface IPerson {
-        public abstract String getName();
     }
 }

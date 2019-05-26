@@ -10,6 +10,31 @@ public class ThreadTest extends TestCase {
         super(arg0);
     }
 
+    public void testTwoThread() {
+        QueryObjectFactory.createQueryObject(Test3.class);
+        T t1 = new T(1);
+        T t2 = new T(2);
+        T t3 = new T(3);
+        t1.start();
+        t2.start();
+        t3.start();
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+        } catch (InterruptedException e) {
+        }
+        assertFalse(t1.finishedSuccessfully);
+        assertTrue(t2.finishedSuccessfully);
+        assertFalse(t3.finishedSuccessfully);
+        assertNotNull(QueryObjectFactory.createQueryObject(Test2.class));
+        try {
+            QueryObjectFactory.createQueryObject(Test1.class);
+        } catch (RuntimeException e) {
+            assertEquals("No mapping found for type broken or int", e.getMessage());
+        }
+    }
+
     public interface Test1 extends BaseQuery {
         @Query(sql = "select count(*) as count {broken%%} from person")
         int numberOfPersons() throws SQLException;
@@ -27,8 +52,8 @@ public class ThreadTest extends TestCase {
 
     private class T extends Thread {
 
-        private int id;
         protected boolean finishedSuccessfully;
+        private int id;
 
         public T(int id) {
             this.id = id;
@@ -54,31 +79,6 @@ public class ThreadTest extends TestCase {
             } catch (Throwable t) {
                 fail(t.getMessage());
             }
-        }
-    }
-
-    public void testTwoThread() {
-        QueryObjectFactory.createQueryObject(Test3.class);
-        T t1 = new T(1);
-        T t2 = new T(2);
-        T t3 = new T(3);
-        t1.start();
-        t2.start();
-        t3.start();
-        try {
-            t1.join();
-            t2.join();
-            t3.join();
-        } catch (InterruptedException e) {
-        }
-        assertFalse(t1.finishedSuccessfully);
-        assertTrue(t2.finishedSuccessfully);
-        assertFalse(t3.finishedSuccessfully);
-        assertNotNull(QueryObjectFactory.createQueryObject(Test2.class));
-        try {
-            QueryObjectFactory.createQueryObject(Test1.class);
-        } catch (RuntimeException e) {
-            assertEquals("No mapping found for type broken or int", e.getMessage());
         }
     }
 

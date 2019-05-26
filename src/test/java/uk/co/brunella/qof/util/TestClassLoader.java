@@ -10,20 +10,20 @@ import java.net.URLClassLoader;
 
 public class TestClassLoader extends URLClassLoader {
 
-    public static ClassLoader createClassLoader(ClassLoader parent) throws IOException {
-        String s = System.getProperty("java.class.path");
-        File afile[] = s != null ? getClassPath(s) : new File[0];
-        URL aurl[] = s != null ? pathToURLs(afile) : new URL[0];
-
-        return new TestClassLoader(aurl, parent);
-    }
-
     private TestClassLoader(URL[] aurl, ClassLoader classloader) {
         super(aurl, classloader);
     }
 
-    private static URL[] pathToURLs(File afile[]) {
-        URL aurl[] = new URL[afile.length];
+    public static ClassLoader createClassLoader(ClassLoader parent) throws IOException {
+        String s = System.getProperty("java.class.path");
+        File[] afile = s != null ? getClassPath(s) : new File[0];
+        URL[] aurl = s != null ? pathToURLs(afile) : new URL[0];
+
+        return new TestClassLoader(aurl, parent);
+    }
+
+    private static URL[] pathToURLs(File[] afile) {
+        URL[] aurl = new URL[afile.length];
         for (int i = 0; i < afile.length; i++)
             aurl[i] = getFileURL(afile[i]);
 
@@ -43,7 +43,7 @@ public class TestClassLoader extends URLClassLoader {
     }
 
     private static File[] getClassPath(String s) {
-        File afile[];
+        File[] afile;
         if (s != null) {
             int i = 0;
             int j = 1;
@@ -65,7 +65,7 @@ public class TestClassLoader extends URLClassLoader {
             else
                 afile[i++] = new File(".");
             if (i != j) {
-                File afile1[] = new File[i];
+                File[] afile1 = new File[i];
                 System.arraycopy(afile, 0, afile1, 0, i);
                 afile = afile1;
             }

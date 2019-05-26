@@ -13,24 +13,6 @@ import java.util.TreeSet;
 
 public class CollectionInsertTest extends TestCase {
 
-    public interface InsertQueries extends BaseQuery {
-        @Insert(sql = "insert into test values ({%1})")
-        void insertInts(List<Integer> list) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        void insertInts(Set<Integer> set) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        int[] insertIntsWithReturn(List<Integer> list) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1.id},{%1.name})")
-        void insertBean(List<TestBean> bean) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1},{%2})")
-        void insertTwo(List<Integer> listInt, List<String> listString)
-                throws SQLException;
-    }
-
     Connection connection;
     InsertQueries insertQueries;
     List<String> log;
@@ -236,6 +218,24 @@ public class CollectionInsertTest extends TestCase {
         assertEquals("addBatch()", log.get(i++));
         assertEquals("executeBatch()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface InsertQueries extends BaseQuery {
+        @Insert(sql = "insert into test values ({%1})")
+        void insertInts(List<Integer> list) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        void insertInts(Set<Integer> set) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        int[] insertIntsWithReturn(List<Integer> list) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1.id},{%1.name})")
+        void insertBean(List<TestBean> bean) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1},{%2})")
+        void insertTwo(List<Integer> listInt, List<String> listString)
+                throws SQLException;
     }
 
 }

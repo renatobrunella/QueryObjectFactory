@@ -22,56 +22,55 @@ import uk.co.brunella.qof.Paging;
 
 /**
  * Specifies database specific SQL dialects.
- * 
- * This interface can be implemented to use database specific 
+ * <p>
+ * This interface can be implemented to use database specific
  * SQL syntax for example to implement paging.
  *
  * @see Paging
  */
 public interface SQLDialect {
 
-  /**
-   * Returns a modified SQL select statement that allows limiting 
-   * the number of rows returned. This is used to implement paging.
-   * 
-   * <p>If <code>hasOffset</code> is true the SQL select statement 
-   * that is returned must allow to set an offset as well as the 
-   * number of rows.</p>
-   * 
-   * @param sql        the select SQL statement
-   * @param hasOffset  true is an offset should be set
-   * @return           the modified SQL statement
-   * 
-   * @see Paging
-   * @see #limitParametersBeforeQueryParameters()
-   * @see #limitAddOffset()
-   * @see #limitOffsetFirst()
-   */
-  String getLimitString(String sql, boolean hasOffset);
+    /**
+     * Returns a modified SQL select statement that allows limiting
+     * the number of rows returned. This is used to implement paging.
+     *
+     * <p>If <code>hasOffset</code> is true the SQL select statement
+     * that is returned must allow to set an offset as well as the
+     * number of rows.</p>
+     *
+     * @param sql       the select SQL statement
+     * @param hasOffset true is an offset should be set
+     * @return the modified SQL statement
+     * @see Paging
+     * @see #limitParametersBeforeQueryParameters()
+     * @see #limitAddOffset()
+     * @see #limitOffsetFirst()
+     */
+    String getLimitString(String sql, boolean hasOffset);
 
-  /**
-   * Returns true is the parameters to set the maximum number of rows
-   * and optionally the offset are the first parameters in the 
-   * prepared select statement. This is used to implement paging.
-   * 
-   * @return  true if limitation parameters are before the query parameters
-   */
-  boolean limitParametersBeforeQueryParameters();
-  
-  /**
-   * Returns true if the offset needs to be added to maximum number of rows.
-   * This is used to implement paging.
-   * 
-   * @return true if offset and maximum number of rows need to added 
-   */
-  boolean limitAddOffset();
-  
-  /**
-   * Returns true if the offset parameter is in front of the maximum
-   * number of rows parameter.
-   * This is used to implement paging.
-   * 
-   * @return true if offset is set first
-   */
-  boolean limitOffsetFirst();
+    /**
+     * Returns true is the parameters to set the maximum number of rows
+     * and optionally the offset are the first parameters in the
+     * prepared select statement. This is used to implement paging.
+     *
+     * @return true if limitation parameters are before the query parameters
+     */
+    boolean limitParametersBeforeQueryParameters();
+
+    /**
+     * Returns true if the offset needs to be added to maximum number of rows.
+     * This is used to implement paging.
+     *
+     * @return true if offset and maximum number of rows need to added
+     */
+    boolean limitAddOffset();
+
+    /**
+     * Returns true if the offset parameter is in front of the maximum
+     * number of rows parameter.
+     * This is used to implement paging.
+     *
+     * @return true if offset is set first
+     */
+    boolean limitOffsetFirst();
 }

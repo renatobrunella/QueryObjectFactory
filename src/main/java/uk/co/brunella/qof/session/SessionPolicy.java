@@ -21,27 +21,27 @@ package uk.co.brunella.qof.session;
 /**
  * <code>SessionPolicy</code> defines if a <code>SessionRunner</code>
  * can join existing sessions or not.
- * 
- * @since 1.1.0 
+ *
+ * @since 1.1.0
  */
 public enum SessionPolicy {
-  
-  /**
-   * Forces the creation of a new session.
-   * Will fail if an open session already exists.
-   */
-  MUST_START_NEW_SESSION,
-  
-  
-  /**
-   * Forces joining an existing session.
-   * Will fail if no open session exists.
-   */
-  MUST_JOIN_EXISTING_SESSION,
-  
-  /**
-   * Can create a new session or join an existing one.
-   */
-  CAN_JOIN_EXISTING_SESSION
+
+    /**
+     * Forces the creation of a new session.
+     * Will fail if an open session already exists.
+     */
+    MUST_START_NEW_SESSION,
+
+
+    /**
+     * Forces joining an existing session.
+     * Will fail if no open session exists.
+     */
+    MUST_JOIN_EXISTING_SESSION,
+
+    /**
+     * Can create a new session or join an existing one.
+     */
+    CAN_JOIN_EXISTING_SESSION
 
 }

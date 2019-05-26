@@ -17,14 +17,6 @@ import java.util.Map;
 
 public class ClobAdapterTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select clob {clob%%} from test where clob = {clob%1}")
-        String select(String clob) throws SQLException;
-
-        @Call(sql = "{ {clob%%} = call proc({clob%1}) }")
-        String call(String clob) throws SQLException;
-    }
-
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
@@ -84,5 +76,13 @@ public class ClobAdapterTest extends TestCase {
 
     public void testClobReader() {
         assertNotNull(new ClobReader());
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select clob {clob%%} from test where clob = {clob%1}")
+        String select(String clob) throws SQLException;
+
+        @Call(sql = "{ {clob%%} = call proc({clob%1}) }")
+        String call(String clob) throws SQLException;
     }
 }

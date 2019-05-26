@@ -4,39 +4,7 @@ import junit.framework.TestCase;
 
 public class DelegatorFactoryTest extends TestCase {
 
-    public static class Person {
-        private String firstName;
-        private String lastName;
-
-        public String toString() {
-            return firstName + " " + lastName;
-        }
-    }
-
     public static boolean initializerCalled;
-
-    public static class PersonFactory {
-        public static void initialize(Person person, String firstName, String lastName) {
-            person.firstName = firstName;
-            person.lastName = lastName;
-            DelegatorFactoryTest.initializerCalled = true;
-        }
-    }
-
-    public static class PersonFactory2 {
-        public static void initialize(Person person, Integer id) {
-            if (id == 1) {
-                person.firstName = "John";
-                person.lastName = "Smith";
-            } else if (id == 2) {
-                person.firstName = "Peter";
-                person.lastName = "Smithers";
-            } else {
-                throw new RuntimeException("wrong id");
-            }
-            DelegatorFactoryTest.initializerCalled = true;
-        }
-    }
 
     public void testDelegatorFactory() {
         initializerCalled = false;
@@ -62,6 +30,38 @@ public class DelegatorFactoryTest extends TestCase {
             fail("exception expected");
         } catch (RuntimeException e) {
             assertEquals("wrong id", e.getMessage());
+        }
+    }
+
+    public static class Person {
+        private String firstName;
+        private String lastName;
+
+        public String toString() {
+            return firstName + " " + lastName;
+        }
+    }
+
+    public static class PersonFactory {
+        public static void initialize(Person person, String firstName, String lastName) {
+            person.firstName = firstName;
+            person.lastName = lastName;
+            DelegatorFactoryTest.initializerCalled = true;
+        }
+    }
+
+    public static class PersonFactory2 {
+        public static void initialize(Person person, Integer id) {
+            if (id == 1) {
+                person.firstName = "John";
+                person.lastName = "Smith";
+            } else if (id == 2) {
+                person.firstName = "Peter";
+                person.lastName = "Smithers";
+            } else {
+                throw new RuntimeException("wrong id");
+            }
+            DelegatorFactoryTest.initializerCalled = true;
         }
     }
 }

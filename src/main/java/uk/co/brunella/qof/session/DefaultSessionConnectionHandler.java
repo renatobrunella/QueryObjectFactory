@@ -24,7 +24,7 @@ import java.sql.SQLException;
 
 /**
  * This is the default session connection handler.
- * 
+ * <p>
  * It's default behaviour is to raise an exception if the connection returned
  * from the data source is null and to set auto commit to false.
  *
@@ -32,50 +32,49 @@ import java.sql.SQLException;
  */
 public class DefaultSessionConnectionHandler implements SessionConnectionHandler {
 
-  private boolean setAutoCommitToFalse;
+    private boolean setAutoCommitToFalse;
 
-  public DefaultSessionConnectionHandler(boolean setAutoCommitToFalse) {
-    this.setAutoCommitToFalse = setAutoCommitToFalse;
-  }
-  /**
-   * Returns a new connection from the data source and sets auto commit to false.
-   * 
-   * @param dataSource the data source
-   * @return a new connection
-   * @throws SystemException
-   *
-   * @since 1.0.0            
-   */
-  public Connection getConnection(DataSource dataSource) throws SystemException {
-    try {
-      Connection connection = dataSource.getConnection();
-      if (connection == null) {
-        throw new SQLException("DataSource returned null connection");
-      }
-      if (setAutoCommitToFalse) {
-        connection.setAutoCommit(false);
-      }
-      return connection;
-    } catch (SQLException e) {
-      throw new SystemException(e);
+    public DefaultSessionConnectionHandler(boolean setAutoCommitToFalse) {
+        this.setAutoCommitToFalse = setAutoCommitToFalse;
     }
-  }
 
-  /**
-   * Closes a connection.
-   * 
-   * @param connection the connection
-   * @throws SystemException
-   *
-   * @since 1.0.0            
-   */
-  public void closeConnection(Connection connection) throws SystemException {
-    try {
-      connection.close();
-    } catch (SQLException e) {
-      throw new SystemException(e);
+    /**
+     * Returns a new connection from the data source and sets auto commit to false.
+     *
+     * @param dataSource the data source
+     * @return a new connection
+     * @throws SystemException
+     * @since 1.0.0
+     */
+    public Connection getConnection(DataSource dataSource) throws SystemException {
+        try {
+            Connection connection = dataSource.getConnection();
+            if (connection == null) {
+                throw new SQLException("DataSource returned null connection");
+            }
+            if (setAutoCommitToFalse) {
+                connection.setAutoCommit(false);
+            }
+            return connection;
+        } catch (SQLException e) {
+            throw new SystemException(e);
+        }
     }
-    
-  }
+
+    /**
+     * Closes a connection.
+     *
+     * @param connection the connection
+     * @throws SystemException
+     * @since 1.0.0
+     */
+    public void closeConnection(Connection connection) throws SystemException {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new SystemException(e);
+        }
+
+    }
 
 }

@@ -24,35 +24,34 @@ import java.lang.annotation.*;
 
 /**
  * Defines an update method. Update methods normally use SQL update statements.
- * 
+ *
  * <p> <blockquote><pre>
  * &#64;Update(sql = "update person set name = {%2} where id = {%1}")
  * int updatePersonName(int id, String name);
  * </pre></blockquote>
- * 
- * <p> <code>{%1}</code> defines a parameter mapping to the primitive type parameter <code>id</code> 
+ *
+ * <p> <code>{%1}</code> defines a parameter mapping to the primitive type parameter <code>id</code>
  * <p> <code>{%2}</code> defines a parameter mapping to the <code>String</code> type parameter <code>name</code>
- * 
- *  If the return parameter of the update method is <code>int</code> or <code>int[]</code> for collections
- *  then the implementation of the method will return the update count for each SQL update statement.
- *  
+ * <p>
+ * If the return parameter of the update method is <code>int</code> or <code>int[]</code> for collections
+ * then the implementation of the method will return the update count for each SQL update statement.
+ *
  * <p> <blockquote><pre>
  * &#64;Update(sql = "update person set name = {%2} where id = {%1}")
  * int[] updatePersonNames(List&lt;Integer&gt; idList, List&lt;String&gt; nameList);
  * </pre></blockquote>
- *  
+ *
  * @see SqlParser
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Documented
 public @interface Update {
-  /**
-   * This is the SQL statement.
-   * 
-   * @return SQL statement
-   * 
-   * @see SqlParser
-   */
-  String sql();
+    /**
+     * This is the SQL statement.
+     *
+     * @return SQL statement
+     * @see SqlParser
+     */
+    String sql();
 }

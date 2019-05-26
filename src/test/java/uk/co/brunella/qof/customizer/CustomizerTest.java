@@ -18,55 +18,6 @@ import java.util.*;
 
 public class CustomizerTest extends TestCase {
 
-    public interface TestInterface1 extends BaseQuery {
-        @Query(sql = "select id {%%} from test")
-        List<Integer> selectList() throws SQLException;
-
-        @Query(sql = "select id {%%} from test")
-        Set<Integer> selectSet() throws SQLException;
-    }
-
-    @UseSessionContext(name = "TEST_CONTEXT")
-    public interface TestInterface2 extends BaseQuery {
-        @Query(sql = "select id {%%} from test")
-        List<Integer> selectList() throws SQLException;
-
-        @Query(sql = "select id {%%} from test")
-        Set<Integer> selectSet() throws SQLException;
-    }
-
-    @UseSessionContext()
-    public interface TestInterface3 extends BaseQuery {
-        @Query(sql = "select id {%%} from test")
-        List<Integer> selectList() throws SQLException;
-
-        @Query(sql = "select id {%%} from test")
-        Set<Integer> selectSet() throws SQLException;
-    }
-
-    public class TestCustomizer implements Customizer {
-
-        public String getClassName(Class<?> queryDefinitionClass) {
-            return queryDefinitionClass.getName() + "TEST";
-        }
-
-        public Type getListType() {
-            return Type.getType("Ljava/util/LinkedList;");
-        }
-
-        public Type getMapType() {
-            return Type.getType("Ljava/util/TreeMap;");
-        }
-
-        public Type getSetType() {
-            return Type.getType("Ljava/util/TreeSet;");
-        }
-
-        public ConnectionFactoryCustomizer getConnectionFactoryCustomizer(Class<?> queryDefinitionClass) {
-            return new DefaultCustomizer().getConnectionFactoryCustomizer(queryDefinitionClass);
-        }
-    }
-
     Connection connection;
     TestInterface1 testQueries1;
     TestInterface2 testQueries2;
@@ -144,15 +95,6 @@ public class CustomizerTest extends TestCase {
         }
     }
 
-    public abstract static class TestClassNoSetConnection implements BaseQuery {
-        @Query(sql = "select id {%%} from test")
-        public abstract List<Integer> selectList() throws SQLException;
-
-        public Connection getConnection() {
-            return null;
-        }
-    }
-
     public void testSetConnectionThrowsException() {
         // class only defines getConnection therefore set connection will throw exception
         TestClassNoSetConnection dao = QueryObjectFactory.createQueryObject(TestClassNoSetConnection.class);
@@ -161,19 +103,6 @@ public class CustomizerTest extends TestCase {
             fail("Should throw exception");
         } catch (RuntimeException e) {
             assertEquals("Connection cannot be set", e.getMessage());
-        }
-    }
-
-    public abstract static class TestClassWrongSignature {
-        @Query(sql = "select id {%%} from test")
-        public abstract List<Integer> selectList() throws SQLException;
-
-        public int setConnection(Connection connection) {
-            return 0;
-        }
-
-        public Connection getConnection() {
-            return null;
         }
     }
 
@@ -193,18 +122,6 @@ public class CustomizerTest extends TestCase {
 
     }
 
-    public abstract static class TestClassWrongSignature2 {
-        @Query(sql = "select id {%%} from test")
-        public abstract List<Integer> selectList() throws SQLException;
-
-        public void setConnection(Connection connection) {
-        }
-
-        public String getConnection() {
-            return null;
-        }
-    }
-
     public void testGetConnectionInvalidSignature() {
         TestClassWrongSignature2 dao = QueryObjectFactory.createQueryObject(TestClassWrongSignature2.class);
         try {
@@ -217,6 +134,89 @@ public class CustomizerTest extends TestCase {
             }
         } catch (Exception e) {
             fail("fail");
+        }
+    }
+
+    public interface TestInterface1 extends BaseQuery {
+        @Query(sql = "select id {%%} from test")
+        List<Integer> selectList() throws SQLException;
+
+        @Query(sql = "select id {%%} from test")
+        Set<Integer> selectSet() throws SQLException;
+    }
+
+    @UseSessionContext(name = "TEST_CONTEXT")
+    public interface TestInterface2 extends BaseQuery {
+        @Query(sql = "select id {%%} from test")
+        List<Integer> selectList() throws SQLException;
+
+        @Query(sql = "select id {%%} from test")
+        Set<Integer> selectSet() throws SQLException;
+    }
+
+    @UseSessionContext()
+    public interface TestInterface3 extends BaseQuery {
+        @Query(sql = "select id {%%} from test")
+        List<Integer> selectList() throws SQLException;
+
+        @Query(sql = "select id {%%} from test")
+        Set<Integer> selectSet() throws SQLException;
+    }
+
+    public abstract static class TestClassNoSetConnection implements BaseQuery {
+        @Query(sql = "select id {%%} from test")
+        public abstract List<Integer> selectList() throws SQLException;
+
+        public Connection getConnection() {
+            return null;
+        }
+    }
+
+    public abstract static class TestClassWrongSignature {
+        @Query(sql = "select id {%%} from test")
+        public abstract List<Integer> selectList() throws SQLException;
+
+        public int setConnection(Connection connection) {
+            return 0;
+        }
+
+        public Connection getConnection() {
+            return null;
+        }
+    }
+
+    public abstract static class TestClassWrongSignature2 {
+        @Query(sql = "select id {%%} from test")
+        public abstract List<Integer> selectList() throws SQLException;
+
+        public String getConnection() {
+            return null;
+        }
+
+        public void setConnection(Connection connection) {
+        }
+    }
+
+    public class TestCustomizer implements Customizer {
+
+        public String getClassName(Class<?> queryDefinitionClass) {
+            return queryDefinitionClass.getName() + "TEST";
+        }
+
+        public Type getListType() {
+            return Type.getType("Ljava/util/LinkedList;");
+        }
+
+        public Type getMapType() {
+            return Type.getType("Ljava/util/TreeMap;");
+        }
+
+        public Type getSetType() {
+            return Type.getType("Ljava/util/TreeSet;");
+        }
+
+        public ConnectionFactoryCustomizer getConnectionFactoryCustomizer(Class<?> queryDefinitionClass) {
+            return new DefaultCustomizer().getConnectionFactoryCustomizer(queryDefinitionClass);
         }
     }
 }

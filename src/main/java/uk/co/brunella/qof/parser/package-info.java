@@ -18,8 +18,8 @@
  */
 
 /**
- * Internal package.<!-- --> Provides classes for basic tokenization of SQL queries. 
- * 
+ * Internal package.<!-- --> Provides classes for basic tokenization of SQL queries.
+ *
  * @since 1.0.0
  */
 package uk.co.brunella.qof.parser;

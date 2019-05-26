@@ -4,15 +4,6 @@ import junit.framework.TestCase;
 
 public class ClassGenerationCacheTest extends TestCase {
 
-    private static class C1 {
-    }
-
-    private static class C2 {
-    }
-
-    private static class C3 {
-    }
-
     public void testCacheClass1() {
         ClassGenerationCache cache = new ClassGenerationCache();
         assertNotNull(cache);
@@ -55,5 +46,14 @@ public class ClassGenerationCacheTest extends TestCase {
         t.join();
         assertEquals(C3.class, clazz[0]);
         assertFalse(t.isAlive());
+    }
+
+    private static class C1 {
+    }
+
+    private static class C2 {
+    }
+
+    private static class C3 {
     }
 }

@@ -22,123 +22,130 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractNumberMapping extends AbstractBaseMapping implements Mapping, ParameterMapping,
-    ResultMapping {
+        ResultMapping {
 
-  public void accept(Mapper mapper, MappingVisitor visitor) {
-    visitor.visit(mapper, this);
-  }
-
-  public abstract void accept(Mapper mapper, NumberMappingVisitor visitor);
-
-  public static class ByteMapping extends AbstractNumberMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(Byte.TYPE);
-      types.add(Byte.class);
+    public void accept(Mapper mapper, MappingVisitor visitor) {
+        visitor.visit(mapper, this);
     }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
+    public abstract void accept(Mapper mapper, NumberMappingVisitor visitor);
+
+    public static class ByteMapping extends AbstractNumberMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+
+        static {
+            types.add(Byte.TYPE);
+            types.add(Byte.class);
+        }
+
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
+
+        public void accept(Mapper mapper, NumberMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
 
-    public void accept(Mapper mapper, NumberMappingVisitor visitor) {
-      visitor.visit(mapper, this);
-    }
-  }
+    public static class ShortMapping extends AbstractNumberMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
 
-  public static class ShortMapping extends AbstractNumberMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(Short.TYPE);
-      types.add(Short.class);
-    }
+        static {
+            types.add(Short.TYPE);
+            types.add(Short.class);
+        }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
-    }
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
 
-    public void accept(Mapper mapper, NumberMappingVisitor visitor) {
-      visitor.visit(mapper, this);
-    }
-  }
-
-  public static class IntegerMapping extends AbstractNumberMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(Integer.TYPE);
-      types.add(Integer.class);
+        public void accept(Mapper mapper, NumberMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
+    public static class IntegerMapping extends AbstractNumberMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+
+        static {
+            types.add(Integer.TYPE);
+            types.add(Integer.class);
+        }
+
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
+
+        public void accept(Mapper mapper, NumberMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
 
-    public void accept(Mapper mapper, NumberMappingVisitor visitor) {
-      visitor.visit(mapper, this);
-    }
-  }
+    public static class LongMapping extends AbstractNumberMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
 
-  public static class LongMapping extends AbstractNumberMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(Long.TYPE);
-      types.add(Long.class);
-    }
+        static {
+            types.add(Long.TYPE);
+            types.add(Long.class);
+        }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
-    }
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
 
-    public void accept(Mapper mapper, NumberMappingVisitor visitor) {
-      visitor.visit(mapper, this);
-    }
-  }
-
-  public static class FloatMapping extends AbstractNumberMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(Float.TYPE);
-      types.add(Float.class);
+        public void accept(Mapper mapper, NumberMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
+    public static class FloatMapping extends AbstractNumberMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+
+        static {
+            types.add(Float.TYPE);
+            types.add(Float.class);
+        }
+
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
+
+        public void accept(Mapper mapper, NumberMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
 
-    public void accept(Mapper mapper, NumberMappingVisitor visitor) {
-      visitor.visit(mapper, this);
-    }
-  }
+    public static class DoubleMapping extends AbstractNumberMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
 
-  public static class DoubleMapping extends AbstractNumberMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(Double.TYPE);
-      types.add(Double.class);
-    }
+        static {
+            types.add(Double.TYPE);
+            types.add(Double.class);
+        }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
-    }
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
 
-    public void accept(Mapper mapper, NumberMappingVisitor visitor) {
-      visitor.visit(mapper, this);
-    }
-  }
-
-  public static class BooleanMapping extends AbstractNumberMapping {
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
-    static {
-      types.add(Boolean.TYPE);
-      types.add(Boolean.class);
+        public void accept(Mapper mapper, NumberMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
 
-    public static Set<Class<?>> getTypes() {
-      return types;
-    }
+    public static class BooleanMapping extends AbstractNumberMapping {
+        private static final Set<Class<?>> types = new HashSet<Class<?>>();
 
-    public void accept(Mapper mapper, NumberMappingVisitor visitor) {
-      visitor.visit(mapper, this);
+        static {
+            types.add(Boolean.TYPE);
+            types.add(Boolean.class);
+        }
+
+        public static Set<Class<?>> getTypes() {
+            return types;
+        }
+
+        public void accept(Mapper mapper, NumberMappingVisitor visitor) {
+            visitor.visit(mapper, this);
+        }
     }
-  }
 }

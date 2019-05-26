@@ -24,41 +24,40 @@ import java.lang.annotation.*;
 
 /**
  * Defines a call method. Call methods are used to call SQL stored procedures.
- * 
+ *
  * <p> <blockquote><pre>
  * &#64;Call(sql = "{ %% = call numberOfPersons({%1}) }")
  * int numberOfPersons(String name);
  * </pre></blockquote>
- * 
- * <p> <code>{%%}</code> defines a result mapping to the primitive type <code>int</code> 
+ *
+ * <p> <code>{%%}</code> defines a result mapping to the primitive type <code>int</code>
  * <p> <code>{%1}</code> defines a parameter mapping to the <code>String</code> type parameter <code>name</code>
- * 
+ *
  * @see SqlParser
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Documented
 public @interface Call {
-  /**
-   * This is the SQL statement.
-   * 
-   * @return SQL statement
-   * 
-   * @see SqlParser
-   */
-  String sql();
-  
-  /**
-   * This is the class that has the static factory method.
-   * 
-   * @return the static factory class
-   */
-  Class<?> factoryClass() default Object.class;
-  
-  /**
-   * This is the name of the static factory method.
-   * 
-   * @return the static factory method name
-   */
-  String factoryMethod() default "";
+    /**
+     * This is the SQL statement.
+     *
+     * @return SQL statement
+     * @see SqlParser
+     */
+    String sql();
+
+    /**
+     * This is the class that has the static factory method.
+     *
+     * @return the static factory class
+     */
+    Class<?> factoryClass() default Object.class;
+
+    /**
+     * This is the name of the static factory method.
+     *
+     * @return the static factory method name
+     */
+    String factoryMethod() default "";
 }

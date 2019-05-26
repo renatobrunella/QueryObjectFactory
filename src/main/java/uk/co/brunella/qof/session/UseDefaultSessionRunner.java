@@ -23,10 +23,10 @@ import java.lang.annotation.*;
 /**
  * Methods annotated with <code>UseDefaultSessionRunner</code> are
  * are executed by the <code>DefaultSessionRunner</code>.
- * 
+ *
  * <p><blockquote><pre>
  * &#64;UseSessionContext(name = "PERSON_CONTEXT")
- * public interface PersonQuery implements BaseQuery { 
+ * public interface PersonQuery implements BaseQuery {
  *   &#64;Query(sql = "select id {%%.id}, name {%%.name} from person where id = {%1}")
  *   <b>&#64;UseDefaultSessionRunner</b>
  *   Person getPerson(int id) throws SQLException;
@@ -40,9 +40,9 @@ import java.lang.annotation.*;
  * Person person = dao.getPerson(1);
  * ...
  * </pre></blockquote></p>
- * 
+ * <p>
  * is equivalent to code without annotation like this:
- * 
+ *
  * <p><blockquote><pre>
  * ...
  * final int id = 1;
@@ -54,15 +54,14 @@ import java.lang.annotation.*;
  *   }, "PERSON_CONTEXT", SessionPolicy.CAN_JOIN_EXISTING_SESSION);
  * ...
  * </pre></blockquote></p>
- * 
+ * <p>
  * Query object classes that have methods annotated with <code>UseDefaultSessionRunner</code>
  * must be annotated with <code>UseSessionContext</code>.
- * 
+ * <p>
  * Session policy and transaction management type can be specified in the annotation.
- * 
+ *
  * @see UseSessionContext
  * @see DefaultSessionRunner
- * 
  * @since 1.1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -70,25 +69,23 @@ import java.lang.annotation.*;
 @Documented
 public @interface UseDefaultSessionRunner {
 
-  /**
-   * The session policy to be used by the <code>DefaultSessionRunner</code>.
-   * 
-   * The default is <code>CAN_JOIN_EXISTING_SESSION</code>.
-   * 
-   * @return session policy
-   * 
-   * @see SessionPolicy
-   */
-  SessionPolicy sessionPolicy() default SessionPolicy.CAN_JOIN_EXISTING_SESSION;
-  
-  /**
-   * The transaction management type to be used by the <code>DefaultSessionRunner</code>.
-   * 
-   * The default is <code>NONE</code>.
-   * 
-   * @return transaction management type
-   * 
-   * @see TransactionManagementType
-   */
-  TransactionManagementType transactionManagementType() default TransactionManagementType.NONE;
+    /**
+     * The session policy to be used by the <code>DefaultSessionRunner</code>.
+     * <p>
+     * The default is <code>CAN_JOIN_EXISTING_SESSION</code>.
+     *
+     * @return session policy
+     * @see SessionPolicy
+     */
+    SessionPolicy sessionPolicy() default SessionPolicy.CAN_JOIN_EXISTING_SESSION;
+
+    /**
+     * The transaction management type to be used by the <code>DefaultSessionRunner</code>.
+     * <p>
+     * The default is <code>NONE</code>.
+     *
+     * @return transaction management type
+     * @see TransactionManagementType
+     */
+    TransactionManagementType transactionManagementType() default TransactionManagementType.NONE;
 }

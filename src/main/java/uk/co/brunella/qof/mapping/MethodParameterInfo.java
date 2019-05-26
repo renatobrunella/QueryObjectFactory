@@ -20,9 +20,13 @@ package uk.co.brunella.qof.mapping;
 
 public interface MethodParameterInfo {
 
-  int getIndex();
-  Class<?> getType();
-  Class<?> getCollectionType();
-  Class<?> getCollectionElementType();
-  Class<?> getArrayElementType();
+    int getIndex();
+
+    Class<?> getType();
+
+    Class<?> getCollectionType();
+
+    Class<?> getCollectionElementType();
+
+    Class<?> getArrayElementType();
 }

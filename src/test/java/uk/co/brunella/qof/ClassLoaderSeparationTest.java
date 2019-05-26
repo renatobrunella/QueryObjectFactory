@@ -38,7 +38,7 @@ public class ClassLoaderSeparationTest extends TestCase {
 
         public interface Dao extends BaseQuery {
             @Query(sql = "select {" + ADAPTER_NAME + "%%} from test where s = {" + ADAPTER_NAME + "%1}")
-            public abstract String getSomething(String s) throws SQLException;
+            String getSomething(String s) throws SQLException;
         }
     }
 
@@ -50,7 +50,7 @@ public class ClassLoaderSeparationTest extends TestCase {
 
         public interface Dao extends BaseQuery {
             @Query(sql = "select {" + ADAPTER_NAME + "%%} from test where s = {" + ADAPTER_NAME + "%1}")
-            public abstract String getSomething(String s) throws SQLException;
+            String getSomething(String s) throws SQLException;
         }
     }
 

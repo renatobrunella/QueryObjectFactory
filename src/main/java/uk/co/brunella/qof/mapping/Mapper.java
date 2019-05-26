@@ -26,128 +26,128 @@ import java.util.List;
 
 public class Mapper {
 
-  private MethodInfo methodInfo;
-  private QueryType queryType;
-  private String sql;
-  private List<ParameterMapping> parameters;
-  private List<ResultMapping> results;
+    private MethodInfo methodInfo;
+    private QueryType queryType;
+    private String sql;
+    private List<ParameterMapping> parameters;
+    private List<ResultMapping> results;
 
-  public Mapper(MethodInfo methodInfo, QueryType type, String sql, List<ParameterMapping> parameters,
-      List<ResultMapping> results) {
-    this.methodInfo = methodInfo;
-    this.queryType = type;
-    this.sql = sql;
-    this.parameters = parameters;
-    this.results = results;
-  }
-
-  public MethodInfo getMethod() {
-    return methodInfo;
-  }
-
-  public String getSql() {
-    return sql;
-  }
-
-  public QueryType getQueryType() {
-    return queryType;
-  }
-
-  public List<ParameterMapping> getParameters() {
-    return parameters;
-  }
-
-  public List<ResultMapping> getResults() {
-    return results;
-  }
-
-  public int getNumberOfConstructorParameters() {
-    int num = 0;
-    for (ResultMapping mapping : results) {
-      if (mapping.getConstructorParameter() != null) {
-        num++;
-      }
+    public Mapper(MethodInfo methodInfo, QueryType type, String sql, List<ParameterMapping> parameters,
+                  List<ResultMapping> results) {
+        this.methodInfo = methodInfo;
+        this.queryType = type;
+        this.sql = sql;
+        this.parameters = parameters;
+        this.results = results;
     }
-    return num;
-  }
 
-  public Constructor<?> getConstructor() {
-    for (ResultMapping mapping : results) {
-      if (mapping.getConstructor() != null) {
-        return mapping.getConstructor();
-      }
+    public MethodInfo getMethod() {
+        return methodInfo;
     }
-    return null;
-  }
-  
-  public Method getStaticFactoryMethod() {
-    for (ResultMapping mapping : results) {
-      if (mapping.getStaticFactoryMethod() != null) {
-        return mapping.getStaticFactoryMethod();
-      }
-    }
-    return null;
-  }
 
-  public void acceptParameterMappers(MappingVisitor visitor) {
-    for (Mapping mapping : parameters) {
-      mapping.accept(this, visitor);
+    public String getSql() {
+        return sql;
     }
-  }
 
-  public void acceptResultMappers(MappingVisitor visitor) {
-    for (Mapping mapping : results) {
-      mapping.accept(this, visitor);
+    public QueryType getQueryType() {
+        return queryType;
     }
-  }
 
-  private void println(OutputStream out, String s) {
-    try {
-      out.write(s.getBytes());
-      out.write('\n');
-    } catch (IOException e) {
+    public List<ParameterMapping> getParameters() {
+        return parameters;
     }
-  }
 
-  public void printMappingInfo(OutputStream out) {
-    println(out, queryType.toString());
-    println(out, methodInfo.toString());
-    println(out, sql);
-    if (parameters != null) {
-      for (ParameterMapping mapping : parameters) {
-        println(out, mapping.parameterMappingInfo());
-      }
+    public List<ResultMapping> getResults() {
+        return results;
     }
-    if (results != null) {
-      for (ResultMapping mapping : results) {
-        println(out, mapping.resultMappingInfo());
-      }
-    }
-    println(out, "");
-  }
 
-  public int getMaxParameterSqlIndex() {
-    int maxIndex = 0;
-    if (parameters != null) {
-      for (ParameterMapping mapping : parameters) {
-        for (int index : mapping.getSqlIndexes()) {
-          if (index > maxIndex) {
-            maxIndex = index;
-          }
+    public int getNumberOfConstructorParameters() {
+        int num = 0;
+        for (ResultMapping mapping : results) {
+            if (mapping.getConstructorParameter() != null) {
+                num++;
+            }
         }
-      }
+        return num;
     }
-    return maxIndex;
-  }
 
-  public boolean usesArray() {
-    if (parameters != null) {
-      for (ParameterMapping mapping : parameters) {
-        if (mapping.usesArray()) {
-          return true;
+    public Constructor<?> getConstructor() {
+        for (ResultMapping mapping : results) {
+            if (mapping.getConstructor() != null) {
+                return mapping.getConstructor();
+            }
         }
-      }
+        return null;
     }
-    return false;
-  }
+
+    public Method getStaticFactoryMethod() {
+        for (ResultMapping mapping : results) {
+            if (mapping.getStaticFactoryMethod() != null) {
+                return mapping.getStaticFactoryMethod();
+            }
+        }
+        return null;
+    }
+
+    public void acceptParameterMappers(MappingVisitor visitor) {
+        for (Mapping mapping : parameters) {
+            mapping.accept(this, visitor);
+        }
+    }
+
+    public void acceptResultMappers(MappingVisitor visitor) {
+        for (Mapping mapping : results) {
+            mapping.accept(this, visitor);
+        }
+    }
+
+    private void println(OutputStream out, String s) {
+        try {
+            out.write(s.getBytes());
+            out.write('\n');
+        } catch (IOException e) {
+        }
+    }
+
+    public void printMappingInfo(OutputStream out) {
+        println(out, queryType.toString());
+        println(out, methodInfo.toString());
+        println(out, sql);
+        if (parameters != null) {
+            for (ParameterMapping mapping : parameters) {
+                println(out, mapping.parameterMappingInfo());
+            }
+        }
+        if (results != null) {
+            for (ResultMapping mapping : results) {
+                println(out, mapping.resultMappingInfo());
+            }
+        }
+        println(out, "");
+    }
+
+    public int getMaxParameterSqlIndex() {
+        int maxIndex = 0;
+        if (parameters != null) {
+            for (ParameterMapping mapping : parameters) {
+                for (int index : mapping.getSqlIndexes()) {
+                    if (index > maxIndex) {
+                        maxIndex = index;
+                    }
+                }
+            }
+        }
+        return maxIndex;
+    }
+
+    public boolean usesArray() {
+        if (parameters != null) {
+            for (ParameterMapping mapping : parameters) {
+                if (mapping.usesArray()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

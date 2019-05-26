@@ -13,33 +13,6 @@ import java.util.Map;
 
 public class UngetConnectionTest extends TestCase {
 
-    public static abstract class Queries implements BaseQuery {
-
-        @Query(sql = "select value {%%} from test where id1 = {%1})")
-        public abstract String selectString(String a) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1})")
-        public abstract List<String> selectStrings(String a) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        public abstract void insert(int i) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        public abstract void insert(List<Integer> ints) throws SQLException;
-
-        @Call(sql = "{ call func ({%1}) }")
-        public abstract void call(int a) throws SQLException;
-
-        @Call(sql = "{ call func ({%1}) }")
-        public abstract void call(List<Integer> ints) throws SQLException;
-
-        public boolean ungetConnectionCalled = false;
-
-        public void ungetConnection(Connection connection) {
-            ungetConnectionCalled = true;
-        }
-    }
-
     private Connection connection;
     private Queries queries;
 
@@ -100,5 +73,32 @@ public class UngetConnectionTest extends TestCase {
         ints.add(2);
         queries.call(ints);
         assertTrue(queries.ungetConnectionCalled);
+    }
+
+    public static abstract class Queries implements BaseQuery {
+
+        public boolean ungetConnectionCalled = false;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1})")
+        public abstract String selectString(String a) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1})")
+        public abstract List<String> selectStrings(String a) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        public abstract void insert(int i) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        public abstract void insert(List<Integer> ints) throws SQLException;
+
+        @Call(sql = "{ call func ({%1}) }")
+        public abstract void call(int a) throws SQLException;
+
+        @Call(sql = "{ call func ({%1}) }")
+        public abstract void call(List<Integer> ints) throws SQLException;
+
+        public void ungetConnection(Connection connection) {
+            ungetConnectionCalled = true;
+        }
     }
 }

@@ -55,7 +55,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         });
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -82,7 +81,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         });
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -109,7 +107,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         });
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -132,7 +129,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -159,7 +155,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -186,7 +181,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -209,7 +203,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, "CONTEXT");
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -236,7 +229,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, "CONTEXT");
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -263,7 +255,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, "CONTEXT");
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -286,7 +277,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, "CONTEXT", SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -313,7 +303,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, "CONTEXT", SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -340,7 +329,6 @@ public class DefaultSessionRunnerTest extends TestCase {
                 return null;
             }
 
-            ;
         }, "CONTEXT", SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -350,6 +338,10 @@ public class DefaultSessionRunnerTest extends TestCase {
 
     public static class DataSourceWrapper implements DataSource {
         DataSource dataSource;
+
+        public DataSourceWrapper(DataSource dataSource) {
+            this.dataSource = dataSource;
+        }
 
         public Connection getConnection() throws SQLException {
             Connection connection = dataSource.getConnection();
@@ -367,6 +359,10 @@ public class DefaultSessionRunnerTest extends TestCase {
             return dataSource.getLoginTimeout();
         }
 
+        public void setLoginTimeout(int seconds) throws SQLException {
+            dataSource.setLoginTimeout(seconds);
+        }
+
         public Logger getParentLogger() throws SQLFeatureNotSupportedException {
             return null;
         }
@@ -375,24 +371,16 @@ public class DefaultSessionRunnerTest extends TestCase {
             return dataSource.getLogWriter();
         }
 
-        public boolean isWrapperFor(Class<?> iface) throws SQLException {
-            return false;
-        }
-
-        public void setLoginTimeout(int seconds) throws SQLException {
-            dataSource.setLoginTimeout(seconds);
-        }
-
         public void setLogWriter(PrintWriter out) throws SQLException {
             dataSource.setLogWriter(out);
         }
 
-        public <T> T unwrap(Class<T> iface) throws SQLException {
-            return null;
+        public boolean isWrapperFor(Class<?> iface) throws SQLException {
+            return false;
         }
 
-        public DataSourceWrapper(DataSource dataSource) {
-            this.dataSource = dataSource;
+        public <T> T unwrap(Class<T> iface) throws SQLException {
+            return null;
         }
     }
 }

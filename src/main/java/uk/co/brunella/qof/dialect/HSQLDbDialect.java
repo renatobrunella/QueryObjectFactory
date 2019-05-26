@@ -23,20 +23,20 @@ package uk.co.brunella.qof.dialect;
  */
 public class HSQLDbDialect implements SQLDialect {
 
-  public String getLimitString(String sql, boolean hasOffset) {
-    return new StringBuffer(sql.length() + 10).append(sql).insert(sql.toLowerCase().indexOf("select") + 6,
-        hasOffset ? " limit ? ?" : " top ?").toString();
-  }
+    public String getLimitString(String sql, boolean hasOffset) {
+        return new StringBuffer(sql.length() + 10).append(sql).insert(sql.toLowerCase().indexOf("select") + 6,
+                hasOffset ? " limit ? ?" : " top ?").toString();
+    }
 
-  public boolean limitParametersBeforeQueryParameters() {
-    return true;
-  }
+    public boolean limitParametersBeforeQueryParameters() {
+        return true;
+    }
 
-  public boolean limitAddOffset() {
-    return false;
-  }
+    public boolean limitAddOffset() {
+        return false;
+    }
 
-  public boolean limitOffsetFirst() {
-    return true;
-  }
+    public boolean limitOffsetFirst() {
+        return true;
+    }
 }

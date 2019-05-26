@@ -19,91 +19,74 @@
 package uk.co.brunella.qof.session;
 
 /**
- * Defines the methods that allow an application to explicitly manage 
+ * Defines the methods that allow an application to explicitly manage
  * transaction boundaries.
- * 
- * <p>A <code>UserTransaction</code> can be retrieved from the session that 
+ *
+ * <p>A <code>UserTransaction</code> can be retrieved from the session that
  * is associated to the current thread from the session context:</p>
  *
  * <p><blockquote><pre>
  * UserTransaction trx = SessionContextFactory.getContext().getUserTransaction();
  * </pre></blockquote></p>
- * 
- * @since 1.0.0
- * 
+ *
  * @see SessionContext#getUserTransaction()
  * @see SessionContextFactory
+ * @since 1.0.0
  */
 public interface UserTransaction {
 
-  /**
-   * Create a new transaction and associate it with the current thread.
-   * 
-   * @throws SystemException
-   *             Thrown if the transaction manager encounters an unexpected
-   *             error condition.
-   * @throws IllegalStateException
-   *             Thrown if the transaction is already started
-   *
-   * @since 1.0.0            
-   */
-  void begin() throws SystemException;
+    /**
+     * Create a new transaction and associate it with the current thread.
+     *
+     * @throws SystemException       Thrown if the transaction manager encounters an unexpected
+     *                               error condition.
+     * @throws IllegalStateException Thrown if the transaction is already started
+     * @since 1.0.0
+     */
+    void begin() throws SystemException;
 
-  /**
-   * Complete the transaction associated with the current thread. When this
-   * method completes, the thread is no longer associated with a transaction.
-   * 
-   * @throws SystemException
-   *             Thrown if the transaction manager encounters an unexpected
-   *             error condition.
-   * @throws RollbackException
-   *             Thrown to indicate that the transaction has been rolled back
-   *             rather than committed.
-   * @throws IllegalStateException
-   *             Thrown if there the transaction was not started
-   *
-   * @since 1.0.0            
-   */
-  void commit() throws SystemException, RollbackException;
+    /**
+     * Complete the transaction associated with the current thread. When this
+     * method completes, the thread is no longer associated with a transaction.
+     *
+     * @throws SystemException       Thrown if the transaction manager encounters an unexpected
+     *                               error condition.
+     * @throws RollbackException     Thrown to indicate that the transaction has been rolled back
+     *                               rather than committed.
+     * @throws IllegalStateException Thrown if there the transaction was not started
+     * @since 1.0.0
+     */
+    void commit() throws SystemException, RollbackException;
 
-  /**
-   * Roll back the transaction associated with the current thread. When this
-   * method completes, the thread is no longer associated with a transaction.
-   * 
-   * @throws SystemException
-   *             Thrown if the transaction manager encounters an unexpected
-   *             error condition.
-   * @throws IllegalStateException
-   *             Thrown if there the transaction was not started
-   *
-   * @since 1.0.0            
-   */
-  void rollback() throws SystemException;
+    /**
+     * Roll back the transaction associated with the current thread. When this
+     * method completes, the thread is no longer associated with a transaction.
+     *
+     * @throws SystemException       Thrown if the transaction manager encounters an unexpected
+     *                               error condition.
+     * @throws IllegalStateException Thrown if there the transaction was not started
+     * @since 1.0.0
+     */
+    void rollback() throws SystemException;
 
-  /**
-   * Modify the transaction associated with the current thread such that the
-   * only possible outcome of the transaction is to roll back the transaction.
-   * 
-   * @throws SystemException
-   *             Thrown if the transaction manager encounters an unexpected
-   *             error condition.
-   * @throws IllegalStateException
-   *             Thrown if there the transaction was not started
-   *
-   * @since 1.0.0            
-   */
-  void setRollbackOnly() throws SystemException;
+    /**
+     * Modify the transaction associated with the current thread such that the
+     * only possible outcome of the transaction is to roll back the transaction.
+     *
+     * @throws SystemException       Thrown if the transaction manager encounters an unexpected
+     *                               error condition.
+     * @throws IllegalStateException Thrown if there the transaction was not started
+     * @since 1.0.0
+     */
+    void setRollbackOnly() throws SystemException;
 
-  /**
-   * Returns true if the only possible outcome of the transaction that is
-   * associated with the current thread is to roll back the transaction.
-   * 
-   * @return true if current transaction can only be rolled back
-   *
-   * @throws IllegalStateException
-   *             Thrown if there the transaction was not started
-   *
-   * @since 1.0.0            
-   */
-  boolean isRollbackOnly();
+    /**
+     * Returns true if the only possible outcome of the transaction that is
+     * associated with the current thread is to roll back the transaction.
+     *
+     * @return true if current transaction can only be rolled back
+     * @throws IllegalStateException Thrown if there the transaction was not started
+     * @since 1.0.0
+     */
+    boolean isRollbackOnly();
 }

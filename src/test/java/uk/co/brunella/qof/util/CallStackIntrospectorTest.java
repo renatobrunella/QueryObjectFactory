@@ -4,6 +4,15 @@ import junit.framework.TestCase;
 
 public class CallStackIntrospectorTest extends TestCase {
 
+    private static int findBaseLevel(Class<?>[] callStack) {
+        for (int i = callStack.length - 1; i >= 0; i--) {
+            if (callStack[i] == CallStackIntrospector.class) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void testGetCallStack() {
         Class<?>[] stack = CallStackIntrospector.getCallStack();
         int baseLevel = findBaseLevel(stack);
@@ -32,14 +41,5 @@ public class CallStackIntrospectorTest extends TestCase {
         public static Class<?> getCaller(int level) {
             return CallStackIntrospector.getCaller(level);
         }
-    }
-
-    private static int findBaseLevel(Class<?>[] callStack) {
-        for (int i = callStack.length - 1; i >= 0; i--) {
-            if (callStack[i] == CallStackIntrospector.class) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

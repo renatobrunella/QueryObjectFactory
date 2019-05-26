@@ -31,52 +31,52 @@ import static uk.co.brunella.qof.codegen.Constants.*;
 /**
  * Provides the implementation of a ConnectionFactoryCustomizer to use the
  * SessionContextFactory.
- * 
+ * <p>
  * This customizer implements <code>getConnection()</code> and
  * <code>setConnection()</code> methods. It delegates calls to
  * <code>getConnection()</code> to
  * <code>SessionContextFactory.getContext().getConnection()</code>. Calls to
  * <code>setConnection()</code> throws a RuntimeException.
- * 
+ * <p>
  * The <code>UseSessionContext</code> annotation indicates that this
  * customizer should be used and allows to specify a session context name.
- * 
+ *
  * @see SessionContextFactory
  * @see UseSessionContext
  */
 public class SessionContextConnectionFactoryCustomizer implements ConnectionFactoryCustomizer {
 
-  private static final Type TYPE_SessionContextFactory = Type.getType("Luk/co/brunella/qof/session/SessionContextFactory;");
-  private static final Type TYPE_SessionContext = Type.getType("Luk/co/brunella/qof/session/SessionContext;");
-  private static final Signature SIG_getContextWithName = new Signature("getContext", "(Ljava/lang/String;)Luk/co/brunella/qof/session/SessionContext;");
+    private static final Type TYPE_SessionContextFactory = Type.getType("Luk/co/brunella/qof/session/SessionContextFactory;");
+    private static final Type TYPE_SessionContext = Type.getType("Luk/co/brunella/qof/session/SessionContext;");
+    private static final Signature SIG_getContextWithName = new Signature("getContext", "(Ljava/lang/String;)Luk/co/brunella/qof/session/SessionContext;");
 
-  public void emitFields(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-    // no fields needed
-  }
-
-  public void emitGetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-    CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_getConnection, null);
-    if (queryDefinitionClass.isAnnotationPresent(UseSessionContext.class)) {
-      UseSessionContext sessionContextAnnotation = queryDefinitionClass.getAnnotation(UseSessionContext.class);
-      co.push(sessionContextAnnotation.name());
-      co.invoke_static(TYPE_SessionContextFactory, SIG_getContextWithName);
+    public void emitFields(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
+        // no fields needed
     }
-    co.invoke_interface(TYPE_SessionContext, SIG_getConnection);
-    co.return_value();
-    co.end_method();
-  }
-  
-  public void emitUngetConnection(Class<?>  queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-    // empty method
-    CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_ungetConnection, null);
-    co.return_value();
-    co.end_method();
-  }
 
-  public void emitSetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-    CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_setConnection, null);
-    co.throw_exception(TYPE_RuntimeException, "Connection cannot be set");
-    co.end_method();
-  }
+    public void emitGetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
+        CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_getConnection, null);
+        if (queryDefinitionClass.isAnnotationPresent(UseSessionContext.class)) {
+            UseSessionContext sessionContextAnnotation = queryDefinitionClass.getAnnotation(UseSessionContext.class);
+            co.push(sessionContextAnnotation.name());
+            co.invoke_static(TYPE_SessionContextFactory, SIG_getContextWithName);
+        }
+        co.invoke_interface(TYPE_SessionContext, SIG_getConnection);
+        co.return_value();
+        co.end_method();
+    }
+
+    public void emitUngetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
+        // empty method
+        CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_ungetConnection, null);
+        co.return_value();
+        co.end_method();
+    }
+
+    public void emitSetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
+        CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_setConnection, null);
+        co.throw_exception(TYPE_RuntimeException, "Connection cannot be set");
+        co.end_method();
+    }
 
 }

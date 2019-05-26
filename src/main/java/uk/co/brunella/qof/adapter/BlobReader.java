@@ -27,33 +27,33 @@ import java.sql.SQLException;
 
 /**
  * BlobReader is a helper class to read data from <code>Blob</code>s to a byte-array.
- * 
+ *
  * @see Blob
  */
 public class BlobReader {
 
-  /**
-   * Reads data from a blob.
-   * 
-   * @param blob           the blob
-   * @return               the blob data as string 
-   * @throws SQLException  an error occurred
-   * @see Blob
-   */
-  public static byte[] readBlob(Blob blob) throws SQLException {
-    InputStream bis = new BufferedInputStream(blob.getBinaryStream());
-    ByteArrayOutputStream os = new ByteArrayOutputStream();
-    try {
-      for (int n = bis.read(); n != -1; n = bis.read()) {
-        os.write(n);
-      }
-      bis.close();
-      byte[] bytes = os.toByteArray();
-      os.close();
-      return bytes;
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    /**
+     * Reads data from a blob.
+     *
+     * @param blob the blob
+     * @return the blob data as string
+     * @throws SQLException an error occurred
+     * @see Blob
+     */
+    public static byte[] readBlob(Blob blob) throws SQLException {
+        InputStream bis = new BufferedInputStream(blob.getBinaryStream());
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            for (int n = bis.read(); n != -1; n = bis.read()) {
+                os.write(n);
+            }
+            bis.close();
+            byte[] bytes = os.toByteArray();
+            os.close();
+            return bytes;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-  }
 
 }

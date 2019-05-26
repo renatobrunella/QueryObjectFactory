@@ -19,24 +19,23 @@
 package uk.co.brunella.qof.session;
 
 /**
- * The RollbackTransaction is thrown to indicate that the transaction has been 
- * rolled back rather than committed. 
+ * The RollbackTransaction is thrown to indicate that the transaction has been
+ * rolled back rather than committed.
  *
- * @since 1.0.0            
+ * @since 1.0.0
  */
 public class RollbackException extends Exception {
-	
-	private static final long serialVersionUID = -4793835791815735785L;
 
-	/**
-	 * Constructs a RollbackException object.
-	 *
-	 * @param message  the error message
-   *
-   * @since 1.0.0            
-	 */
-	public RollbackException(String message) {
-    super(message);
-	}
+    private static final long serialVersionUID = -4793835791815735785L;
+
+    /**
+     * Constructs a RollbackException object.
+     *
+     * @param message the error message
+     * @since 1.0.0
+     */
+    public RollbackException(String message) {
+        super(message);
+    }
 
 }

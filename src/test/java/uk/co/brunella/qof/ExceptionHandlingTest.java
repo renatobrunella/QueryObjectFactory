@@ -14,43 +14,6 @@ import java.util.Map;
 
 public class ExceptionHandlingTest extends TestCase {
 
-    public static abstract class Base implements BaseQuery {
-        boolean ungetConnectionFails = false;
-        boolean ungetConnectionCalled = false;
-
-        public void ungetConnection(Connection connection) {
-            ungetConnectionCalled = true;
-            if (ungetConnectionFails) {
-                throw new RuntimeException("Bang! ungetConnection failed");
-            }
-        }
-    }
-
-    public static abstract class Queries extends Base {
-        @Query(sql = "select value {%%} from test where id = {%1}")
-        public abstract String selectOne(String s) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id = {%1}")
-        public abstract List<String> selectMany(String s) throws SQLException;
-
-        @Call(sql = "{ {%%} = call func ({%1}) }")
-        public abstract String callOne(String a) throws SQLException;
-
-        @Call(sql = "{ call func ({%1}) }")
-        public abstract void callMany(List<String> list) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        public abstract void insertOne(String s1) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        public abstract void insertMany(List<String> list) throws SQLException;
-    }
-
-    public static abstract class QueriesPaging extends Base implements Paging {
-        @Query(sql = "select value {%%} from test where id = {%1}")
-        public abstract List<String> select(String s) throws SQLException;
-    }
-
     private Connection connection;
     private List<String> log;
 
@@ -301,7 +264,6 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
     }
-
 
     public void testPrepareStatementFailsInsertOne() throws SQLException {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
@@ -562,5 +524,42 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("addBatch()", log.get(i++));
         assertEquals("executeBatch()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public static abstract class Base implements BaseQuery {
+        boolean ungetConnectionFails = false;
+        boolean ungetConnectionCalled = false;
+
+        public void ungetConnection(Connection connection) {
+            ungetConnectionCalled = true;
+            if (ungetConnectionFails) {
+                throw new RuntimeException("Bang! ungetConnection failed");
+            }
+        }
+    }
+
+    public static abstract class Queries extends Base {
+        @Query(sql = "select value {%%} from test where id = {%1}")
+        public abstract String selectOne(String s) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id = {%1}")
+        public abstract List<String> selectMany(String s) throws SQLException;
+
+        @Call(sql = "{ {%%} = call func ({%1}) }")
+        public abstract String callOne(String a) throws SQLException;
+
+        @Call(sql = "{ call func ({%1}) }")
+        public abstract void callMany(List<String> list) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        public abstract void insertOne(String s1) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        public abstract void insertMany(List<String> list) throws SQLException;
+    }
+
+    public static abstract class QueriesPaging extends Base implements Paging {
+        @Query(sql = "select value {%%} from test where id = {%1}")
+        public abstract List<String> select(String s) throws SQLException;
     }
 }

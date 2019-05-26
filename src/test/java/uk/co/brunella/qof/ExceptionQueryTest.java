@@ -13,14 +13,6 @@ import java.util.Map;
 
 public class ExceptionQueryTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select value {%%} from test where id1 = {%1})")
-        int selectInt(int a) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where id1 = {%1})")
-        Integer selectInteger(int a) throws SQLException;
-    }
-
     Connection connection;
     SelectQueries selectQueries;
     List<String> log;
@@ -72,5 +64,13 @@ public class ExceptionQueryTest extends TestCase {
         } catch (SQLException e) {
             assertEquals("More than one result in result set", e.getMessage());
         }
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select value {%%} from test where id1 = {%1})")
+        int selectInt(int a) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1})")
+        Integer selectInteger(int a) throws SQLException;
     }
 }

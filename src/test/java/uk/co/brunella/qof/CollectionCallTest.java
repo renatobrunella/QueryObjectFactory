@@ -13,21 +13,6 @@ import java.util.TreeSet;
 
 public class CollectionCallTest extends TestCase {
 
-    public interface CallQueries extends BaseQuery {
-        @Call(sql = "{ call func ({%1}) }")
-        void callInts(List<Integer> list) throws SQLException;
-
-        @Call(sql = "{ call func ({%1}) }")
-        void callInts(Set<Integer> list) throws SQLException;
-
-        @Call(sql = "{ call func ({%1.id},{%1.name}) }")
-        void callBean(List<TestBean> bean) throws SQLException;
-
-        @Call(sql = "{ call func ({%1},{%2}) }")
-        void callTwo(List<Integer> listInt, List<String> listString)
-                throws SQLException;
-    }
-
     Connection connection;
     CallQueries callQueries;
     List<String> log;
@@ -176,5 +161,20 @@ public class CollectionCallTest extends TestCase {
         assertEquals("addBatch()", log.get(i++));
         assertEquals("executeBatch()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface CallQueries extends BaseQuery {
+        @Call(sql = "{ call func ({%1}) }")
+        void callInts(List<Integer> list) throws SQLException;
+
+        @Call(sql = "{ call func ({%1}) }")
+        void callInts(Set<Integer> list) throws SQLException;
+
+        @Call(sql = "{ call func ({%1.id},{%1.name}) }")
+        void callBean(List<TestBean> bean) throws SQLException;
+
+        @Call(sql = "{ call func ({%1},{%2}) }")
+        void callTwo(List<Integer> listInt, List<String> listString)
+                throws SQLException;
     }
 }

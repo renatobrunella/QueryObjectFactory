@@ -10,23 +10,6 @@ import java.util.*;
 
 public class CollectionQueryTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}")
-        List<TestBean> select(int id) throws SQLException;
-
-        @Query(sql = "select id {%%} from test")
-        Set<Integer> selectSet() throws SQLException;
-
-        @Query(sql = "select id {%%.id,%%*}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}")
-        Map<Integer, TestBean> selectMapInteger(int id) throws SQLException;
-
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name,%%*}, date {%%.date} from test where id = {%1}")
-        Map<String, TestBean> selectMapString(int id) throws SQLException;
-
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date,%%*} from test where id = {%1}")
-        Map<java.util.Date, TestBean> selectMapDate(int id) throws SQLException;
-    }
-
     Connection connection;
     SelectQueries selectQueries;
     List<String> log;
@@ -54,7 +37,7 @@ public class CollectionQueryTest extends TestCase {
         assertEquals(1, beanList.size());
         TestBean bean = beanList.get(0);
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new java.util.Date(0), bean.getDate());
 
@@ -116,12 +99,12 @@ public class CollectionQueryTest extends TestCase {
 
         TestBean bean = beanList.get(0);
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new java.util.Date(0), bean.getDate());
         bean = beanList.get(1);
         assertEquals(12, bean.getId());
-        assertEquals(23, ((Integer) bean.getNum()).intValue());
+        assertEquals(23, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertNull(bean.getDate());
 
@@ -147,7 +130,6 @@ public class CollectionQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
     }
-
 
     public void testSelectSet() throws SQLException {
         List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
@@ -195,7 +177,7 @@ public class CollectionQueryTest extends TestCase {
         assertEquals(1, beanMap.size());
         TestBean bean = beanMap.get(Integer.valueOf(11));
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new java.util.Date(0), bean.getDate());
 
@@ -239,12 +221,12 @@ public class CollectionQueryTest extends TestCase {
         assertEquals(2, beanMap.size());
         TestBean bean = beanMap.get(Integer.valueOf(11));
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new java.util.Date(0), bean.getDate());
         bean = beanMap.get(Integer.valueOf(12));
         assertEquals(12, bean.getId());
-        assertEquals(23, ((Integer) bean.getNum()).intValue());
+        assertEquals(23, bean.getNum().intValue());
         assertEquals("xyz", bean.getName());
         assertNull(bean.getDate());
 
@@ -296,12 +278,12 @@ public class CollectionQueryTest extends TestCase {
         assertEquals(2, beanMap.size());
         TestBean bean = beanMap.get("abc");
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new java.util.Date(0), bean.getDate());
         bean = beanMap.get("xyz");
         assertEquals(12, bean.getId());
-        assertEquals(23, ((Integer) bean.getNum()).intValue());
+        assertEquals(23, bean.getNum().intValue());
         assertEquals("xyz", bean.getName());
         assertNull(bean.getDate());
 
@@ -351,12 +333,12 @@ public class CollectionQueryTest extends TestCase {
         assertEquals(2, beanMap.size());
         TestBean bean = beanMap.get(new java.util.Date(0));
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new java.util.Date(0), bean.getDate());
         bean = beanMap.get(null);
         assertEquals(12, bean.getId());
-        assertEquals(23, ((Integer) bean.getNum()).intValue());
+        assertEquals(23, bean.getNum().intValue());
         assertEquals("xyz", bean.getName());
         assertNull(bean.getDate());
 
@@ -383,5 +365,22 @@ public class CollectionQueryTest extends TestCase {
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}")
+        List<TestBean> select(int id) throws SQLException;
+
+        @Query(sql = "select id {%%} from test")
+        Set<Integer> selectSet() throws SQLException;
+
+        @Query(sql = "select id {%%.id,%%*}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}")
+        Map<Integer, TestBean> selectMapInteger(int id) throws SQLException;
+
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name,%%*}, date {%%.date} from test where id = {%1}")
+        Map<String, TestBean> selectMapString(int id) throws SQLException;
+
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date,%%*} from test where id = {%1}")
+        Map<java.util.Date, TestBean> selectMapDate(int id) throws SQLException;
     }
 }

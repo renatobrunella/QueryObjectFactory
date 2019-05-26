@@ -15,6 +15,11 @@ import java.util.logging.Logger;
 
 public class DefaultSessionContextTest extends TestCase {
 
+    private Connection c1;
+    private Connection c2;
+    private SessionContext ctx;
+    private boolean passed;
+
     private DataSource createDataSource() {
         JDBCDataSource ds = new JDBCDataSource();
         ds.setDatabase("jdbc:hsqldb:mem:aname");
@@ -87,9 +92,6 @@ public class DefaultSessionContextTest extends TestCase {
             assertEquals("No data source defined for context My context", e.getMessage());
         }
     }
-
-    private Connection c1;
-    private Connection c2;
 
     public void testGetConnectionTwoThreads() throws SystemException {
         SessionContextFactory.setDataSource("testGetConnectionTwoThreads", createDataSource());
@@ -175,9 +177,6 @@ public class DefaultSessionContextTest extends TestCase {
         assertNotNull(c1);
         assertTrue("The two connection must be the same", c1 == c2);
     }
-
-    private SessionContext ctx;
-    private boolean passed;
 
     public void testReusingInvalidContext() throws SystemException {
         SessionContextFactory.setDataSource("testReusingInvalidContext", createDataSource());
@@ -408,7 +407,7 @@ public class DefaultSessionContextTest extends TestCase {
         }
 
         public Connection getConnection() throws SQLException {
-            return (Connection) connection;
+            return connection;
         }
 
         public Connection getConnection(String username, String password)
@@ -420,18 +419,18 @@ public class DefaultSessionContextTest extends TestCase {
             return null;
         }
 
+        public void setLogWriter(PrintWriter arg0) throws SQLException {
+        }
+
         public int getLoginTimeout() throws SQLException {
             return 0;
         }
 
+        public void setLoginTimeout(int arg0) throws SQLException {
+        }
+
         public Logger getParentLogger() throws SQLFeatureNotSupportedException {
             return null;
-        }
-
-        public void setLogWriter(PrintWriter arg0) throws SQLException {
-        }
-
-        public void setLoginTimeout(int arg0) throws SQLException {
         }
 
         @SuppressWarnings("unused")

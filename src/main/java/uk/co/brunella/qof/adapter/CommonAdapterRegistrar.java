@@ -23,18 +23,18 @@ package uk.co.brunella.qof.adapter;
  */
 public class CommonAdapterRegistrar {
 
-  /**
-   * Register common adapters.
-   * 
-   * @see BlobAdapter#register()
-   * @see ClobAdapter#register()
-   * @see EnumerationAdapter#register()
-   * @see BooleanAdapter#registerYesNo()
-   */
-  public static void registerCommonAdapters() {
-    BlobAdapter.register();
-    ClobAdapter.register();
-    EnumerationAdapter.register();
-    BooleanAdapter.registerYesNo();
-  }
+    /**
+     * Register common adapters.
+     *
+     * @see BlobAdapter#register()
+     * @see ClobAdapter#register()
+     * @see EnumerationAdapter#register()
+     * @see BooleanAdapter#registerYesNo()
+     */
+    public static void registerCommonAdapters() {
+        BlobAdapter.register();
+        ClobAdapter.register();
+        EnumerationAdapter.register();
+        BooleanAdapter.registerYesNo();
+    }
 }

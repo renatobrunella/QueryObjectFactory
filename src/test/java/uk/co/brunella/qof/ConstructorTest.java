@@ -6,6 +6,23 @@ import java.sql.Connection;
 
 public class ConstructorTest extends TestCase {
 
+    public void testConstructor() {
+        TestConstructorClass test = QueryObjectFactory.createQueryObject(TestConstructorClass.class, null, 99);
+        assertNotNull(test);
+        assertEquals(99, test.num);
+
+        test = QueryObjectFactory.createQueryObject(TestConstructorClass.class, new Object[]{null});
+        assertNotNull(test);
+        assertEquals(-1, test.num);
+
+        try {
+            QueryObjectFactory.createQueryObject(TestConstructorClass.class);
+            fail("RuntimeException expected");
+        } catch (RuntimeException e) {
+            assertNotNull(e);
+        }
+    }
+
     public static abstract class TestConstructorClass implements BaseQuery {
 
         protected Connection connection;
@@ -22,22 +39,5 @@ public class ConstructorTest extends TestCase {
 
         @Query(sql = "select id {%%} from test")
         protected abstract int select();
-    }
-
-    public void testConstructor() {
-        TestConstructorClass test = QueryObjectFactory.createQueryObject(TestConstructorClass.class, null, 99);
-        assertNotNull(test);
-        assertEquals(99, test.num);
-
-        test = QueryObjectFactory.createQueryObject(TestConstructorClass.class, new Object[]{null});
-        assertNotNull(test);
-        assertEquals(-1, test.num);
-
-        try {
-            QueryObjectFactory.createQueryObject(TestConstructorClass.class);
-            fail("RuntimeException expected");
-        } catch (RuntimeException e) {
-            assertNotNull(e);
-        }
     }
 }

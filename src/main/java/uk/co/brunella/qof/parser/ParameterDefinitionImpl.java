@@ -25,142 +25,142 @@ import java.util.Arrays;
  */
 public class ParameterDefinitionImpl implements ParameterDefinition {
 
-  private String[] names;
-  private String[] fields;
-  private int[] indexes;
-  private String type;
-  private int parameter;
-  private String partialDefinitionGroup;
-  private String parameterSeparator;
-  private int partialDefinitionPart;
-  private int startPosition;
-  private int endPosition;
+    private String[] names;
+    private String[] fields;
+    private int[] indexes;
+    private String type;
+    private int parameter;
+    private String partialDefinitionGroup;
+    private String parameterSeparator;
+    private int partialDefinitionPart;
+    private int startPosition;
+    private int endPosition;
 
-  public String[] getNames() {
-    return names;
-  }
-
-  public String[] getFields() {
-    return fields;
-  }
-
-  public int[] getIndexes() {
-    return indexes;
-  }
-
-  public int getParameter() {
-    return parameter;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setNames(String[] names) {
-    if (names == null || names.length == 0) {
-      this.names = null; //NOPMD
-    } else {
-      this.names = names;
+    public String[] getNames() {
+        return names;
     }
-  }
 
-  public void setFields(String[] fields) {
-    this.fields = fields;
-  }
-
-  public void setIndexes(int[] indexes) {
-    if (indexes == null || indexes.length == 0) {
-      this.indexes = null; //NOPMD
-    } else {
-      this.indexes = indexes;
+    public void setNames(String[] names) {
+        if (names == null || names.length == 0) {
+            this.names = null; //NOPMD
+        } else {
+            this.names = names;
+        }
     }
-  }
 
-  public void setParameter(int parameter) {
-    this.parameter = parameter;
-  }
-
-  public void setType(String type) {
-    if (type == null || "".equals(type)) {
-      this.type = "auto";
-    } else {
-      this.type = type;
+    public String[] getFields() {
+        return fields;
     }
-  }
 
-  private String getNamesString() {
-    if (names == null) {
-      return "";
+    public void setFields(String[] fields) {
+        this.fields = fields;
     }
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < names.length; i++) {
-      if (i > 0) {
-        sb.append(',');
-      }
-      sb.append('"').append(names[i]).append('"');
+
+    public int[] getIndexes() {
+        return indexes;
     }
-    return sb.toString();
-  }
 
-  private String getIndexesString() {
-    if (indexes == null) {
-      return "";
+    public void setIndexes(int[] indexes) {
+        if (indexes == null || indexes.length == 0) {
+            this.indexes = null; //NOPMD
+        } else {
+            this.indexes = indexes;
+        }
     }
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < indexes.length; i++) {
-      if (i > 0) {
-        sb.append(',');
-      }
-      sb.append(indexes[i]);
+
+    public int getParameter() {
+        return parameter;
     }
-    return sb.toString();
-  }
 
-  public String toString() {
-    return "Parameter: " + type + " " + parameter + " (" + getNamesString() + " " + getIndexesString() + ") " + Arrays.toString(fields);
-  }
+    public void setParameter(int parameter) {
+        this.parameter = parameter;
+    }
 
-  public String getPartialDefinitionGroup() {
-    return partialDefinitionGroup;
-  }
-  
-  public void setPartialDefinitionGroup(String partialDefinitionGroup) {
-    this.partialDefinitionGroup = partialDefinitionGroup;
-  }
-  
-  public String getParameterSeparator() {
-    return parameterSeparator;
-  }
+    public String getType() {
+        return type;
+    }
 
-  public void setParameterSeparator(String parameterSeparator) {
-    this.parameterSeparator = parameterSeparator;
-  }
-  
-  public int getPartialDefinitionPart() {
-    return partialDefinitionPart;
-  }
-  
-  public void setPartialDefinitionPart(int partialDefinitionPart) {
-    this.partialDefinitionPart = partialDefinitionPart;
-  }
+    public void setType(String type) {
+        if (type == null || "".equals(type)) {
+            this.type = "auto";
+        } else {
+            this.type = type;
+        }
+    }
 
-  public boolean isPartialDefinition() {
-    return partialDefinitionPart > 0;
-  }
+    private String getNamesString() {
+        if (names == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < names.length; i++) {
+            if (i > 0) {
+                sb.append(',');
+            }
+            sb.append('"').append(names[i]).append('"');
+        }
+        return sb.toString();
+    }
 
-  public int getStartPosition() {
-    return startPosition;
-  }
+    private String getIndexesString() {
+        if (indexes == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < indexes.length; i++) {
+            if (i > 0) {
+                sb.append(',');
+            }
+            sb.append(indexes[i]);
+        }
+        return sb.toString();
+    }
 
-  public void setStartPosition(int startPosition) {
-    this.startPosition = startPosition;
-  }
+    public String toString() {
+        return "Parameter: " + type + " " + parameter + " (" + getNamesString() + " " + getIndexesString() + ") " + Arrays.toString(fields);
+    }
 
-  public int getEndPosition() {
-    return endPosition;
-  }
+    public String getPartialDefinitionGroup() {
+        return partialDefinitionGroup;
+    }
 
-  public void setEndPosition(int endPosition) {
-    this.endPosition = endPosition;
-  }
+    public void setPartialDefinitionGroup(String partialDefinitionGroup) {
+        this.partialDefinitionGroup = partialDefinitionGroup;
+    }
+
+    public String getParameterSeparator() {
+        return parameterSeparator;
+    }
+
+    public void setParameterSeparator(String parameterSeparator) {
+        this.parameterSeparator = parameterSeparator;
+    }
+
+    public int getPartialDefinitionPart() {
+        return partialDefinitionPart;
+    }
+
+    public void setPartialDefinitionPart(int partialDefinitionPart) {
+        this.partialDefinitionPart = partialDefinitionPart;
+    }
+
+    public boolean isPartialDefinition() {
+        return partialDefinitionPart > 0;
+    }
+
+    public int getStartPosition() {
+        return startPosition;
+    }
+
+    public void setStartPosition(int startPosition) {
+        this.startPosition = startPosition;
+    }
+
+    public int getEndPosition() {
+        return endPosition;
+    }
+
+    public void setEndPosition(int endPosition) {
+        this.endPosition = endPosition;
+    }
 }

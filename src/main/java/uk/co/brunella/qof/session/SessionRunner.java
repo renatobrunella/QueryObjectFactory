@@ -21,31 +21,28 @@ package uk.co.brunella.qof.session;
 
 /**
  * The <code>SessionRunner</code> interface should be implemented for
- * code that runs in a session context. 
- * 
- * @param <T> the type of the result of the executed code. If no result is 
+ * code that runs in a session context.
+ *
+ * @param <T> the type of the result of the executed code. If no result is
  *            returned this type should be <code>Void</code>
- * 
  * @see DefaultSessionRunner
  * @see RetrySessionRunner
  * @see BaseSessionRunner
- * 
  * @since 1.0.0
  */
 public interface SessionRunner<T> {
 
-  /**
-   * A call to <code>execute</code> starts a new session and executes some code
-   * in a transactional context.
-   * 
-   * If an exception is thrown by the executed code the
-   * transaction is rolled back otherwise it is committed.
-   * 
-   * @param arguments arguments that are passed to the executed code
-   * @return the result of the executed code
-   * @throws SystemException thrown if an unexpected error occurred
-   * 
-   * @since 1.0.0
-   */
-  T execute(Object... arguments) throws SystemException;
+    /**
+     * A call to <code>execute</code> starts a new session and executes some code
+     * in a transactional context.
+     * <p>
+     * If an exception is thrown by the executed code the
+     * transaction is rolled back otherwise it is committed.
+     *
+     * @param arguments arguments that are passed to the executed code
+     * @return the result of the executed code
+     * @throws SystemException thrown if an unexpected error occurred
+     * @since 1.0.0
+     */
+    T execute(Object... arguments) throws SystemException;
 }

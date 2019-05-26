@@ -25,55 +25,56 @@ import java.lang.reflect.Constructor;
  */
 public final class ObjectInstantiator {
 
-  private ObjectInstantiator() { }
-  
-  /**
-   * Creates a new instance of <code>clazz</code> using the given parameters.
-   * If no constructor for the given parameters can be found in
-   * <code>clazz</code> an exception is thrown.
-   * 
-   * @param <T>      object type
-   * @param clazz    class type
-   * @param initArgs constructor arguments
-   * @return         an instance of clazz
-   * @throws RuntimeException instantiation failed
-   */
-  public static <T> T newInstance(Class<T> clazz, Object[] initArgs) {
-    if (initArgs == null || initArgs.length == 0) {
-      try {
-        return clazz.newInstance();
-      } catch (InstantiationException e) {
-        throw new RuntimeException(e);
-      } catch (IllegalAccessException e) {
-        throw new RuntimeException(e);
-      }
-    } else {
-      Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-      for (Constructor<?> constructor : constructors) {
-        Class<?>[] constructorParams = constructor.getParameterTypes();
-        if (constructorParams.length == initArgs.length) {
-          boolean match = true;
-          for (int i = 0; i < constructorParams.length && match; i++) {
-            if (initArgs[i] != null) {
-              Class<?> constructorParam = constructorParams[i];
-              Class<?> initArg = initArgs[i].getClass();
-              if (constructorParam.isPrimitive()) {
-                initArg = ReflectionUtils.unbox(initArg);
-              }
-              match = constructorParam.isAssignableFrom(initArg);
-            }
-          }
-          if (match) {
-            try {
-              @SuppressWarnings("unchecked") T newInstance = (T) constructor.newInstance(initArgs);
-              return newInstance;
-            } catch (Exception e) {
-              throw new RuntimeException(e);
-            }
-          }
-        }
-      }
+    private ObjectInstantiator() {
     }
-    throw new RuntimeException("Cannot find matching constructor");
-  }
+
+    /**
+     * Creates a new instance of <code>clazz</code> using the given parameters.
+     * If no constructor for the given parameters can be found in
+     * <code>clazz</code> an exception is thrown.
+     *
+     * @param <T>      object type
+     * @param clazz    class type
+     * @param initArgs constructor arguments
+     * @return an instance of clazz
+     * @throws RuntimeException instantiation failed
+     */
+    public static <T> T newInstance(Class<T> clazz, Object[] initArgs) {
+        if (initArgs == null || initArgs.length == 0) {
+            try {
+                return clazz.newInstance();
+            } catch (InstantiationException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+            for (Constructor<?> constructor : constructors) {
+                Class<?>[] constructorParams = constructor.getParameterTypes();
+                if (constructorParams.length == initArgs.length) {
+                    boolean match = true;
+                    for (int i = 0; i < constructorParams.length && match; i++) {
+                        if (initArgs[i] != null) {
+                            Class<?> constructorParam = constructorParams[i];
+                            Class<?> initArg = initArgs[i].getClass();
+                            if (constructorParam.isPrimitive()) {
+                                initArg = ReflectionUtils.unbox(initArg);
+                            }
+                            match = constructorParam.isAssignableFrom(initArg);
+                        }
+                    }
+                    if (match) {
+                        try {
+                            @SuppressWarnings("unchecked") T newInstance = (T) constructor.newInstance(initArgs);
+                            return newInstance;
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        }
+        throw new RuntimeException("Cannot find matching constructor");
+    }
 }

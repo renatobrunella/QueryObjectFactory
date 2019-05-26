@@ -14,24 +14,6 @@ import java.util.Map;
 
 public class PostGetConnectionTest extends TestCase {
 
-    public static abstract class SelectQueries implements BaseQuery {
-        @Query(sql = "select value {%%} from test where id1 = {%1})")
-        public abstract String selectString(String a) throws SQLException;
-
-        protected void postGetConnection(Connection connection) {
-            postGetConnectionCalled = connection;
-        }
-
-        public Connection postGetConnectionCalled;
-    }
-
-    public static abstract class SelectQueries2 extends SelectQueries {
-        @Query(sql = "select value {%%} from test where id1 = {%1})")
-        public abstract String selectString2(String a) throws SQLException;
-
-    }
-
-
     private Connection connection;
     private List<String> log;
 
@@ -39,7 +21,6 @@ public class PostGetConnectionTest extends TestCase {
         connection = MockConnectionFactory.getConnection();
         log = ((MockConnectionData) connection).getLog();
     }
-
 
     public void testSelectString() throws SQLException {
         SelectQueries selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
@@ -117,5 +98,22 @@ public class PostGetConnectionTest extends TestCase {
         assertEquals("close()", log.get(i++));
 
         assertEquals(connection, selectQueries.postGetConnectionCalled);
+    }
+
+    public static abstract class SelectQueries implements BaseQuery {
+        public Connection postGetConnectionCalled;
+
+        @Query(sql = "select value {%%} from test where id1 = {%1})")
+        public abstract String selectString(String a) throws SQLException;
+
+        protected void postGetConnection(Connection connection) {
+            postGetConnectionCalled = connection;
+        }
+    }
+
+    public static abstract class SelectQueries2 extends SelectQueries {
+        @Query(sql = "select value {%%} from test where id1 = {%1})")
+        public abstract String selectString2(String a) throws SQLException;
+
     }
 }

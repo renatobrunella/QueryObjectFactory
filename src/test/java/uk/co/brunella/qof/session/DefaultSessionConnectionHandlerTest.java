@@ -75,7 +75,7 @@ public class DefaultSessionConnectionHandlerTest extends TestCase {
         }
 
         public Connection getConnection() throws SQLException {
-            return (Connection) connection;
+            return connection;
         }
     }
 }

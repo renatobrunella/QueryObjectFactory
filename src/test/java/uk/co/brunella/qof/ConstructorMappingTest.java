@@ -20,51 +20,6 @@ public class ConstructorMappingTest extends TestCase {
         personQueries.setConnection(connection);
     }
 
-    public static class Person {
-        private int id;
-        private String firstName;
-        private String lastName;
-
-        public Person(int id) {
-            this.id = id;
-        }
-
-        public Person(int id, String firstName, String lastName) {
-            this.id = id;
-            this.firstName = firstName;
-            this.lastName = lastName;
-        }
-
-        public String toString() {
-            return id + " " + firstName + " " + lastName;
-        }
-    }
-
-    public interface PersonQueries extends BaseQuery {
-        @Query(sql = "select id {int%%1}, first_name {string%%2}, last_name {string%%3} from person where id = {%1}")
-        Person getPerson(int id);
-
-        @Query(sql = "select id {int%%1}, first_name {string%%2}, last_name {string%%3} from person")
-        List<Person> getPersons();
-
-        @Call(sql = "{ {int%%1} = call get_person( {%1} ) }")
-        Person getPersonCall(int id);
-
-        @Call(sql = "{ {char%%1} = call get_char( ) }")
-        Character getChar();
-
-        @Call(sql = "{ {date%%1} = call get_date( ) }")
-        MyDate getDate();
-    }
-
-    public static class MyDate extends Date {
-        private static final long serialVersionUID = 1L;
-
-        public MyDate(Date date) {
-            super(date.getTime());
-        }
-    }
-
     public void testSelect() {
         List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
         Map<String, Object> data = new HashMap<String, Object>();
@@ -128,5 +83,50 @@ public class ConstructorMappingTest extends TestCase {
         assertNotNull(date);
         assertEquals("Thu Jan 01 01:16:40 GMT 1970", date.toString());
         assertEquals("prepareCall({  ? = call get_date( )  })", log.get(0));
+    }
+
+    public interface PersonQueries extends BaseQuery {
+        @Query(sql = "select id {int%%1}, first_name {string%%2}, last_name {string%%3} from person where id = {%1}")
+        Person getPerson(int id);
+
+        @Query(sql = "select id {int%%1}, first_name {string%%2}, last_name {string%%3} from person")
+        List<Person> getPersons();
+
+        @Call(sql = "{ {int%%1} = call get_person( {%1} ) }")
+        Person getPersonCall(int id);
+
+        @Call(sql = "{ {char%%1} = call get_char( ) }")
+        Character getChar();
+
+        @Call(sql = "{ {date%%1} = call get_date( ) }")
+        MyDate getDate();
+    }
+
+    public static class Person {
+        private int id;
+        private String firstName;
+        private String lastName;
+
+        public Person(int id) {
+            this.id = id;
+        }
+
+        public Person(int id, String firstName, String lastName) {
+            this.id = id;
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        public String toString() {
+            return id + " " + firstName + " " + lastName;
+        }
+    }
+
+    public static class MyDate extends Date {
+        private static final long serialVersionUID = 1L;
+
+        public MyDate(Date date) {
+            super(date.getTime());
+        }
     }
 }

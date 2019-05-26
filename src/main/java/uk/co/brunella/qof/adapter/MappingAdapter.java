@@ -22,20 +22,19 @@ import java.util.Set;
 
 /**
  * Base interface for mapping adapters.
- * 
  */
 public interface MappingAdapter {
-  /**
-   * Returns the set of mappable Java types.
-   * 
-   * @return a set of mappable Java types
-   */
-  Set<Class<?>> getTypes();
+    /**
+     * Returns the set of mappable Java types.
+     *
+     * @return a set of mappable Java types
+     */
+    Set<Class<?>> getTypes();
 
-  /**
-   * Returns the number of mapped columns.
-   * 
-   * @return number of mapped columns
-   */
-  int getNumberOfColumns();
+    /**
+     * Returns the number of mapped columns.
+     *
+     * @return number of mapped columns
+     */
+    int getNumberOfColumns();
 }

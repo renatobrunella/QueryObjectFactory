@@ -19,7 +19,7 @@
 
 /**
  * Provides classes, interfaces for session and transaction handling.
- * 
+ *
  * @since 1.0.0
  */
 package uk.co.brunella.qof.session;

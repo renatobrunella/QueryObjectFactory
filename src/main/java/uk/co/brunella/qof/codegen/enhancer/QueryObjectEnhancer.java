@@ -20,8 +20,8 @@ package uk.co.brunella.qof.codegen.enhancer;
 
 public class QueryObjectEnhancer implements QueryObjectClassEnhancer {
 
-  public <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass) {
-    // TODO enhancer registry
-    return new SessionRunnerEnhancer().enhance(queryDefinitionClass, superClass);
-  }
+    public <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass) {
+        // TODO enhancer registry
+        return new SessionRunnerEnhancer().enhance(queryDefinitionClass, superClass);
+    }
 }

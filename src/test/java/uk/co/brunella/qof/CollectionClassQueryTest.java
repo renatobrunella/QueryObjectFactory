@@ -11,69 +11,6 @@ import java.util.*;
 
 public class CollectionClassQueryTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
-                collectionClass = LinkedList.class)
-        List<TestBean> select(int id) throws SQLException;
-
-        @Query(sql = "select id {%%} from test",
-                collectionClass = TreeSet.class)
-        Set<Integer> selectSet() throws SQLException;
-
-        @Query(sql = "select id {%%.id,%%*}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
-                collectionClass = TreeMap.class)
-        Map<Integer, TestBean> selectMapInteger(int id) throws SQLException;
-
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
-                collectionClass = TestableArrayList.class, collectionInitialCapacity = 100)
-        List<TestBean> selectList(int id) throws SQLException;
-    }
-
-    public interface SelectQueriesFailsNoCollectionReturned extends BaseQuery {
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
-                collectionClass = LinkedList.class)
-        TestBean select(int id) throws SQLException;
-    }
-
-    public interface SelectQueriesFailsNotAssignable extends BaseQuery {
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
-                collectionClass = TreeSet.class)
-        List<TestBean> select(int id) throws SQLException;
-    }
-
-    public interface SelectQueriesFailsIsInterface extends BaseQuery {
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
-                collectionClass = List.class)
-        List<TestBean> select(int id) throws SQLException;
-    }
-
-    public interface SelectQueriesFailsIsAbstract extends BaseQuery {
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
-                collectionClass = AbstractList.class)
-        List<TestBean> select(int id) throws SQLException;
-    }
-
-    public interface SelectQueriesFailsNoConstructorForInitialCapacity extends BaseQuery {
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
-                collectionClass = LinkedList.class, collectionInitialCapacity = 100)
-        List<TestBean> select(int id) throws SQLException;
-    }
-
-    @SuppressWarnings("serial")
-    public static class TestableArrayList<E> extends ArrayList<E> {
-
-        private int initialCapacity;
-
-        public TestableArrayList(int initialCapacity) {
-            super(initialCapacity);
-            this.initialCapacity = initialCapacity;
-        }
-
-        public int getInitialCapacity() {
-            return initialCapacity;
-        }
-    }
-
     Connection connection;
     SelectQueries selectQueries;
     List<String> log;
@@ -147,7 +84,7 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals(1, beanList.size());
         TestBean bean = beanList.get(0);
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new Date(0), bean.getDate());
 
@@ -210,12 +147,12 @@ public class CollectionClassQueryTest extends TestCase {
 
         TestBean bean = beanList.get(0);
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new Date(0), bean.getDate());
         bean = beanList.get(1);
         assertEquals(12, bean.getId());
-        assertEquals(23, ((Integer) bean.getNum()).intValue());
+        assertEquals(23, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertNull(bean.getDate());
 
@@ -241,7 +178,6 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
     }
-
 
     public void testSelectSet() throws SQLException {
         List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
@@ -290,7 +226,7 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals(1, beanMap.size());
         TestBean bean = beanMap.get(Integer.valueOf(11));
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new Date(0), bean.getDate());
 
@@ -334,12 +270,12 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals(2, beanMap.size());
         TestBean bean = beanMap.get(Integer.valueOf(11));
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new Date(0), bean.getDate());
         bean = beanMap.get(Integer.valueOf(12));
         assertEquals(12, bean.getId());
-        assertEquals(23, ((Integer) bean.getNum()).intValue());
+        assertEquals(23, bean.getNum().intValue());
         assertEquals("xyz", bean.getName());
         assertNull(bean.getDate());
 
@@ -388,7 +324,7 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals(1, beanList.size());
         TestBean bean = beanList.get(0);
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new Date(0), bean.getDate());
 
@@ -407,6 +343,70 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
+                collectionClass = LinkedList.class)
+        List<TestBean> select(int id) throws SQLException;
+
+        @Query(sql = "select id {%%} from test",
+                collectionClass = TreeSet.class)
+        Set<Integer> selectSet() throws SQLException;
+
+        @Query(sql = "select id {%%.id,%%*}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
+                collectionClass = TreeMap.class)
+        Map<Integer, TestBean> selectMapInteger(int id) throws SQLException;
+
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
+                collectionClass = TestableArrayList.class, collectionInitialCapacity = 100)
+        List<TestBean> selectList(int id) throws SQLException;
+    }
+
+    public interface SelectQueriesFailsNoCollectionReturned extends BaseQuery {
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
+                collectionClass = LinkedList.class)
+        TestBean select(int id) throws SQLException;
+    }
+
+    public interface SelectQueriesFailsNotAssignable extends BaseQuery {
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
+                collectionClass = TreeSet.class)
+        List<TestBean> select(int id) throws SQLException;
+    }
+
+
+    public interface SelectQueriesFailsIsInterface extends BaseQuery {
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
+                collectionClass = List.class)
+        List<TestBean> select(int id) throws SQLException;
+    }
+
+    public interface SelectQueriesFailsIsAbstract extends BaseQuery {
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
+                collectionClass = AbstractList.class)
+        List<TestBean> select(int id) throws SQLException;
+    }
+
+    public interface SelectQueriesFailsNoConstructorForInitialCapacity extends BaseQuery {
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1}",
+                collectionClass = LinkedList.class, collectionInitialCapacity = 100)
+        List<TestBean> select(int id) throws SQLException;
+    }
+
+    @SuppressWarnings("serial")
+    public static class TestableArrayList<E> extends ArrayList<E> {
+
+        private int initialCapacity;
+
+        public TestableArrayList(int initialCapacity) {
+            super(initialCapacity);
+            this.initialCapacity = initialCapacity;
+        }
+
+        public int getInitialCapacity() {
+            return initialCapacity;
+        }
     }
 
 }

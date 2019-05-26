@@ -26,67 +26,64 @@ import java.sql.SQLException;
 
 /**
  * Interface for dynamic custom mappers.
- * 
  */
 public interface DynamicMappingAdapter extends MappingAdapter {
 
-  /**
-   * Method to map the object <code>value</code> to a prepared statement.
-   * <code>indexes</code> defines the SQL index for the prepared statement to be used
-   * in functions such a <code>setInt(index, value)</code>. 
-   * 
-   * @param ps      prepared statement              
-   * @param value   value object
-   * @param indexes array of SQL indexes
-   * 
-   * @throws SQLException
-   */
-  void set(PreparedStatement ps, Object value, int[] indexes) throws SQLException;
+    /**
+     * Method to map the object <code>value</code> to a prepared statement.
+     * <code>indexes</code> defines the SQL index for the prepared statement to be used
+     * in functions such a <code>setInt(index, value)</code>.
+     *
+     * @param ps      prepared statement
+     * @param value   value object
+     * @param indexes array of SQL indexes
+     * @throws SQLException
+     */
+    void set(PreparedStatement ps, Object value, int[] indexes) throws SQLException;
 
-  /**
-   * Method to register an out parameter for a callable statement.
-   * 
-   * @param cs            callable statement
-   * @param indexes       array of SQL indexes
-   * 
-   * @throws SQLException
-   */
-  void registerOutputParameter(CallableStatement cs, int[] indexes) throws SQLException;
-  
-  /**
-   * Method to map the current record of a result set to the returned object.
-   * <code>indexes</code> defines the SQL indexes for the result set to be used
-   * in functions such a <code>getInt(index)</code>. 
-   * 
-   * @param rs      result set
-   * @param indexes array of SQL indexes
-   * @return        newly created object
-   * @throws SQLException
-   */
-  Object get(ResultSet rs, int[] indexes) throws SQLException;
+    /**
+     * Method to register an out parameter for a callable statement.
+     *
+     * @param cs      callable statement
+     * @param indexes array of SQL indexes
+     * @throws SQLException
+     */
+    void registerOutputParameter(CallableStatement cs, int[] indexes) throws SQLException;
 
-  /**
-   * Method to map the current record of a result set to the returned object.
-   * <code>columns</code> defines the SQL column name for the result set to be used
-   * in functions such a <code>getInt(name)</code>. 
-   * 
-   * @param rs      result set
-   * @param columns array of SQL column names
-   * @return        newly created object
-   * @throws SQLException
-   */
-  Object get(ResultSet rs, String[] columns) throws SQLException;
-  
-  /**
-   * Method to map the result of a callable statement to the returned object.
-   * <code>indexes</code> defines the SQL indexes for the result set to be used
-   * in functions such a <code>getInt(index)</code>. 
-   * 
-   * @param cs      callable statement
-   * @param indexes array of SQL indexes
-   * @return        newly created object
-   * @throws SQLException
-   */
-  Object get(CallableStatement cs, int[] indexes) throws SQLException;
+    /**
+     * Method to map the current record of a result set to the returned object.
+     * <code>indexes</code> defines the SQL indexes for the result set to be used
+     * in functions such a <code>getInt(index)</code>.
+     *
+     * @param rs      result set
+     * @param indexes array of SQL indexes
+     * @return newly created object
+     * @throws SQLException
+     */
+    Object get(ResultSet rs, int[] indexes) throws SQLException;
+
+    /**
+     * Method to map the current record of a result set to the returned object.
+     * <code>columns</code> defines the SQL column name for the result set to be used
+     * in functions such a <code>getInt(name)</code>.
+     *
+     * @param rs      result set
+     * @param columns array of SQL column names
+     * @return newly created object
+     * @throws SQLException
+     */
+    Object get(ResultSet rs, String[] columns) throws SQLException;
+
+    /**
+     * Method to map the result of a callable statement to the returned object.
+     * <code>indexes</code> defines the SQL indexes for the result set to be used
+     * in functions such a <code>getInt(index)</code>.
+     *
+     * @param cs      callable statement
+     * @param indexes array of SQL indexes
+     * @return newly created object
+     * @throws SQLException
+     */
+    Object get(CallableStatement cs, int[] indexes) throws SQLException;
 
 }

@@ -26,33 +26,33 @@ import java.sql.SQLException;
 
 /**
  * ClobReader is a helper class to read data from <code>Clob</code>s to a string.
- * 
+ *
  * @see Clob
  */
 public class ClobReader {
 
-  /**
-   * Reads data from a clob.
-   * 
-   * @param clob           the clob
-   * @return               the clob data as string 
-   * @throws SQLException  an error occurred
-   * @see Clob
-   */
-  public static String readClob(Clob clob) throws SQLException {
-    Reader reader = clob.getCharacterStream();
-    StringWriter writer = new StringWriter();
-    char[] buf = new char[256];
-    try {
-      for (int n = reader.read(buf); n != -1; n = reader.read(buf)) {
-        writer.write(buf, 0, n);
-      }
-      reader.close();
-      writer.close();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    /**
+     * Reads data from a clob.
+     *
+     * @param clob the clob
+     * @return the clob data as string
+     * @throws SQLException an error occurred
+     * @see Clob
+     */
+    public static String readClob(Clob clob) throws SQLException {
+        Reader reader = clob.getCharacterStream();
+        StringWriter writer = new StringWriter();
+        char[] buf = new char[256];
+        try {
+            for (int n = reader.read(buf); n != -1; n = reader.read(buf)) {
+                writer.write(buf, 0, n);
+            }
+            reader.close();
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return writer.toString();
     }
-    return writer.toString();
-  }
 
 }

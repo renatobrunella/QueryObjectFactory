@@ -17,143 +17,6 @@ import static uk.co.brunella.qof.codegen.Constants.*;
 
 public class InClauseTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select value {%%} from test where name in ({%1}) and x = {%2}")
-        List<String> selectStrings1(String[] names, String x) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where name in ({%1}) and category in ({%2}))")
-        List<String> selectStrings2(String[] names, String[] category) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where topic_id = {%1} and name in ({%2}) " +
-                "and x = {%3} and category in ({%4}) and y = {%5})")
-        List<String> selectStrings3(int topicId, String[] names, int x, String[] category, int y) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where x in ({%1}) and y in ({%2}) and z1 = {%3} and z2 = {%4}")
-        List<String> selectChar(char[] x, Character[] y, char z1, Character z2) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where x in ({%1}) and y in ({%2}) and z1 = {%3} and z2 = {%4}")
-        List<String> selectInteger(int[] x, Integer[] y, int z1, Integer z2) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where x in ({%1})")
-        List<String> selectDate(java.util.Date[] x) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where x in ({dyn%1}) and y = {dyn%2}")
-        List<String> selectDyn(String[] x, String y) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where x in ({gen%1}) and y = {gen%2}")
-        List<String> selectGen(String[] x, String y) throws SQLException;
-
-        @Query(sql = "select value {%%} from test where (x like {%1# or x like #}) and y = {gen%2}")
-        List<String> selectWithSeparator(String[] x, String y) throws SQLException;
-    }
-
-    public interface UpdateQueries extends BaseQuery {
-        @Update(sql = "update test set value = {%1} where id in ({%2})")
-        void update(String value, int[] ids) throws SQLException;
-
-        @Update(sql = "update test set value = {%1} where id in ({%2})")
-        void updateCollection(List<String> values, int[] ids) throws SQLException;
-    }
-
-    public interface DeleteQueries extends BaseQuery {
-        @Delete(sql = "delete from test where key in ({%1})")
-        void delete(String[] keys) throws SQLException;
-
-        @Delete(sql = "delete from test where id = {%1} key in ({%2})")
-        void deleteCollection(List<Integer> ids, String[] keys) throws SQLException;
-    }
-
-    public interface InsertQueries extends BaseQuery {
-        @Insert(sql = "insert into test values ({%1})")
-        void insert(String[] x) throws SQLException;
-    }
-
-    public interface CallQueries extends BaseQuery {
-        @Call(sql = "{ call test({%1}) }")
-        void call(String[] x) throws SQLException;
-    }
-
-    public static class InClauseDynamicMappingAdapter implements DynamicMappingAdapter {
-
-        public Object get(ResultSet rs, int[] indexes) throws SQLException {
-            return null;
-        }
-
-        public Object get(ResultSet rs, String[] columns) throws SQLException {
-            return null;
-        }
-
-        public Object get(CallableStatement cs, int[] indexes) throws SQLException {
-            return null;
-        }
-
-        public void set(PreparedStatement ps, Object value, int[] indexes) throws SQLException {
-            ps.setString(indexes[0], (String) value);
-        }
-
-        public void registerOutputParameter(CallableStatement cs, int[] indexes) throws SQLException {
-            cs.registerOutParameter(indexes[0], java.sql.Types.VARCHAR);
-        }
-
-        public int getNumberOfColumns() {
-            return 1;
-        }
-
-        public Set<Class<?>> getTypes() {
-            Set<Class<?>> set = new HashSet<Class<?>>();
-            set.add(String.class);
-            return set;
-        }
-
-        public int[] preferredSqlTypes() {
-            return new int[]{java.sql.Types.VARCHAR};
-        }
-    }
-
-
-    public static class InClauseGeneratorMappingAdapter implements GeneratorMappingAdapter {
-
-        public void generateFromResult(ResultMapping resultMapping, CodeEmitter co, Local resultSet, int[] indexes) {
-        }
-
-        public void generateFromResultSet(ResultMapping resultMapping, CodeEmitter co, Local resultSet, String[] columns) {
-        }
-
-        public void generateToPreparedStatement(ParameterMapping parameterMapping, CodeEmitter co, Local preparedStatement, int[] indexes, Local indexOffset) {
-            // value is on the stack
-            Local value = co.make_local(TYPE_String);
-            co.store_local(value);
-
-            co.load_local(preparedStatement);
-            co.push(indexes[0]);
-            if (indexOffset != null) {
-                co.load_local(indexOffset);
-                co.math(CodeEmitter.ADD, TYPE_int);
-            }
-            co.load_local(value);
-            co.invoke_interface(TYPE_PreparedStatement, SIG_setString);
-        }
-
-        public void generateRegisterOutputParameters(ResultMapping resultMapping, CodeEmitter co, Local callableStatement,
-                                                     int[] indexes) {
-            throw new RuntimeException("Not implemented");
-        }
-
-        public int getNumberOfColumns() {
-            return 1;
-        }
-
-        public Set<Class<?>> getTypes() {
-            Set<Class<?>> set = new HashSet<Class<?>>();
-            set.add(String.class);
-            return set;
-        }
-
-        public int[] preferredSqlTypes() {
-            return new int[]{java.sql.Types.VARCHAR};
-        }
-    }
-
     private Connection connection;
     private SelectQueries selectQueries;
     private UpdateQueries updateQueries;
@@ -518,6 +381,142 @@ public class InClauseTest extends TestCase {
             fail("Exception expected");
         } catch (RuntimeException e) {
             assertEquals("Array parameters are not allowed for call statements", e.getCause().getMessage());
+        }
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select value {%%} from test where name in ({%1}) and x = {%2}")
+        List<String> selectStrings1(String[] names, String x) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where name in ({%1}) and category in ({%2}))")
+        List<String> selectStrings2(String[] names, String[] category) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where topic_id = {%1} and name in ({%2}) " +
+                "and x = {%3} and category in ({%4}) and y = {%5})")
+        List<String> selectStrings3(int topicId, String[] names, int x, String[] category, int y) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where x in ({%1}) and y in ({%2}) and z1 = {%3} and z2 = {%4}")
+        List<String> selectChar(char[] x, Character[] y, char z1, Character z2) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where x in ({%1}) and y in ({%2}) and z1 = {%3} and z2 = {%4}")
+        List<String> selectInteger(int[] x, Integer[] y, int z1, Integer z2) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where x in ({%1})")
+        List<String> selectDate(java.util.Date[] x) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where x in ({dyn%1}) and y = {dyn%2}")
+        List<String> selectDyn(String[] x, String y) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where x in ({gen%1}) and y = {gen%2}")
+        List<String> selectGen(String[] x, String y) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where (x like {%1# or x like #}) and y = {gen%2}")
+        List<String> selectWithSeparator(String[] x, String y) throws SQLException;
+    }
+
+    public interface UpdateQueries extends BaseQuery {
+        @Update(sql = "update test set value = {%1} where id in ({%2})")
+        void update(String value, int[] ids) throws SQLException;
+
+        @Update(sql = "update test set value = {%1} where id in ({%2})")
+        void updateCollection(List<String> values, int[] ids) throws SQLException;
+    }
+
+    public interface DeleteQueries extends BaseQuery {
+        @Delete(sql = "delete from test where key in ({%1})")
+        void delete(String[] keys) throws SQLException;
+
+        @Delete(sql = "delete from test where id = {%1} key in ({%2})")
+        void deleteCollection(List<Integer> ids, String[] keys) throws SQLException;
+    }
+
+    public interface InsertQueries extends BaseQuery {
+        @Insert(sql = "insert into test values ({%1})")
+        void insert(String[] x) throws SQLException;
+    }
+
+    public interface CallQueries extends BaseQuery {
+        @Call(sql = "{ call test({%1}) }")
+        void call(String[] x) throws SQLException;
+    }
+
+    public static class InClauseDynamicMappingAdapter implements DynamicMappingAdapter {
+
+        public Object get(ResultSet rs, int[] indexes) throws SQLException {
+            return null;
+        }
+
+        public Object get(ResultSet rs, String[] columns) throws SQLException {
+            return null;
+        }
+
+        public Object get(CallableStatement cs, int[] indexes) throws SQLException {
+            return null;
+        }
+
+        public void set(PreparedStatement ps, Object value, int[] indexes) throws SQLException {
+            ps.setString(indexes[0], (String) value);
+        }
+
+        public void registerOutputParameter(CallableStatement cs, int[] indexes) throws SQLException {
+            cs.registerOutParameter(indexes[0], java.sql.Types.VARCHAR);
+        }
+
+        public int getNumberOfColumns() {
+            return 1;
+        }
+
+        public Set<Class<?>> getTypes() {
+            Set<Class<?>> set = new HashSet<Class<?>>();
+            set.add(String.class);
+            return set;
+        }
+
+        public int[] preferredSqlTypes() {
+            return new int[]{java.sql.Types.VARCHAR};
+        }
+    }
+
+    public static class InClauseGeneratorMappingAdapter implements GeneratorMappingAdapter {
+
+        public void generateFromResult(ResultMapping resultMapping, CodeEmitter co, Local resultSet, int[] indexes) {
+        }
+
+        public void generateFromResultSet(ResultMapping resultMapping, CodeEmitter co, Local resultSet, String[] columns) {
+        }
+
+        public void generateToPreparedStatement(ParameterMapping parameterMapping, CodeEmitter co, Local preparedStatement, int[] indexes, Local indexOffset) {
+            // value is on the stack
+            Local value = co.make_local(TYPE_String);
+            co.store_local(value);
+
+            co.load_local(preparedStatement);
+            co.push(indexes[0]);
+            if (indexOffset != null) {
+                co.load_local(indexOffset);
+                co.math(CodeEmitter.ADD, TYPE_int);
+            }
+            co.load_local(value);
+            co.invoke_interface(TYPE_PreparedStatement, SIG_setString);
+        }
+
+        public void generateRegisterOutputParameters(ResultMapping resultMapping, CodeEmitter co, Local callableStatement,
+                                                     int[] indexes) {
+            throw new RuntimeException("Not implemented");
+        }
+
+        public int getNumberOfColumns() {
+            return 1;
+        }
+
+        public Set<Class<?>> getTypes() {
+            Set<Class<?>> set = new HashSet<Class<?>>();
+            set.add(String.class);
+            return set;
+        }
+
+        public int[] preferredSqlTypes() {
+            return new int[]{java.sql.Types.VARCHAR};
         }
     }
 }

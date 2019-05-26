@@ -23,44 +23,44 @@ package uk.co.brunella.qof.dialect;
  */
 public class OracleDialect implements SQLDialect {
 
-  public String getLimitString(String sql, boolean hasOffset) {
-    sql = sql.trim();
-    boolean isForUpdate = false;
-    if (sql.toLowerCase().endsWith(" for update")) {
-      sql = sql.substring(0, sql.length() - 11);
-      isForUpdate = true;
+    public String getLimitString(String sql, boolean hasOffset) {
+        sql = sql.trim();
+        boolean isForUpdate = false;
+        if (sql.toLowerCase().endsWith(" for update")) {
+            sql = sql.substring(0, sql.length() - 11);
+            isForUpdate = true;
+        }
+
+        StringBuffer pagingSelect = new StringBuffer(sql.length() + 100);
+        if (hasOffset) {
+            pagingSelect.append("select * from ( select qof_row_.*, rownum qof_rownum_ from ( ");
+        } else {
+            pagingSelect.append("select * from ( ");
+        }
+        pagingSelect.append(sql);
+        if (hasOffset) {
+            pagingSelect.append(" ) qof_row_ where rownum <= ?) where qof_rownum_ > ?");
+        } else {
+            pagingSelect.append(" ) where rownum <= ?");
+        }
+
+        if (isForUpdate) {
+            pagingSelect.append(" for update");
+        }
+
+        return pagingSelect.toString();
     }
 
-    StringBuffer pagingSelect = new StringBuffer(sql.length() + 100);
-    if (hasOffset) {
-      pagingSelect.append("select * from ( select qof_row_.*, rownum qof_rownum_ from ( ");
-    } else {
-      pagingSelect.append("select * from ( ");
-    }
-    pagingSelect.append(sql);
-    if (hasOffset) {
-      pagingSelect.append(" ) qof_row_ where rownum <= ?) where qof_rownum_ > ?");
-    } else {
-      pagingSelect.append(" ) where rownum <= ?");
+    public boolean limitParametersBeforeQueryParameters() {
+        return false;
     }
 
-    if (isForUpdate) {
-      pagingSelect.append(" for update");
+    public boolean limitAddOffset() {
+        return true;
     }
 
-    return pagingSelect.toString();
-  }
-
-  public boolean limitParametersBeforeQueryParameters() {
-    return false;
-  }
-
-  public boolean limitAddOffset() {
-    return true;
-  }
-
-  public boolean limitOffsetFirst() {
-    return false;
-  }
+    public boolean limitOffsetFirst() {
+        return false;
+    }
 
 }

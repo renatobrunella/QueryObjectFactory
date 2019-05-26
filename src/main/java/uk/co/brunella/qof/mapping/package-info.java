@@ -19,7 +19,7 @@
 
 /**
  * Internal package.<!-- --> Provides classes for mappers of parameters and results.
- * 
+ *
  * @since 1.0.0
  */
 package uk.co.brunella.qof.mapping;

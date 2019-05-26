@@ -13,17 +13,6 @@ import java.util.Map;
 
 public class BeanQueryTest extends TestCase {
 
-    public interface SelectQueries extends BaseQuery {
-        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1})")
-        TestBean select(int id) throws SQLException;
-
-        @Query(sql = "select green {%%.green} from test where green = {%1.green}")
-        TestBean selectBoolean1(TestBean bean) throws SQLException;
-
-        @Query(sql = "select red {%%.red} from test where red = {%1.red}")
-        TestBean selectBoolean2(TestBean bean) throws SQLException;
-    }
-
     Connection connection;
     SelectQueries selectQueries;
     List<String> log;
@@ -49,7 +38,7 @@ public class BeanQueryTest extends TestCase {
         TestBean bean = selectQueries.select(11);
         assertNotNull(bean);
         assertEquals(11, bean.getId());
-        assertEquals(22, ((Integer) bean.getNum()).intValue());
+        assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new java.util.Date(0), bean.getDate());
 
@@ -174,6 +163,17 @@ public class BeanQueryTest extends TestCase {
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface SelectQueries extends BaseQuery {
+        @Query(sql = "select id {%%.id}, num {%%.num}, name {%%.name}, date {%%.date} from test where id = {%1})")
+        TestBean select(int id) throws SQLException;
+
+        @Query(sql = "select green {%%.green} from test where green = {%1.green}")
+        TestBean selectBoolean1(TestBean bean) throws SQLException;
+
+        @Query(sql = "select red {%%.red} from test where red = {%1.red}")
+        TestBean selectBoolean2(TestBean bean) throws SQLException;
     }
 
 }

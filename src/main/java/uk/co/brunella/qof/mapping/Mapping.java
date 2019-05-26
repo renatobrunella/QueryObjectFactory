@@ -20,30 +20,30 @@ package uk.co.brunella.qof.mapping;
 
 /**
  * Base interface for type mappings.
- * 
+ *
  * @see ParameterMapping
  * @see ResultMapping
  */
 public interface Mapping {
-  /**
-   * Implements visitor pattern.
-   * 
-   * @param mapper  the query defintion mapper
-   * @param visitor a mapping visitor
-   */
-  void accept(Mapper mapper, MappingVisitor visitor);
+    /**
+     * Implements visitor pattern.
+     *
+     * @param mapper  the query defintion mapper
+     * @param visitor a mapping visitor
+     */
+    void accept(Mapper mapper, MappingVisitor visitor);
 
-  /**
-   * Return info for parameter mapping.
-   * 
-   * @return info
-   */
-  String parameterMappingInfo();
+    /**
+     * Return info for parameter mapping.
+     *
+     * @return info
+     */
+    String parameterMappingInfo();
 
-  /**
-   * Return info for result mapping.
-   * 
-   * @return info
-   */
-  String resultMappingInfo();
+    /**
+     * Return info for result mapping.
+     *
+     * @return info
+     */
+    String resultMappingInfo();
 }

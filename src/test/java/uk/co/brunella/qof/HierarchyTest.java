@@ -7,15 +7,15 @@ import java.util.List;
 
 public class HierarchyTest extends TestCase {
 
+    public void testQuery() {
+        QueryObject dao = QueryObjectFactory.createQueryObject(QueryObject.class);
+        assertNotNull(dao);
+    }
+
     public interface QueryObject extends BaseQuery {
 
         @Query(sql = "select property {%%.property}, property2 {%%.property2} from test")
         List<Sub> find() throws SQLException;
-    }
-
-    public void testQuery() {
-        QueryObject dao = QueryObjectFactory.createQueryObject(QueryObject.class);
-        assertNotNull(dao);
     }
 
     public static class Super {

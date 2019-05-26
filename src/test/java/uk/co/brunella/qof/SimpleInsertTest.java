@@ -10,47 +10,6 @@ import java.util.List;
 
 public class SimpleInsertTest extends TestCase {
 
-    public interface InsertQueries extends BaseQuery {
-        @Insert(sql = "insert into test values ({%1},{%2})")
-        void insertByte(byte b1, Byte b2) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1},{%2})")
-        void insertShort(short s1, Short s2) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1},{%2})")
-        void insertInt(int i1, Integer i2) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1},{%2})")
-        void insertLong(long l1, Long l2) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1},{%2})")
-        void insertFloat(float f1, Float f2) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1},{%2})")
-        void insertDouble(double d1, Double d2) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        void insertString(String s1) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1},{%2})")
-        void insertChar(char c1, Character c2) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        void insertDate0(java.util.Date d) throws SQLException;
-
-        @Insert(sql = "insert into test values ({date%1})")
-        void insertDate1(java.util.Date d) throws SQLException;
-
-        @Insert(sql = "insert into test values ({time%1})")
-        void insertDate2(java.util.Date d) throws SQLException;
-
-        @Insert(sql = "insert into test values ({timestamp%1})")
-        void insertDate3(java.util.Date d) throws SQLException;
-
-        @Insert(sql = "insert into test values ({%1})")
-        int insertIntReturnUpdateCount(int i1) throws SQLException;
-    }
-
     Connection connection;
     InsertQueries insertQueries;
     List<String> log;
@@ -101,8 +60,8 @@ public class SimpleInsertTest extends TestCase {
     }
 
     public void testInsertInt() throws SQLException {
-        insertQueries.insertInt((int) 11, new Integer((int) 22));
-        insertQueries.insertInt((int) 33, null);
+        insertQueries.insertInt(11, new Integer(22));
+        insertQueries.insertInt(33, null);
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(insert into test values ( ? , ? ) )", log
@@ -158,8 +117,8 @@ public class SimpleInsertTest extends TestCase {
     }
 
     public void testInsertDouble() throws SQLException {
-        insertQueries.insertDouble((double) 11.1, new Double((double) 22.2));
-        insertQueries.insertDouble((double) 33.3, null);
+        insertQueries.insertDouble(11.1, new Double(22.2));
+        insertQueries.insertDouble(33.3, null);
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(insert into test values ( ? , ? ) )", log
@@ -290,5 +249,46 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("setInt(1,10)", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
+    }
+
+    public interface InsertQueries extends BaseQuery {
+        @Insert(sql = "insert into test values ({%1},{%2})")
+        void insertByte(byte b1, Byte b2) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1},{%2})")
+        void insertShort(short s1, Short s2) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1},{%2})")
+        void insertInt(int i1, Integer i2) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1},{%2})")
+        void insertLong(long l1, Long l2) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1},{%2})")
+        void insertFloat(float f1, Float f2) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1},{%2})")
+        void insertDouble(double d1, Double d2) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        void insertString(String s1) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1},{%2})")
+        void insertChar(char c1, Character c2) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        void insertDate0(java.util.Date d) throws SQLException;
+
+        @Insert(sql = "insert into test values ({date%1})")
+        void insertDate1(java.util.Date d) throws SQLException;
+
+        @Insert(sql = "insert into test values ({time%1})")
+        void insertDate2(java.util.Date d) throws SQLException;
+
+        @Insert(sql = "insert into test values ({timestamp%1})")
+        void insertDate3(java.util.Date d) throws SQLException;
+
+        @Insert(sql = "insert into test values ({%1})")
+        int insertIntReturnUpdateCount(int i1) throws SQLException;
     }
 }
