@@ -5,8 +5,34 @@
     <artifactId>qof</artifactId>
     <packaging>jar</packaging>
     <version>1.0.2-SNAPSHOT</version>
+
     <name>qof</name>
-    <url>https://github.com/renatobrunella/QueryObjectFactory</url>
+    <description>QueryObjectFactory (QOF) is a lightweight runtime JDBC byte-code generator providing support for CRUD (create, retrieve, update and delete) operations and stored procedure calls. It uses Java annotations to define mappings</description>
+        <url>https://github.com/renatobrunella/QueryObjectFactory</url>
+
+    <organization>
+        <url>https://github.com/renatobrunella</url>
+        <name>Brunella</name>
+    </organization>
+
+    <inceptionYear>2007</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>LGPL Version 3 (the "License")</name>
+            <url>https://opensource.org/licenses/lgpl-3.0.html</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Renato Brunella</name>
+            <email>qof@brunella.co.uk</email>
+            <organization>Brunella</organization>
+            <organizationUrl>https://github.com/renatobrunella</organizationUrl>
+            <timezone>UTC+01:00</timezone>
+        </developer>
+    </developers>
 
     <dependencies>
 
@@ -155,6 +181,9 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <keyname>${gpg.keyname}</keyname>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
