@@ -13,7 +13,7 @@ public class RetrySessionRunnerTest extends TestCase {
 
     private DataSource createDataSource() {
         JDBCDataSource ds = new JDBCDataSource();
-        ds.setDatabase("jdbc:hsqldb:mem:aname");
+        ds.setDatabase("jdbc:hsqldb:mem:retrySessionRunnerTest");
         ds.setUser("sa");
         ds.setPassword("");
         return ds;
@@ -29,8 +29,10 @@ public class RetrySessionRunnerTest extends TestCase {
         } finally {
             stmt.close();
         }
+        SessionContextFactory.removeContext();
+        SessionContextFactory.removeContext("RetrySessionRunnerTest");
         SessionContextFactory.setDataSource(createDataSource());
-        SessionContextFactory.setDataSource("TEST", createDataSource());
+        SessionContextFactory.setDataSource("RetrySessionRunnerTest", createDataSource());
     }
 
     public void tearDown() throws SQLException {
@@ -113,7 +115,7 @@ public class RetrySessionRunnerTest extends TestCase {
                 return null;
             }
 
-        }, "TEST", 1).execute();
+        }, "RetrySessionRunnerTest", 1).execute();
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
         assertTrue(rs.next());
@@ -189,7 +191,7 @@ public class RetrySessionRunnerTest extends TestCase {
                 return null;
             }
 
-        }, "TEST", 1, 100).execute();
+        }, "RetrySessionRunnerTest", 1, 100).execute();
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
         assertTrue(rs.next());

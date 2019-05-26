@@ -13,7 +13,7 @@ public class DefaultSessionRunnerTest extends TestCase {
 
     private DataSource createDataSource() {
         JDBCDataSource ds = new JDBCDataSource();
-        ds.setDatabase("jdbc:hsqldb:mem:aname");
+        ds.setDatabase("jdbc:hsqldb:mem:defaultSessionRunnerTest");
         ds.setUser("sa");
         ds.setPassword("");
         return new DataSourceWrapper(ds);
