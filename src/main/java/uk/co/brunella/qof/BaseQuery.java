@@ -67,7 +67,7 @@ public interface BaseQuery {
      * <p> If the query definition class or interface defines the static field <code>DEFAULT_FETCH_SIZE</code>
      * then batch size will <code>QueryObjectGenerator.DEFAULT_FETCH_SIZE</code>
      *
-     * <p> <blockquote><pre>
+     * <blockquote><pre>
      *    public static final int DEFAULT_FETCH_SIZE = 100;
      * </pre></blockquote>
      *
@@ -93,7 +93,7 @@ public interface BaseQuery {
      * <p> If the query definition class or interface defines the static field <code>DEFAULT_BATCH_SIZE</code>
      * then batch size will <code>QueryObjectGenerator.DEFAULT_BATCH_SIZE</code>
      *
-     * <p> <blockquote><pre>
+     * <blockquote><pre>
      *    public static final int DEFAULT_BATCH_SIZE = 100;
      * </pre></blockquote>
      *

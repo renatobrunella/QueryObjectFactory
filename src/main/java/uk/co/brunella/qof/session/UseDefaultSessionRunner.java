@@ -24,26 +24,26 @@ import java.lang.annotation.*;
  * Methods annotated with <code>UseDefaultSessionRunner</code> are
  * are executed by the <code>DefaultSessionRunner</code>.
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * &#64;UseSessionContext(name = "PERSON_CONTEXT")
  * public interface PersonQuery implements BaseQuery {
  *   &#64;Query(sql = "select id {%%.id}, name {%%.name} from person where id = {%1}")
  *   <b>&#64;UseDefaultSessionRunner</b>
  *   Person getPerson(int id) throws SQLException;
  * }
- * </pre></blockquote></p>
+ * </pre></blockquote>
  * Method <code>getPerson()</code> is annotated with <code>&#64;UseDefaultSessionRunner</code>.
  * The code
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * ...
  * PersonQuery dao = QueryObjectFactory.createQueryObject(PersonQuery.class);
  * Person person = dao.getPerson(1);
  * ...
- * </pre></blockquote></p>
+ * </pre></blockquote>
  * <p>
  * is equivalent to code without annotation like this:
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * ...
  * final int id = 1;
  * Person person = DefaultSessionRunner.execute(new TransactionRunnable&lt;Person&gt;() {
@@ -53,7 +53,7 @@ import java.lang.annotation.*;
  *     }
  *   }, "PERSON_CONTEXT", SessionPolicy.CAN_JOIN_EXISTING_SESSION);
  * ...
- * </pre></blockquote></p>
+ * </pre></blockquote>
  * <p>
  * Query object classes that have methods annotated with <code>UseDefaultSessionRunner</code>
  * must be annotated with <code>UseSessionContext</code>.

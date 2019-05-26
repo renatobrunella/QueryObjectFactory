@@ -37,7 +37,7 @@ public interface DynamicMappingAdapter extends MappingAdapter {
      * @param ps      prepared statement
      * @param value   value object
      * @param indexes array of SQL indexes
-     * @throws SQLException
+     * @throws SQLException if prepared statement throws
      */
     void set(PreparedStatement ps, Object value, int[] indexes) throws SQLException;
 
@@ -46,7 +46,7 @@ public interface DynamicMappingAdapter extends MappingAdapter {
      *
      * @param cs      callable statement
      * @param indexes array of SQL indexes
-     * @throws SQLException
+     * @throws SQLException if prepared statement throws
      */
     void registerOutputParameter(CallableStatement cs, int[] indexes) throws SQLException;
 
@@ -58,7 +58,7 @@ public interface DynamicMappingAdapter extends MappingAdapter {
      * @param rs      result set
      * @param indexes array of SQL indexes
      * @return newly created object
-     * @throws SQLException
+     * @throws SQLException if prepared statement throws
      */
     Object get(ResultSet rs, int[] indexes) throws SQLException;
 
@@ -70,7 +70,7 @@ public interface DynamicMappingAdapter extends MappingAdapter {
      * @param rs      result set
      * @param columns array of SQL column names
      * @return newly created object
-     * @throws SQLException
+     * @throws SQLException if prepared statement throws
      */
     Object get(ResultSet rs, String[] columns) throws SQLException;
 
@@ -82,7 +82,7 @@ public interface DynamicMappingAdapter extends MappingAdapter {
      * @param cs      callable statement
      * @param indexes array of SQL indexes
      * @return newly created object
-     * @throws SQLException
+     * @throws SQLException if prepared statement throws
      */
     Object get(CallableStatement cs, int[] indexes) throws SQLException;
 

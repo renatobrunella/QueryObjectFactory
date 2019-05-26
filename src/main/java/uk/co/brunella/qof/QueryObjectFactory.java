@@ -50,7 +50,7 @@ import java.util.Map;
  * with annotations to specify the SQL query and mappings to primitive types or
  * Java beans.</p>
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  *     public class Person {
  *         int id;
  *         String name;
@@ -74,7 +74,7 @@ import java.util.Map;
  *     PersonQueries personQueries = <b>QueryObjectFactory.createQueryObject(PersonQueries.class);</b>
  *     personQueries.setConnection(connection);
  *     Person person = personQueries.getPerson(123);
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * <p> Generated query object classes implement <code>BaseQuery</code> to set the
  * connection etc.</p>
@@ -98,7 +98,7 @@ public class QueryObjectFactory {
     protected static final Customizer DEFAULT_CUSTOMIZER = new DefaultCustomizer();
     protected static final SQLDialect DEFAULT_SQL_DIALECT = new DefaultDialect();
     protected static final Map<ClassLoader, Customizer> customizerMap = new HashMap<ClassLoader, Customizer>();
-  protected static final Map<ClassLoader, SQLDialect> sqlDialectMap = new HashMap<ClassLoader, SQLDialect>();
+    protected static final Map<ClassLoader, SQLDialect> sqlDialectMap = new HashMap<ClassLoader, SQLDialect>();
 
     static {
         CommonAdapterRegistrar.registerCommonAdapters();
@@ -119,6 +119,7 @@ public class QueryObjectFactory {
      * <p>If the query definition is an interface then the superclass will be <code>Object</code>.
      *
      * @param queryDefinitionClass query definition class or interface
+     * @param <T>                  Query definition class type
      * @return an instance that implements the abstract definitions defined in <code>queryDefinitionClass</code>
      * @see QueryObjectFactory#createQueryObject(Class, Object...)
      * @see QueryObjectFactory#createQueryObjectFromSuperClass(Class, Class)
@@ -144,6 +145,7 @@ public class QueryObjectFactory {
      *
      * @param queryDefinitionClass query definition class
      * @param parameters           parameters to be used in the constructor
+     * @param <T>                  Query definition class type
      * @return an instance that implements the abstract definitions defined in <code>queryDefinitionClass</code>
      * @see QueryObjectFactory#createQueryObject(Class)
      * @see QueryObjectFactory#createQueryObjectFromSuperClass(Class, Class)
@@ -170,6 +172,8 @@ public class QueryObjectFactory {
      *
      * @param queryDefinitionClass query definition interface
      * @param superClass           the class the query object class will inherit from
+     * @param <T>                  Query definition class type
+     * @param <S>                  Query definition superclass type
      * @return an instance that implements the abstract definitions defined in <code>queryDefinitionClass</code>
      * @see QueryObjectFactory#createQueryObject(Class)
      * @see QueryObjectFactory#createQueryObject(Class, Object...)
@@ -198,6 +202,8 @@ public class QueryObjectFactory {
      * @param queryDefinitionClass query definition interface
      * @param superClass           the class the query object class will inherit from
      * @param parameters           parameters to be used in the constructor
+     * @param <T>                  Query definition class type
+     * @param <S>                  Query definition superclass type
      * @return an instance that implements the abstract definitions defined in <code>queryDefinitionClass</code>
      * @see QueryObjectFactory#createQueryObject(Class)
      * @see QueryObjectFactory#createQueryObject(Class, Object...)

@@ -95,6 +95,7 @@ public class MethodInfoFactory {
         private MethodParameterInfo[] collectionParameterInfos;
         private MethodReturnInfo returnInfo;
         private String description;
+
         public MethodInfoImpl(Signature signature, int modifiers, MethodParameterInfo[] parameterInfos,
                               MethodParameterInfo[] collectionParameterInfos, MethodReturnInfo returnInfo, String description) {
             super();

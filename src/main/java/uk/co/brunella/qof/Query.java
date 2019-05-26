@@ -25,7 +25,7 @@ import java.lang.annotation.*;
 /**
  * Defines a query method. Query methods normally use SQL select statements.
  *
- * <p> <blockquote><pre>
+ * <blockquote><pre>
  * &#64;Query(sql = "select id {int%%1}, name {%%.name} from person where id = {%1}")
  * Person getPerson(int id);
  *

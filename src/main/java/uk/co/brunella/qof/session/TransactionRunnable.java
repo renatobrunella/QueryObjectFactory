@@ -27,7 +27,7 @@ import java.sql.SQLException;
  *
  * <p>Typical usage is like this:</p>
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * TransactionRunnable&lt;Void&gt; runnable = new TransactionRunnable&lt;Void&gt;() {
  * 	 public Void run(Connection connection, Object... arguments) throws SQLException {
  *     List&lt;Person&gt; personList = (List&lt;Person&gt;)arguments[0];
@@ -36,7 +36,7 @@ import java.sql.SQLException;
  *     return null;
  *   }
  * };
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * @param <T> the type of the result of a call to run. If no result is
  *            returned this type should be <code>Void</code>

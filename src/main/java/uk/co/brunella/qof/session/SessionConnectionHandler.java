@@ -43,7 +43,7 @@ public interface SessionConnectionHandler {
      *
      * @param dataSource the data source
      * @return a new connection
-     * @throws SystemException
+     * @throws SystemException if data source does throw SQLException
      * @since 1.0.0
      */
     Connection getConnection(DataSource dataSource) throws SystemException;
@@ -52,7 +52,7 @@ public interface SessionConnectionHandler {
      * Closes a connection.
      *
      * @param connection the connection
-     * @throws SystemException
+     * @throws SystemException if data source does throw SQLException
      * @since 1.0.0
      */
     void closeConnection(Connection connection) throws SystemException;

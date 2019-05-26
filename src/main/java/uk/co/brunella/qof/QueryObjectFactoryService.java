@@ -54,6 +54,7 @@ public interface QueryObjectFactoryService {
      * <p>If the query definition is an interface then the superclass will be <code>Object</code>.
      *
      * @param queryDefinitionClass query definition class or interface
+     * @param <T>                  Query definition class type
      * @return an instance that implements the abstract definitions defined in <code>queryDefinitionClass</code>
      * @see QueryObjectFactory#createQueryObject(Class, Object...)
      * @see QueryObjectFactory#createQueryObjectFromSuperClass(Class, Class)
@@ -77,6 +78,7 @@ public interface QueryObjectFactoryService {
      *
      * @param queryDefinitionClass query definition class
      * @param parameters           parameters to be used in the constructor
+     * @param <T>                  Query definition class type
      * @return an instance that implements the abstract definitions defined in <code>queryDefinitionClass</code>
      * @see QueryObjectFactory#createQueryObject(Class)
      * @see QueryObjectFactory#createQueryObjectFromSuperClass(Class, Class)
@@ -97,6 +99,8 @@ public interface QueryObjectFactoryService {
      *
      * @param queryDefinitionClass query definition interface
      * @param superClass           the class the query object class will inherit from
+     * @param <T>                  Query definition class type
+     * @param <S>                  Query definition superclass type
      * @return an instance that implements the abstract definitions defined in <code>queryDefinitionClass</code>
      * @see QueryObjectFactory#createQueryObject(Class)
      * @see QueryObjectFactory#createQueryObject(Class, Object...)
@@ -123,6 +127,8 @@ public interface QueryObjectFactoryService {
      * @param queryDefinitionClass query definition interface
      * @param superClass           the class the query object class will inherit from
      * @param parameters           parameters to be used in the constructor
+     * @param <T>                  Query definition class type
+     * @param <S>                  Query definition superclass type
      * @return an instance that implements the abstract definitions defined in <code>queryDefinitionClass</code>
      * @see QueryObjectFactory#createQueryObject(Class)
      * @see QueryObjectFactory#createQueryObject(Class, Object...)

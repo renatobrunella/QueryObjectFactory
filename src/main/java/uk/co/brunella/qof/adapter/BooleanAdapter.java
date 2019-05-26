@@ -38,13 +38,13 @@ import java.util.Set;
  * <p>It maps <code>VARCHAR</code> columns to <code>boolean</code> and <code>Boolean</code> and vice versa.</p>
  *
  * <p>Examples:</p>
- * <pre><blockquote>
+ * <pre>
  *   (1) BooleanAdapter.register("yesno", "Y", "N", false, true);
  *
  *   (2) BooleanAdapter.register("true-false", "true", "false", true, false);
  *
  *   (3) BooleanAdapter.register("bigX", "X", null, true, true);
- * </blockquote></pre>
+ * </pre>
  *
  * <p>(1) Maps boolean types to "Y" and "N", is not case-sensitive ("y" is true as well)
  * and allows null values (a SQL null value gets mapped to <code>false</code> if the

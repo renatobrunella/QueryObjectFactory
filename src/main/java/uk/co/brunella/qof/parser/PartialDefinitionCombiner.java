@@ -37,7 +37,7 @@ public class PartialDefinitionCombiner {
      * @param definitionList a list of <code>Definition</code> objects. May contain partial definitions
      *                       that will be combined
      * @return a list of containing full definitions
-     * @throws sq.qof.exception.ValidationException if duplicate partial definitions are found
+     * @throws uk.co.brunella.qof.exception.ValidationException if duplicate partial definitions are found
      */
     public static List<? extends Definition> combine(List<? extends Definition> definitionList) {
         List<Definition> partialDefinitions = new ArrayList<Definition>();

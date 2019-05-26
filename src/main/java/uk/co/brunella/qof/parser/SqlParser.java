@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * name in brackets is required at the end of the definition <code>[group]</code>.
  *
  * <p> Examples:
- * <p> <blockquote><pre>
+ * <blockquote><pre>
  * select id {int %%.id,%%*}, name {string %%.name} from person where id = {int %1}
  *
  * insert into person (id, name) values ({%1}, {%2})
@@ -101,7 +101,6 @@ public class SqlParser {
      *
      * @param sql                 a SQL statement
      * @param isCallableStatement true if the SQL statement is a store procedure call
-     * @throws SqlParserException
      */
     public SqlParser(String sql, boolean isCallableStatement) {
         parameterDefs = new ArrayList<ParameterDefinition>();

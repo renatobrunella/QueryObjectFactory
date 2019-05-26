@@ -32,7 +32,7 @@ import java.sql.Connection;
  *
  * <p>A <code>SessionContext</code> can be used in the following way:</p>
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * // get the default session context
  * SessionContext ctx = SessionContextFactory.getContext();
  *
@@ -53,7 +53,7 @@ import java.sql.Connection;
  *
  * // stop the session
  * ctx.stopSession();
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * @see SessionContextFactory
  * @see UserTransaction

@@ -25,7 +25,7 @@ import java.lang.annotation.*;
 /**
  * Defines a delete method. Delete methods normally use SQL delete statements.
  *
- * <p> <blockquote><pre>
+ * <blockquote><pre>
  * &#64;Delete(sql = "delete from person where id = {%1}")
  * void deletePerson(int id);
  * </pre></blockquote>
@@ -35,7 +35,7 @@ import java.lang.annotation.*;
  * <p> If the return parameter of the delete method is <code>int</code> or <code>int[]</code> for collections
  * then the implementation of the method will return the delete count for each SQL delete statement:
  *
- * <p> <blockquote><pre>
+ * <blockquote><pre>
  * &#64;Delete(sql = "delete from person where id = {%1}")
  * int[] deletePersons(List&lt;Integer&gt; ids);
  * </pre></blockquote>

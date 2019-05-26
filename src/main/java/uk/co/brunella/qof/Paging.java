@@ -10,7 +10,7 @@ import uk.co.brunella.qof.dialect.SQLDialect;
  * The SQL select statement that is used will normally have an
  * <code>order by</code> clause.
  *
- * <p><pre><blockquote>
+ * <pre>
  * public interface PagedQueries extends BaseQuery, <b>Paging</b> {
  *    &#64;Query(sql = "select id {%%.id}, name {%%.name} from person order by name")
  *    List&lt;Person&gt; listPersons() throws SQLException;
@@ -30,7 +30,7 @@ import uk.co.brunella.qof.dialect.SQLDialect;
  * // run the query
  * List&lt;Person&gt; personList = queries.listPersons();
  * // personList will contain the records 11 to 31 from the result set
- * </blockquote></pre></p>
+ * </pre>
  *
  * @see QueryObjectFactory#setSQLDialect(SQLDialect)
  * @see SQLDialect

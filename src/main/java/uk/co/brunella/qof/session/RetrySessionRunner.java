@@ -34,12 +34,12 @@ import java.sql.SQLException;
  *
  * <p>Typical usage is like this:</p>
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * List&lt;Person&gt; personList = ...
  * PersonUpdaterRunnable runnable = new PersonUpdaterRunnable();
  * Integer numberOfUpdates =
  *   new RetrySessionRunner&lt;Integer&gt;(runnable, "MY_CONTEXT_NAME").execute(personList, 3);
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * @param <T> the type of the result of the <code>TransactionRunnable</code>. If
  *            no result is returned this type should be <code>Void</code>

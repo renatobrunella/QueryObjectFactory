@@ -25,7 +25,7 @@ import java.lang.annotation.*;
 /**
  * Defines a call method. Call methods are used to call SQL stored procedures.
  *
- * <p> <blockquote><pre>
+ * <blockquote><pre>
  * &#64;Call(sql = "{ %% = call numberOfPersons({%1}) }")
  * int numberOfPersons(String name);
  * </pre></blockquote>

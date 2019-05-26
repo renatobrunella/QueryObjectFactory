@@ -35,6 +35,7 @@ public interface QueryObjectClassEnhancer {
      *
      * @param queryDefinitionClass the query definition class or interface
      * @param superClass           the super class
+     * @param <T>                  Query definition class type
      * @return the enhanced class or super class
      */
     <T> Class<T> enhance(Class<T> queryDefinitionClass, Class<T> superClass);

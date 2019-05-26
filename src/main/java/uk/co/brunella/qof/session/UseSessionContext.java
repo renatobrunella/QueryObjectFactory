@@ -27,23 +27,23 @@ import java.lang.annotation.*;
  * It allows to specify a session context name that is used in the implementation
  * of the <code>getConnection()</code> method in the query object.
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * &#64;UseSessionContext(name = "PERSON_CONTEXT")
  * public interface PersonQuery implements BaseQuery {
  *   &#64;Query(sql = "select id {%%.id,%%*}, name {%%.name} from person where id = {%1}")
  *   Map&lt;Integer, Person&gt; getPerson(int id);
  * }
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * <p>This specifies that the session context with the name "PERSON_CONTEXT"
  * should be used. The implementation of <code>getConnection()</code> will look
  * similar to this:
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * public Connection getConnection() {
  *   return SessionContextFactory.getContext("PERSON_CONTEXT").getConnection();
  * }
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * @see SessionContext
  * @see SessionContextFactory

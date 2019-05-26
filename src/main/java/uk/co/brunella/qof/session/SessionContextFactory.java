@@ -36,7 +36,7 @@ import java.util.Map;
  *
  * <p>The <code>SessionContextFactory</code> can be used in the following way:</p>
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * DataSource ds = ... // get the data source from somewhere
  * // register the data source with the default session context
  * SessionContextFactory.setDataSource(ds);
@@ -61,7 +61,7 @@ import java.util.Map;
  *
  * // stop the session
  * ctx.stopSession();
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * @see SessionContext
  * @see UserTransaction
@@ -540,6 +540,7 @@ public class SessionContextFactory {
         /**
          * Constructs a DefaultUserTransaction object.
          *
+         * @param session    the current session
          * @param connection the current database connection
          */
         public DefaultUserTransaction(Session session, Connection connection) {
@@ -605,7 +606,7 @@ public class SessionContextFactory {
         /**
          * Constructs a NoOpUserTransaction object.
          *
-         * @param session
+         * @param session the current session
          */
         public NoOpUserTransaction(Session session) {
             super(session);

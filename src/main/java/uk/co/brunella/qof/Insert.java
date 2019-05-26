@@ -25,7 +25,7 @@ import java.lang.annotation.*;
 /**
  * Defines an insert method. Insert methods normally use SQL insert statements.
  *
- * <p> <blockquote><pre>
+ * <blockquote><pre>
  * &#64;Insert(sql = "insert into person (id, name) values ({%1}, {%2})")
  * void insertPerson(int id, String name);
  * </pre></blockquote>
@@ -36,7 +36,7 @@ import java.lang.annotation.*;
  * <p> If the return parameter of the insert method is <code>int</code> or <code>int[]</code> for collections
  * then the implementation of the method will return the insert count for each SQL insert statement:
  *
- * <p> <blockquote><pre>
+ * <blockquote><pre>
  * &#64;Insert(sql = "insert into person (id, name) values ({%1}, {%2})")
  * int[] insertPersons(List&lt;Integer&gt; idList, List&lt;String&gt; nameList);
  * </pre></blockquote>

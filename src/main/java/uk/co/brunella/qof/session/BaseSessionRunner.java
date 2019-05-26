@@ -37,7 +37,7 @@ import java.sql.SQLException;
  * of <code>SessionRunner</code> that use a <code>TransactionRunnable</code>
  * to execute queries but it can also be used directly:</p>
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * String result = new BaseSessionRunner&lt;String&gt;("MY_CONTEXT_NAME") {
  *   protected String run(Connection connection, Object... arguments) throws SQLException {
  *     PreparedStatement ps = connection.prepareStatement("select name from person where id = ?");
@@ -55,7 +55,7 @@ import java.sql.SQLException;
  *     return result;
  *   }
  * }.execute(55);
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * @param <T> the type of the result of the <code>run</code> method.
  * @since 1.0.0

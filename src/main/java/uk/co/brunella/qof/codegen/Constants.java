@@ -180,6 +180,7 @@ public final class Constants {
             new Signature("executeBeanManaged", "(Luk/co/brunella/qof/session/TransactionRunnable;Ljava/lang/String;Luk/co/brunella/qof/session/SessionPolicy;[Ljava/lang/Object;)Ljava/lang/Object;");
     public static final Signature SIG_DefaultSessionRunner_executeContainerManaged =
             new Signature("executeContainerManaged", "(Luk/co/brunella/qof/session/TransactionRunnable;Ljava/lang/String;Luk/co/brunella/qof/session/SessionPolicy;[Ljava/lang/Object;)Ljava/lang/Object;");
+
     private Constants() {
     }
 }

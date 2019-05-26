@@ -25,9 +25,9 @@ package uk.co.brunella.qof.session;
  * <p>A <code>UserTransaction</code> can be retrieved from the session that
  * is associated to the current thread from the session context:</p>
  *
- * <p><blockquote><pre>
+ * <blockquote><pre>
  * UserTransaction trx = SessionContextFactory.getContext().getUserTransaction();
- * </pre></blockquote></p>
+ * </pre></blockquote>
  *
  * @see SessionContext#getUserTransaction()
  * @see SessionContextFactory
