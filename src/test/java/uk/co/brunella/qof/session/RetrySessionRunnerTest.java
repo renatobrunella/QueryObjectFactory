@@ -22,6 +22,9 @@ public class RetrySessionRunnerTest extends TestCase {
     public void setUp() throws SQLException {
         Statement stmt = createDataSource().getConnection().createStatement();
         try {
+            try {
+                stmt.execute("drop table test");
+            } catch (Exception ignore) {}
             stmt.execute("create table test (id integer, name varchar(40))");
         } finally {
             stmt.close();
