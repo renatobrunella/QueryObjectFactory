@@ -53,14 +53,14 @@
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>2.4.1</version>
-            <scope>test</scope>
+            <scope>test,compile</scope>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
-            <scope>test</scope>
+            <scope>test,compile</scope>
         </dependency>
 
     </dependencies>
@@ -106,6 +106,51 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.1</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+
+                        <shadedArtifactAttached>false</shadedArtifactAttached>
+                        <createDependencyReducedPom>true</createDependencyReducedPom>
+
+                        <filters>
+                            <filter>
+                                <artifact>org.hsqldb:hsqldb</artifact>
+                                <excludes>
+                                    <exclude>**</exclude>
+                                </excludes>
+                            </filter>
+                            <filter>
+                                <artifact>junit:junit</artifact>
+                                <excludes>
+                                    <exclude>**</exclude>
+                                </excludes>
+                            </filter>
+                        </filters>
+
+                        <relocations>
+                            <relocation>
+                                <pattern>org.objectweb.asm</pattern>
+                                <shadedPattern>uk.co.brunella.qof.shaded.asm</shadedPattern>
+                            </relocation>
+                            <relocation>
+                                <pattern>net.sf.cglib</pattern>
+                                <shadedPattern>uk.co.brunella.qof.shaded.cglib</shadedPattern>
+                            </relocation>
+                        </relocations>
+                    </configuration>
+                </execution>
+            </executions>
             </plugin>
 
             <plugin>
