@@ -31,7 +31,7 @@ public abstract class AbstractNumberMapping extends AbstractBaseMapping implemen
     public abstract void accept(Mapper mapper, NumberMappingVisitor visitor);
 
     public static class ByteMapping extends AbstractNumberMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(Byte.TYPE);
@@ -48,7 +48,7 @@ public abstract class AbstractNumberMapping extends AbstractBaseMapping implemen
     }
 
     public static class ShortMapping extends AbstractNumberMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(Short.TYPE);
@@ -65,7 +65,7 @@ public abstract class AbstractNumberMapping extends AbstractBaseMapping implemen
     }
 
     public static class IntegerMapping extends AbstractNumberMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(Integer.TYPE);
@@ -82,7 +82,7 @@ public abstract class AbstractNumberMapping extends AbstractBaseMapping implemen
     }
 
     public static class LongMapping extends AbstractNumberMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(Long.TYPE);
@@ -99,7 +99,7 @@ public abstract class AbstractNumberMapping extends AbstractBaseMapping implemen
     }
 
     public static class FloatMapping extends AbstractNumberMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(Float.TYPE);
@@ -116,7 +116,7 @@ public abstract class AbstractNumberMapping extends AbstractBaseMapping implemen
     }
 
     public static class DoubleMapping extends AbstractNumberMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(Double.TYPE);
@@ -133,7 +133,7 @@ public abstract class AbstractNumberMapping extends AbstractBaseMapping implemen
     }
 
     public static class BooleanMapping extends AbstractNumberMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(Boolean.TYPE);

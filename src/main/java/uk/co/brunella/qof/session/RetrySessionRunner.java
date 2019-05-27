@@ -186,7 +186,7 @@ public class RetrySessionRunner<T> extends BaseSessionRunner<T> {
             if (!success && delayInMilliSeconds > 0) {
                 try {
                     Thread.sleep(delayInMilliSeconds);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }

@@ -23,27 +23,28 @@ import uk.co.brunella.qof.adapter.MappingAdapter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public abstract class AbstractBaseMapping implements ParameterMapping, ResultMapping {
     // SQL mappings
-    protected int[] sqlIndexes;
-    protected String[] sqlColumns;
+    private int[] sqlIndexes;
+    private String[] sqlColumns;
     // Java mappings
     protected int index;
     protected Class<?> type;
-    protected Class<?> collectionType;
-    protected Class<?> mapKeyType;
-    protected Class<?> beanType;
-    protected Method[] getters;
-    protected Method setter;
+    private Class<?> collectionType;
+    private Class<?> mapKeyType;
+    private Class<?> beanType;
+    private Method[] getters;
+    private Method setter;
     protected MappingAdapter adapter;
-    protected Integer constructorParameter;
+    private Integer constructorParameter;
     protected Constructor<?> constructor;
-    protected Method staticFactoryMethod;
-    protected Class<?> collectionClass;
-    protected int collectionInitialCapacity;
-    protected boolean usesArray;
-    protected String parameterSeparator;
+    private Method staticFactoryMethod;
+    private Class<?> collectionClass;
+    private int collectionInitialCapacity;
+    private boolean usesArray;
+    private String parameterSeparator;
 
     // implements ParameterMapping
     public void setParameters(int index, Class<?> type, Class<?> collectionType, Class<?> beanType, Method[] getters,
@@ -161,37 +162,13 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     }
 
     private String getSqlColumnsString() {
-        if (sqlColumns != null) {
-            StringBuffer sb = new StringBuffer();
-            sb.append('[');
-            for (int i = 0; i < sqlColumns.length; i++) {
-                if (i > 0) {
-                    sb.append(',');
-                }
-                sb.append('"').append(sqlColumns[i]).append('"');
-            }
-            sb.append(']');
-            return sb.toString();
-        } else {
-            return "";
-        }
+        return sqlColumns == null ? "" :
+                "[" + Arrays.stream(sqlColumns).map(c -> "\"" + c + "\"").collect(Collectors.joining(",")) + "]";
     }
 
     private String getSqlIndexesString() {
-        if (sqlIndexes != null) {
-            StringBuffer sb = new StringBuffer();
-            sb.append('[');
-            for (int i = 0; i < sqlIndexes.length; i++) {
-                if (i > 0) {
-                    sb.append(',');
-                }
-                sb.append(sqlIndexes[i]);
-            }
-            sb.append(']');
-            return sb.toString();
-        } else {
-            return "";
-        }
+        return sqlIndexes == null ? "" :
+                "[" + Arrays.stream(sqlIndexes).mapToObj(Integer::toString).collect(Collectors.joining(",")) + "]";
     }
 
     private String stripType(Class<?> type) {
@@ -205,7 +182,7 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     }
 
     public String parameterMappingInfo() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("Parameter: ").append(stripType(this.getClass())).append('\n');
         sb.append('\t').append(getSqlColumnsString()).append(getSqlIndexesString());
         sb.append(" = parameter ").append(index).append(' ');
@@ -222,7 +199,7 @@ public abstract class AbstractBaseMapping implements ParameterMapping, ResultMap
     }
 
     public String resultMappingInfo() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("Result: ").append(stripType(this.getClass())).append('\n');
         sb.append('\t').append(getSqlColumnsString()).append(getSqlIndexesString());
         sb.append(" => ");

@@ -19,7 +19,7 @@ public class CreationFromSuperClassTest extends TestCase {
             QueryObjectFactory.createQueryObjectFromSuperClass(TestSuperClass.class, String.class);
             fail("Should raise exception");
         } catch (RuntimeException e) {
-            assertEquals("Invalid class hierarchie", e.getMessage());
+            assertEquals("Invalid class hierarchy", e.getMessage());
         }
     }
 

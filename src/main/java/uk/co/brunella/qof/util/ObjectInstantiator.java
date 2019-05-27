@@ -43,9 +43,7 @@ public final class ObjectInstantiator {
         if (initArgs == null || initArgs.length == 0) {
             try {
                 return clazz.newInstance();
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
         } else {

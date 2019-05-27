@@ -29,9 +29,9 @@ import java.util.WeakHashMap;
  */
 public final class ClassGenerationCache {
 
-    private static final Map<ClassLoader, Map<String, Class<?>>> cache = new WeakHashMap<ClassLoader, Map<String, Class<?>>>();
+    private static final Map<ClassLoader, Map<String, Class<?>>> cache = new WeakHashMap<>();
 
-    protected ClassGenerationCache() {
+    ClassGenerationCache() {
     }
 
     /**
@@ -95,12 +95,7 @@ public final class ClassGenerationCache {
     private static Map<String, Class<?>> getClassCache(Class<?>... key) {
         ClassLoader classLoader = key[0].getClassLoader();
         synchronized (cache) {
-            Map<String, Class<?>> classCache = cache.get(classLoader);
-            if (classCache == null) {
-                classCache = new HashMap<String, Class<?>>();
-                cache.put(classLoader, classCache);
-            }
-            return classCache;
+            return cache.computeIfAbsent(classLoader, k -> new HashMap<>());
         }
     }
 

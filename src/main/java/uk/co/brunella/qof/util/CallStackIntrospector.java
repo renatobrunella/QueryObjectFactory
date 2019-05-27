@@ -44,9 +44,7 @@ public class CallStackIntrospector {
                     securityManagerClass = Class.forName("java.lang.SecurityManager");
                     GET_CLASS_CONTEXT = securityManagerClass.getDeclaredMethod("getClassContext");
                     GET_CLASS_CONTEXT.setAccessible(true);
-                } catch (ClassNotFoundException e) {
-                } catch (SecurityException e) {
-                } catch (NoSuchMethodException e) {
+                } catch (ClassNotFoundException | SecurityException | NoSuchMethodException ignored) {
                 }
                 return null;
             }
@@ -58,13 +56,11 @@ public class CallStackIntrospector {
      *
      * @return Array of classes
      */
-    public static Class<?>[] getCallStack() {
+    static Class<?>[] getCallStack() {
         if (GET_CLASS_CONTEXT != null) {
             try {
                 return (Class<?>[]) GET_CLASS_CONTEXT.invoke(SECURITY_MANAGER, (Object[]) null);
-            } catch (IllegalArgumentException e) {
-            } catch (IllegalAccessException e) {
-            } catch (InvocationTargetException e) {
+            } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ignored) {
             }
         }
         return null;
@@ -85,7 +81,7 @@ public class CallStackIntrospector {
      * @param level Stack level starting at 0 for the immediate caller
      * @return Caller class at given level or <code>null</code>
      */
-    public static Class<?> getCaller(int level) {
+    static Class<?> getCaller(int level) {
         Class<?>[] callStack = getCallStack();
         int baseLevel = findBaseLevel(callStack);
         if (baseLevel + level + 1 < 0 || baseLevel + level + 1 >= callStack.length) {

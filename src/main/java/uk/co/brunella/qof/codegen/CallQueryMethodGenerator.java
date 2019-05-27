@@ -32,9 +32,9 @@ import static uk.co.brunella.qof.codegen.Constants.*;
 /**
  * Internal - CallQueryMethodGenerator is the main generator class for call query methods.
  */
-public class CallQueryMethodGenerator {
+class CallQueryMethodGenerator {
 
-    public static void addCallQueryBody(CodeEmitter co, QueryObjectGenerator generator, Mapper mapper) {
+    static void addCallQueryBody(CodeEmitter co, QueryObjectGenerator generator, Mapper mapper) {
         if (mapper.usesArray()) {
             throw new ValidationException("Array parameters are not allowed for call statements");
         }

@@ -22,14 +22,13 @@ import uk.co.brunella.qof.exception.ValidationException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 /**
  * Helper class to combine partial definitions.
  */
-public class PartialDefinitionCombiner {
+class PartialDefinitionCombiner {
 
     /**
      * Combines partial definitions.
@@ -39,9 +38,9 @@ public class PartialDefinitionCombiner {
      * @return a list of containing full definitions
      * @throws uk.co.brunella.qof.exception.ValidationException if duplicate partial definitions are found
      */
-    public static List<? extends Definition> combine(List<? extends Definition> definitionList) {
-        List<Definition> partialDefinitions = new ArrayList<Definition>();
-        List<Definition> fullDefinitions = new ArrayList<Definition>();
+    static List<? extends Definition> combine(List<? extends Definition> definitionList) {
+        List<Definition> partialDefinitions = new ArrayList<>();
+        List<Definition> fullDefinitions = new ArrayList<>();
 
         for (Definition definition : definitionList) {
             if (definition.isPartialDefinition()) {
@@ -55,8 +54,7 @@ public class PartialDefinitionCombiner {
             return definitionList;
         }
 
-        // sort the list
-        Collections.sort(partialDefinitions, new DefinitionComparator());
+        partialDefinitions.sort(new DefinitionComparator());
 
         validatePartialDefinitions(partialDefinitions);
 
@@ -66,42 +64,42 @@ public class PartialDefinitionCombiner {
             if (partialDefinition.getPartialDefinitionPart() == 1) {
                 int numberOfParts = numberOfParts(partialDefinitions, index - 1);
                 if (partialDefinition instanceof ResultDefinition) {
-                    ResultDefinition partialResultDefiniton = (ResultDefinition) partialDefinition;
-                    ResultDefinitionImpl resultDefiniton = new ResultDefinitionImpl();
-                    resultDefiniton.setType(partialResultDefiniton.getType());
-                    resultDefiniton.setField(partialResultDefiniton.getField());
-                    resultDefiniton.setConstructorParameter(partialResultDefiniton.getConstructorParameter());
-                    resultDefiniton.setIsMapKey(partialResultDefiniton.isMapKey());
-                    if (partialResultDefiniton.getColumns() != null) {
+                    ResultDefinition partialResultDefinition = (ResultDefinition) partialDefinition;
+                    ResultDefinitionImpl resultDefinition = new ResultDefinitionImpl();
+                    resultDefinition.setType(partialResultDefinition.getType());
+                    resultDefinition.setField(partialResultDefinition.getField());
+                    resultDefinition.setConstructorParameter(partialResultDefinition.getConstructorParameter());
+                    resultDefinition.setIsMapKey(partialResultDefinition.isMapKey());
+                    if (partialResultDefinition.getColumns() != null) {
                         String[] columns = new String[numberOfParts];
-                        resultDefiniton.setColumns(columns);
-                        columns[0] = partialResultDefiniton.getColumns()[0];
+                        resultDefinition.setColumns(columns);
+                        columns[0] = partialResultDefinition.getColumns()[0];
                         for (int i = 1; i < numberOfParts; i++) {
                             columns[i] = ((ResultDefinition) partialDefinitions.get(index++)).getColumns()[0];
                         }
                     } else {
                         int[] indexes = new int[numberOfParts];
-                        resultDefiniton.setIndexes(indexes);
-                        indexes[0] = partialResultDefiniton.getIndexes()[0];
+                        resultDefinition.setIndexes(indexes);
+                        indexes[0] = partialResultDefinition.getIndexes()[0];
                         for (int i = 1; i < numberOfParts; i++) {
                             indexes[i] = ((ResultDefinition) partialDefinitions.get(index++)).getIndexes()[0];
                         }
                     }
-                    fullDefinitions.add(resultDefiniton);
+                    fullDefinitions.add(resultDefinition);
                 } else {
-                    ParameterDefinition partialParameterDefiniton = (ParameterDefinition) partialDefinition;
-                    ParameterDefinitionImpl parameterDefiniton = new ParameterDefinitionImpl();
-                    parameterDefiniton.setType(partialParameterDefiniton.getType());
-                    parameterDefiniton.setFields(partialParameterDefiniton.getFields());
-                    parameterDefiniton.setNames(partialParameterDefiniton.getNames());
-                    parameterDefiniton.setParameter(partialParameterDefiniton.getParameter());
+                    ParameterDefinition partialParameterDefinition = (ParameterDefinition) partialDefinition;
+                    ParameterDefinitionImpl parameterDefinition = new ParameterDefinitionImpl();
+                    parameterDefinition.setType(partialParameterDefinition.getType());
+                    parameterDefinition.setFields(partialParameterDefinition.getFields());
+                    parameterDefinition.setNames(partialParameterDefinition.getNames());
+                    parameterDefinition.setParameter(partialParameterDefinition.getParameter());
                     int[] indexes = new int[numberOfParts];
-                    parameterDefiniton.setIndexes(indexes);
-                    indexes[0] = partialParameterDefiniton.getIndexes()[0];
+                    parameterDefinition.setIndexes(indexes);
+                    indexes[0] = partialParameterDefinition.getIndexes()[0];
                     for (int i = 1; i < numberOfParts; i++) {
                         indexes[i] = ((ParameterDefinition) partialDefinitions.get(index++)).getIndexes()[0];
                     }
-                    fullDefinitions.add(parameterDefiniton);
+                    fullDefinitions.add(parameterDefinition);
                 }
             }
         }

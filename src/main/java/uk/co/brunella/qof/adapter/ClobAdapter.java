@@ -54,7 +54,7 @@ public class ClobAdapter implements GeneratorMappingAdapter {
     private static Set<Class<?>> typeSet;
 
     static {
-        typeSet = new HashSet<Class<?>>();
+        typeSet = new HashSet<>();
         typeSet.add(String.class);
     }
 
@@ -165,7 +165,7 @@ public class ClobAdapter implements GeneratorMappingAdapter {
      * Delegator object to access protected static methods in QueryObjectFactory
      */
     private static class QueryObjectFactoryDelegator extends QueryObjectFactory {
-        public static void registerMapper_(ClassLoader classLoader, String type, MappingAdapter adapter) {
+        static void registerMapper_(ClassLoader classLoader, String type, MappingAdapter adapter) {
             unregisterMapper(classLoader, type);
             registerMapper(classLoader, type, adapter);
         }

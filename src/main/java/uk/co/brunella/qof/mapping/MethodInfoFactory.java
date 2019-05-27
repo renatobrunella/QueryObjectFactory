@@ -46,7 +46,7 @@ public class MethodInfoFactory {
             Class<?> collectionType = ReflectionUtils.getCollectionType(genericTypes[i]);
             Class<?> collectionElementType;
             if (collectionType == null) {
-                collectionElementType = null; //NOPMD
+                collectionElementType = null;
             } else {
                 collectionElementType = ReflectionUtils.getCollectionParameterizedType(genericTypes[i]);
             }
@@ -59,16 +59,16 @@ public class MethodInfoFactory {
 
     private static MethodParameterInfo[] createCollectionParameterInfos(MethodParameterInfo[] parameterInfos) {
         int num = 0;
-        for (int i = 0; i < parameterInfos.length; i++) {
-            if (parameterInfos[i].getCollectionType() != null) {
+        for (MethodParameterInfo parameterInfo : parameterInfos) {
+            if (parameterInfo.getCollectionType() != null) {
                 num++;
             }
         }
         MethodParameterInfo[] collectionParameterInfos = new MethodParameterInfo[num];
         int index = 0;
-        for (int i = 0; i < parameterInfos.length; i++) {
-            if (parameterInfos[i].getCollectionType() != null) {
-                collectionParameterInfos[index++] = parameterInfos[i];
+        for (MethodParameterInfo parameterInfo : parameterInfos) {
+            if (parameterInfo.getCollectionType() != null) {
+                collectionParameterInfos[index++] = parameterInfo;
             }
         }
         return collectionParameterInfos;
@@ -79,7 +79,7 @@ public class MethodInfoFactory {
         Class<?> collectionType = ReflectionUtils.getCollectionType(method.getGenericReturnType());
         Class<?> collectionElementType;
         if (collectionType == null) {
-            collectionElementType = null; //NOPMD
+            collectionElementType = null;
         } else {
             collectionElementType = ReflectionUtils.getCollectionParameterizedType(method.getGenericReturnType());
         }
@@ -96,8 +96,8 @@ public class MethodInfoFactory {
         private MethodReturnInfo returnInfo;
         private String description;
 
-        public MethodInfoImpl(Signature signature, int modifiers, MethodParameterInfo[] parameterInfos,
-                              MethodParameterInfo[] collectionParameterInfos, MethodReturnInfo returnInfo, String description) {
+        MethodInfoImpl(Signature signature, int modifiers, MethodParameterInfo[] parameterInfos,
+                       MethodParameterInfo[] collectionParameterInfos, MethodReturnInfo returnInfo, String description) {
             super();
             this.signature = signature;
             this.modifiers = modifiers;
@@ -144,8 +144,8 @@ public class MethodInfoFactory {
         private Class<?> collectionElementType;
         private Class<?> arrayElementType;
 
-        public MethodParameterInfoImpl(int index, Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
-                                       Class<?> arrayElementType) {
+        MethodParameterInfoImpl(int index, Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
+                                Class<?> arrayElementType) {
             super();
             this.index = index;
             this.type = type;
@@ -182,8 +182,8 @@ public class MethodInfoFactory {
         private Class<?> collectionElementType;
         private Class<?> mapKeyType;
 
-        public MethodReturnInfoImpl(Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
-                                    Class<?> mapKeyType) {
+        MethodReturnInfoImpl(Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
+                             Class<?> mapKeyType) {
             super();
             this.type = type;
             this.collectionType = collectionType;

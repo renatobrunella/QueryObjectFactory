@@ -365,10 +365,7 @@ public class QueryObjectGenerator {
                 // warning?
                 throw new ValidationException("Class has private field '" + fieldName + "'");
             }
-        } catch (SecurityException e) {
-            //NOPMD ignore
-        } catch (NoSuchFieldException e) {
-            //NOPMD ignore
+        } catch (SecurityException | NoSuchFieldException ignored) {
         }
         if (field == null) {
             ce.declare_field(Constants.ACC_PRIVATE, fieldName, fieldType, null);

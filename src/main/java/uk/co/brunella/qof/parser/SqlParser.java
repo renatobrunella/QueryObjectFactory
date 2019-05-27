@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 /**
  * A parser to extract parameter and result definitions.
  *
- * <p> The <code>SqlParser</code> is used to extract parameter and result defintions embedded
+ * <p> The <code>SqlParser</code> is used to extract parameter and result definitions embedded
  * in the SQL statement.
  *
  * <p> Parameter definitions have the following form:
@@ -85,9 +85,9 @@ public class SqlParser {
     // used to replace strings in the SQL
     private static final char REPLACEMENT_CHAR = 0xac; // '¬'
     private static final Pattern RESULT_DEF_PATTERN =
-            Pattern.compile("\\{([\\w\\-]+)?%%((\\d+)|\\*|\\.(\\w+))?(@\\d+)?(\\[[\\w]+\\])?\\}");
+            Pattern.compile("\\{([\\w\\-]+)?%%((\\d+)|\\*|\\.(\\w+))?(@\\d+)?(\\[[\\w]+])?}");
     private static final Pattern PARAMETER_DEF_PATTERN =
-            Pattern.compile("\\{([\\w\\-]+)?%(\\d+)((\\.\\w+)(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?)?(@\\d+)?(\\[[\\w]+\\])?(#.*#)?\\}");
+            Pattern.compile("\\{([\\w\\-]+)?%(\\d+)((\\.\\w+)(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?)?(@\\d+)?(\\[[\\w]+])?(#.*#)?}");
     private List<ParameterDefinition> parameterDefs;
     private List<ResultDefinition> resultDefs;
     private List<Integer> openCurlyBrackets;
@@ -103,10 +103,10 @@ public class SqlParser {
      * @param isCallableStatement true if the SQL statement is a store procedure call
      */
     public SqlParser(String sql, boolean isCallableStatement) {
-        parameterDefs = new ArrayList<ParameterDefinition>();
-        resultDefs = new ArrayList<ResultDefinition>();
-        openCurlyBrackets = new ArrayList<Integer>();
-        closeCurlyBrackets = new ArrayList<Integer>();
+        parameterDefs = new ArrayList<>();
+        resultDefs = new ArrayList<>();
+        openCurlyBrackets = new ArrayList<>();
+        closeCurlyBrackets = new ArrayList<>();
         sqlLength = sql.length();
 
         if (sql.indexOf('{') >= 0) {
@@ -122,7 +122,7 @@ public class SqlParser {
      * @return extracted parameter definitions
      */
     public ParameterDefinition[] getParameterDefinitions() {
-        return parameterDefs.toArray(new ParameterDefinition[parameterDefs.size()]);
+        return parameterDefs.toArray(new ParameterDefinition[0]);
     }
 
     /**
@@ -131,7 +131,7 @@ public class SqlParser {
      * @return extracted result definitions
      */
     public ResultDefinition[] getResultDefinitions() {
-        return resultDefs.toArray(new ResultDefinition[resultDefs.size()]);
+        return resultDefs.toArray(new ResultDefinition[0]);
     }
 
     /**
@@ -156,7 +156,7 @@ public class SqlParser {
             closeCurlyBrackets.remove(closeCurlyBrackets.size() - 1);
         }
 
-        List<String> saveStrings = new ArrayList<String>();
+        List<String> saveStrings = new ArrayList<>();
         sql = extractStrings(sql, saveStrings);
 
         String[] tokenList = sql.split("\\s+");
@@ -183,8 +183,8 @@ public class SqlParser {
                     if (isCallableStatement) {
                         if (leftToken.contains("%%") && !rightToken.contains("%%") ||
                                 !leftToken.contains("%%") && rightToken.contains("%%")) {
-                            parseDefinition(leftToken, preToken, sbSql, isCallableStatement, false, curlyBracketIndex);
-                            parseDefinition(rightToken, preToken, sbSql, isCallableStatement, true, curlyBracketIndex);
+                            parseDefinition(leftToken, preToken, sbSql, true, false, curlyBracketIndex);
+                            parseDefinition(rightToken, preToken, sbSql, true, true, curlyBracketIndex);
                         } else {
                             int start = openCurlyBrackets.get(curlyBracketIndex);
                             int end = curlyBracketIndex < closeCurlyBrackets.size() ? closeCurlyBrackets.get(curlyBracketIndex) : sqlLength - 1;
@@ -192,11 +192,11 @@ public class SqlParser {
                         }
                     } else {
                         if (leftToken.contains("%%*")) {
-                            parseDefinition(rightToken, preToken, sbSql, isCallableStatement, true, curlyBracketIndex);
-                            parseDefinition(leftToken, preToken, sbSql, isCallableStatement, false, curlyBracketIndex);
+                            parseDefinition(rightToken, preToken, sbSql, false, true, curlyBracketIndex);
+                            parseDefinition(leftToken, preToken, sbSql, false, false, curlyBracketIndex);
                         } else if (rightToken.contains("%%*")) {
-                            parseDefinition(leftToken, preToken, sbSql, isCallableStatement, true, curlyBracketIndex);
-                            parseDefinition(rightToken, preToken, sbSql, isCallableStatement, false, curlyBracketIndex);
+                            parseDefinition(leftToken, preToken, sbSql, false, true, curlyBracketIndex);
+                            parseDefinition(rightToken, preToken, sbSql, false, false, curlyBracketIndex);
                         } else {
                             int start = openCurlyBrackets.get(curlyBracketIndex);
                             int end = curlyBracketIndex < closeCurlyBrackets.size() ? closeCurlyBrackets.get(curlyBracketIndex) : sqlLength - 1;
@@ -210,7 +210,7 @@ public class SqlParser {
             } else {
                 sbSql.append(token).append(' ');
             }
-            if (token.length() > 0 && !(token.charAt(0) == '{')) {
+            if (token.charAt(0) != '{') {
                 preToken = token;
             }
         }
@@ -269,12 +269,12 @@ public class SqlParser {
     }
 
     private ResultDefinition parseResultDefinition(String definition, String columnName, int sqlIndex, int curlyBracketIndex) {
-        String mappingType = null;
-        String field = null;
+        String mappingType;
+        String field;
         int constructorParameter = 0;
-        boolean isMapKey = false;
+        boolean isMapKey;
         int partialDefinitionPart = 0;
-        String partialDefinitionGroup = null;
+        String partialDefinitionGroup;
 
         Matcher matcher = RESULT_DEF_PATTERN.matcher(definition);
         if (matcher.find() && matcher.group().equals(definition)) {
@@ -312,11 +312,11 @@ public class SqlParser {
     }
 
     private ParameterDefinition parseParameterDefinition(String definition, int curlyBracketIndex) {
-        int parameterIndex = -1;
-        String mappingType = null;
+        int parameterIndex;
+        String mappingType;
         int partialDefinitionPart = 0;
-        String partialDefinitionGroup = null;
-        String parameterSeparator = null;
+        String partialDefinitionGroup;
+        String parameterSeparator;
 
         Matcher matcher = PARAMETER_DEF_PATTERN.matcher(definition);
         if (matcher.find() && matcher.group().equals(definition)) {
@@ -354,11 +354,11 @@ public class SqlParser {
     }
 
     private String[] extractFields(Matcher matcher) {
-        String field1 = null;
-        String field2 = null;
-        String field3 = null;
-        String field4 = null;
-        String field5 = null;
+        String field1;
+        String field2;
+        String field3;
+        String field4;
+        String field5;
         String[] fields;
         field1 = matcher.group(4);
         field2 = matcher.group(5);
@@ -370,7 +370,7 @@ public class SqlParser {
                 if (field3 == null) {
                     if (field2 == null) {
                         if (field1 == null) {
-                            fields = null; //NOPMD
+                            fields = null;
                         } else {
                             fields = new String[]{field1.substring(1)};
                         }
@@ -390,7 +390,7 @@ public class SqlParser {
     }
 
     private String mergeStrings(String sql, List<String> stringList) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int index = 0;
 
         for (int i = 0; i < sql.length(); i++) {
@@ -401,15 +401,14 @@ public class SqlParser {
                 sb.append(c);
             }
         }
-
         return sb.toString();
     }
 
     private String extractStrings(String sql, List<String> stringList) {
         char quoteChar = '\0';
         boolean inHash = false;
-        StringBuffer sb = new StringBuffer();
-        StringBuffer sbString = null;
+        StringBuilder sb = new StringBuilder();
+        StringBuilder sbString = null;
 
         int i = 0;
         while (i < sql.length()) {
@@ -418,7 +417,7 @@ public class SqlParser {
                 if (c == '"' || c == '\'') {
                     // begin of string
                     quoteChar = c;
-                    sbString = new StringBuffer();
+                    sbString = new StringBuilder();
                     sbString.append(c);
                 } else {
                     if (c == '{') {
@@ -454,7 +453,6 @@ public class SqlParser {
                 }
             }
         }
-
         return sb.toString();
     }
 

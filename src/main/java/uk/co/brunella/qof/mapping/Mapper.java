@@ -105,7 +105,7 @@ public class Mapper {
         try {
             out.write(s.getBytes());
             out.write('\n');
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 

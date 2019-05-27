@@ -99,7 +99,7 @@ public class DelegatorFactory {
         }
 
         // create instance
-        @SuppressWarnings("unchecked") Class[] constructorParameterTypes = new Class[constructorParameters.length];
+        Class[] constructorParameterTypes = new Class[constructorParameters.length];
         for (int i = 0; i < constructorParameters.length; i++) {
             constructorParameterTypes[i] = constructorParameters[i].getClass();
         }

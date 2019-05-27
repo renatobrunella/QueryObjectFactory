@@ -114,7 +114,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T execute(TransactionRunnable<T> runnable, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable).execute(arguments);
+        return new DefaultSessionRunner<>(runnable).execute(arguments);
     }
 
     /**
@@ -133,7 +133,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T executeBeanManaged(TransactionRunnable<T> runnable, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable).executeBeanManaged(arguments);
+        return new DefaultSessionRunner<>(runnable).executeBeanManaged(arguments);
     }
 
     /**
@@ -152,7 +152,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T executeContainerManaged(TransactionRunnable<T> runnable, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable).executeContainerManaged(arguments);
+        return new DefaultSessionRunner<>(runnable).executeContainerManaged(arguments);
     }
 
     /**
@@ -171,7 +171,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T execute(TransactionRunnable<T> runnable, String contextName, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, contextName).execute(arguments);
+        return new DefaultSessionRunner<>(runnable, contextName).execute(arguments);
     }
 
     /**
@@ -191,7 +191,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T executeBeanManaged(TransactionRunnable<T> runnable, String contextName, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, contextName).executeBeanManaged(arguments);
+        return new DefaultSessionRunner<>(runnable, contextName).executeBeanManaged(arguments);
     }
 
     /**
@@ -211,7 +211,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T executeContainerManaged(TransactionRunnable<T> runnable, String contextName, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, contextName).executeContainerManaged(arguments);
+        return new DefaultSessionRunner<>(runnable, contextName).executeContainerManaged(arguments);
     }
 
 
@@ -231,7 +231,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T execute(TransactionRunnable<T> runnable, SessionPolicy sessionPolicy, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, sessionPolicy).execute(arguments);
+        return new DefaultSessionRunner<>(runnable, sessionPolicy).execute(arguments);
     }
 
     /**
@@ -251,7 +251,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T executeBeanManaged(TransactionRunnable<T> runnable, SessionPolicy sessionPolicy, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, sessionPolicy).executeBeanManaged(arguments);
+        return new DefaultSessionRunner<>(runnable, sessionPolicy).executeBeanManaged(arguments);
     }
 
     /**
@@ -271,7 +271,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T executeContainerManaged(TransactionRunnable<T> runnable, SessionPolicy sessionPolicy, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, sessionPolicy).executeContainerManaged(arguments);
+        return new DefaultSessionRunner<>(runnable, sessionPolicy).executeContainerManaged(arguments);
     }
 
     /**
@@ -291,7 +291,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T execute(TransactionRunnable<T> runnable, String contextName, SessionPolicy sessionPolicy, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, contextName, sessionPolicy).execute(arguments);
+        return new DefaultSessionRunner<>(runnable, contextName, sessionPolicy).execute(arguments);
     }
 
     /**
@@ -312,7 +312,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T executeBeanManaged(TransactionRunnable<T> runnable, String contextName, SessionPolicy sessionPolicy, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, contextName, sessionPolicy).executeBeanManaged(arguments);
+        return new DefaultSessionRunner<>(runnable, contextName, sessionPolicy).executeBeanManaged(arguments);
     }
 
     /**
@@ -333,7 +333,7 @@ public class DefaultSessionRunner<T> extends BaseSessionRunner<T> {
      * @since 1.1.0
      */
     public static <T> T executeContainerManaged(TransactionRunnable<T> runnable, String contextName, SessionPolicy sessionPolicy, Object... arguments) throws SystemException {
-        return new DefaultSessionRunner<T>(runnable, contextName, sessionPolicy).executeContainerManaged(arguments);
+        return new DefaultSessionRunner<>(runnable, contextName, sessionPolicy).executeContainerManaged(arguments);
     }
 
     @Override

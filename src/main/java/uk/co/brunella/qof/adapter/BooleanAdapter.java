@@ -65,7 +65,7 @@ public class BooleanAdapter implements GeneratorMappingAdapter {
     private static Set<Class<?>> typeSet;
 
     static {
-        typeSet = new HashSet<Class<?>>();
+        typeSet = new HashSet<>();
         typeSet.add(boolean.class);
         typeSet.add(Boolean.class);
     }

@@ -113,7 +113,7 @@ public class SelectQueryMethodGenerator {
             labelThrowNoResult = co.make_label();
         }
 
-        Local localResult = null;
+        Local localResult;
 
         localResult = co.make_local(Type.getType(returnType));
         if (!returnType.isPrimitive()) {
@@ -214,7 +214,7 @@ public class SelectQueryMethodGenerator {
 
         Class<?> resultMapKeyType = mapper.getMethod().getReturnInfo().getMapKeyType();
         if (resultMapKeyType == null) {
-            localMapKey = null; //NOPMD
+            localMapKey = null;
         } else {
             localMapKey = co.make_local(Type.getType(resultMapKeyType));
         }
@@ -223,7 +223,7 @@ public class SelectQueryMethodGenerator {
         co.aconst_null();
         co.store_local(localResultSet);
         // list = new ArrayList();
-        Type collectionType = null;
+        Type collectionType;
         // is there a user specified collection class?
         ResultMapping result = mapper.getResults().size() > 0 ? mapper.getResults().get(0) : null;
         int collectionInitialCapacity = result.getInitialCollectionCapacity();

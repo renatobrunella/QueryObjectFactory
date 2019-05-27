@@ -65,9 +65,9 @@ public abstract class BaseSessionRunner<T> implements SessionRunner<T>, SessionR
     /**
      * Holds the current session context.
      */
-    protected SessionContext sessionContext;
+    private SessionContext sessionContext;
 
-    protected SessionPolicy sessionPolicy;
+    private SessionPolicy sessionPolicy;
 
     /**
      * Creates a <code>BaseSessionRunner</code> that creates a session

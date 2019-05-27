@@ -69,7 +69,7 @@ import java.util.Map;
  */
 public class SessionContextFactory {
 
-    private final static Map<String, SessionContext> sessionContextMap = new HashMap<String, SessionContext>();
+    private final static Map<String, SessionContext> sessionContextMap = new HashMap<>();
 
     protected SessionContextFactory() {
     }
@@ -262,7 +262,7 @@ public class SessionContextFactory {
         }
 
         @Override
-        protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException {
+        protected UserTransaction getNewUserTransaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException {
             if (transactionManagementType == null) {
                 throw new IllegalArgumentException("Transaction management type is null");
             }
@@ -328,7 +328,7 @@ public class SessionContextFactory {
         }
 
         @Override
-        protected UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException {
+        protected UserTransaction getNewUserTransaction(Connection connection, TransactionManagementType transactionManagementType, Session session) {
             if (transactionManagementType == null) {
                 throw new IllegalArgumentException("Transaction management type is null");
             }
@@ -355,16 +355,16 @@ public class SessionContextFactory {
      */
     protected static abstract class BaseSessionContext implements SessionContext, SessionContextExt {
 
-        protected final static SessionConnectionHandler DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE =
+        final static SessionConnectionHandler DEFAULT_SESSION_CONNECTION_HANDLER_SET_AUTOCOMMIT_TO_FALSE =
                 new DefaultSessionConnectionHandler(true);
-        protected final static SessionConnectionHandler DEFAULT_SESSION_CONNECTION_HANDLER =
+        final static SessionConnectionHandler DEFAULT_SESSION_CONNECTION_HANDLER =
                 new DefaultSessionConnectionHandler(false);
 
-        protected String contextName;
-        protected SessionConnectionHandler sessionConnectionHandler;
-        protected boolean setAutoCommitToFalse;
+        String contextName;
+        SessionConnectionHandler sessionConnectionHandler;
+        boolean setAutoCommitToFalse;
 
-        protected ThreadLocal<Session> sessionThreadLocal = new ThreadLocal<Session>() {
+        ThreadLocal<Session> sessionThreadLocal = new ThreadLocal<Session>() {
             protected synchronized Session initialValue() {
                 return new Session();
             }
@@ -376,7 +376,7 @@ public class SessionContextFactory {
         }
 
         protected void setSessionConnectionHandler(SessionConnectionHandler sessionConnectionHandler) {
-            this.sessionConnectionHandler = sessionConnectionHandler; //NOPMD
+            this.sessionConnectionHandler = sessionConnectionHandler;
         }
 
         protected void setAutoCommitPolicy(boolean setAutoCommitToFalse) {
@@ -385,7 +385,7 @@ public class SessionContextFactory {
 
         protected abstract DataSource getDataSource() throws SystemException;
 
-        protected abstract UserTransaction getNewUserTansaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException;
+        protected abstract UserTransaction getNewUserTransaction(Connection connection, TransactionManagementType transactionManagementType, Session session) throws SystemException;
 
         public Connection getConnection() {
             Session session = sessionThreadLocal.get();
@@ -422,7 +422,7 @@ public class SessionContextFactory {
                 throw new IllegalArgumentException("Transaction management type is null");
             }
             Session session = sessionThreadLocal.get();
-            DataSource dataSource = null;
+            DataSource dataSource;
             if (sessionPolicy == SessionPolicy.MUST_START_NEW_SESSION && session.getState() == SessionState.RUNNING) {
                 throw new IllegalStateException("Session already running in thread for context "
                         + contextName + " and session policy requires to start new session");
@@ -435,7 +435,7 @@ public class SessionContextFactory {
                 if (dataSource == null) {
                     throw new SystemException("No data source defined for context " + contextName);
                 }
-                Connection connection = null;
+                Connection connection;
                 if (sessionConnectionHandler != null) {
                     connection = sessionConnectionHandler.getConnection(dataSource);
                 } else {
@@ -454,7 +454,7 @@ public class SessionContextFactory {
                     }
                 }
                 session.setConnection(connection);
-                session.setUserTransaction(getNewUserTansaction(connection, transactionManagementType, session));
+                session.setUserTransaction(getNewUserTransaction(connection, transactionManagementType, session));
                 session.setState(SessionState.RUNNING);
             }
             session.join();
@@ -612,7 +612,7 @@ public class SessionContextFactory {
             super(session);
         }
 
-        public void commit() throws SystemException, RollbackException {
+        public void commit() throws RollbackException {
             if (!session.hasJoinedSession()) {
                 if (transactionState == TransactionState.NEW
                         || transactionState == TransactionState.CLOSED) {
@@ -660,7 +660,7 @@ public class SessionContextFactory {
             this.session = session;
         }
 
-        public void begin() throws SystemException {
+        public void begin() {
             if (!session.hasJoinedSession()) {
                 if (transactionState == TransactionState.NEW) {
                     transactionState = TransactionState.IN_TRANSACTION;
@@ -679,7 +679,7 @@ public class SessionContextFactory {
             }
         }
 
-        public void setRollbackOnly() throws SystemException {
+        public void setRollbackOnly() {
             if (transactionState == TransactionState.NEW
                     || transactionState == TransactionState.CLOSED) {
                 throw new IllegalStateException("Invalid state: Transaction is " + transactionState);

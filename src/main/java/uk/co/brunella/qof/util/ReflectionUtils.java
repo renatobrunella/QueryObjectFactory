@@ -36,7 +36,7 @@ public final class ReflectionUtils {
     private static final Map<Class<?>, Class<?>> UNBOXED_CLASSES;
 
     static {
-        BOXED_CLASSES = new HashMap<Class<?>, Class<?>>(8);
+        BOXED_CLASSES = new HashMap<>(8);
         BOXED_CLASSES.put(Byte.class, Byte.TYPE);
         BOXED_CLASSES.put(Short.class, Short.TYPE);
         BOXED_CLASSES.put(Integer.class, Integer.TYPE);
@@ -46,7 +46,7 @@ public final class ReflectionUtils {
         BOXED_CLASSES.put(Double.class, Double.TYPE);
         BOXED_CLASSES.put(Void.class, Void.TYPE);
 
-        UNBOXED_CLASSES = new HashMap<Class<?>, Class<?>>(8);
+        UNBOXED_CLASSES = new HashMap<>(8);
         for (Class<?> boxed : BOXED_CLASSES.keySet()) {
             UNBOXED_CLASSES.put(BOXED_CLASSES.get(boxed), boxed);
         }
@@ -84,19 +84,17 @@ public final class ReflectionUtils {
      * @param fieldName field name
      * @return getter method for a field or null
      */
-    public static Method findGetter(Class<?> type, String fieldName) {
+    private static Method findGetter(Class<?> type, String fieldName) {
         try {
             return type.getMethod(createGetterName(fieldName), (Class[]) null);
-        } catch (SecurityException e) {
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException ignored) {
         }
         try {
             Method method = type.getMethod(createIsGetterName(fieldName), (Class[]) null);
             if (method.getReturnType() == Boolean.class || method.getReturnType() == Boolean.TYPE) {
                 return method;
             }
-        } catch (SecurityException e) {
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException ignored) {
         }
         return null;
     }
@@ -142,10 +140,7 @@ public final class ReflectionUtils {
         for (Class<?> mappableType : mappableTypes) {
             try {
                 return type.getMethod(setterName, mappableType);
-            } catch (SecurityException e) {
-                // ignore
-            } catch (NoSuchMethodException e) {
-                // ignore
+            } catch (SecurityException | NoSuchMethodException ignored) {
             }
         }
         return null;
@@ -254,7 +249,7 @@ public final class ReflectionUtils {
      * @param type the type
      * @return unboxed type
      */
-    public static Class<?> unbox(Class<?> type) {
+    static Class<?> unbox(Class<?> type) {
         Class<?> returnClass = BOXED_CLASSES.get(type);
         return returnClass == null ? type : returnClass;
     }
@@ -278,13 +273,8 @@ public final class ReflectionUtils {
      * @return a method signature
      */
     public static Signature getMethodSignature(Method method) {
-        Class<?>[] params = method.getParameterTypes();
-        org.objectweb.asm.Type[] paramTypes = new org.objectweb.asm.Type[params.length];
-        for (int i = 0; i < params.length; i++) {
-            paramTypes[i] = org.objectweb.asm.Type.getType(params[i]);
-        }
-
-        return new Signature(method.getName(), org.objectweb.asm.Type.getType(method.getReturnType()), paramTypes);
+        return new Signature(method.getName(), org.objectweb.asm.Type.getType(method.getReturnType()),
+                getTypes(method.getParameterTypes()));
     }
 
     /**
@@ -294,13 +284,16 @@ public final class ReflectionUtils {
      * @return a constructor signature
      */
     public static Signature getConstructorSignature(Constructor<?> constructor) {
-        Class<?>[] params = constructor.getParameterTypes();
-        org.objectweb.asm.Type[] paramTypes = new org.objectweb.asm.Type[params.length];
-        for (int i = 0; i < params.length; i++) {
-            paramTypes[i] = org.objectweb.asm.Type.getType(params[i]);
-        }
+        return new Signature("<init>", org.objectweb.asm.Type.VOID_TYPE,
+                getTypes(constructor.getParameterTypes()));
+    }
 
-        return new Signature("<init>", org.objectweb.asm.Type.VOID_TYPE, paramTypes);
+    private static org.objectweb.asm.Type[] getTypes(Class<?>[] parameterTypes) {
+        org.objectweb.asm.Type[] paramTypes = new org.objectweb.asm.Type[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            paramTypes[i] = org.objectweb.asm.Type.getType(parameterTypes[i]);
+        }
+        return paramTypes;
     }
 
 }

@@ -161,8 +161,8 @@ public class EmitUtils {
             co.dup();
 
             // push constructor parameters on stack (if any)
-            for (int i = 0; i < constructorParameters.length; i++) {
-                co.load_local(constructorParameters[i]);
+            for (Local constructorParameter : constructorParameters) {
+                co.load_local(constructorParameter);
             }
             if (mapper.getConstructor() == null && mapper.getStaticFactoryMethod() == null) {
                 // invoke default constructor
@@ -177,8 +177,8 @@ public class EmitUtils {
             // use a static factory method to create result object
 
             // push parameters on stack (if any)
-            for (int i = 0; i < constructorParameters.length; i++) {
-                co.load_local(constructorParameters[i]);
+            for (Local constructorParameter : constructorParameters) {
+                co.load_local(constructorParameter);
             }
             // call static factory method to create result object
             Signature staticFactoryMethodSignature = createMethodSignature(mapper.getStaticFactoryMethod());

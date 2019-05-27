@@ -25,7 +25,7 @@ import java.util.Set;
 public abstract class AbstractDateTimeMapping extends AbstractBaseMapping implements Mapping, ParameterMapping,
         ResultMapping {
 
-    private static final Set<Class<?>> types = new HashSet<Class<?>>();
+    private static final Set<Class<?>> types = new HashSet<>();
 
     static {
         types.add(Date.class);

@@ -95,10 +95,10 @@ import java.util.Map;
  */
 public class QueryObjectFactory {
 
-    protected static final Customizer DEFAULT_CUSTOMIZER = new DefaultCustomizer();
-    protected static final SQLDialect DEFAULT_SQL_DIALECT = new DefaultDialect();
-    protected static final Map<ClassLoader, Customizer> customizerMap = new HashMap<ClassLoader, Customizer>();
-    protected static final Map<ClassLoader, SQLDialect> sqlDialectMap = new HashMap<ClassLoader, SQLDialect>();
+    private static final Customizer DEFAULT_CUSTOMIZER = new DefaultCustomizer();
+    private static final SQLDialect DEFAULT_SQL_DIALECT = new DefaultDialect();
+    private static final Map<ClassLoader, Customizer> customizerMap = new HashMap<>();
+    private static final Map<ClassLoader, SQLDialect> sqlDialectMap = new HashMap<>();
 
     static {
         CommonAdapterRegistrar.registerCommonAdapters();
@@ -180,7 +180,7 @@ public class QueryObjectFactory {
      * @see QueryObjectFactory#createQueryObjectFromSuperClass(Class, Class, Object...)
      * @since 1.0
      */
-    public static <T, S> T createQueryObjectFromSuperClass(Class<T> queryDefinitionClass, Class<S> superClass) {
+    static <T, S> T createQueryObjectFromSuperClass(Class<T> queryDefinitionClass, Class<S> superClass) {
         return createQueryObjectFromSuperClass(queryDefinitionClass, superClass, new Object[]{});
     }
 
@@ -210,15 +210,15 @@ public class QueryObjectFactory {
      * @see QueryObjectFactory#createQueryObjectFromSuperClass(Class, Class)
      * @since 1.0
      */
-    public static <T, S> T createQueryObjectFromSuperClass(Class<T> queryDefinitionClass, Class<S> superClass,
-                                                           Object... parameters) {
+    static <T, S> T createQueryObjectFromSuperClass(Class<T> queryDefinitionClass, Class<S> superClass,
+                                                    Object... parameters) {
         if ((queryDefinitionClass != superClass) && !queryDefinitionClass.isInterface()) {
-            throw new RuntimeException("Invalid class hierarchie");
+            throw new RuntimeException("Invalid class hierarchy");
         }
         @SuppressWarnings("unchecked") Class<T> clazz = (Class<T>) ClassGenerationCache.getCachedClass(queryDefinitionClass);
         if (clazz == null) {
             try {
-                List<Mapper> mappers = new ArrayList<Mapper>();
+                List<Mapper> mappers = new ArrayList<>();
                 // get all public methods
                 for (Method method : queryDefinitionClass.getMethods()) {
                     Mapper mapper = AnnotationMapperFactory.create(queryDefinitionClass, method);
@@ -268,7 +268,7 @@ public class QueryObjectFactory {
         setCustomizer(classLoader, customizer);
     }
 
-    protected static synchronized void setCustomizer(ClassLoader classLoader, Customizer customizer) {
+    private static synchronized void setCustomizer(ClassLoader classLoader, Customizer customizer) {
         customizerMap.put(classLoader, customizer);
     }
 
@@ -283,7 +283,7 @@ public class QueryObjectFactory {
         setDefaultCustomizer(classLoader);
     }
 
-    protected static synchronized void setDefaultCustomizer(ClassLoader classLoader) {
+    private static synchronized void setDefaultCustomizer(ClassLoader classLoader) {
         customizerMap.remove(classLoader);
     }
 
@@ -332,7 +332,7 @@ public class QueryObjectFactory {
         return isMapperRegistered(classLoader, type);
     }
 
-    protected static synchronized boolean isMapperRegistered(ClassLoader classLoader, String type) {
+    private static synchronized boolean isMapperRegistered(ClassLoader classLoader, String type) {
         return MappingFactory.isMapperRegistered(classLoader, type);
     }
 
@@ -347,7 +347,7 @@ public class QueryObjectFactory {
         setSQLDialect(classLoader, dialect);
     }
 
-    protected static synchronized void setSQLDialect(ClassLoader classLoader, SQLDialect dialect) {
+    private static synchronized void setSQLDialect(ClassLoader classLoader, SQLDialect dialect) {
         sqlDialectMap.put(classLoader, dialect);
     }
 }

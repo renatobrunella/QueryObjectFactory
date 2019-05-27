@@ -43,7 +43,7 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     private Local result;
     private Local mapKey;
     private boolean constructorMappings;
-    private Local[] constructorParameters; //NOPMD
+    private Local[] constructorParameters;
 
     public ResultMappingGenerator(CodeEmitter co, Local resultSetOrCallableStatement, Local result, Local mapKey,
                                   boolean constructorMappings, Local[] constructorParameters) {
@@ -255,12 +255,8 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     }
 
     private void generateGetString(ResultMapping mapping) {
-        int sqlIndex = getSqlIndex(mapping);
-        String sqlColumn = getSqlColumn(mapping);
-        Method setter = mapping.getSetter();
-
         // ... = getString(index);
-        if (setter != null) {
+        if (mapping.getSetter() != null) {
             if (mapping.isMapKey()) {
                 co.load_local(mapKey);
             } else {
@@ -268,8 +264,9 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
             }
         }
         co.load_local(resultSetOrCallableStatement);
+        String sqlColumn = getSqlColumn(mapping);
         if (sqlColumn == null) {
-            co.push(sqlIndex);
+            co.push(getSqlIndex(mapping));
             co.invoke_interface(resultSetOrCallableStatement.getType(), SIG_getString);
         } else {
             co.push(sqlColumn);
@@ -278,11 +275,9 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     }
 
     private void generateStoreString(ResultMapping mapping) {
-        Method setter = mapping.getSetter();
-        Class<?> type = mapping.getType();
-        Local localResult = null;
-
+        Local localResult;
         if (constructorMappings) {
+            Class<?> type;
             if (mapping.getConstructor() != null) {
                 type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
             } else {
@@ -297,6 +292,7 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
                 localResult = result;
             }
         }
+        Method setter = mapping.getSetter();
         if (setter != null) {
             co.invoke_virtual(Type.getType(setter.getDeclaringClass()), ReflectionUtils.getMethodSignature(setter));
         } else {
@@ -323,14 +319,10 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
                 || (!constructorMappings && mapping.getConstructorParameter() != null)) {
             return;
         }
-
-        int sqlIndex = getSqlIndex(mapping);
-        String sqlColumn = getSqlColumn(mapping);
-        Method setter = mapping.getSetter();
-        Class<?> type = mapping.getType();
-        Local localResult = null;
+        Local localResult;
 
         if (constructorMappings) {
+            Class<?> type;
             if (mapping.getConstructor() != null) {
                 type = mapping.getConstructor().getParameterTypes()[mapping.getConstructorParameter() - 1];
             } else {
@@ -346,6 +338,8 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
             }
         }
 
+        Method setter = mapping.getSetter();
+
         // ... = getDate(index);
         if (setter != null) {
             if (mapping.isMapKey()) {
@@ -355,8 +349,9 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
             }
         }
         co.load_local(resultSetOrCallableStatement);
+        String sqlColumn = getSqlColumn(mapping);
         if (sqlColumn == null) {
-            co.push(sqlIndex);
+            co.push(getSqlIndex(mapping));
             co.invoke_interface(resultSetOrCallableStatement.getType(), sqlTypeGet);
         } else {
             co.push(sqlColumn);
@@ -402,7 +397,7 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
         String[] sqlColumns = mapping.getSqlColumns();
         Method setter = mapping.getSetter();
         Class<?> type = mapping.getType();
-        Local localResult = null;
+        Local localResult;
 
         if (constructorMappings) {
             if (mapping.getConstructor() != null) {
@@ -492,7 +487,7 @@ public class ResultMappingGenerator implements MappingVisitor, NumberMappingVisi
     }
 
     private String getSqlColumn(ResultMapping mapping) {
-        return mapping.getSqlColumns() != null && mapping.getSqlColumns().length == 1 ? mapping.getSqlColumns()[0] : null; //NOPMD
+        return mapping.getSqlColumns() != null && mapping.getSqlColumns().length == 1 ? mapping.getSqlColumns()[0] : null;
     }
 
     private int getSqlIndex(ResultMapping mapping) {

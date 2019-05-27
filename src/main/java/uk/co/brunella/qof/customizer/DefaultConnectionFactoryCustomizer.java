@@ -43,13 +43,13 @@ public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCust
     private static final String FIELD_NAME_CONNECTION = "$connection";
 
     public void emitFields(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-        if (!methodExists(superClass, "getConnection", null, java.sql.Connection.class)) {
+        if (isMethodMissing(superClass, "getConnection", null, java.sql.Connection.class)) {
             ce.declare_field(Constants.ACC_PRIVATE, FIELD_NAME_CONNECTION, TYPE_Connection, null);
         }
     }
 
     public void emitGetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-        if (!methodExists(superClass, "getConnection", null, java.sql.Connection.class)) {
+        if (isMethodMissing(superClass, "getConnection", null, java.sql.Connection.class)) {
             CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_getConnection, null);
 
             // check if connection was set
@@ -68,7 +68,7 @@ public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCust
     }
 
     public void emitUngetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
-        if (!methodExists(superClass, "ungetConnection", CONNECTION_PARAMETER_TYPES, null)) {
+        if (isMethodMissing(superClass, "ungetConnection", CONNECTION_PARAMETER_TYPES, null)) {
             // empty method
             CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_ungetConnection, null);
             co.return_value();
@@ -78,33 +78,32 @@ public class DefaultConnectionFactoryCustomizer implements ConnectionFactoryCust
 
     public void emitSetConnection(Class<?> queryDefinitionClass, Class<?> superClass, ClassEmitter ce) {
         // only create the setConnection method if a getConnection method is NOT defined
-        if (!methodExists(superClass, "getConnection", null, java.sql.Connection.class)) {
+        if (isMethodMissing(superClass, "getConnection", null, java.sql.Connection.class)) {
             CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_setConnection, null);
             co.load_this();
             co.load_arg(0);
             co.putfield(FIELD_NAME_CONNECTION);
             co.return_value();
             co.end_method();
-        } else if (!methodExists(superClass, "setConnection", CONNECTION_PARAMETER_TYPES, null)) {
+        } else if (isMethodMissing(superClass, "setConnection", CONNECTION_PARAMETER_TYPES, null)) {
             CodeEmitter co = ce.begin_method(Constants.ACC_PUBLIC, SIG_setConnection, null);
             co.throw_exception(TYPE_RuntimeException, "Connection cannot be set");
             co.end_method();
         }
     }
 
-    private boolean methodExists(Class<?> superClass, String methodName, Class<?>[] parameterTypes, Class<?> returnType) {
+    private boolean isMethodMissing(Class<?> superClass, String methodName, Class<?>[] parameterTypes, Class<?> returnType) {
         try {
             Method method = superClass.getMethod(methodName, parameterTypes);
             int modifiers = method.getModifiers();
             if (Modifier.isPrivate(modifiers) || Modifier.isAbstract(modifiers)) {
-                return false;
+                return true;
             }
             if (returnType != null && method.getReturnType() != returnType) {
-                return false;
-            } else return returnType != null || method.getReturnType() == void.class;
-        } catch (SecurityException e) {
-        } catch (NoSuchMethodException e) {
+                return true;
+            } else return returnType == null && method.getReturnType() != void.class;
+        } catch (SecurityException | NoSuchMethodException ignored) {
         }
-        return false;
+        return true;
     }
 }

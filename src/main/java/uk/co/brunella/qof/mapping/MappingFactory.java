@@ -30,12 +30,12 @@ import java.util.Set;
 
 public class MappingFactory {
 
-    private static Map<ClassLoader, Map<String, MappingClassInfo>> registeredResultMappers = new HashMap<ClassLoader, Map<String, MappingClassInfo>>();
-    private static Map<ClassLoader, Map<String, MappingClassInfo>> registeredParameterMappers = new HashMap<ClassLoader, Map<String, MappingClassInfo>>();
-    private static Map<Class<?>, MappingClassInfo> defaultResultMappers = new HashMap<Class<?>, MappingClassInfo>();
+    private static Map<ClassLoader, Map<String, MappingClassInfo>> registeredResultMappers = new HashMap<>();
+    private static Map<ClassLoader, Map<String, MappingClassInfo>> registeredParameterMappers = new HashMap<>();
+    private static Map<Class<?>, MappingClassInfo> defaultResultMappers = new HashMap<>();
 
     // ------- mapper registration -----------
-    private static Map<Class<?>, MappingClassInfo> defaultParameterMappers = new HashMap<Class<?>, MappingClassInfo>();
+    private static Map<Class<?>, MappingClassInfo> defaultParameterMappers = new HashMap<>();
 
     static {
         registerResultMapper("string", AbstractCharacterMapping.StringMapping.class, AbstractCharacterMapping.StringMapping.getTypes());
@@ -96,9 +96,7 @@ public class MappingFactory {
             ParameterMapping mapping = (ParameterMapping) mappingClass.newInstance();
             mapping.setParameters(index, type, collectionType, beanType, getters, sqlIndexes, sqlColumns, info.getAdapter(), usesArray, parameterSeparator);
             return mapping;
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -106,7 +104,7 @@ public class MappingFactory {
     public static ResultMapping createResultMapping(ClassLoader classLoader, String mappingType, Class<?> type, Class<?> collectionType, Class<?> beanType,
                                                     Method setter, int[] sqlIndexes, String[] sqlColumns, Class<?> mapKeyType, Integer constructorParameter, Constructor<?> constructor, Method staticFactoryMethod,
                                                     Class<?> collectionClass, int collectionInitialCapacity) {
-        MappingClassInfo info = null;
+        MappingClassInfo info;
         Class<?> resultType;
         if (mapKeyType == null) {
             resultType = type;
@@ -139,44 +137,27 @@ public class MappingFactory {
                     info.getAdapter(), mapKeyType, constructorParameter, constructor, staticFactoryMethod,
                     collectionClass, collectionInitialCapacity);
             return mapping;
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
 
-    protected static void registerResultMapper(String type, Class<?> mapping, Set<Class<?>> types) {
+    private static void registerResultMapper(String type, Class<?> mapping, Set<Class<?>> types) {
         if (!ResultMapping.class.isAssignableFrom(mapping)) {
             throw new ValidationException("Mapping " + mapping.getName() + " must implement ResultMapping interface");
         }
-        Map<String, MappingClassInfo> map;
-        if (registeredResultMappers.containsKey(null)) {
-            map = registeredResultMappers.get(null);
-        } else {
-            map = new HashMap<String, MappingClassInfo>();
-            registeredResultMappers.put(null, map);
-        }
-        MappingClassInfo info = new MappingClassInfo(mapping, types);
-        map.put(type, info);
-        for (Class<?> t : types) {
-            if (!defaultResultMappers.containsKey(t)) {
-                defaultResultMappers.put(t, info);
-            }
-        }
+        registerMapperWithDefault(type, mapping, types, registeredResultMappers, defaultResultMappers);
     }
 
-    protected static void registerParameterMapper(String type, Class<?> mapping, Set<Class<?>> types) {
+    private static void registerParameterMapper(String type, Class<?> mapping, Set<Class<?>> types) {
         if (!ParameterMapping.class.isAssignableFrom(mapping)) {
             throw new ValidationException("Mapping " + mapping.getName() + " must implement ParameterMapping interface");
         }
-        Map<String, MappingClassInfo> map;
-        if (registeredParameterMappers.containsKey(null)) {
-            map = registeredParameterMappers.get(null);
-        } else {
-            map = new HashMap<String, MappingClassInfo>();
-            registeredParameterMappers.put(null, map);
-        }
+        registerMapperWithDefault(type, mapping, types, registeredParameterMappers, defaultParameterMappers);
+    }
+
+    private static void registerMapperWithDefault(String type, Class<?> mapping, Set<Class<?>> types, Map<ClassLoader, Map<String, MappingClassInfo>> registeredMappers, Map<Class<?>, MappingClassInfo> defaultParameterMappers) {
+        Map<String, MappingClassInfo> map = registeredMappers.computeIfAbsent(null, k -> new HashMap<>());
         MappingClassInfo info = new MappingClassInfo(mapping, types);
         map.put(type, info);
         for (Class<?> t : types) {
@@ -205,14 +186,16 @@ public class MappingFactory {
         registeredParameterMappers.remove(classLoader);
     }
 
-    protected static void registerResultMapper(ClassLoader classLoader, String type, MappingAdapter adapter) {
-        Map<String, MappingClassInfo> map;
-        if (registeredResultMappers.containsKey(classLoader)) {
-            map = registeredResultMappers.get(classLoader);
-        } else {
-            map = new HashMap<String, MappingClassInfo>();
-            registeredResultMappers.put(classLoader, map);
-        }
+    private static void registerResultMapper(ClassLoader classLoader, String type, MappingAdapter adapter) {
+        registerMapper(classLoader, type, adapter, registeredResultMappers);
+    }
+
+    private static void registerParameterMapper(ClassLoader classLoader, String type, MappingAdapter adapter) {
+        registerMapper(classLoader, type, adapter, registeredParameterMappers);
+    }
+
+    private static void registerMapper(ClassLoader classLoader, String type, MappingAdapter adapter, Map<ClassLoader, Map<String, MappingClassInfo>> registeredMappers) {
+        Map<String, MappingClassInfo> map = registeredMappers.computeIfAbsent(classLoader, k -> new HashMap<>());
         if (!map.containsKey(type)) {
             map.put(type, new MappingClassInfo(AdapterMapping.class, adapter.getTypes(), adapter));
         } else {
@@ -220,36 +203,21 @@ public class MappingFactory {
         }
     }
 
-    protected static void registerParameterMapper(ClassLoader classLoader, String type, MappingAdapter adapter) {
-        Map<String, MappingClassInfo> map;
-        if (registeredParameterMappers.containsKey(classLoader)) {
-            map = registeredParameterMappers.get(classLoader);
-        } else {
-            map = new HashMap<String, MappingClassInfo>();
-            registeredParameterMappers.put(classLoader, map);
-        }
-        if (!map.containsKey(type)) {
-            map.put(type, new MappingClassInfo(AdapterMapping.class, adapter.getTypes(), adapter));
-        } else {
-            throw new ValidationException("Type " + type + " already registered");
-        }
-    }
-
-    protected static void unregisterResultMapper(ClassLoader classLoader, String type) {
+    private static void unregisterResultMapper(ClassLoader classLoader, String type) {
         Map<String, MappingClassInfo> map = registeredResultMappers.get(classLoader);
         if (map != null) {
             map.remove(type);
         }
     }
 
-    protected static void unregisterParameterMapper(ClassLoader classLoader, String type) {
+    private static void unregisterParameterMapper(ClassLoader classLoader, String type) {
         Map<String, MappingClassInfo> map = registeredParameterMappers.get(classLoader);
         if (map != null) {
             map.remove(type);
         }
     }
 
-    protected static boolean isMapperResultRegistered(ClassLoader classLoader, String type) {
+    private static boolean isMapperResultRegistered(ClassLoader classLoader, String type) {
         Map<String, MappingClassInfo> map = registeredResultMappers.get(classLoader);
         if (map != null) {
             return map.containsKey(type);
@@ -258,9 +226,7 @@ public class MappingFactory {
         }
     }
 
-    // --------------------------
-
-    public static MappingClassInfo getParameterMappingInfo(ClassLoader classLoader, String type) {
+    private static MappingClassInfo getParameterMappingInfo(ClassLoader classLoader, String type) {
         MappingClassInfo info = null;
         Map<String, MappingClassInfo> map = registeredParameterMappers.get(classLoader);
         if (map != null) {
@@ -288,11 +254,11 @@ public class MappingFactory {
         return null;
     }
 
-    public static MappingClassInfo getDefaultParameterMappingInfo(Class<?> type) {
+    private static MappingClassInfo getDefaultParameterMappingInfo(Class<?> type) {
         return defaultParameterMappers.get(type);
     }
 
-    public static MappingClassInfo getDefaultResultMappingInfo(Class<?> type) {
+    private static MappingClassInfo getDefaultResultMappingInfo(Class<?> type) {
         return defaultResultMappers.get(type);
     }
 
@@ -303,11 +269,11 @@ public class MappingFactory {
         private Set<Class<?>> mappableTypes;
         private MappingAdapter adapter;
 
-        public MappingClassInfo(Class<?> mapperClass, Set<Class<?>> mappableTypes) {
+        MappingClassInfo(Class<?> mapperClass, Set<Class<?>> mappableTypes) {
             this(mapperClass, mappableTypes, null);
         }
 
-        public MappingClassInfo(Class<?> mapperClass, Set<Class<?>> mappableTypes, MappingAdapter adapter) {
+        MappingClassInfo(Class<?> mapperClass, Set<Class<?>> mappableTypes, MappingAdapter adapter) {
             this.mapperClass = mapperClass;
             this.mappableTypes = mappableTypes;
             this.adapter = adapter;

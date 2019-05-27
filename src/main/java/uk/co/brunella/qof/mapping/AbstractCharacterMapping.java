@@ -31,7 +31,7 @@ public abstract class AbstractCharacterMapping extends AbstractBaseMapping imple
     public abstract void accept(Mapper mapper, CharacterMappingVisitor visitor);
 
     public static class StringMapping extends AbstractCharacterMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(String.class);
@@ -47,7 +47,7 @@ public abstract class AbstractCharacterMapping extends AbstractBaseMapping imple
     }
 
     public static class CharacterMapping extends AbstractCharacterMapping {
-        private static final Set<Class<?>> types = new HashSet<Class<?>>();
+        private static final Set<Class<?>> types = new HashSet<>();
 
         static {
             types.add(char.class);

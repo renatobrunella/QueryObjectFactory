@@ -62,13 +62,13 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
     }
 
     private <T> List<Method> getAllAnnotatedMethods(Class<T> queryDefinitionClass, Class<T> superClass) {
-        Map<String, Method> annotatedMethods = new HashMap<String, Method>();
+        Map<String, Method> annotatedMethods = new HashMap<>();
 
         // find annotated methods starting with super class
         findAnnotatedMethods(superClass, annotatedMethods);
         findAnnotatedMethods(queryDefinitionClass, annotatedMethods);
 
-        return new ArrayList<Method>(annotatedMethods.values());
+        return new ArrayList<>(annotatedMethods.values());
     }
 
     private void findAnnotatedMethods(Class<?> clazz,
@@ -145,7 +145,7 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
                 try {
                     enhancedMethod = clazz.getDeclaredMethod(method.getName(), method.getParameterTypes());
                     break;
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
                 clazz = clazz.getSuperclass();
             }

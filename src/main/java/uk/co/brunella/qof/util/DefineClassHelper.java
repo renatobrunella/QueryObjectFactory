@@ -37,11 +37,7 @@ public class DefineClassHelper {
     private static Method DEFINE_CLASS;
 
     static {
-        PROTECTION_DOMAIN = (ProtectionDomain) AccessController.doPrivileged(new PrivilegedAction<Object>() {
-            public Object run() {
-                return QueryObjectGenerator.class.getProtectionDomain();
-            }
-        });
+        PROTECTION_DOMAIN = (ProtectionDomain) AccessController.doPrivileged((PrivilegedAction<Object>) QueryObjectGenerator.class::getProtectionDomain);
 
         AccessController.doPrivileged(new PrivilegedAction<Object>() {
             public Object run() {
@@ -50,9 +46,7 @@ public class DefineClassHelper {
                     DEFINE_CLASS = loader.getDeclaredMethod("defineClass", String.class, byte[].class,
                             Integer.TYPE, Integer.TYPE, ProtectionDomain.class);
                     DEFINE_CLASS.setAccessible(true);
-                } catch (ClassNotFoundException e) {
-                    throw new CodeGenerationException(e);
-                } catch (NoSuchMethodException e) {
+                } catch (ClassNotFoundException | NoSuchMethodException e) {
                     throw new CodeGenerationException(e);
                 }
                 return null;
@@ -73,8 +67,7 @@ public class DefineClassHelper {
      * @see ClassLoader
      */
     public static <T> Class<T> defineClass(String className, byte[] byteCode, ClassLoader loader) throws Exception {
-        Object[] args = new Object[]{className, byteCode, Integer.valueOf(0), Integer.valueOf(byteCode.length),
-                PROTECTION_DOMAIN};
+        Object[] args = new Object[]{className, byteCode, 0, byteCode.length, PROTECTION_DOMAIN};
         @SuppressWarnings("unchecked") Class<T> definedClass = (Class<T>) DEFINE_CLASS.invoke(loader, args);
         return definedClass;
     }

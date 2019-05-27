@@ -18,6 +18,9 @@
  */
 package uk.co.brunella.qof.parser;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * Default implementation of a result definition.
  */
@@ -40,7 +43,7 @@ public class ResultDefinitionImpl implements ResultDefinition {
 
     public void setColumns(String[] columns) {
         if (columns == null || columns.length == 0) {
-            this.columns = null; //NOPMD
+            this.columns = null;
         } else {
             this.columns = columns;
         }
@@ -52,7 +55,7 @@ public class ResultDefinitionImpl implements ResultDefinition {
 
     public void setField(String field) {
         if (field == null || "".equals(field)) {
-            this.field = null; //NOPMD
+            this.field = null;
         } else {
             this.field = field;
         }
@@ -72,7 +75,7 @@ public class ResultDefinitionImpl implements ResultDefinition {
 
     public void setIndexes(int[] indexes) {
         if (indexes == null || indexes.length == 0) {
-            this.indexes = null; //NOPMD
+            this.indexes = null;
         } else {
             this.indexes = indexes;
         }
@@ -95,31 +98,11 @@ public class ResultDefinitionImpl implements ResultDefinition {
     }
 
     private String getColumnsString() {
-        if (columns == null) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < columns.length; i++) {
-            if (i > 0) {
-                sb.append(',');
-            }
-            sb.append('"').append(columns[i]).append('"');
-        }
-        return sb.toString();
+        return columns == null ? "" : Arrays.stream(columns).map(n -> "\"" + n + "\"").collect(Collectors.joining(","));
     }
 
     private String getIndexesString() {
-        if (indexes == null) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < indexes.length; i++) {
-            if (i > 0) {
-                sb.append(',');
-            }
-            sb.append(indexes[i]);
-        }
-        return sb.toString();
+        return indexes == null ? "" : Arrays.stream(indexes).mapToObj(Integer::toString).collect(Collectors.joining(","));
     }
 
     public String toString() {
