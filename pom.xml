@@ -4,7 +4,7 @@
     <groupId>uk.co.brunella.qof</groupId>
     <artifactId>qof</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 
     <name>qof</name>
     <description>QueryObjectFactory (QOF) is a lightweight runtime JDBC byte-code generator providing support for CRUD (create, retrieve, update and delete) operations and stored procedure calls. It uses Java annotations to define mappings</description>
