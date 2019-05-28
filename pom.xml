@@ -136,6 +136,12 @@
                                     <exclude>**</exclude>
                                 </excludes>
                             </filter>
+                            <filter>
+                                <artifact>org.hamcrest:hamcrest-core</artifact>
+                                <excludes>
+                                    <exclude>**</exclude>
+                                </excludes>
+                            </filter>
                         </filters>
 
                         <relocations>
