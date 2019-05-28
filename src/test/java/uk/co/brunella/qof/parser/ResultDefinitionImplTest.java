@@ -1,9 +1,12 @@
 package uk.co.brunella.qof.parser;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class ResultDefinitionImplTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
+public class ResultDefinitionImplTest {
+
+    @Test
     public void testToString() {
         ResultDefinitionImpl impl = new ResultDefinitionImpl();
         impl.setColumns(new String[]{"column1", "column2"});
@@ -15,6 +18,7 @@ public class ResultDefinitionImplTest extends TestCase {
         assertEquals("Result: type (\"column1\",\"column2\" 2,3) field", impl.toString());
     }
 
+    @Test
     public void testToString2() {
         ResultDefinitionImpl impl = new ResultDefinitionImpl();
         impl.setConstructorParameter(1);

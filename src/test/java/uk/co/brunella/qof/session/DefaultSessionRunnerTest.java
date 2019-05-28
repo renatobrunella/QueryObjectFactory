@@ -1,15 +1,21 @@
 package uk.co.brunella.qof.session;
 
-import junit.framework.TestCase;
 import org.hsqldb.jdbc.JDBCDataSource;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Logger;
 
-public class DefaultSessionRunnerTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class DefaultSessionRunnerTest {
 
     private DataSource createDataSource() {
         JDBCDataSource ds = new JDBCDataSource();
@@ -19,45 +25,37 @@ public class DefaultSessionRunnerTest extends TestCase {
         return new DataSourceWrapper(ds);
     }
 
+    @Before
     public void setUp() throws Exception {
         MockInitialContextFactory.register();
         MockContext.getInstance().bind("datasource", createDataSource());
-        Statement stmt = createDataSource().getConnection().createStatement();
-        try {
+        try (Statement stmt = createDataSource().getConnection().createStatement()) {
             try {
                 stmt.execute("drop table test");
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
             stmt.execute("create table test (id integer, name varchar(40))");
-        } finally {
-            stmt.close();
         }
     }
 
+    @After
     public void tearDown() throws Exception {
         MockContext.getInstance().unbind("datasource");
-        Statement stmt = createDataSource().getConnection().createStatement();
-        try {
+        try (Statement stmt = createDataSource().getConnection().createStatement()) {
             stmt.execute("drop table test");
-        } finally {
-            stmt.close();
         }
     }
 
+    @Test
     public void testDefaultContext() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(createDataSource());
-        DefaultSessionRunner.execute(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.execute((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         });
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -69,21 +67,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
-    public void testDefaultContextBeanManaged() throws SystemException, SQLException, NamingException {
+    @Test
+    public void testDefaultContextBeanManaged() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
-        DefaultSessionRunner.executeBeanManaged(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.executeBeanManaged((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         });
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -95,21 +88,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
-    public void testDefaultContextContainerManaged() throws SystemException, SQLException, NamingException {
+    @Test
+    public void testDefaultContextContainerManaged() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
-        DefaultSessionRunner.executeContainerManaged(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.executeContainerManaged((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         });
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -117,21 +105,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testDefaultContextPolicy() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(createDataSource());
-        DefaultSessionRunner.execute(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.execute((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -143,21 +126,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
-    public void testDefaultContextBeanManagedPolicy() throws SystemException, SQLException, NamingException {
+    @Test
+    public void testDefaultContextBeanManagedPolicy() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
-        DefaultSessionRunner.executeBeanManaged(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.executeBeanManaged((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -169,21 +147,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
-    public void testDefaultContextContainerManagedPolicy() throws SystemException, SQLException, NamingException {
+    @Test
+    public void testDefaultContextContainerManagedPolicy() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
-        DefaultSessionRunner.executeContainerManaged(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.executeContainerManaged((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -191,21 +164,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testNamedContext() throws SystemException, SQLException {
         SessionContextFactory.removeContext("CONTEXT");
         SessionContextFactory.setDataSource("CONTEXT", createDataSource());
-        DefaultSessionRunner.execute(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.execute((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, "CONTEXT");
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -217,21 +185,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
-    public void testNamedContextBeanManaged() throws SystemException, SQLException, NamingException {
+    @Test
+    public void testNamedContextBeanManaged() throws SystemException, SQLException {
         SessionContextFactory.removeContext("CONTEXT");
         SessionContextFactory.setJndiDataSource("CONTEXT", "datasource", null, TransactionManagementType.BEAN);
-        DefaultSessionRunner.executeBeanManaged(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.executeBeanManaged((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, "CONTEXT");
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -243,21 +206,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
-    public void testNamedContextContainerManaged() throws SystemException, SQLException, NamingException {
+    @Test
+    public void testNamedContextContainerManaged() throws SystemException, SQLException {
         SessionContextFactory.removeContext("CONTEXT");
         SessionContextFactory.setJndiDataSource("CONTEXT", "datasource", null, TransactionManagementType.BEAN);
-        DefaultSessionRunner.executeContainerManaged(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.executeContainerManaged((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, "CONTEXT");
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -265,21 +223,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testNamedContextPolicy() throws SystemException, SQLException {
         SessionContextFactory.removeContext("CONTEXT");
         SessionContextFactory.setDataSource("CONTEXT", createDataSource());
-        DefaultSessionRunner.execute(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.execute((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, "CONTEXT", SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -291,21 +244,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
-    public void testNamedContextBeanManagedPolicy() throws SystemException, SQLException, NamingException {
+    @Test
+    public void testNamedContextBeanManagedPolicy() throws SystemException, SQLException {
         SessionContextFactory.removeContext("CONTEXT");
         SessionContextFactory.setJndiDataSource("CONTEXT", "datasource", null, TransactionManagementType.BEAN);
-        DefaultSessionRunner.executeBeanManaged(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.executeBeanManaged((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, "CONTEXT", SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -317,21 +265,16 @@ public class DefaultSessionRunnerTest extends TestCase {
         connection.close();
     }
 
-    public void testNamedContextContainerManagedPolicy() throws SystemException, SQLException, NamingException {
+    @Test
+    public void testNamedContextContainerManagedPolicy() throws SystemException, SQLException {
         SessionContextFactory.removeContext("CONTEXT");
         SessionContextFactory.setJndiDataSource("CONTEXT", "datasource", null, TransactionManagementType.BEAN);
-        DefaultSessionRunner.executeContainerManaged(new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute("insert into test values (1, 'John')");
-                    stmt.execute("insert into test values (2, 'John')");
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        DefaultSessionRunner.executeContainerManaged((TransactionRunnable<Void>) (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute("insert into test values (1, 'John')");
+                stmt.execute("insert into test values (2, 'John')");
             }
-
+            return null;
         }, "CONTEXT", SessionPolicy.CAN_JOIN_EXISTING_SESSION);
         Connection connection = createDataSource().getConnection();
         ResultSet rs = connection.createStatement().executeQuery("select * from test");
@@ -342,7 +285,7 @@ public class DefaultSessionRunnerTest extends TestCase {
     public static class DataSourceWrapper implements DataSource {
         DataSource dataSource;
 
-        public DataSourceWrapper(DataSource dataSource) {
+        DataSourceWrapper(DataSource dataSource) {
             this.dataSource = dataSource;
         }
 
@@ -366,7 +309,7 @@ public class DefaultSessionRunnerTest extends TestCase {
             dataSource.setLoginTimeout(seconds);
         }
 
-        public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        public Logger getParentLogger() {
             return null;
         }
 
@@ -378,11 +321,11 @@ public class DefaultSessionRunnerTest extends TestCase {
             dataSource.setLogWriter(out);
         }
 
-        public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        public boolean isWrapperFor(Class<?> iface) {
             return false;
         }
 
-        public <T> T unwrap(Class<T> iface) throws SQLException {
+        public <T> T unwrap(Class<T> iface) {
             return null;
         }
     }

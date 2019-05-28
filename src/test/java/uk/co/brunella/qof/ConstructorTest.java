@@ -1,11 +1,14 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.sql.Connection;
 
-public class ConstructorTest extends TestCase {
+import static org.junit.Assert.*;
 
+public class ConstructorTest {
+
+    @Test
     public void testConstructor() {
         TestConstructorClass test = QueryObjectFactory.createQueryObject(TestConstructorClass.class, null, 99);
         assertNotNull(test);
@@ -26,7 +29,7 @@ public class ConstructorTest extends TestCase {
     public static abstract class TestConstructorClass implements BaseQuery {
 
         protected Connection connection;
-        protected int num;
+        int num;
 
         public TestConstructorClass(Connection connection) {
             this(connection, -1);

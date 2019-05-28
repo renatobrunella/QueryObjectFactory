@@ -1,12 +1,14 @@
 package uk.co.brunella.qof.codegen;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 import uk.co.brunella.qof.Query;
 import uk.co.brunella.qof.exception.ValidationException;
 
 import java.lang.reflect.Method;
 
-public class AnnotationMapperFactoryTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class AnnotationMapperFactoryTest {
 
     private String run(Method method) {
         try {
@@ -17,6 +19,7 @@ public class AnnotationMapperFactoryTest extends TestCase {
         }
     }
 
+    @Test
     public void testInvalidParameterIndex() throws SecurityException, NoSuchMethodException {
         Method method1a = TestInterface.class.getMethod("test1", (Class[]) null);
         Method method1b = TestInterface.class.getMethod("test1", Integer.TYPE);
@@ -28,12 +31,14 @@ public class AnnotationMapperFactoryTest extends TestCase {
                 run(method1b));
     }
 
+    @Test
     public void testInvalidParameterNoGetter() throws SecurityException, NoSuchMethodException {
         Method method = TestInterface.class.getMethod("test2", Integer.TYPE);
         assertEquals(
                 "Cannot find or access getter for [field] in class int", run(method));
     }
 
+    @Test
     public void testInvalidResultNoSetter() throws SecurityException, NoSuchMethodException {
         Method method = TestInterface.class.getMethod("test3", Integer.TYPE);
         assertEquals(

@@ -1,12 +1,15 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.sql.SQLException;
 
+import static org.junit.Assert.*;
 
-public class CreationFromSuperClassTest extends TestCase {
 
+public class CreationFromSuperClassTest {
+
+    @Test
     public void testCreation() {
         TestInterface test = QueryObjectFactory.createQueryObjectFromSuperClass(TestInterface.class, TestSuperClass.class);
         assertNotNull(test);
@@ -14,6 +17,7 @@ public class CreationFromSuperClassTest extends TestCase {
         ((TestSuperClass) test).someMethod();
     }
 
+    @Test
     public void testCreationFailed() {
         try {
             QueryObjectFactory.createQueryObjectFromSuperClass(TestSuperClass.class, String.class);

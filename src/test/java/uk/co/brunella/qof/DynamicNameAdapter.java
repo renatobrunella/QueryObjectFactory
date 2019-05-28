@@ -15,7 +15,7 @@ public class DynamicNameAdapter implements DynamicMappingAdapter {
     private final static int[] types = new int[]{java.sql.Types.VARCHAR, java.sql.Types.VARCHAR};
 
     public Set<Class<?>> getTypes() {
-        Set<Class<?>> types = new HashSet<Class<?>>();
+        Set<Class<?>> types = new HashSet<>();
         types.add(Name.class);
         return types;
     }

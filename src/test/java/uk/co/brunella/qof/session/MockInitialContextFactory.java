@@ -8,15 +8,15 @@ import java.util.Hashtable;
 
 public class MockInitialContextFactory implements InitialContextFactory {
 
-    public static void register() {
+    static void register() {
         System.setProperty("java.naming.factory.initial", MockInitialContextFactory.class.getName());
         try {
             new InitialContext();
-        } catch (NamingException e) {
+        } catch (NamingException ignored) {
         }
     }
 
-    public Context getInitialContext(Hashtable<?, ?> environment) throws NamingException {
+    public Context getInitialContext(Hashtable<?, ?> environment) {
         return MockContext.getInstance();
     }
 }

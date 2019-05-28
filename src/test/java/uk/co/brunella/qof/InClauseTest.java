@@ -1,8 +1,9 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
 import net.sf.cglib.core.CodeEmitter;
 import net.sf.cglib.core.Local;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.adapter.DynamicMappingAdapter;
 import uk.co.brunella.qof.adapter.GeneratorMappingAdapter;
 import uk.co.brunella.qof.mapping.ParameterMapping;
@@ -13,9 +14,11 @@ import uk.co.brunella.qof.testtools.MockConnectionFactory;
 import java.sql.*;
 import java.util.*;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static uk.co.brunella.qof.codegen.Constants.*;
 
-public class InClauseTest extends TestCase {
+public class InClauseTest {
 
     private Connection connection;
     private SelectQueries selectQueries;
@@ -23,6 +26,7 @@ public class InClauseTest extends TestCase {
     private DeleteQueries deleteQueries;
     private List<String> log;
 
+    @Before
     public void setUp() {
         QueryObjectFactory.registerMapper("dyn", new InClauseDynamicMappingAdapter());
         QueryObjectFactory.registerMapper("gen", new InClauseGeneratorMappingAdapter());
@@ -39,12 +43,13 @@ public class InClauseTest extends TestCase {
         deleteQueries.setConnection(connection);
     }
 
+    @Test
     public void testSelectStrings1() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -67,12 +72,13 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectStrings2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -97,12 +103,13 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectStrings3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -131,12 +138,13 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectChar() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -163,12 +171,13 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectInteger() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -195,12 +204,13 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectDate() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -222,12 +232,13 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectDyn() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -250,12 +261,13 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectGen() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -278,12 +290,13 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectWithSeparator() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -306,6 +319,7 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdate() throws SQLException {
         updateQueries.update("VALUE", new int[]{1, 2});
         int i = 0;
@@ -317,8 +331,9 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateCollection() throws SQLException {
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         values.add("AAA");
         values.add("BBB");
         updateQueries.updateCollection(values, new int[]{1, 2});
@@ -336,6 +351,7 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDelete() throws SQLException {
         deleteQueries.delete(new String[]{"AAA", "BBB", "CCC"});
         int i = 0;
@@ -347,8 +363,9 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteCollection() throws SQLException {
-        List<Integer> ids = new ArrayList<Integer>();
+        List<Integer> ids = new ArrayList<>();
         ids.add(1);
         ids.add(2);
         deleteQueries.deleteCollection(ids, new String[]{"AAA", "BBB"});
@@ -366,6 +383,7 @@ public class InClauseTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsert() {
         try {
             QueryObjectFactory.createQueryObject(InsertQueries.class);
@@ -375,6 +393,7 @@ public class InClauseTest extends TestCase {
         }
     }
 
+    @Test
     public void testCall() {
         try {
             QueryObjectFactory.createQueryObject(CallQueries.class);
@@ -442,15 +461,15 @@ public class InClauseTest extends TestCase {
 
     public static class InClauseDynamicMappingAdapter implements DynamicMappingAdapter {
 
-        public Object get(ResultSet rs, int[] indexes) throws SQLException {
+        public Object get(ResultSet rs, int[] indexes) {
             return null;
         }
 
-        public Object get(ResultSet rs, String[] columns) throws SQLException {
+        public Object get(ResultSet rs, String[] columns) {
             return null;
         }
 
-        public Object get(CallableStatement cs, int[] indexes) throws SQLException {
+        public Object get(CallableStatement cs, int[] indexes) {
             return null;
         }
 
@@ -467,7 +486,7 @@ public class InClauseTest extends TestCase {
         }
 
         public Set<Class<?>> getTypes() {
-            Set<Class<?>> set = new HashSet<Class<?>>();
+            Set<Class<?>> set = new HashSet<>();
             set.add(String.class);
             return set;
         }
@@ -510,7 +529,7 @@ public class InClauseTest extends TestCase {
         }
 
         public Set<Class<?>> getTypes() {
-            Set<Class<?>> set = new HashSet<Class<?>>();
+            Set<Class<?>> set = new HashSet<>();
             set.add(String.class);
             return set;
         }

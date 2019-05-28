@@ -1,18 +1,22 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
 import java.sql.Connection;
 import java.util.List;
 
-public class BeanInsertTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    Connection connection;
-    InsertQueries insertQueries;
-    List<String> log;
+public class BeanInsertTest {
 
+    private Connection connection;
+    private InsertQueries insertQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         insertQueries = QueryObjectFactory.createQueryObject(InsertQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -20,6 +24,7 @@ public class BeanInsertTest extends TestCase {
         insertQueries.setConnection(connection);
     }
 
+    @Test
     public void testInsertBean1() {
         TestBean bean = new TestBean();
         bean.setId(11);
@@ -40,6 +45,7 @@ public class BeanInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertBean2() {
         TestBean bean = new TestBean();
         bean.setId(11);
@@ -60,6 +66,7 @@ public class BeanInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertBean3() {
         TestBean bean = new TestBean();
         bean.setId(11);

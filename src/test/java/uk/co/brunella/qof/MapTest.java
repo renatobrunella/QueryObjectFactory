@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -11,12 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+public class MapTest {
 
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
 
+    @Before
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -25,15 +30,16 @@ public class MapTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testMap() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(1));
+        data.put("id", 1);
         data.put("name", "John");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(2));
+        data.put("id", 2);
         data.put("name", "Peter");
         ((MockConnectionData) connection).setResultSetData(results);
         Map<Integer, String> resultMap = selectQueries.selectMap();

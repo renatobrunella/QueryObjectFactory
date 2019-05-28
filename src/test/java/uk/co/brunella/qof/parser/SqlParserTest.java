@@ -1,11 +1,14 @@
 package uk.co.brunella.qof.parser;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 import uk.co.brunella.qof.exception.SqlParserException;
 import uk.co.brunella.qof.exception.ValidationException;
 
-public class SqlParserTest extends TestCase {
+import static org.junit.Assert.*;
 
+public class SqlParserTest {
+
+    @Test
     public void testNoParsing() {
         String sql = "select * from test where name = 'fred'";
         SqlParser parser = new SqlParser(sql, false);
@@ -16,6 +19,7 @@ public class SqlParserTest extends TestCase {
         assertEquals(0, parser.getResultDefinitions().length);
     }
 
+    @Test
     public void testParsingNoChanges() {
         String sql = "select * from test where name = '{%%}'";
         SqlParser parser = new SqlParser(sql, false);
@@ -26,6 +30,7 @@ public class SqlParserTest extends TestCase {
         assertEquals(0, parser.getResultDefinitions().length);
     }
 
+    @Test
     public void testParsingOneParameter() {
         String sql = "select * from test where name = {%1}";
         SqlParser parser = new SqlParser(sql, false);
@@ -43,6 +48,7 @@ public class SqlParserTest extends TestCase {
         assertNull(def.getFields());
     }
 
+    @Test
     public void testParsingOneParameterWithField() {
         String sql = "select * from test where name = {int%22.field}";
         SqlParser parser = new SqlParser(sql, false);
@@ -61,6 +67,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("field", def.getFields()[0]);
     }
 
+    @Test
     public void testParsingThreeParameters() {
         String sql = "select * from test where a = {%1} and b={int%2.field} and c={double %3 . field2}";
         SqlParser parser = new SqlParser(sql, false);
@@ -94,6 +101,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("field2", def.getFields()[0]);
     }
 
+    @Test
     public void testParsingOneResult() {
         String sql = "select abc {%%} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -110,6 +118,7 @@ public class SqlParserTest extends TestCase {
         assertNull(def.getField());
     }
 
+    @Test
     public void testParsingOneResult1() {
         String sql = "select count(*) as abc {%%} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -126,6 +135,7 @@ public class SqlParserTest extends TestCase {
         assertNull(def.getField());
     }
 
+    @Test
     public void testParsingOneResult1b() {
         String sql = "select xyz,abc{%%} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -142,6 +152,7 @@ public class SqlParserTest extends TestCase {
         assertNull(def.getField());
     }
 
+    @Test
     public void testParsingOneResult2() {
         String sql = "select abc_def {int%%.field} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -158,6 +169,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("field", def.getField());
     }
 
+    @Test
     public void testParsingSimpleCall() {
         String sql = "{ call xyz ({%1})}";
         SqlParser parser = new SqlParser(sql, true);
@@ -175,6 +187,7 @@ public class SqlParserTest extends TestCase {
         assertNull(def.getFields());
     }
 
+    @Test
     public void testParsingCallWithReturn() {
         String sql = "{ {int%%.field} = call xyz ({%1})}";
         SqlParser parser = new SqlParser(sql, true);
@@ -199,6 +212,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("field", resultDef.getField());
     }
 
+    @Test
     public void testParsingSimpleCallInOut() {
         String sql = "{ call xyz ({%1,%%})}";
         SqlParser parser = new SqlParser(sql, true);
@@ -223,6 +237,7 @@ public class SqlParserTest extends TestCase {
         assertNull(resultDef.getField());
     }
 
+    @Test
     public void testParsingSimpleCallInWithQuestionMark() {
         String sql = "{ ? = call xyz ({%1})}";
         SqlParser parser = new SqlParser(sql, true);
@@ -240,6 +255,7 @@ public class SqlParserTest extends TestCase {
         assertNull(paramDef.getFields());
     }
 
+    @Test
     public void testParsingSimpleCallFailed() {
         String sql = "{ call xyz ({%%,%%})}";
         try {
@@ -252,6 +268,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingWithMapKey() {
         String sql = "select id {%%,%%*} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -276,6 +293,7 @@ public class SqlParserTest extends TestCase {
         assertTrue(def.isMapKey());
     }
 
+    @Test
     public void testParsingWithMapKey2() {
         String sql = "select id {%%*,%%} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -300,6 +318,7 @@ public class SqlParserTest extends TestCase {
         assertTrue(def.isMapKey());
     }
 
+    @Test
     public void testParsingWithParameterSeparator() {
         String sql = "select id {%%} from test where (x like {%1 #or x like#})";
         SqlParser parser = new SqlParser(sql, false);
@@ -323,6 +342,7 @@ public class SqlParserTest extends TestCase {
         assertFalse(def.isMapKey());
     }
 
+    @Test
     public void testParsingWithMapKey3() {
         String sql = "select id {%%,%%} from test";
         try {
@@ -335,6 +355,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingMissingBracket() {
         String sql = "select id {%% from test";
         try {
@@ -347,6 +368,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingCallMissingBracket() {
         String sql = "{ call xyz ({%%) }";
         try {
@@ -359,6 +381,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingCallMissingBracket2() {
         String sql = "{ call xyz ({%%}) ";
         try {
@@ -371,6 +394,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingCallMissingBracket3() {
         String sql = " call xyz ({%%}) }";
         try {
@@ -383,6 +407,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingFailed() {
         String sql = "select id {%%.} from test";
         try {
@@ -395,6 +420,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingFailed2() {
         String sql = "select id {%1.} from test";
         try {
@@ -408,6 +434,7 @@ public class SqlParserTest extends TestCase {
     }
 
 
+    @Test
     public void testParsingFailed3() {
         String sql = "select abc {%%} from x where s = {%1.}";
         try {
@@ -420,6 +447,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneResultConstructor() {
         new PartialDefinitionCombiner();
         String sql = "select abc_def {int%%1} from test";
@@ -437,6 +465,7 @@ public class SqlParserTest extends TestCase {
         assertEquals(1, def.getConstructorParameter());
     }
 
+    @Test
     public void testParsingOnePartialResultForAdapter() {
         String sql = "select a {xyz%%@1}, b {xyz%%@2} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -453,6 +482,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("b", def.getColumns()[1]);
     }
 
+    @Test
     public void testParsingOnePartialResult2ForAdapter() {
         String sql = "select a {xyz%%@1[1]}, b {xyz%%@2[1]}, c {xyz%%@2[2]}, d {xyz%%@1[2]} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -475,6 +505,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("c", def.getColumns()[1]);
     }
 
+    @Test
     public void testParsingOnePartialResultFails() {
         try {
             String sql = "select a {xyz%%@1}, b {xyz%%@2}, c {xyz%%@2}, d {xyz%%@1} from test";
@@ -485,6 +516,7 @@ public class SqlParserTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOnePartialResult4ForAdapter() {
         String sql = "select a {xyz%%@1}, b {abc%%@2}, c {xyz%%@2}, d {abc%%@1}, e {abc%%@3} from test";
         SqlParser parser = new SqlParser(sql, false);
@@ -508,6 +540,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("c", def.getColumns()[1]);
     }
 
+    @Test
     public void testParsingOnePartialParameter1ForAdapter() {
         String sql = "insert into test values ({xyz%1@1}, {abc%2@1}, {xyz%1@2}, {name_gen%1.name@1})";
         SqlParser parser = new SqlParser(sql, false);
@@ -535,6 +568,7 @@ public class SqlParserTest extends TestCase {
     }
 
 
+    @Test
     public void testParsingOneParameterWithTwoFields() {
         String sql = "select * from test where name = {int%5.field1.field2}";
         SqlParser parser = new SqlParser(sql, false);
@@ -554,6 +588,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("field2", def.getFields()[1]);
     }
 
+    @Test
     public void testParsingOneParameterWithThreeFields() {
         String sql = "select * from test where name = {int%5.field1.field2.field3}";
         SqlParser parser = new SqlParser(sql, false);
@@ -574,6 +609,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("field3", def.getFields()[2]);
     }
 
+    @Test
     public void testParsingOneParameterWithFourFields() {
         String sql = "select * from test where name = {int%5.field1.field2.field3.field4}";
         SqlParser parser = new SqlParser(sql, false);
@@ -595,6 +631,7 @@ public class SqlParserTest extends TestCase {
         assertEquals("field4", def.getFields()[3]);
     }
 
+    @Test
     public void testParsingOneParameterWithFiveFields() {
         String sql = "select * from test where name = {int%5.field1.field2.field3.field4.field5}";
         SqlParser parser = new SqlParser(sql, false);

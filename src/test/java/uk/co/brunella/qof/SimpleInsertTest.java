@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -8,12 +9,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SimpleInsertTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    Connection connection;
-    InsertQueries insertQueries;
-    List<String> log;
+public class SimpleInsertTest {
 
+    private Connection connection;
+    private InsertQueries insertQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         insertQueries = QueryObjectFactory.createQueryObject(InsertQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -21,8 +25,9 @@ public class SimpleInsertTest extends TestCase {
         insertQueries.setConnection(connection);
     }
 
+    @Test
     public void testInsertByte() throws SQLException {
-        insertQueries.insertByte((byte) 11, new Byte((byte) 22));
+        insertQueries.insertByte((byte) 11, (byte) 22);
         insertQueries.insertByte((byte) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -40,8 +45,9 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertShort() throws SQLException {
-        insertQueries.insertShort((short) 11, new Short((short) 22));
+        insertQueries.insertShort((short) 11, (short) 22);
         insertQueries.insertShort((short) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -59,8 +65,9 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertInt() throws SQLException {
-        insertQueries.insertInt(11, new Integer(22));
+        insertQueries.insertInt(11, 22);
         insertQueries.insertInt(33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -78,8 +85,9 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertLong() throws SQLException {
-        insertQueries.insertLong((long) 11, new Long((long) 22));
+        insertQueries.insertLong((long) 11, (long) 22);
         insertQueries.insertLong((long) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -97,8 +105,9 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertFloat() throws SQLException {
-        insertQueries.insertFloat((float) 11.1, new Float((float) 22.2));
+        insertQueries.insertFloat((float) 11.1, (float) 22.2);
         insertQueries.insertFloat((float) 33.3, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -116,8 +125,9 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertDouble() throws SQLException {
-        insertQueries.insertDouble(11.1, new Double(22.2));
+        insertQueries.insertDouble(11.1, 22.2);
         insertQueries.insertDouble(33.3, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -135,6 +145,7 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertDate0() throws SQLException {
         insertQueries.insertDate0(new java.util.Date(0));
         insertQueries.insertDate0(null);
@@ -152,6 +163,7 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertDate1() throws SQLException {
         insertQueries.insertDate1(new java.util.Date(0));
         insertQueries.insertDate1(null);
@@ -169,6 +181,7 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertDate2() throws SQLException {
         insertQueries.insertDate2(new java.util.Date(0));
         insertQueries.insertDate2(null);
@@ -186,6 +199,7 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertDate3() throws SQLException {
         insertQueries.insertDate3(new java.util.Date(0));
         insertQueries.insertDate3(null);
@@ -203,6 +217,7 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertString() throws SQLException {
         insertQueries.insertString("abc");
         insertQueries.insertString(null);
@@ -220,8 +235,9 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertChar() throws SQLException {
-        insertQueries.insertChar('a', new Character('b'));
+        insertQueries.insertChar('a', 'b');
         insertQueries.insertChar('c', null);
         int i = 0;
         assertEquals(10, log.size());
@@ -239,6 +255,7 @@ public class SimpleInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertIntReturnUpdateCount() throws SQLException {
         int count = insertQueries.insertIntReturnUpdateCount(10);
         int i = 0;

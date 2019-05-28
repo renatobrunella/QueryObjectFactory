@@ -1,21 +1,23 @@
 package uk.co.brunella.qof.util;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class DelegatorFactoryTest extends TestCase {
+import static org.junit.Assert.*;
 
-    public static boolean initializerCalled;
+public class DelegatorFactoryTest {
 
+    private static boolean initializerCalled;
+
+    @Test
     public void testDelegatorFactory() {
         initializerCalled = false;
         Person person = DelegatorFactory.create(Person.class, PersonFactory.class, "John", "Smith");
-        assertFalse(initializerCalled);
-        person.getClass();
         assertFalse(initializerCalled);
         assertEquals("John Smith", person.toString());
         assertTrue(initializerCalled);
     }
 
+    @Test
     public void testDelegatorFactory2() {
         initializerCalled = false;
         Person person1 = DelegatorFactory.create(Person.class, PersonFactory2.class, 1);
@@ -26,8 +28,8 @@ public class DelegatorFactoryTest extends TestCase {
         assertTrue(initializerCalled);
         assertEquals("Peter Smithers", person2.toString());
         try {
-            person3.toString();
-            fail("exception expected");
+            String thisShouldFail = person3.toString();
+            fail("exception expected " + thisShouldFail);
         } catch (RuntimeException e) {
             assertEquals("wrong id", e.getMessage());
         }
@@ -43,6 +45,7 @@ public class DelegatorFactoryTest extends TestCase {
     }
 
     public static class PersonFactory {
+        @SuppressWarnings("unused")
         public static void initialize(Person person, String firstName, String lastName) {
             person.firstName = firstName;
             person.lastName = lastName;
@@ -51,6 +54,7 @@ public class DelegatorFactoryTest extends TestCase {
     }
 
     public static class PersonFactory2 {
+        @SuppressWarnings("unused")
         public static void initialize(Person person, Integer id) {
             if (id == 1) {
                 person.firstName = "John";

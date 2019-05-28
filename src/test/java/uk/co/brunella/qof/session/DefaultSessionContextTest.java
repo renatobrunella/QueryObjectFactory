@@ -1,7 +1,7 @@
 package uk.co.brunella.qof.session;
 
-import junit.framework.TestCase;
 import org.hsqldb.jdbc.JDBCDataSource;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.LoggingDelegationProxy;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -9,11 +9,12 @@ import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class DefaultSessionContextTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class DefaultSessionContextTest {
 
     private Connection c1;
     private Connection c2;
@@ -28,6 +29,7 @@ public class DefaultSessionContextTest extends TestCase {
         return ds;
     }
 
+    @Test
     public void testGetConnection() throws SystemException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(createDataSource());
@@ -49,6 +51,7 @@ public class DefaultSessionContextTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetConnectionTwoContexts() throws SystemException {
         SessionContextFactory.setDataSource(this.getClass().getName() + ".A", createDataSource());
         SessionContext ctxA = SessionContextFactory.getContext(this.getClass().getName() + ".A");
@@ -60,11 +63,12 @@ public class DefaultSessionContextTest extends TestCase {
         assertNotNull(connectionA);
         Connection connectionB = ctxB.getConnection();
         assertNotNull(connectionB);
-        assertFalse(connectionA == connectionB);
+        assertNotSame(connectionA, connectionB);
         ctxA.stopSession();
         ctxB.stopSession();
     }
 
+    @Test
     public void testConnectionClosed() throws SQLException, SystemException {
         SessionContextFactory.setDataSource(this.getClass().getName() + ".xyz", createDataSource());
         SessionContext ctx = SessionContextFactory.getContext(this.getClass().getName() + ".xyz");
@@ -76,7 +80,8 @@ public class DefaultSessionContextTest extends TestCase {
         assertTrue(connection.isClosed());
     }
 
-    public void testFailsNoDataSource() throws SystemException {
+    @Test
+    public void testFailsNoDataSource() {
         try {
             SessionContextFactory.removeContext();
             SessionContextFactory.setDataSource(null);
@@ -93,30 +98,27 @@ public class DefaultSessionContextTest extends TestCase {
         }
     }
 
-    public void testGetConnectionTwoThreads() throws SystemException {
+    @Test
+    public void testGetConnectionTwoThreads() {
         SessionContextFactory.setDataSource("testGetConnectionTwoThreads", createDataSource());
 
-        Runnable r1 = new Runnable() {
-            public void run() {
-                SessionContext ctx = SessionContextFactory.getContext("testGetConnectionTwoThreads");
-                try {
-                    ctx.startSession();
-                    c1 = ctx.getConnection();
-                    ctx.stopSession();
-                } catch (SystemException e) {
-                }
+        Runnable r1 = () -> {
+            SessionContext ctx = SessionContextFactory.getContext("testGetConnectionTwoThreads");
+            try {
+                ctx.startSession();
+                c1 = ctx.getConnection();
+                ctx.stopSession();
+            } catch (SystemException ignored) {
             }
         };
 
-        Runnable r2 = new Runnable() {
-            public void run() {
-                SessionContext ctx = SessionContextFactory.getContext("testGetConnectionTwoThreads");
-                try {
-                    ctx.startSession();
-                    c2 = ctx.getConnection();
-                    ctx.stopSession();
-                } catch (SystemException e) {
-                }
+        Runnable r2 = () -> {
+            SessionContext ctx = SessionContextFactory.getContext("testGetConnectionTwoThreads");
+            try {
+                ctx.startSession();
+                c2 = ctx.getConnection();
+                ctx.stopSession();
+            } catch (SystemException ignored) {
             }
         };
 
@@ -127,14 +129,15 @@ public class DefaultSessionContextTest extends TestCase {
         try {
             t1.join();
             t2.join();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
 
         assertNotNull(c1);
         assertNotNull(c2);
-        assertFalse("The two connection must not be the same", c1 == c2);
+        assertNotSame("The two connection must not be the same", c1, c2);
     }
 
+    @Test
     public void testGetConnectionThreadsRunTwice() {
         SessionContextFactory.setDataSource("testGetConnectionThreadsRunTwice", createDataSource());
 
@@ -148,19 +151,19 @@ public class DefaultSessionContextTest extends TestCase {
                 doIt();
             }
 
-            public void doIt() {
+            void doIt() {
                 SessionContext ctx = SessionContextFactory.getContext("testGetConnectionThreadsRunTwice");
                 if (firstRun) {
                     try {
                         ctx.startSession();
-                    } catch (SystemException e) {
+                    } catch (SystemException ignored) {
                     }
                 }
                 c1 = ctx.getConnection();
                 if (!firstRun) {
                     try {
                         ctx.stopSession();
-                    } catch (SystemException e) {
+                    } catch (SystemException ignored) {
                     }
                 }
                 firstRun = false;
@@ -171,13 +174,14 @@ public class DefaultSessionContextTest extends TestCase {
         t1.start();
         try {
             t1.join();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
 
         assertNotNull(c1);
-        assertTrue("The two connection must be the same", c1 == c2);
+        assertSame("The two connection must be the same", c1, c2);
     }
 
+    @Test
     public void testReusingInvalidContext() throws SystemException {
         SessionContextFactory.setDataSource("testReusingInvalidContext", createDataSource());
 
@@ -185,16 +189,14 @@ public class DefaultSessionContextTest extends TestCase {
         ctx.startSession();
         ctx.getConnection();
 
-        Runnable r = new Runnable() {
-            public void run() {
-                try {
-                    ctx.getConnection();
-                    fail("Should raise exception");
-                    passed = false;
-                } catch (RuntimeException e) {
-                    assertEquals("Session is not running in thread for context testReusingInvalidContext", e.getMessage());
-                    passed = true;
-                }
+        Runnable r = () -> {
+            try {
+                ctx.getConnection();
+                fail("Should raise exception");
+                passed = false;
+            } catch (RuntimeException e) {
+                assertEquals("Session is not running in thread for context testReusingInvalidContext", e.getMessage());
+                passed = true;
             }
         };
 
@@ -202,13 +204,14 @@ public class DefaultSessionContextTest extends TestCase {
         t.start();
         try {
             t.join();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
 
         ctx.stopSession();
         assertTrue(passed);
     }
 
+    @Test
     public void testStartingTwice() throws SystemException {
         String contextName = this.getClass().getName() + ".testStartingTwice";
         SessionContextFactory.setDataSource(contextName, createDataSource());
@@ -224,6 +227,7 @@ public class DefaultSessionContextTest extends TestCase {
         ctx.stopSession();
     }
 
+    @Test
     public void testStoppedWithoutStarted() throws SystemException {
         String contextName = this.getClass().getName() + ".contextName";
         SessionContextFactory.setDataSource(contextName, createDataSource());
@@ -237,6 +241,7 @@ public class DefaultSessionContextTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetUserTransaction() throws SystemException {
         String contextName = this.getClass().getName() + ".testGetUserTransaction";
         SessionContextFactory.setDataSource(contextName, createDataSource());
@@ -252,6 +257,7 @@ public class DefaultSessionContextTest extends TestCase {
         ctx.stopSession();
     }
 
+    @Test
     public void testIsRollbackOnly() throws SystemException {
         String contextName = this.getClass().getName() + ".testIsRollbackOnly";
         SessionContextFactory.setDataSource(contextName, createDataSource());
@@ -276,6 +282,7 @@ public class DefaultSessionContextTest extends TestCase {
         ctx.stopSession();
     }
 
+    @Test
     public void testSetSessionConnectionHandler() throws SystemException {
         final boolean[] called = new boolean[2];
         SessionConnectionHandler handler = new SessionConnectionHandler() {
@@ -314,6 +321,7 @@ public class DefaultSessionContextTest extends TestCase {
         SessionContextFactory.setSessionConnectionHandler(null);
     }
 
+    @Test
     public void testSetSessionConnectionHandlerContext() throws SystemException {
         final boolean[] called = new boolean[2];
         SessionConnectionHandler handler = new SessionConnectionHandler() {
@@ -350,6 +358,7 @@ public class DefaultSessionContextTest extends TestCase {
         assertTrue(called[1]);
     }
 
+    @Test
     public void testSetAutoCommitPolicyFalse() throws SystemException {
         MockDataSource dataSource = new MockDataSource();
         String contextName = this.getClass().getName() + ".testSetAutoCommitPolicyFalse";
@@ -365,6 +374,7 @@ public class DefaultSessionContextTest extends TestCase {
         assertEquals("close()", log.get(0));
     }
 
+    @Test
     public void testSetAutoCommitPolicyTrue() throws SystemException {
         MockDataSource dataSource = new MockDataSource();
         String contextName = this.getClass().getName() + ".testSetAutoCommitPolicyTrue";
@@ -381,6 +391,7 @@ public class DefaultSessionContextTest extends TestCase {
         assertEquals("close()", log.get(1));
     }
 
+    @Test
     public void testSetAutoCommitPolicyTrueDefault() throws SystemException {
         SessionContextFactory.removeContext();
         MockDataSource dataSource = new MockDataSource();
@@ -402,44 +413,41 @@ public class DefaultSessionContextTest extends TestCase {
 
         public Connection connection;
 
-        public MockDataSource() {
+        MockDataSource() {
             connection = MockConnectionFactory.getConnection();
         }
 
-        public Connection getConnection() throws SQLException {
+        public Connection getConnection() {
             return connection;
         }
 
-        public Connection getConnection(String username, String password)
-                throws SQLException {
+        public Connection getConnection(String username, String password) {
             return null;
         }
 
-        public PrintWriter getLogWriter() throws SQLException {
+        public PrintWriter getLogWriter() {
             return null;
         }
 
-        public void setLogWriter(PrintWriter arg0) throws SQLException {
+        public void setLogWriter(PrintWriter arg0) {
         }
 
-        public int getLoginTimeout() throws SQLException {
+        public int getLoginTimeout() {
             return 0;
         }
 
-        public void setLoginTimeout(int arg0) throws SQLException {
+        public void setLoginTimeout(int arg0) {
         }
 
-        public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        public Logger getParentLogger() {
             return null;
         }
 
-        @SuppressWarnings("unused")
-        public boolean isWrapperFor(Class<?> arg0) throws SQLException {
+        public boolean isWrapperFor(Class<?> arg0) {
             return false;
         }
 
-        @SuppressWarnings("unused")
-        public <T> T unwrap(Class<T> arg0) throws SQLException {
+        public <T> T unwrap(Class<T> arg0) {
             return null;
         }
 

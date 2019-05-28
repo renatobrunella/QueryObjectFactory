@@ -1,7 +1,8 @@
 package uk.co.brunella.qof;
 
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -12,23 +13,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PostGetConnectionTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class PostGetConnectionTest {
 
     private Connection connection;
     private List<String> log;
 
+    @Before
     public void setUp() {
         connection = MockConnectionFactory.getConnection();
         log = ((MockConnectionData) connection).getLog();
     }
 
+    @Test
     public void testSelectString() throws SQLException {
         SelectQueries selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         selectQueries.setConnection(connection);
         selectQueries.setFetchSize(99);
 
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "abc");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -61,13 +66,14 @@ public class PostGetConnectionTest extends TestCase {
         assertEquals(connection, selectQueries.postGetConnectionCalled);
     }
 
+    @Test
     public void testSelectString2() throws SQLException {
         SelectQueries2 selectQueries = QueryObjectFactory.createQueryObject(SelectQueries2.class);
         selectQueries.setConnection(connection);
         selectQueries.setFetchSize(99);
 
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "abc");
         ((MockConnectionData) connection).setResultSetData(results);

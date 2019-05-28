@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.exception.ValidationException;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
@@ -9,12 +10,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-public class CollectionClassQueryTest extends TestCase {
+import static org.junit.Assert.*;
 
-    Connection connection;
-    SelectQueries selectQueries;
-    List<String> log;
+public class CollectionClassQueryTest {
 
+    private Connection connection;
+    private SelectQueries selectQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -23,6 +27,7 @@ public class CollectionClassQueryTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testFailsNoCollectionReturned() {
         try {
             QueryObjectFactory.createQueryObject(SelectQueriesFailsNoCollectionReturned.class);
@@ -32,6 +37,7 @@ public class CollectionClassQueryTest extends TestCase {
         }
     }
 
+    @Test
     public void testFailsNotAssignable() {
         try {
             QueryObjectFactory.createQueryObject(SelectQueriesFailsNotAssignable.class);
@@ -41,6 +47,7 @@ public class CollectionClassQueryTest extends TestCase {
         }
     }
 
+    @Test
     public void testFailsIsInterface() {
         try {
             QueryObjectFactory.createQueryObject(SelectQueriesFailsIsInterface.class);
@@ -50,6 +57,7 @@ public class CollectionClassQueryTest extends TestCase {
         }
     }
 
+    @Test
     public void testFailsIsAbstract() {
         try {
             QueryObjectFactory.createQueryObject(SelectQueriesFailsIsAbstract.class);
@@ -59,6 +67,7 @@ public class CollectionClassQueryTest extends TestCase {
         }
     }
 
+    @Test
     public void testFailsNoConstructorForInitialCapacity() {
         try {
             QueryObjectFactory.createQueryObject(SelectQueriesFailsNoConstructorForInitialCapacity.class);
@@ -68,12 +77,13 @@ public class CollectionClassQueryTest extends TestCase {
         }
     }
 
+    @Test
     public void testSelectOneResult() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(11));
-        data.put("num", new Integer(22));
+        data.put("id", 11);
+        data.put("num", 22);
         data.put("name", "abc");
         data.put("date", new java.sql.Date(0));
 
@@ -105,8 +115,9 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectNoResult() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> results = new ArrayList<>();
 
         ((MockConnectionData) connection).setResultSetData(results);
         List<TestBean> beanList = selectQueries.select(11);
@@ -125,18 +136,19 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectTwoResults() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(11));
-        data.put("num", new Integer(22));
+        data.put("id", 11);
+        data.put("num", 22);
         data.put("name", "abc");
         data.put("date", new java.sql.Date(0));
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(12));
-        data.put("num", new Integer(23));
+        data.put("id", 12);
+        data.put("num", 23);
         data.put("name", "abc");
         data.put("date", null);
 
@@ -179,14 +191,15 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectSet() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(11));
-        data = new HashMap<String, Object>();
+        data.put("id", 11);
+        data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(22));
+        data.put("id", 22);
         ((MockConnectionData) connection).setResultSetData(results);
         Set<Integer> set = selectQueries.selectSet();
         assertNotNull(set);
@@ -210,12 +223,13 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectMapOneResult() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(11));
-        data.put("num", new Integer(22));
+        data.put("id", 11);
+        data.put("num", 22);
         data.put("name", "abc");
         data.put("date", new java.sql.Date(0));
 
@@ -224,7 +238,7 @@ public class CollectionClassQueryTest extends TestCase {
         assertNotNull(beanMap);
         assertEquals(TreeMap.class, beanMap.getClass());
         assertEquals(1, beanMap.size());
-        TestBean bean = beanMap.get(Integer.valueOf(11));
+        TestBean bean = beanMap.get(11);
         assertEquals(11, bean.getId());
         assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
@@ -249,18 +263,19 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectMapTwoResults() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(11));
-        data.put("num", new Integer(22));
+        data.put("id", 11);
+        data.put("num", 22);
         data.put("name", "abc");
         data.put("date", new java.sql.Date(0));
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(12));
-        data.put("num", new Integer(23));
+        data.put("id", 12);
+        data.put("num", 23);
         data.put("name", "xyz");
         data.put("date", null);
 
@@ -268,12 +283,12 @@ public class CollectionClassQueryTest extends TestCase {
         Map<Integer, TestBean> beanMap = selectQueries.selectMapInteger(11);
         assertNotNull(beanMap);
         assertEquals(2, beanMap.size());
-        TestBean bean = beanMap.get(Integer.valueOf(11));
+        TestBean bean = beanMap.get(11);
         assertEquals(11, bean.getId());
         assertEquals(22, bean.getNum().intValue());
         assertEquals("abc", bean.getName());
         assertEquals(new Date(0), bean.getDate());
-        bean = beanMap.get(Integer.valueOf(12));
+        bean = beanMap.get(12);
         assertEquals(12, bean.getId());
         assertEquals(23, bean.getNum().intValue());
         assertEquals("xyz", bean.getName());
@@ -306,12 +321,13 @@ public class CollectionClassQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectListInitialCapacity() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(11));
-        data.put("num", new Integer(22));
+        data.put("id", 11);
+        data.put("num", 22);
         data.put("name", "abc");
         data.put("date", new java.sql.Date(0));
 
@@ -404,7 +420,7 @@ public class CollectionClassQueryTest extends TestCase {
             this.initialCapacity = initialCapacity;
         }
 
-        public int getInitialCapacity() {
+        int getInitialCapacity() {
             return initialCapacity;
         }
     }

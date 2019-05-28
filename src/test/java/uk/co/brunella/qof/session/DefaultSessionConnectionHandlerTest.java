@@ -1,6 +1,6 @@
 package uk.co.brunella.qof.session;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.LoggingDelegationProxy;
 import uk.co.brunella.qof.testtools.LoggingDelegationProxyFactory;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
@@ -10,8 +10,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DefaultSessionConnectionHandlerTest extends TestCase {
+import static org.junit.Assert.*;
 
+public class DefaultSessionConnectionHandlerTest {
+
+    @Test
     public void testGetConnectionWithAutoCommit() throws SystemException {
         MockDataSource mockDataSource = new MockDataSource();
         DataSource dataSource = (DataSource) LoggingDelegationProxyFactory.createProxy(mockDataSource, DataSource.class);
@@ -23,6 +26,7 @@ public class DefaultSessionConnectionHandlerTest extends TestCase {
         assertEquals("setAutoCommit(false)", log.get(0));
     }
 
+    @Test
     public void testGetConnectionWithoutAutoCommit() throws SystemException {
         MockDataSource mockDataSource = new MockDataSource();
         DataSource dataSource = (DataSource) LoggingDelegationProxyFactory.createProxy(mockDataSource, DataSource.class);
@@ -33,7 +37,8 @@ public class DefaultSessionConnectionHandlerTest extends TestCase {
         assertEquals(0, log.size());
     }
 
-    public void testGetConnectionReturnsNull() throws SystemException {
+    @Test
+    public void testGetConnectionReturnsNull() {
         DataSource dataSource = (DataSource) LoggingDelegationProxyFactory.createProxy(new NullDataSource(), DataSource.class);
         DefaultSessionConnectionHandler handler = new DefaultSessionConnectionHandler(true);
         try {
@@ -44,7 +49,8 @@ public class DefaultSessionConnectionHandlerTest extends TestCase {
         }
     }
 
-    public void testCloseConnectionThrowsException() throws SystemException {
+    @Test
+    public void testCloseConnectionThrowsException() {
         Connection connection = (Connection) LoggingDelegationProxyFactory.createProxy(new ConnectionThrowsException(), Connection.class);
         DefaultSessionConnectionHandler handler = new DefaultSessionConnectionHandler(true);
         try {
@@ -56,7 +62,7 @@ public class DefaultSessionConnectionHandlerTest extends TestCase {
     }
 
     public static class NullDataSource {
-        public Connection getConnection() throws SQLException {
+        public Connection getConnection() {
             return null;
         }
     }
@@ -70,11 +76,11 @@ public class DefaultSessionConnectionHandlerTest extends TestCase {
     public static class MockDataSource {
         public Connection connection;
 
-        public MockDataSource() {
+        MockDataSource() {
             connection = MockConnectionFactory.getConnection();
         }
 
-        public Connection getConnection() throws SQLException {
+        public Connection getConnection() {
             return connection;
         }
     }

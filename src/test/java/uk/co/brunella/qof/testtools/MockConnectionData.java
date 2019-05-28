@@ -29,8 +29,8 @@ public interface MockConnectionData {
 
     List<String> getLog();
 
-    void setPrepareFailes(boolean fails);
+    void setPrepareFails(boolean fails);
 
-    void setExecuteFailes(boolean fails);
+    void setExecuteFails(boolean fails);
 
 }

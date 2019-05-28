@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -11,12 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SimpleQueryTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+public class SimpleQueryTest {
 
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
 
+    @Before
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -25,13 +30,14 @@ public class SimpleQueryTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testSelectByte() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("value", new Byte((byte) 55));
+        data.put("value", (byte) 55);
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, selectQueries.selectByte1((byte) 11, new Byte((byte) 22)));
+        assertEquals(55, selectQueries.selectByte1((byte) 11, (byte) 22));
         assertEquals(10, log.size());
         int i = 0;
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -61,9 +67,10 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectBoolean() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", Boolean.TRUE);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -82,7 +89,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertTrue(selectQueries.selectBoolean2(false, null).booleanValue());
+        assertTrue(selectQueries.selectBoolean2(false, null));
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -97,13 +104,14 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectChar() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals('A', selectQueries.selectChar1('a', new Character('b')));
+        assertEquals('A', selectQueries.selectChar1('a', 'b'));
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -132,13 +140,14 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectShort() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("value", new Short((short) 55));
+        data.put("value", (short) 55);
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, selectQueries.selectShort1((short) 11, new Short((short) 22)));
+        assertEquals(55, selectQueries.selectShort1((short) 11, (short) 22));
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -168,13 +177,14 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectInteger() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("value", new Integer(55));
+        data.put("value", 55);
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, selectQueries.selectInteger1(11, new Integer(22)));
+        assertEquals(55, selectQueries.selectInteger1(11, 22));
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -204,13 +214,14 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectLong() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("value", new Long(55));
+        data.put("value", 55L);
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, selectQueries.selectLong1((long) 11, new Long((long) 22)));
+        assertEquals(55L, selectQueries.selectLong1(11L, 22L));
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -225,7 +236,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55, selectQueries.selectLong2((long) 33, null).longValue());
+        assertEquals(55L, selectQueries.selectLong2(33L, null).longValue());
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -240,13 +251,14 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectFloat() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("value", new Float(55.5));
+        data.put("value", 55.5f);
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals((float) 55.5, selectQueries.selectFloat1((float) 11.1, new Float((float) 22.2)));
+        assertEquals(55.5f, selectQueries.selectFloat1(11.1f, 22.2f), 0.00001);
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -261,7 +273,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals((float) 55.5, selectQueries.selectFloat2((float) 33.3, null).floatValue());
+        assertEquals(55.5f, selectQueries.selectFloat2(33.3f, null), 0.00001);
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -275,13 +287,14 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectDouble() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("value", new Double(55.5));
+        data.put("value", 55.5);
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55.5, selectQueries.selectDouble1(11.1, new Double(22.2)));
+        assertEquals(55.5, selectQueries.selectDouble1(11.1, 22.2), 0.00001);
         int i = 0;
         assertEquals(10, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
@@ -296,7 +309,7 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
         i = 0;
         ((MockConnectionData) connection).setResultSetData(results);
-        assertEquals(55.5, selectQueries.selectDouble2(33.3, null).doubleValue());
+        assertEquals(55.5, selectQueries.selectDouble2(33.3, null), 0.00001);
         assertEquals(11, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? and id2 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
@@ -311,9 +324,10 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectString() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "abc");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -344,9 +358,10 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectDate() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", new java.sql.Date(0));
         ((MockConnectionData) connection).setResultSetData(results);
@@ -377,9 +392,10 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectTime() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", new java.sql.Time(0));
         ((MockConnectionData) connection).setResultSetData(results);
@@ -410,9 +426,10 @@ public class SimpleQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectTimestamp() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", new java.sql.Timestamp(0));
         ((MockConnectionData) connection).setResultSetData(results);

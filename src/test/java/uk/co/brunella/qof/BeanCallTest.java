@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -9,12 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BeanCallTest extends TestCase {
+import static org.junit.Assert.*;
 
-    Connection connection;
-    CallQueries callQueries;
-    List<String> log;
+public class BeanCallTest {
 
+    private Connection connection;
+    private CallQueries callQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         connection = MockConnectionFactory.getConnection();
         log = ((MockConnectionData) connection).getLog();
@@ -22,6 +26,7 @@ public class BeanCallTest extends TestCase {
         callQueries.setConnection(connection);
     }
 
+    @Test
     public void testCallBeanA() throws SQLException {
         TestBean bean = new TestBean();
         bean.setId(11);
@@ -40,6 +45,7 @@ public class BeanCallTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallBeanB() throws SQLException {
         TestBean bean = new TestBean();
         bean.setId(11);
@@ -58,10 +64,11 @@ public class BeanCallTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallBean2() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Integer(11));
-        result.add(new Integer(22));
+        List<Object> result = new ArrayList<>();
+        result.add(11);
+        result.add(22);
         result.add("Name");
         result.add(null);
         ((MockConnectionData) connection).setResultData(result);
@@ -87,10 +94,11 @@ public class BeanCallTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallBean3() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Integer(11));
-        result.add(new Integer(22));
+        List<Object> result = new ArrayList<>();
+        result.add(11);
+        result.add(22);
         result.add("Name");
         result.add(null);
         ((MockConnectionData) connection).setResultData(result);

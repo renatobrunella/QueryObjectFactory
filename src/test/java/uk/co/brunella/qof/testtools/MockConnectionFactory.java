@@ -35,9 +35,9 @@ public class MockConnectionFactory {
 
     public static class MockConnection {
 
-        public LoggingDelegationProxy proxy;
+        LoggingDelegationProxy proxy;
         private List<Object> resultData;
-        private List<Map<String, Object>> resultSetData = new ArrayList<Map<String, Object>>();
+        private List<Map<String, Object>> resultSetData = new ArrayList<>();
         private int resultSetDataIndex = -1;
         private boolean prepareFails = false;
         private boolean executeFails = false;
@@ -47,11 +47,11 @@ public class MockConnectionFactory {
             this.proxy = proxy;
         }
 
-        public void setPrepareFailes(boolean fails) {
+        public void setPrepareFails(boolean fails) {
             prepareFails = fails;
         }
 
-        public void setExecuteFailes(boolean fails) {
+        public void setExecuteFails(boolean fails) {
             executeFails = fails;
         }
 
@@ -88,11 +88,12 @@ public class MockConnectionFactory {
             return (PreparedStatement) proxy;
         }
 
-        public void close() throws SQLException {
+        public void close() {
             isOpen = false;
         }
 
-        public boolean isClosed() throws SQLException {
+        @SuppressWarnings("unused")
+        public boolean isClosed() {
             return !isOpen;
         }
 
@@ -100,12 +101,12 @@ public class MockConnectionFactory {
 
             private String data;
 
-            public MockClob(String data) {
+            MockClob(String data) {
                 this.data = data;
             }
 
             @SuppressWarnings("unused")
-            public java.io.Reader getCharacterStream() throws SQLException {
+            public java.io.Reader getCharacterStream() {
                 return new java.io.StringReader(data);
             }
         }
@@ -114,12 +115,12 @@ public class MockConnectionFactory {
 
             private byte[] data;
 
-            public MockBlob(byte[] data) {
+            MockBlob(byte[] data) {
                 this.data = data;
             }
 
             @SuppressWarnings("unused")
-            public java.io.InputStream getBinaryStream() throws SQLException {
+            public java.io.InputStream getBinaryStream() {
                 return new java.io.ByteArrayInputStream(data);
             }
         }
@@ -135,12 +136,12 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public boolean getBoolean(int parameterIndex) throws SQLException {
-                return ((Boolean) getIndexedValue(parameterIndex - 1)).booleanValue();
+                return (boolean) getIndexedValue(parameterIndex - 1);
             }
 
             @SuppressWarnings("unused")
             public boolean getBoolean(String parameterName) throws SQLException {
-                return ((Boolean) getIndexedValue(Integer.valueOf(parameterName))).booleanValue();
+                return (boolean) getIndexedValue(Integer.valueOf(parameterName));
             }
 
             private Object getIndexedValue(int index) throws SQLException {
@@ -155,12 +156,12 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public byte getByte(int parameterIndex) throws SQLException {
-                return ((Byte) getIndexedValue(parameterIndex - 1)).byteValue();
+                return (byte) getIndexedValue(parameterIndex - 1);
             }
 
             @SuppressWarnings("unused")
             public byte getByte(String parameterName) throws SQLException {
-                return ((Byte) getIndexedValue(Integer.valueOf(parameterName))).byteValue();
+                return (byte) getIndexedValue(Integer.valueOf(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -175,52 +176,52 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public double getDouble(int parameterIndex) throws SQLException {
-                return ((Double) getIndexedValue(parameterIndex - 1)).doubleValue();
+                return (double) getIndexedValue(parameterIndex - 1);
             }
 
             @SuppressWarnings("unused")
             public double getDouble(String parameterName) throws SQLException {
-                return ((Double) getIndexedValue(Integer.valueOf(parameterName))).doubleValue();
+                return (double) getIndexedValue(Integer.valueOf(parameterName));
             }
 
             @SuppressWarnings("unused")
             public float getFloat(int parameterIndex) throws SQLException {
-                return ((Float) getIndexedValue(parameterIndex - 1)).floatValue();
+                return (float) getIndexedValue(parameterIndex - 1);
             }
 
             @SuppressWarnings("unused")
             public float getFloat(String parameterName) throws SQLException {
-                return ((Float) getIndexedValue(Integer.valueOf(parameterName))).floatValue();
+                return (float) getIndexedValue(Integer.valueOf(parameterName));
             }
 
             @SuppressWarnings("unused")
             public int getInt(int parameterIndex) throws SQLException {
-                return ((Integer) getIndexedValue(parameterIndex - 1)).intValue();
+                return (int) getIndexedValue(parameterIndex - 1);
             }
 
             @SuppressWarnings("unused")
             public int getInt(String parameterName) throws SQLException {
-                return ((Integer) getIndexedValue(Integer.valueOf(parameterName))).intValue();
+                return (int) getIndexedValue(Integer.valueOf(parameterName));
             }
 
             @SuppressWarnings("unused")
             public long getLong(int parameterIndex) throws SQLException {
-                return ((Long) getIndexedValue(parameterIndex - 1)).longValue();
+                return (long) getIndexedValue(parameterIndex - 1);
             }
 
             @SuppressWarnings("unused")
             public long getLong(String parameterName) throws SQLException {
-                return ((Long) getIndexedValue(Integer.valueOf(parameterName))).longValue();
+                return (long) getIndexedValue(Integer.valueOf(parameterName));
             }
 
             @SuppressWarnings("unused")
             public short getShort(int parameterIndex) throws SQLException {
-                return ((Short) getIndexedValue(parameterIndex - 1)).shortValue();
+                return (short) getIndexedValue(parameterIndex - 1);
             }
 
             @SuppressWarnings("unused")
             public short getShort(String parameterName) throws SQLException {
-                return ((Short) getIndexedValue(Integer.valueOf(parameterName))).shortValue();
+                return (short) getIndexedValue(Integer.valueOf(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -266,12 +267,12 @@ public class MockConnectionFactory {
             }
 
             @SuppressWarnings("unused")
-            public boolean wasNull() throws SQLException {
+            public boolean wasNull() {
                 return wasNull;
             }
 
             @SuppressWarnings("unused")
-            public void addBatch() throws SQLException {
+            public void addBatch() {
                 batches++;
             }
 
@@ -322,22 +323,22 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public boolean getBoolean(int columnIndex) throws SQLException {
-                return ((Boolean) getIndexedValue(columnIndex)).booleanValue();
+                return (Boolean) getIndexedValue(columnIndex);
             }
 
             @SuppressWarnings("unused")
             public boolean getBoolean(String columnName) throws SQLException {
-                return ((Boolean) getNamedValue(columnName)).booleanValue();
+                return (Boolean) getNamedValue(columnName);
             }
 
             @SuppressWarnings("unused")
             public byte getByte(int columnIndex) throws SQLException {
-                return ((Byte) getIndexedValue(columnIndex)).byteValue();
+                return (Byte) getIndexedValue(columnIndex);
             }
 
             @SuppressWarnings("unused")
             public byte getByte(String columnName) throws SQLException {
-                return ((Byte) getNamedValue(columnName)).byteValue();
+                return (Byte) getNamedValue(columnName);
             }
 
             @SuppressWarnings("unused")
@@ -352,52 +353,52 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public double getDouble(int columnIndex) throws SQLException {
-                return ((Double) getIndexedValue(columnIndex)).doubleValue();
+                return (Double) getIndexedValue(columnIndex);
             }
 
             @SuppressWarnings("unused")
             public double getDouble(String columnName) throws SQLException {
-                return ((Double) getNamedValue(columnName)).doubleValue();
+                return (Double) getNamedValue(columnName);
             }
 
             @SuppressWarnings("unused")
             public float getFloat(int columnIndex) throws SQLException {
-                return ((Float) getIndexedValue(columnIndex)).floatValue();
+                return (Float) getIndexedValue(columnIndex);
             }
 
             @SuppressWarnings("unused")
             public float getFloat(String columnName) throws SQLException {
-                return ((Float) getNamedValue(columnName)).floatValue();
+                return (Float) getNamedValue(columnName);
             }
 
             @SuppressWarnings("unused")
             public int getInt(int columnIndex) throws SQLException {
-                return ((Integer) getIndexedValue(columnIndex)).intValue();
+                return (Integer) getIndexedValue(columnIndex);
             }
 
             @SuppressWarnings("unused")
             public int getInt(String columnName) throws SQLException {
-                return ((Integer) getNamedValue(columnName)).intValue();
+                return (Integer) getNamedValue(columnName);
             }
 
             @SuppressWarnings("unused")
             public long getLong(int columnIndex) throws SQLException {
-                return ((Long) getIndexedValue(columnIndex)).longValue();
+                return (Long) getIndexedValue(columnIndex);
             }
 
             @SuppressWarnings("unused")
             public long getLong(String columnName) throws SQLException {
-                return ((Long) getNamedValue(columnName)).longValue();
+                return (Long) getNamedValue(columnName);
             }
 
             @SuppressWarnings("unused")
             public short getShort(int columnIndex) throws SQLException {
-                return ((Short) getIndexedValue(columnIndex)).shortValue();
+                return (Short) getIndexedValue(columnIndex);
             }
 
             @SuppressWarnings("unused")
             public short getShort(String columnName) throws SQLException {
-                return ((Short) getNamedValue(columnName)).shortValue();
+                return (Short) getNamedValue(columnName);
             }
 
             @SuppressWarnings("unused")
@@ -452,7 +453,7 @@ public class MockConnectionFactory {
             }
 
             @SuppressWarnings("unused")
-            public boolean wasNull() throws SQLException {
+            public boolean wasNull() {
                 return wasNull;
             }
 

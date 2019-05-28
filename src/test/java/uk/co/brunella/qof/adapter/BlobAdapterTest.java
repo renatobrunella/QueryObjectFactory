@@ -1,6 +1,7 @@
 package uk.co.brunella.qof.adapter;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.BaseQuery;
 import uk.co.brunella.qof.Call;
 import uk.co.brunella.qof.Query;
@@ -15,12 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BlobAdapterTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class BlobAdapterTest {
 
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
 
+    @Before
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -29,9 +33,10 @@ public class BlobAdapterTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testSelect() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("blob", new byte[]{1, 2, 3});
         ((MockConnectionData) connection).setResultSetData(results);
@@ -49,12 +54,13 @@ public class BlobAdapterTest extends TestCase {
         assertEquals("getBlob(blob)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelect2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("blob", new byte[]{1, 2, 3});
         ((MockConnectionData) connection).setResultSetData(results);
@@ -73,11 +79,12 @@ public class BlobAdapterTest extends TestCase {
         assertEquals("getBlob(blob)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCall() throws SQLException {
-        List<Object> results = new ArrayList<Object>();
+        List<Object> results = new ArrayList<>();
         results.add(new byte[]{1, 2, 3});
         ((MockConnectionData) connection).setResultData(results);
         byte[] ba = selectQueries.call(new byte[]{5, 6});
@@ -93,21 +100,25 @@ public class BlobAdapterTest extends TestCase {
         assertEquals("registerOutParameter(1,2004)", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getBlob(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testRegister() {
         BlobAdapter.register("BlobAdapter");
         assertTrue(QueryObjectFactory.isMapperRegistered("BlobAdapter"));
         QueryObjectFactory.unregisterMapper("BlobAdapter");
     }
 
+    @Test
     public void testGetNumberOfColumns() {
         assertEquals(1, new BlobAdapter().getNumberOfColumns());
     }
 
+    @Test
     public void testBlobReader() {
-        assertNotNull(new BlobReader());
+        BlobReader blobReader = new BlobReader();
+        assertNotNull(blobReader);
     }
 
     public interface SelectQueries extends BaseQuery {

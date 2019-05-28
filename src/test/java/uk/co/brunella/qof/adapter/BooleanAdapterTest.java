@@ -1,6 +1,7 @@
 package uk.co.brunella.qof.adapter;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.BaseQuery;
 import uk.co.brunella.qof.Call;
 import uk.co.brunella.qof.Query;
@@ -15,12 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BooleanAdapterTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class BooleanAdapterTest {
 
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
 
+    @Before
     public void setUp() {
         //BooleanAdapter.register("yesno", "Y", "F", false, true);
         BooleanAdapter.register("tf", "true", "false", true, false);
@@ -36,9 +40,10 @@ public class BooleanAdapterTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testSelectBooleanTrue() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "y");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -53,12 +58,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBooleanFalse() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "n");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -73,12 +79,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBooleanNull1() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", null);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -93,9 +100,10 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBooleanNull2() throws SQLException {
         assertNull(selectQueries.selectBoolean(null));
         assertEquals(7, log.size());
@@ -106,12 +114,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("executeQuery()", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBoolTrue() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "y");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -126,12 +135,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBoolFalse() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "n");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -146,12 +156,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBoolNull1() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", null);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -166,10 +177,11 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
-    public void testSelectBoolNull2() throws SQLException {
+    @Test
+    public void testSelectBoolNull2() {
         try {
             assertFalse(selectQueries.selectBool(false));
             fail("Exception expected");
@@ -178,9 +190,10 @@ public class BooleanAdapterTest extends TestCase {
         }
     }
 
+    @Test
     public void testSelectBooleanTrue2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "true");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -195,12 +208,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBooleanFalse2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "false");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -215,12 +229,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
-    public void testSelectBooleanNull1_2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+    @Test
+    public void testSelectBooleanNull1_2() {
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", null);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -232,11 +247,13 @@ public class BooleanAdapterTest extends TestCase {
         }
     }
 
+    @Test
     public void testSelectBooleanNull2_2() throws SQLException {
         assertNull(selectQueries.selectBoolean2(true));
     }
 
-    public void testSelectBooleanNull3_2() throws SQLException {
+    @Test
+    public void testSelectBooleanNull3_2() {
         try {
             selectQueries.selectBoolean2(null);
             fail("Exception expected");
@@ -245,9 +262,10 @@ public class BooleanAdapterTest extends TestCase {
         }
     }
 
+    @Test
     public void testSelectBoolTrue3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "true");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -262,12 +280,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBoolFalse_3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "false");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -282,12 +301,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBoolNull1_3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", null);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -302,10 +322,11 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
-    public void testSelectBoolNull2_3() throws SQLException {
+    @Test
+    public void testSelectBoolNull2_3() {
         try {
             assertFalse(selectQueries.selectBool3(false));
             fail("Exception expected");
@@ -314,9 +335,10 @@ public class BooleanAdapterTest extends TestCase {
         }
     }
 
+    @Test
     public void testSelectBooleanTrue3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "true");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -331,12 +353,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBooleanFalse3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "false");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -351,12 +374,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBooleanNull1_3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", null);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -371,13 +395,15 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBooleanNull2_3() throws SQLException {
         assertNull(selectQueries.selectBoolean3(true));
     }
 
+    @Test
     public void testSelectBooleanNull3_3() throws SQLException {
         assertNull(selectQueries.selectBoolean3(false));
         assertEquals(7, log.size());
@@ -388,12 +414,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("executeQuery()", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBoolTrue4() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "true");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -408,12 +435,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBoolFalse_4() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", "false");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -428,12 +456,13 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectBoolNull1_4() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("yesno", null);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -448,10 +477,11 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("getString(yesno)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
-    public void testSelectBoolNull2_4() throws SQLException {
+    @Test
+    public void testSelectBoolNull2_4() {
         try {
             assertFalse(selectQueries.selectBool3(false));
             fail("Exception expected");
@@ -460,8 +490,9 @@ public class BooleanAdapterTest extends TestCase {
         }
     }
 
+    @Test
     public void testCall() throws SQLException {
-        List<Object> results = new ArrayList<Object>();
+        List<Object> results = new ArrayList<>();
         results.add("y");
         ((MockConnectionData) connection).setResultData(results);
         assertTrue(selectQueries.call(false));
@@ -472,7 +503,7 @@ public class BooleanAdapterTest extends TestCase {
         assertEquals("registerOutParameter(1,12)", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getString(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
 

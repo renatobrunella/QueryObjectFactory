@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.dialect.SQLDialect;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
@@ -9,16 +10,20 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class PagingQueryTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class PagingQueryTest {
 
     private Connection connection;
     private List<String> log;
 
+    @Before
     public void setUp() {
         connection = MockConnectionFactory.getConnection();
         log = ((MockConnectionData) connection).getLog();
     }
 
+    @Test
     public void testSqlStatements1() throws SQLException {
         QueryObjectFactory.setSQLDialect(new SQLDialect() {
             public String getLimitString(String sql, boolean hasOffset) {
@@ -88,6 +93,7 @@ public class PagingQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSqlStatements2() throws SQLException {
         QueryObjectFactory.setSQLDialect(new SQLDialect() {
             public String getLimitString(String sql, boolean hasOffset) {
@@ -159,6 +165,7 @@ public class PagingQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSqlStatements3() throws SQLException {
         QueryObjectFactory.setSQLDialect(new SQLDialect() {
             public String getLimitString(String sql, boolean hasOffset) {
@@ -230,6 +237,7 @@ public class PagingQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSqlStatements4() throws SQLException {
         QueryObjectFactory.setSQLDialect(new SQLDialect() {
             public String getLimitString(String sql, boolean hasOffset) {
@@ -301,6 +309,7 @@ public class PagingQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSqlStatements5() throws SQLException {
         QueryObjectFactory.setSQLDialect(new SQLDialect() {
             public String getLimitString(String sql, boolean hasOffset) {
@@ -372,6 +381,7 @@ public class PagingQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSqlStatements6() throws SQLException {
         QueryObjectFactory.setSQLDialect(new SQLDialect() {
             public String getLimitString(String sql, boolean hasOffset) {
@@ -443,6 +453,7 @@ public class PagingQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSqlStatements7() throws SQLException {
         QueryObjectFactory.setSQLDialect(new SQLDialect() {
             public String getLimitString(String sql, boolean hasOffset) {
@@ -514,6 +525,7 @@ public class PagingQueryTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSqlStatements8() throws SQLException {
         QueryObjectFactory.setSQLDialect(new SQLDialect() {
             public String getLimitString(String sql, boolean hasOffset) {

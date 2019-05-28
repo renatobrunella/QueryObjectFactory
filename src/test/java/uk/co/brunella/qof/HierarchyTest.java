@@ -1,12 +1,15 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class HierarchyTest extends TestCase {
+import static org.junit.Assert.assertNotNull;
 
+public class HierarchyTest {
+
+    @Test
     public void testQuery() {
         QueryObject dao = QueryObjectFactory.createQueryObject(QueryObject.class);
         assertNotNull(dao);

@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -9,12 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleCallTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    Connection connection;
-    CallQueries callQueries;
+public class SimpleCallTest {
+
+    private Connection connection;
+    private CallQueries callQueries;
     List<String> log;
 
+    @Before
     public void setUp() {
         callQueries = QueryObjectFactory.createQueryObject(CallQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -23,8 +27,9 @@ public class SimpleCallTest extends TestCase {
         callQueries.setFetchSize(99);
     }
 
+    @Test
     public void testCallBoolean() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         result.add(Boolean.TRUE);
         ((MockConnectionData) connection).setResultData(result);
         assertEquals(true, callQueries.callBoolean1(true, Boolean.TRUE));
@@ -45,14 +50,15 @@ public class SimpleCallTest extends TestCase {
         assertEquals("execute()", log.get(i++));
         assertEquals("getBoolean(1)", log.get(i++));
         assertEquals("wasNull()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallByte() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Byte((byte) 55));
+        List<Object> result = new ArrayList<>();
+        result.add((byte) 55);
         ((MockConnectionData) connection).setResultData(result);
-        assertEquals(55, callQueries.callByte1((byte) 11, new Byte((byte) 22)));
+        assertEquals(55, callQueries.callByte1((byte) 11, (byte) 22));
         assertEquals(55, callQueries.callByte2((byte) 33, null).byteValue());
         int i = 0;
         assertEquals(15, log.size());
@@ -70,14 +76,15 @@ public class SimpleCallTest extends TestCase {
         assertEquals("execute()", log.get(i++));
         assertEquals("getByte(1)", log.get(i++));
         assertEquals("wasNull()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallChar() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         result.add("A");
         ((MockConnectionData) connection).setResultData(result);
-        assertEquals('A', callQueries.callChar1('a', new Character('b')));
+        assertEquals('A', callQueries.callChar1('a', 'b'));
         assertEquals('A', callQueries.callChar2('c', null).charValue());
         int i = 0;
         assertEquals(14, log.size());
@@ -94,14 +101,15 @@ public class SimpleCallTest extends TestCase {
         assertEquals("registerOutParameter(1," + java.sql.Types.VARCHAR + ")", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getString(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallShort() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Short((short) 55));
+        List<Object> result = new ArrayList<>();
+        result.add((short) 55);
         ((MockConnectionData) connection).setResultData(result);
-        assertEquals(55, callQueries.callShort1((short) 11, new Short((short) 22)));
+        assertEquals(55, callQueries.callShort1((short) 11, (short) 22));
         assertEquals(55, callQueries.callShort2((short) 33, null).shortValue());
         int i = 0;
         assertEquals(15, log.size());
@@ -119,14 +127,15 @@ public class SimpleCallTest extends TestCase {
         assertEquals("execute()", log.get(i++));
         assertEquals("getShort(1)", log.get(i++));
         assertEquals("wasNull()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallInteger() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Integer((short) 55));
+        List<Object> result = new ArrayList<>();
+        result.add((int) (short) 55);
         ((MockConnectionData) connection).setResultData(result);
-        assertEquals(55, callQueries.callInteger1((short) 11, new Integer((short) 22)));
+        assertEquals(55, callQueries.callInteger1((short) 11, (int) (short) 22));
         assertEquals(55, callQueries.callInteger2((short) 33, null).shortValue());
         int i = 0;
         assertEquals(15, log.size());
@@ -144,14 +153,15 @@ public class SimpleCallTest extends TestCase {
         assertEquals("execute()", log.get(i++));
         assertEquals("getInt(1)", log.get(i++));
         assertEquals("wasNull()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallLong() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Long((long) 55));
+        List<Object> result = new ArrayList<>();
+        result.add((long) 55);
         ((MockConnectionData) connection).setResultData(result);
-        assertEquals(55, callQueries.callLong1((long) 11, new Long((long) 22)));
+        assertEquals(55, callQueries.callLong1((long) 11, (long) 22));
         assertEquals(55, callQueries.callLong2((long) 33, null).longValue());
         int i = 0;
         assertEquals(15, log.size());
@@ -169,15 +179,16 @@ public class SimpleCallTest extends TestCase {
         assertEquals("execute()", log.get(i++));
         assertEquals("getLong(1)", log.get(i++));
         assertEquals("wasNull()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallFloat() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Float((float) 55.5));
+        List<Object> result = new ArrayList<>();
+        result.add(55.5f);
         ((MockConnectionData) connection).setResultData(result);
-        assertEquals((float) 55.5, callQueries.callFloat1((float) 11.1, new Float((float) 22.2)));
-        assertEquals((float) 55.5, callQueries.callFloat2((float) 33.3, null).floatValue());
+        assertEquals(55.5f, callQueries.callFloat1(11.1f, 22.2f), 0.00001);
+        assertEquals(55.5f, callQueries.callFloat2(33.3f, null), 0.00001);
         int i = 0;
         assertEquals(15, log.size());
         assertEquals("prepareCall({  ? = call func ( ? , ? )  })", log.get(i++));
@@ -194,15 +205,16 @@ public class SimpleCallTest extends TestCase {
         assertEquals("execute()", log.get(i++));
         assertEquals("getFloat(1)", log.get(i++));
         assertEquals("wasNull()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallDouble() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Double(55.5));
+        List<Object> result = new ArrayList<>();
+        result.add(55.5);
         ((MockConnectionData) connection).setResultData(result);
-        assertEquals(55.5, callQueries.callDouble1(11.1, new Double(22.2)));
-        assertEquals(55.5, callQueries.callDouble2(33.3, null).doubleValue());
+        assertEquals(55.5, callQueries.callDouble1(11.1, 22.2), 0.00001);
+        assertEquals(55.5, callQueries.callDouble2(33.3, null), 0.00001);
         int i = 0;
         assertEquals(15, log.size());
         assertEquals("prepareCall({  ? = call func ( ? , ? )  })", log.get(i++));
@@ -219,11 +231,12 @@ public class SimpleCallTest extends TestCase {
         assertEquals("execute()", log.get(i++));
         assertEquals("getDouble(1)", log.get(i++));
         assertEquals("wasNull()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallString() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         result.add("abc");
         ((MockConnectionData) connection).setResultData(result);
         assertEquals("abc", callQueries.callString("xyz"));
@@ -241,11 +254,12 @@ public class SimpleCallTest extends TestCase {
         assertEquals("registerOutParameter(1," + java.sql.Types.VARCHAR + ")", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getString(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallDate() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         result.add(new java.sql.Date(0));
         ((MockConnectionData) connection).setResultData(result);
         assertEquals(new java.util.Date(0).getTime(), callQueries.callDate(new java.util.Date(0)).getTime());
@@ -263,11 +277,12 @@ public class SimpleCallTest extends TestCase {
         assertEquals("registerOutParameter(1," + java.sql.Types.DATE + ")", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getDate(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallTime() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         result.add(new java.sql.Time(0));
         ((MockConnectionData) connection).setResultData(result);
         assertEquals(new java.util.Date(0).getTime(), callQueries.callTime(new java.util.Date(0)).getTime());
@@ -285,11 +300,12 @@ public class SimpleCallTest extends TestCase {
         assertEquals("registerOutParameter(1," + java.sql.Types.TIME + ")", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getTime(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallTimestamp() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         result.add(new java.sql.Timestamp(0));
         ((MockConnectionData) connection).setResultData(result);
         assertEquals(new java.util.Date(0).getTime(), callQueries.callTimestamp(new java.util.Date(0)).getTime());
@@ -307,7 +323,7 @@ public class SimpleCallTest extends TestCase {
         assertEquals("registerOutParameter(1," + java.sql.Types.TIMESTAMP + ")", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getTimestamp(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
     public interface CallQueries extends BaseQuery {

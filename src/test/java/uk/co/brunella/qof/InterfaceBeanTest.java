@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.exception.ValidationException;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
@@ -12,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InterfaceBeanTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class InterfaceBeanTest {
 
     Connection connection;
     SelectQueries selectQueries;
@@ -22,6 +25,7 @@ public class InterfaceBeanTest extends TestCase {
         return new Person(name);
     }
 
+    @Before
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -30,9 +34,10 @@ public class InterfaceBeanTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testSelect1() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("name", "Tester");
 
@@ -55,9 +60,10 @@ public class InterfaceBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelect2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("name", "Tester");
 
@@ -80,6 +86,7 @@ public class InterfaceBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectMissingType1() {
         try {
             QueryObjectFactory.createQueryObject(SelectQueriesMissingType1.class);
@@ -90,6 +97,7 @@ public class InterfaceBeanTest extends TestCase {
         }
     }
 
+    @Test
     public void testSelectMissingType2() {
         try {
             QueryObjectFactory.createQueryObject(SelectQueriesMissingType2.class);

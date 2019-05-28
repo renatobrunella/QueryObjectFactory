@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -11,12 +12,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InClauseBeanTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class InClauseBeanTest {
 
     private Connection connection;
     private Queries selectQueries;
     private List<String> log;
 
+    @Before
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(Queries.class);
         connection = MockConnectionFactory.getConnection();
@@ -25,12 +29,13 @@ public class InClauseBeanTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testSelectBean1() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -59,12 +64,13 @@ public class InClauseBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectBean2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -95,12 +101,13 @@ public class InClauseBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectBean3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -129,12 +136,13 @@ public class InClauseBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectBean4() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "A");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -165,6 +173,7 @@ public class InClauseBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteBean1() throws SQLException {
         TestBean bean1 = new TestBean();
         bean1.setId(11);
@@ -180,6 +189,7 @@ public class InClauseBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteBean2() throws SQLException {
         TestBean parent = new TestBean();
         parent.setId(55);
@@ -197,6 +207,7 @@ public class InClauseBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteBean3() throws SQLException {
         TestBean bean1 = new TestBean();
         bean1.setBoxedId(11);
@@ -212,6 +223,7 @@ public class InClauseBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteBean4() throws SQLException {
         TestBean parent = new TestBean();
         parent.setBoxedId(55);

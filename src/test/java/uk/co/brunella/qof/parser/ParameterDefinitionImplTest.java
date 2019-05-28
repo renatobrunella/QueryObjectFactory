@@ -1,9 +1,12 @@
 package uk.co.brunella.qof.parser;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class ParameterDefinitionImplTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
+public class ParameterDefinitionImplTest {
+
+    @Test
     public void testToString() {
         ParameterDefinitionImpl impl = new ParameterDefinitionImpl();
         impl.setFields(new String[]{"field"});
@@ -14,6 +17,7 @@ public class ParameterDefinitionImplTest extends TestCase {
         assertEquals("Parameter: type -1 (\"name1\",\"name2\" 1,2) [field]", impl.toString());
     }
 
+    @Test
     public void testToString2() {
         ParameterDefinitionImpl impl = new ParameterDefinitionImpl();
         impl.setFields(new String[]{"field1", "field2"});

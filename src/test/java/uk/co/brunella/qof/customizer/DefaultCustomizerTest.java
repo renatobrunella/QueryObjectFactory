@@ -1,6 +1,6 @@
 package uk.co.brunella.qof.customizer;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 import org.objectweb.asm.Type;
 import uk.co.brunella.qof.BaseQuery;
 import uk.co.brunella.qof.Query;
@@ -9,29 +9,37 @@ import uk.co.brunella.qof.session.UseSessionContext;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DefaultCustomizerTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+public class DefaultCustomizerTest {
 
 
+    @Test
     public void testGetListType() {
         Type type = new DefaultCustomizer().getListType();
         assertEquals("java.util.ArrayList", type.getClassName());
     }
 
+    @Test
     public void testGetSetType() {
         Type type = new DefaultCustomizer().getSetType();
         assertEquals("java.util.HashSet", type.getClassName());
     }
 
+    @Test
     public void testGetMapType() {
         Type type = new DefaultCustomizer().getMapType();
         assertEquals("java.util.HashMap", type.getClassName());
     }
 
+    @Test
     public void testGetClassName() {
         String className = new DefaultCustomizer().getClassName(TestInterface1.class);
         assertEquals(getClass().getName() + "$TestInterface1$Impl", className);
     }
 
+    @Test
     public void testGetConnectionFactoryCustomizer() {
         ConnectionFactoryCustomizer customizer = new DefaultCustomizer().getConnectionFactoryCustomizer(TestInterface1.class);
         assertTrue(customizer instanceof DefaultConnectionFactoryCustomizer);

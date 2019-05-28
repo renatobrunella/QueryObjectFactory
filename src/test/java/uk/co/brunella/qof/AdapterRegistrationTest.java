@@ -1,9 +1,13 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class AdapterRegistrationTest extends TestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+public class AdapterRegistrationTest {
+
+    @Test
     public void testRegistration() {
         assertFalse(QueryObjectFactory.isMapperRegistered("name"));
         QueryObjectFactory.registerMapper("name", new DynamicNameAdapter());

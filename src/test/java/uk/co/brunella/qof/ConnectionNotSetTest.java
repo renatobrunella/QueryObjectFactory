@@ -1,12 +1,16 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.sql.SQLException;
 
-public class ConnectionNotSetTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-    public void testNoConnection() throws SQLException {
+public class ConnectionNotSetTest {
+
+    @Test
+    public void testNoConnection() {
         Queries dao = QueryObjectFactory.createQueryObject(Queries.class);
         try {
             dao.select();

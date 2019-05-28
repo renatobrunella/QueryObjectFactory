@@ -1,6 +1,7 @@
 package uk.co.brunella.qof.adapter;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.BaseQuery;
 import uk.co.brunella.qof.Call;
 import uk.co.brunella.qof.Query;
@@ -15,12 +16,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EnumerationAdapterTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+public class EnumerationAdapterTest {
 
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
 
+    @Before
     public void setUp() {
         EnumerationAdapter.register("my-enum", "getValue", "getEnum");
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
@@ -31,9 +36,10 @@ public class EnumerationAdapterTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testSelectEnum() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "C");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -48,12 +54,13 @@ public class EnumerationAdapterTest extends TestCase {
         assertEquals("getString(value)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectEnumConstructor() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "C");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -70,12 +77,13 @@ public class EnumerationAdapterTest extends TestCase {
         assertEquals("getString(value)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectEnumMap() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "C");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -93,11 +101,12 @@ public class EnumerationAdapterTest extends TestCase {
         assertEquals("getString(value)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCallEnum() throws SQLException {
-        List<Object> results = new ArrayList<Object>();
+        List<Object> results = new ArrayList<>();
         results.add("C");
         ((MockConnectionData) connection).setResultData(results);
         assertEquals(MyEnum.C, selectQueries.callEnum(MyEnum.A));
@@ -108,12 +117,13 @@ public class EnumerationAdapterTest extends TestCase {
         assertEquals("registerOutParameter(1,12)", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getString(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testSelectEnum2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("value", "c");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -128,7 +138,7 @@ public class EnumerationAdapterTest extends TestCase {
         assertEquals("getString(value)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
     public enum MyEnum {

@@ -1,10 +1,9 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 import uk.co.brunella.qof.adapter.DynamicMappingAdapter;
 import uk.co.brunella.qof.util.TestClassLoader;
 
-import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,11 +11,14 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ClassLoaderSeparationTest extends TestCase {
+import static org.junit.Assert.assertNotNull;
+
+public class ClassLoaderSeparationTest {
 
     private static final String ADAPTER_NAME = "testadapter";
 
-    public void test() throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+    @Test
+    public void test() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         // create two separate class loaders
         ClassLoader cl1 = TestClassLoader.createClassLoader(null);
         ClassLoader cl2 = TestClassLoader.createClassLoader(null);
@@ -56,22 +58,22 @@ public class ClassLoaderSeparationTest extends TestCase {
 
     public static class TestAdapter implements DynamicMappingAdapter {
 
-        public Object get(ResultSet rs, int[] indexes) throws SQLException {
+        public Object get(ResultSet rs, int[] indexes) {
             return null;
         }
 
-        public Object get(ResultSet rs, String[] columns) throws SQLException {
+        public Object get(ResultSet rs, String[] columns) {
             return null;
         }
 
-        public Object get(CallableStatement cs, int[] indexes) throws SQLException {
+        public Object get(CallableStatement cs, int[] indexes) {
             return null;
         }
 
-        public void registerOutputParameter(CallableStatement cs, int[] indexes) throws SQLException {
+        public void registerOutputParameter(CallableStatement cs, int[] indexes) {
         }
 
-        public void set(PreparedStatement ps, Object value, int[] indexes) throws SQLException {
+        public void set(PreparedStatement ps, Object value, int[] indexes) {
         }
 
         public int getNumberOfColumns() {
@@ -79,7 +81,7 @@ public class ClassLoaderSeparationTest extends TestCase {
         }
 
         public Set<Class<?>> getTypes() {
-            Set<Class<?>> set = new HashSet<Class<?>>();
+            Set<Class<?>> set = new HashSet<>();
             set.add(String.class);
             return set;
         }

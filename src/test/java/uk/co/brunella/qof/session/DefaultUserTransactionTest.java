@@ -1,12 +1,15 @@
 package uk.co.brunella.qof.session;
 
-import junit.framework.TestCase;
 import org.hsqldb.jdbc.JDBCDataSource;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-public class DefaultUserTransactionTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class DefaultUserTransactionTest {
 
     private SessionContextFactory.DefaultUserTransaction trx;
 
@@ -18,11 +21,13 @@ public class DefaultUserTransactionTest extends TestCase {
         return ds;
     }
 
+    @Before
     public void setUp() throws SQLException {
         trx = new SessionContextFactory.DefaultUserTransaction(new SessionContextFactory.Session(), createDataSource().getConnection());
     }
 
-    public void testBegin() throws SystemException {
+    @Test
+    public void testBegin() {
         trx.begin();
         try {
             trx.begin();
@@ -32,6 +37,7 @@ public class DefaultUserTransactionTest extends TestCase {
         }
     }
 
+    @Test
     public void testCommitFailed() throws SystemException, RollbackException {
         try {
             trx.commit();
@@ -48,6 +54,7 @@ public class DefaultUserTransactionTest extends TestCase {
         }
     }
 
+    @Test
     public void testCommitTwice() throws SystemException, RollbackException {
         trx.begin();
         trx.commit();
@@ -59,7 +66,8 @@ public class DefaultUserTransactionTest extends TestCase {
         }
     }
 
-    public void testRollbackFailed() throws SystemException, RollbackException {
+    @Test
+    public void testRollbackFailed() throws SystemException {
         try {
             trx.rollback();
             fail("Should raise exception");
@@ -68,7 +76,8 @@ public class DefaultUserTransactionTest extends TestCase {
         }
     }
 
-    public void testRollbackTwice() throws SystemException, RollbackException {
+    @Test
+    public void testRollbackTwice() throws SystemException {
         trx.begin();
         trx.rollback();
         try {
@@ -79,7 +88,8 @@ public class DefaultUserTransactionTest extends TestCase {
         }
     }
 
-    public void testCommitForcedRollback() throws SystemException, RollbackException {
+    @Test
+    public void testCommitForcedRollback() throws SystemException {
         trx.begin();
         trx.setRollbackOnly();
         try {
@@ -90,14 +100,16 @@ public class DefaultUserTransactionTest extends TestCase {
         }
     }
 
-    public void testSetRollback() throws SystemException, RollbackException {
+    @Test
+    public void testSetRollback() {
         trx.begin();
         assertFalse(trx.isRollbackOnly());
         trx.setRollbackOnly();
         assertTrue(trx.isRollbackOnly());
     }
 
-    public void testSetRollbackFailed() throws SystemException, RollbackException {
+    @Test
+    public void testSetRollbackFailed() {
         try {
             trx.setRollbackOnly();
             fail("Should raise exception");

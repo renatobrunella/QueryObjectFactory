@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -8,12 +9,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class MultipleBeanTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class MultipleBeanTest {
 
     Connection connection;
     Queries queries;
     List<String> log;
 
+    @Before
     public void setUp() {
         queries = QueryObjectFactory.createQueryObject(Queries.class);
         connection = MockConnectionFactory.getConnection();
@@ -22,6 +26,7 @@ public class MultipleBeanTest extends TestCase {
         queries.setFetchSize(99);
     }
 
+    @Test
     public void testInsert2() throws SQLException {
         TestBean bean = new TestBean();
         TestBean parent = new TestBean();
@@ -36,6 +41,7 @@ public class MultipleBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsert3() throws SQLException {
         TestBean bean = new TestBean();
         TestBean parent = new TestBean();
@@ -52,6 +58,7 @@ public class MultipleBeanTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsert2WithNullValue() throws SQLException {
         TestBean bean = new TestBean();
         bean.setParent(null);
@@ -64,6 +71,7 @@ public class MultipleBeanTest extends TestCase {
         }
     }
 
+    @Test
     public void testInsert3WithNullValue() throws SQLException {
         TestBean bean = new TestBean();
         TestBean parent = new TestBean();

@@ -1,7 +1,9 @@
 package uk.co.brunella.qof.session;
 
-import junit.framework.TestCase;
 import org.hsqldb.jdbc.JDBCDataSource;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.BaseQuery;
 import uk.co.brunella.qof.Insert;
 import uk.co.brunella.qof.Query;
@@ -12,7 +14,10 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class UseDefaultSessionRunnerTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+public class UseDefaultSessionRunnerTest {
 
     private DataSource dataSource;
 
@@ -24,28 +29,25 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         return new DataSourceWrapper(ds);
     }
 
+    @Before
     public void setUp() throws Exception {
         dataSource = createDataSource();
         MockInitialContextFactory.register();
         MockContext.getInstance().bind("datasource", dataSource);
-        Statement stmt = createDataSource().getConnection().createStatement();
-        try {
+        try (Statement stmt = createDataSource().getConnection().createStatement()) {
             stmt.execute("create table test (id integer, name varchar(40))");
-        } finally {
-            stmt.close();
         }
     }
 
+    @After
     public void tearDown() throws Exception {
         MockContext.getInstance().unbind("datasource");
-        Statement stmt = dataSource.getConnection().createStatement();
-        try {
+        try (Statement stmt = dataSource.getConnection().createStatement()) {
             stmt.execute("drop table test");
-        } finally {
-            stmt.close();
         }
     }
 
+    @Test
     public void testDaoInterfaceDefaultContextNoTM() throws SystemException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(dataSource);
@@ -60,6 +62,7 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         SessionContextFactory.removeContext();
     }
 
+    @Test
     public void testDaoInterfaceNameContextNoTM() throws SystemException {
         SessionContextFactory.removeContext("TEST_CONTEXT");
         SessionContextFactory.setDataSource("TEST_CONTEXT", dataSource);
@@ -74,6 +77,7 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         SessionContextFactory.removeContext("TEST_CONTEXT");
     }
 
+    @Test
     public void testDaoInterfaceDefaultContextBeanTM() throws SystemException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
@@ -87,6 +91,7 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         SessionContextFactory.removeContext();
     }
 
+    @Test
     public void testDaoInterfaceDefaultContextContainerTM() throws SystemException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.CONTAINER);
@@ -101,7 +106,8 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         SessionContextFactory.removeContext();
     }
 
-    public void testDaoInterfaceFails() throws SystemException {
+    @Test
+    public void testDaoInterfaceFails() {
         try {
             QueryObjectFactory.createQueryObject(DaoInterfaceFails.class);
             fail("should throw exception");
@@ -110,6 +116,7 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         }
     }
 
+    @Test
     public void testDaoClassDefaultContextNoTM() throws SystemException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(dataSource);
@@ -125,6 +132,7 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         SessionContextFactory.removeContext();
     }
 
+    @Test
     public void testAnnotatedBaseClass() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(dataSource);
@@ -239,7 +247,7 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         protected abstract void insertItem(int id, String name) throws SystemException;
 
         @UseDefaultSessionRunner()
-        public String getMessage() throws SystemException {
+        public String getMessage() {
             return message;
         }
 
@@ -258,12 +266,12 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         protected abstract void insertItem(int id, String name) throws SQLException;
 
         @UseDefaultSessionRunner
-        public void doInsert() throws SystemException, SQLException {
+        public void doInsert() throws SQLException {
             insertItem(1, "item");
         }
 
         @UseDefaultSessionRunner
-        public void doInsertDuplicateName() throws SystemException, SQLException {
+        public void doInsertDuplicateName() throws SQLException {
             // this is never called!!!
             insertItem(2, "item");
             insertItem(3, "item");
@@ -280,7 +288,7 @@ public class UseDefaultSessionRunnerTest extends TestCase {
         protected abstract void insertItem(int id, String name) throws SQLException;
 
         @UseDefaultSessionRunner
-        public void doInsertDuplicateName() throws SystemException, SQLException {
+        public void doInsertDuplicateName() throws SQLException {
             insertItem(2, "item");
             insertItem(3, "item");
             insertItem(4, "item");

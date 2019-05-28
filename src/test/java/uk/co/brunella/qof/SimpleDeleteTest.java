@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -8,12 +9,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SimpleDeleteTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    Connection connection;
-    DeleteQueries deleteQueries;
-    List<String> log;
+public class SimpleDeleteTest {
 
+    private Connection connection;
+    private DeleteQueries deleteQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         deleteQueries = QueryObjectFactory.createQueryObject(DeleteQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -21,8 +25,9 @@ public class SimpleDeleteTest extends TestCase {
         deleteQueries.setConnection(connection);
     }
 
+    @Test
     public void testDeleteByte() throws SQLException {
-        deleteQueries.deleteByte((byte) 11, new Byte((byte) 22));
+        deleteQueries.deleteByte((byte) 11, (byte) 22);
         deleteQueries.deleteByte((byte) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -42,8 +47,9 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteShort() throws SQLException {
-        deleteQueries.deleteShort((short) 11, new Short((short) 22));
+        deleteQueries.deleteShort((short) 11, (short) 22);
         deleteQueries.deleteShort((short) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -63,8 +69,9 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteInt() throws SQLException {
-        deleteQueries.deleteInt(11, new Integer(22));
+        deleteQueries.deleteInt(11, 22);
         deleteQueries.deleteInt(33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -84,8 +91,9 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteLong() throws SQLException {
-        deleteQueries.deleteLong((long) 11, new Long((long) 22));
+        deleteQueries.deleteLong((long) 11, (long) 22);
         deleteQueries.deleteLong((long) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -105,8 +113,9 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteFloat() throws SQLException {
-        deleteQueries.deleteFloat((float) 11.1, new Float((float) 22.2));
+        deleteQueries.deleteFloat((float) 11.1, (float) 22.2);
         deleteQueries.deleteFloat((float) 33.3, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -126,8 +135,9 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteDouble() throws SQLException {
-        deleteQueries.deleteDouble(11.1, new Double(22.2));
+        deleteQueries.deleteDouble(11.1, 22.2);
         deleteQueries.deleteDouble(33.3, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -147,6 +157,7 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteDate0() throws SQLException {
         deleteQueries.deleteDate0(new java.util.Date(0));
         deleteQueries.deleteDate0(null);
@@ -164,6 +175,7 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteDate1() throws SQLException {
         deleteQueries.deleteDate1(new java.util.Date(0));
         deleteQueries.deleteDate1(null);
@@ -181,6 +193,7 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteDate2() throws SQLException {
         deleteQueries.deleteDate2(new java.util.Date(0));
         deleteQueries.deleteDate2(null);
@@ -198,6 +211,7 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteDate3() throws SQLException {
         deleteQueries.deleteDate3(new java.util.Date(0));
         deleteQueries.deleteDate3(null);
@@ -215,6 +229,7 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteString() throws SQLException {
         deleteQueries.deleteString("abc");
         deleteQueries.deleteString(null);
@@ -232,8 +247,9 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteChar() throws SQLException {
-        deleteQueries.deleteChar('a', new Character('b'));
+        deleteQueries.deleteChar('a', 'b');
         deleteQueries.deleteChar('c', null);
         int i = 0;
         assertEquals(10, log.size());
@@ -253,6 +269,7 @@ public class SimpleDeleteTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testDeleteIntReturnUpdateCount() throws SQLException {
         int count = deleteQueries.deleteIntReturnUpdateCount(10);
         int i = 0;

@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -11,12 +12,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class CollectionInsertTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    Connection connection;
-    InsertQueries insertQueries;
-    List<String> log;
+public class CollectionInsertTest {
 
+    private Connection connection;
+    private InsertQueries insertQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         insertQueries = QueryObjectFactory.createQueryObject(InsertQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -24,8 +28,9 @@ public class CollectionInsertTest extends TestCase {
         insertQueries.setConnection(connection);
     }
 
+    @Test
     public void testInsertCollectionFullBatching() throws SQLException {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         list.add(11);
         list.add(22);
         list.add(33);
@@ -45,8 +50,9 @@ public class CollectionInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertCollectionSmallBatching() throws SQLException {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         list.add(11);
         list.add(22);
         list.add(33);
@@ -67,8 +73,9 @@ public class CollectionInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertCollectionNoBatching() throws SQLException {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         list.add(11);
         list.add(22);
         list.add(33);
@@ -87,8 +94,9 @@ public class CollectionInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertSetFullBatching() throws SQLException {
-        Set<Integer> set = new TreeSet<Integer>();
+        Set<Integer> set = new TreeSet<>();
         set.add(11);
         set.add(22);
         set.add(33);
@@ -108,8 +116,9 @@ public class CollectionInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertCollectionFullBatchingWithResult() throws SQLException {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         list.add(11);
         list.add(22);
         list.add(33);
@@ -133,8 +142,9 @@ public class CollectionInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertCollectionFullBatchingWithResult2() throws SQLException {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         list.add(11);
         list.add(22);
         list.add(33);
@@ -159,8 +169,9 @@ public class CollectionInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertBeanFullBatching() throws SQLException {
-        List<TestBean> beanList = new ArrayList<TestBean>();
+        List<TestBean> beanList = new ArrayList<>();
         TestBean bean = new TestBean();
         bean.setId(11);
         bean.setName("name");
@@ -192,12 +203,13 @@ public class CollectionInsertTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertTwoCollectionFullBatching() throws SQLException {
-        List<Integer> listInt = new ArrayList<Integer>();
+        List<Integer> listInt = new ArrayList<>();
         listInt.add(11);
         listInt.add(22);
         listInt.add(33);
-        List<String> listStr = new ArrayList<String>();
+        List<String> listStr = new ArrayList<>();
         listStr.add("a11");
         listStr.add(null);
         listStr.add("a33");

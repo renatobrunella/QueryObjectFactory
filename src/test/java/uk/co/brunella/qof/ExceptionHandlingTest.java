@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.dialect.OracleDialect;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
@@ -12,31 +13,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ExceptionHandlingTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class ExceptionHandlingTest {
 
     private Connection connection;
     private List<String> log;
 
+    @Before
     public void setUp() {
         connection = MockConnectionFactory.getConnection();
         log = ((MockConnectionData) connection).getLog();
     }
 
     private void setValues(String... values) {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> results = new ArrayList<>();
         for (String value : values) {
-            Map<String, Object> data = new HashMap<String, Object>();
+            Map<String, Object> data = new HashMap<>();
             results.add(data);
             data.put("value", value);
         }
         ((MockConnectionData) connection).setResultSetData(results);
     }
 
-    public void testPrepareStatementFailsSelectOne() throws SQLException {
+    @Test
+    public void testPrepareStatementFailsSelectOne() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         setValues("data");
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setPrepareFailes(true);
+        ((MockConnectionData) connection).setPrepareFails(true);
         try {
             queries.selectOne("criteria");
             fail("Should throw exception");
@@ -46,15 +51,16 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(2, log.size());
         int i = 0;
-        assertEquals("setPrepareFailes(true)", log.get(i++));
+        assertEquals("setPrepareFails(true)", log.get(i++));
         assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
     }
 
-    public void testPrepareStatementFailsSelectMany() throws SQLException {
+    @Test
+    public void testPrepareStatementFailsSelectMany() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         setValues("data1", "data2");
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setPrepareFailes(true);
+        ((MockConnectionData) connection).setPrepareFails(true);
         try {
             queries.selectMany("criteria");
             fail("Should throw exception");
@@ -64,15 +70,16 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(2, log.size());
         int i = 0;
-        assertEquals("setPrepareFailes(true)", log.get(i++));
+        assertEquals("setPrepareFails(true)", log.get(i++));
         assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
     }
 
-    public void testExecuteFailsSelectOne() throws SQLException {
+    @Test
+    public void testExecuteFailsSelectOne() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         setValues("data");
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setExecuteFailes(true);
+        ((MockConnectionData) connection).setExecuteFails(true);
         try {
             queries.selectOne("criteria");
             fail("Should throw exception");
@@ -82,7 +89,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(6, log.size());
         int i = 0;
-        assertEquals("setExecuteFailes(true)", log.get(i++));
+        assertEquals("setExecuteFails(true)", log.get(i++));
         assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
         assertEquals("setString(1,criteria)", log.get(i++));
@@ -90,11 +97,12 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
-    public void testExecuteFailsSelectMany() throws SQLException {
+    @Test
+    public void testExecuteFailsSelectMany() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         setValues("data1", "data2");
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setExecuteFailes(true);
+        ((MockConnectionData) connection).setExecuteFails(true);
         try {
             queries.selectMany("criteria");
             fail("Should throw exception");
@@ -104,7 +112,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(6, log.size());
         int i = 0;
-        assertEquals("setExecuteFailes(true)", log.get(i++));
+        assertEquals("setExecuteFails(true)", log.get(i++));
         assertEquals("prepareStatement(select value from test where id = ? )", log.get(i++));
         assertEquals("setFetchSize(100)", log.get(i++));
         assertEquals("setString(1,criteria)", log.get(i++));
@@ -112,6 +120,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUngetConnectionFailsSelectOne() throws SQLException {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         setValues("data");
@@ -144,6 +153,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUngetConnectionFailsSelectMany() throws SQLException {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         setValues("data1", "data2");
@@ -179,14 +189,15 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
-    public void testPrepareStatementFailsSelectPaging() throws SQLException {
+    @Test
+    public void testPrepareStatementFailsSelectPaging() {
         QueryObjectFactory.setSQLDialect(new OracleDialect());
         QueriesPaging queries = QueryObjectFactory.createQueryObject(QueriesPaging.class);
         setValues("data1", "data2");
         queries.setConnection(connection);
         queries.setFirstResult(1);
         queries.setMaxResults(20);
-        ((MockConnectionData) connection).setPrepareFailes(true);
+        ((MockConnectionData) connection).setPrepareFails(true);
         try {
             queries.select("criteria");
             fail("Should throw exception");
@@ -196,20 +207,21 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(2, log.size());
         int i = 0;
-        assertEquals("setPrepareFailes(true)", log.get(i++));
+        assertEquals("setPrepareFails(true)", log.get(i++));
         assertEquals("prepareStatement(select * from ( select qof_row_.*, rownum qof_rownum_ from " +
                         "( select value from test where id = ? ) qof_row_ where rownum <= ?) where qof_rownum_ > ?)",
                 log.get(i++));
     }
 
-    public void testExecuteFailsSelectPaging() throws SQLException {
+    @Test
+    public void testExecuteFailsSelectPaging() {
         QueryObjectFactory.setSQLDialect(new OracleDialect());
         QueriesPaging queries = QueryObjectFactory.createQueryObject(QueriesPaging.class);
         setValues("data1", "data2");
         queries.setConnection(connection);
         queries.setFirstResult(1);
         queries.setMaxResults(20);
-        ((MockConnectionData) connection).setExecuteFailes(true);
+        ((MockConnectionData) connection).setExecuteFails(true);
         try {
             queries.select("criteria");
             fail("Should throw exception");
@@ -219,7 +231,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(8, log.size());
         int i = 0;
-        assertEquals("setExecuteFailes(true)", log.get(i++));
+        assertEquals("setExecuteFails(true)", log.get(i++));
         assertEquals("prepareStatement(select * from ( select qof_row_.*, rownum qof_rownum_ from " +
                         "( select value from test where id = ? ) qof_row_ where rownum <= ?) where qof_rownum_ > ?)",
                 log.get(i++));
@@ -231,6 +243,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUngetConnectionFailsSelectPaging() throws SQLException {
         QueryObjectFactory.setSQLDialect(new OracleDialect());
         QueriesPaging queries = QueryObjectFactory.createQueryObject(QueriesPaging.class);
@@ -265,10 +278,11 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
-    public void testPrepareStatementFailsInsertOne() throws SQLException {
+    @Test
+    public void testPrepareStatementFailsInsertOne() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setPrepareFailes(true);
+        ((MockConnectionData) connection).setPrepareFails(true);
         try {
             queries.insertOne("data");
             fail("Should throw exception");
@@ -278,16 +292,17 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(2, log.size());
         int i = 0;
-        assertEquals("setPrepareFailes(true)", log.get(i++));
+        assertEquals("setPrepareFails(true)", log.get(i++));
         assertEquals("prepareStatement(insert into test values ( ? ) )", log.get(i++));
     }
 
-    public void testPrepareStatementFailsInsertMany() throws SQLException {
+    @Test
+    public void testPrepareStatementFailsInsertMany() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setPrepareFailes(true);
+        ((MockConnectionData) connection).setPrepareFails(true);
         try {
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add("data1");
             list.add("data2");
             queries.insertMany(list);
@@ -298,14 +313,15 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(2, log.size());
         int i = 0;
-        assertEquals("setPrepareFailes(true)", log.get(i++));
+        assertEquals("setPrepareFails(true)", log.get(i++));
         assertEquals("prepareStatement(insert into test values ( ? ) )", log.get(i++));
     }
 
-    public void testExecuteFailsInsertOne() throws SQLException {
+    @Test
+    public void testExecuteFailsInsertOne() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setExecuteFailes(true);
+        ((MockConnectionData) connection).setExecuteFails(true);
         try {
             queries.insertOne("data");
             fail("Should throw exception");
@@ -315,19 +331,20 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(5, log.size());
         int i = 0;
-        assertEquals("setExecuteFailes(true)", log.get(i++));
+        assertEquals("setExecuteFails(true)", log.get(i++));
         assertEquals("prepareStatement(insert into test values ( ? ) )", log.get(i++));
         assertEquals("setString(1,data)", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
     }
 
-    public void testExecuteFailsInsertMany() throws SQLException {
+    @Test
+    public void testExecuteFailsInsertMany() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setExecuteFailes(true);
+        ((MockConnectionData) connection).setExecuteFails(true);
         try {
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add("data1");
             list.add("data2");
             queries.insertMany(list);
@@ -338,7 +355,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(8, log.size());
         int i = 0;
-        assertEquals("setExecuteFailes(true)", log.get(i++));
+        assertEquals("setExecuteFails(true)", log.get(i++));
         assertEquals("prepareStatement(insert into test values ( ? ) )", log.get(i++));
         assertEquals("setString(1,data1)", log.get(i++));
         assertEquals("addBatch()", log.get(i++));
@@ -348,6 +365,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUngetConnectionFailsInsertOne() throws SQLException {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
@@ -368,13 +386,14 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUngetConnectionFailsInsertMany() throws SQLException {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
         queries.ungetConnectionFails = true;
         assertFalse(queries.ungetConnectionCalled);
         try {
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add("data1");
             list.add("data2");
             queries.insertMany(list);
@@ -394,10 +413,11 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
-    public void testPrepareStatementFailsCallOne() throws SQLException {
+    @Test
+    public void testPrepareStatementFailsCallOne() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setPrepareFailes(true);
+        ((MockConnectionData) connection).setPrepareFails(true);
         try {
             queries.callOne("data");
             fail("Should throw exception");
@@ -407,16 +427,17 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(2, log.size());
         int i = 0;
-        assertEquals("setPrepareFailes(true)", log.get(i++));
+        assertEquals("setPrepareFails(true)", log.get(i++));
         assertEquals("prepareCall({  ? = call func ( ? )  })", log.get(i++));
     }
 
-    public void testPrepareStatementFailsCallMany() throws SQLException {
+    @Test
+    public void testPrepareStatementFailsCallMany() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setPrepareFailes(true);
+        ((MockConnectionData) connection).setPrepareFails(true);
         try {
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add("data1");
             list.add("data2");
             queries.callMany(list);
@@ -427,14 +448,15 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(2, log.size());
         int i = 0;
-        assertEquals("setPrepareFailes(true)", log.get(i++));
+        assertEquals("setPrepareFails(true)", log.get(i++));
         assertEquals("prepareCall({  call func ( ? )  })", log.get(i++));
     }
 
-    public void testExecuteFailsCallOne() throws SQLException {
+    @Test
+    public void testExecuteFailsCallOne() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setExecuteFailes(true);
+        ((MockConnectionData) connection).setExecuteFails(true);
         try {
             queries.callOne("data");
             fail("Should throw exception");
@@ -444,7 +466,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(6, log.size());
         int i = 0;
-        assertEquals("setExecuteFailes(true)", log.get(i++));
+        assertEquals("setExecuteFails(true)", log.get(i++));
         assertEquals("prepareCall({  ? = call func ( ? )  })", log.get(i++));
         assertEquals("setString(2,data)", log.get(i++));
         assertEquals("registerOutParameter(1,12)", log.get(i++));
@@ -452,12 +474,13 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
-    public void testExecuteFailsCallMany() throws SQLException {
+    @Test
+    public void testExecuteFailsCallMany() {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
-        ((MockConnectionData) connection).setExecuteFailes(true);
+        ((MockConnectionData) connection).setExecuteFails(true);
         try {
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add("data1");
             list.add("data2");
             queries.callMany(list);
@@ -468,7 +491,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertTrue(queries.ungetConnectionCalled);
         assertEquals(8, log.size());
         int i = 0;
-        assertEquals("setExecuteFailes(true)", log.get(i++));
+        assertEquals("setExecuteFails(true)", log.get(i++));
         assertEquals("prepareCall({  call func ( ? )  })", log.get(i++));
         assertEquals("setString(1,data1)", log.get(i++));
         assertEquals("addBatch()", log.get(i++));
@@ -478,6 +501,7 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUngetConnectionFailsCallOne() throws SQLException {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
@@ -500,13 +524,14 @@ public class ExceptionHandlingTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUngetConnectionFailsCallMany() throws SQLException {
         Queries queries = QueryObjectFactory.createQueryObject(Queries.class);
         queries.setConnection(connection);
         queries.ungetConnectionFails = true;
         assertFalse(queries.ungetConnectionCalled);
         try {
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
             list.add("data1");
             list.add("data2");
             queries.callMany(list);

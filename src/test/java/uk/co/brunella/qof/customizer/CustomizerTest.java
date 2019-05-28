@@ -1,6 +1,7 @@
 package uk.co.brunella.qof.customizer;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import org.objectweb.asm.Type;
 import uk.co.brunella.qof.BaseQuery;
 import uk.co.brunella.qof.Query;
@@ -15,14 +16,17 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
+import static org.junit.Assert.*;
 
-public class CustomizerTest extends TestCase {
 
-    Connection connection;
-    TestInterface1 testQueries1;
-    TestInterface2 testQueries2;
-    TestInterface3 testQueries3;
+public class CustomizerTest {
 
+    private Connection connection;
+    private TestInterface1 testQueries1;
+    private TestInterface2 testQueries2;
+    private TestInterface3 testQueries3;
+
+    @Before
     public void setUp() {
         QueryObjectFactory.setCustomizer(new TestCustomizer());
         testQueries1 = QueryObjectFactory.createQueryObject(TestInterface1.class);
@@ -34,16 +38,18 @@ public class CustomizerTest extends TestCase {
         testQueries1.setFetchSize(99);
     }
 
-    public void testCustomizerClassName() throws SecurityException, NoSuchMethodException {
+    @Test
+    public void testCustomizerClassName() throws SecurityException {
         assertNotNull(testQueries1);
         assertEquals(TestInterface1.class.getName() + "TEST", testQueries1.getClass().getName());
     }
 
+    @Test
     public void testCustomizerListType() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(11));
+        data.put("id", 11);
 
         ((MockConnectionData) connection).setResultSetData(results);
         List<Integer> resultList = testQueries1.selectList();
@@ -51,11 +57,12 @@ public class CustomizerTest extends TestCase {
         assertEquals(LinkedList.class, resultList.getClass());
     }
 
+    @Test
     public void testCustomizerSetType() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(11));
+        data.put("id", 11);
 
         ((MockConnectionData) connection).setResultSetData(results);
         Set<Integer> resultList = testQueries1.selectSet();
@@ -63,6 +70,7 @@ public class CustomizerTest extends TestCase {
         assertEquals(TreeSet.class, resultList.getClass());
     }
 
+    @Test
     public void testConnectionFactory() {
         assertSame(connection, testQueries1.getConnection());
         try {
@@ -79,6 +87,7 @@ public class CustomizerTest extends TestCase {
         }
     }
 
+    @Test
     public void testConnectionFactory3() {
         assertSame(connection, testQueries1.getConnection());
         try {
@@ -95,6 +104,7 @@ public class CustomizerTest extends TestCase {
         }
     }
 
+    @Test
     public void testSetConnectionThrowsException() {
         // class only defines getConnection therefore set connection will throw exception
         TestClassNoSetConnection dao = QueryObjectFactory.createQueryObject(TestClassNoSetConnection.class);
@@ -106,12 +116,13 @@ public class CustomizerTest extends TestCase {
         }
     }
 
+    @Test
     public void testSetConnectionInvalidSignature() {
         TestClassWrongSignature dao = QueryObjectFactory.createQueryObject(TestClassWrongSignature.class);
         try {
             Method method = dao.getClass().getDeclaredMethod("setConnection", Connection.class);
             try {
-                method.invoke(dao, (Connection) null);
+                method.invoke(dao, new Object[] {null});
                 fail("Should throw exception");
             } catch (InvocationTargetException e) {
                 assertEquals("Connection cannot be set", e.getTargetException().getMessage());
@@ -122,6 +133,7 @@ public class CustomizerTest extends TestCase {
 
     }
 
+    @Test
     public void testGetConnectionInvalidSignature() {
         TestClassWrongSignature2 dao = QueryObjectFactory.createQueryObject(TestClassWrongSignature2.class);
         try {

@@ -1,14 +1,21 @@
 package uk.co.brunella.qof.session;
 
-import junit.framework.TestCase;
 import org.hsqldb.jdbc.JDBCDataSource;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Logger;
 
-public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class DefaultSessionRunnerSessionPolicyTest {
 
     private DataSource createDataSource() {
         JDBCDataSource ds = new JDBCDataSource();
@@ -18,27 +25,24 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         return new DataSourceWrapper(ds);
     }
 
+    @Before
     public void setUp() throws Exception {
         MockInitialContextFactory.register();
         MockContext.getInstance().bind("datasource", createDataSource());
-        Statement stmt = createDataSource().getConnection().createStatement();
-        try {
+        try (Statement stmt = createDataSource().getConnection().createStatement()) {
             stmt.execute("create table test (id integer, name varchar(40))");
-        } finally {
-            stmt.close();
         }
     }
 
+    @After
     public void tearDown() throws Exception {
         MockContext.getInstance().unbind("datasource");
-        Statement stmt = createDataSource().getConnection().createStatement();
-        try {
+        try (Statement stmt = createDataSource().getConnection().createStatement()) {
             stmt.execute("drop table test");
-        } finally {
-            stmt.close();
         }
     }
 
+    @Test
     public void testCanJoinJoins() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(createDataSource());
@@ -55,6 +59,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testCanJoinCreatesNew() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(createDataSource());
@@ -71,6 +76,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testMustJoin() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(createDataSource());
@@ -87,6 +93,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testMustJoinFails() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(createDataSource());
@@ -104,7 +111,8 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
-    public void testMustStartFails() throws SystemException, SQLException {
+    @Test
+    public void testMustStartFails() throws SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(createDataSource());
         try {
@@ -121,6 +129,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testCanJoinJoinsBeanJndi() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
@@ -137,6 +146,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testCanJoinCreatesNewBeanJndi() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
@@ -153,6 +163,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testMustJoinBeanJndi() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
@@ -169,6 +180,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testMustJoinFailsBeanJndi() throws SystemException, SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
@@ -186,7 +198,8 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
-    public void testMustStartFailsBeanJndi() throws SystemException, SQLException {
+    @Test
+    public void testMustStartFailsBeanJndi() throws SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
         try {
@@ -203,42 +216,32 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
         connection.close();
     }
 
+    @Test
     public void testSessionPolicy() {
         assertEquals(SessionPolicy.MUST_START_NEW_SESSION, SessionPolicy.valueOf(SessionPolicy.MUST_START_NEW_SESSION.name()));
     }
 
     private TransactionRunnable<Void> createTransactionRunnable(final String statement1,
                                                                 final String statement2, final SessionPolicy sessionPolicy2) {
-        return new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute(statement1);
-                    DefaultSessionRunner.execute(new TransactionRunnable<Void>() {
-                        public Void run(Connection connection, Object... arguments) throws SQLException {
-                            Statement stmt = connection.createStatement();
-                            try {
-                                stmt.execute(statement2);
-                            } finally {
-                                stmt.close();
-                            }
-                            return null;
-                        }
-
-                    }, sessionPolicy2);
-                } catch (SystemException e) {
-                    throw new SQLException(e.getMessage());
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        return (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute(statement1);
+                DefaultSessionRunner.execute((TransactionRunnable<Void>) (connection1, arguments1) -> {
+                    try (Statement stmt1 = connection1.createStatement()) {
+                        stmt1.execute(statement2);
+                    }
+                    return null;
+                }, sessionPolicy2);
+            } catch (SystemException e) {
+                throw new SQLException(e.getMessage());
             }
-
+            return null;
         };
     }
 
 
-    public void testJoinedFailsBeanJndi() throws SystemException, SQLException {
+    @Test
+    public void testJoinedFailsBeanJndi() throws SQLException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setJndiDataSource("datasource", null, TransactionManagementType.BEAN);
         try {
@@ -257,32 +260,23 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
 
     private TransactionRunnable<Void> createTransactionRunnableThatFails(final String statement1,
                                                                          final SessionPolicy sessionPolicy2) {
-        return new TransactionRunnable<Void>() {
-            public Void run(Connection connection, Object... arguments) throws SQLException {
-                Statement stmt = connection.createStatement();
-                try {
-                    stmt.execute(statement1);
-                    DefaultSessionRunner.execute(new TransactionRunnable<Void>() {
-                        public Void run(Connection connection, Object... arguments) throws SQLException {
-                            throw new SQLException("forced rollback");
-                        }
-
-                    }, sessionPolicy2);
-                } catch (SystemException e) {
-                    throw new SQLException(e.getMessage());
-                } finally {
-                    stmt.close();
-                }
-                return null;
+        return (connection, arguments) -> {
+            try (Statement stmt = connection.createStatement()) {
+                stmt.execute(statement1);
+                DefaultSessionRunner.execute((TransactionRunnable<Void>) (connection1, arguments1) -> {
+                    throw new SQLException("forced rollback");
+                }, sessionPolicy2);
+            } catch (SystemException e) {
+                throw new SQLException(e.getMessage());
             }
-
+            return null;
         };
     }
 
     public static class DataSourceWrapper implements DataSource {
         DataSource dataSource;
 
-        public DataSourceWrapper(DataSource dataSource) {
+        DataSourceWrapper(DataSource dataSource) {
             this.dataSource = dataSource;
         }
 
@@ -306,7 +300,7 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
             dataSource.setLoginTimeout(seconds);
         }
 
-        public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        public Logger getParentLogger() {
             return null;
         }
 
@@ -318,11 +312,11 @@ public class DefaultSessionRunnerSessionPolicyTest extends TestCase {
             dataSource.setLogWriter(out);
         }
 
-        public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        public boolean isWrapperFor(Class<?> iface) {
             return false;
         }
 
-        public <T> T unwrap(Class<T> iface) throws SQLException {
+        public <T> T unwrap(Class<T> iface) {
             return null;
         }
     }

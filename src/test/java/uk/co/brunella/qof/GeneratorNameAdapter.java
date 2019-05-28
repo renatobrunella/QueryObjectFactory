@@ -17,14 +17,14 @@ import static uk.co.brunella.qof.codegen.Constants.*;
 
 public class GeneratorNameAdapter implements GeneratorMappingAdapter {
 
-    final static Type TYPE_Name = Type.getType(Name.class);
-    final static Signature SIG_Name_Constructor = new Signature("<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
-    final static Signature SIG_getFirstName = new Signature("getFirstName", "()Ljava/lang/String;");
-    final static Signature SIG_getLastName = new Signature("getLastName", "()Ljava/lang/String;");
+    private final static Type TYPE_Name = Type.getType(Name.class);
+    private final static Signature SIG_Name_Constructor = new Signature("<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
+    private final static Signature SIG_getFirstName = new Signature("getFirstName", "()Ljava/lang/String;");
+    private final static Signature SIG_getLastName = new Signature("getLastName", "()Ljava/lang/String;");
     private final static int[] types = new int[]{java.sql.Types.VARCHAR, java.sql.Types.VARCHAR};
 
     public Set<Class<?>> getTypes() {
-        Set<Class<?>> types = new HashSet<Class<?>>();
+        Set<Class<?>> types = new HashSet<>();
         types.add(Name.class);
         return types;
     }

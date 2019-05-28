@@ -14,7 +14,7 @@ public class TestClassLoader extends URLClassLoader {
         super(aurl, classloader);
     }
 
-    public static ClassLoader createClassLoader(ClassLoader parent) throws IOException {
+    public static ClassLoader createClassLoader(ClassLoader parent) {
         String s = System.getProperty("java.class.path");
         File[] afile = s != null ? getClassPath(s) : new File[0];
         URL[] aurl = s != null ? pathToURLs(afile) : new URL[0];
@@ -30,10 +30,10 @@ public class TestClassLoader extends URLClassLoader {
         return aurl;
     }
 
-    static URL getFileURL(File file) {
+    private static URL getFileURL(File file) {
         try {
             file = file.getCanonicalFile();
-        } catch (IOException ioexception) {
+        } catch (IOException ignored) {
         }
         try {
             return ParseUtil.fileToEncodedURL(file);

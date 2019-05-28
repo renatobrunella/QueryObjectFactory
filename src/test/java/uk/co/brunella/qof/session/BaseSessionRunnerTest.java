@@ -1,6 +1,6 @@
 package uk.co.brunella.qof.session;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -8,20 +8,23 @@ import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class BaseSessionRunnerTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+public class BaseSessionRunnerTest {
 
     private static List<String> log;
 
+    @Test
     public void testSuccessDefaultContext() throws SystemException {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(new MockDataSource());
         String result = new BaseSessionRunner<String>() {
             @Override
-            protected String run(Connection connection, Object... arguments) throws SQLException {
+            protected String run(Connection connection, Object... arguments) {
                 assertEquals(1, arguments.length);
                 return "TEST1";
             }
@@ -33,12 +36,13 @@ public class BaseSessionRunnerTest extends TestCase {
         assertEquals("close()", log.get(2));
     }
 
+    @Test
     public void testSuccessNamedContext() throws SystemException {
         SessionContextFactory.removeContext("MY_CONTEXT");
         SessionContextFactory.setDataSource("MY_CONTEXT", new MockDataSource());
         String result = new BaseSessionRunner<String>("MY_CONTEXT") {
             @Override
-            protected String run(Connection connection, Object... arguments) throws SQLException {
+            protected String run(Connection connection, Object... arguments) {
                 assertEquals(1, arguments.length);
                 return "TEST2";
             }
@@ -50,7 +54,8 @@ public class BaseSessionRunnerTest extends TestCase {
         assertEquals("close()", log.get(2));
     }
 
-    public void testFailureDefaultContext() throws SystemException {
+    @Test
+    public void testFailureDefaultContext() {
         SessionContextFactory.removeContext();
         SessionContextFactory.setDataSource(new MockDataSource());
         try {
@@ -71,18 +76,18 @@ public class BaseSessionRunnerTest extends TestCase {
         assertEquals("close()", log.get(2));
     }
 
+    @Test
     public void testForcedRollbackDefaultContext() throws SystemException {
         SessionContextFactory.removeContext();
         new SessionContextFactory();
         SessionContextFactory.setDataSource(new MockDataSource());
         new BaseSessionRunner<Void>() {
             @Override
-            protected Void run(Connection connection, Object... arguments)
-                    throws SQLException {
+            protected Void run(Connection connection, Object... arguments) {
                 try {
                     SessionContextFactory.getContext().getUserTransaction()
                             .setRollbackOnly();
-                } catch (SystemException e) {
+                } catch (SystemException ignored) {
                 }
                 return null;
             }
@@ -95,41 +100,39 @@ public class BaseSessionRunnerTest extends TestCase {
 
     private class MockDataSource implements DataSource {
 
-        public Connection getConnection() throws SQLException {
+        public Connection getConnection() {
             Connection connection = MockConnectionFactory.getConnection();
             log = ((MockConnectionData) connection).getLog();
             return connection;
         }
 
-        public Connection getConnection(String username, String password) throws SQLException {
+        public Connection getConnection(String username, String password) {
             return null;
         }
 
-        public PrintWriter getLogWriter() throws SQLException {
+        public PrintWriter getLogWriter() {
             return null;
         }
 
-        public void setLogWriter(PrintWriter out) throws SQLException {
+        public void setLogWriter(PrintWriter out) {
         }
 
-        public int getLoginTimeout() throws SQLException {
+        public int getLoginTimeout() {
             return 0;
         }
 
-        public void setLoginTimeout(int seconds) throws SQLException {
+        public void setLoginTimeout(int seconds) {
         }
 
-        public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        public Logger getParentLogger() {
             return null;
         }
 
-        @SuppressWarnings("unused")
-        public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        public boolean isWrapperFor(Class<?> iface) {
             return false;
         }
 
-        @SuppressWarnings("unused")
-        public <T> T unwrap(Class<T> iface) throws SQLException {
+        public <T> T unwrap(Class<T> iface) {
             return null;
         }
 

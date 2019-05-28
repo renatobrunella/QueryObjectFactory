@@ -1,21 +1,26 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class DefaultFieldTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
+public class DefaultFieldTest {
+
+    @Test
     public void testBatchFetchIntf() {
         TestBatchFetchIntf test = QueryObjectFactory.createQueryObject(TestBatchFetchIntf.class);
         assertEquals(88, test.getBatchSize());
         assertEquals(99, test.getFetchSize());
     }
 
+    @Test
     public void testBatchFetchClass() {
         TestBatchFetchClass test = QueryObjectFactory.createQueryObject(TestBatchFetchClass.class);
         assertEquals(88, test.getBatchSize());
         assertEquals(99, test.getFetchSize());
     }
 
+    @Test
     public void testBatchFetchClass2() {
         TestBatchFetchClass2 test = QueryObjectFactory.createQueryObject(TestBatchFetchClass2.class);
         test.test();
@@ -43,7 +48,8 @@ public class DefaultFieldTest extends TestCase {
         protected int batchSize;
         protected int fetchSize;
 
-        public void test() {
+    @Test
+    public void test() {
             batchSize = 10;
             fetchSize = 20;
         }

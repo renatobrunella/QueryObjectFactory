@@ -1,6 +1,7 @@
 package uk.co.brunella.qof.adapter;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.BaseQuery;
 import uk.co.brunella.qof.Call;
 import uk.co.brunella.qof.Query;
@@ -15,12 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ClobAdapterTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class ClobAdapterTest {
 
     private Connection connection;
     private SelectQueries selectQueries;
     private List<String> log;
 
+    @Before
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -29,9 +33,10 @@ public class ClobAdapterTest extends TestCase {
         selectQueries.setFetchSize(99);
     }
 
+    @Test
     public void testSelect() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("clob", "ABC");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -46,11 +51,12 @@ public class ClobAdapterTest extends TestCase {
         assertEquals("getClob(clob)", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("close()", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testCall() throws SQLException {
-        List<Object> results = new ArrayList<Object>();
+        List<Object> results = new ArrayList<>();
         results.add("ABC");
         ((MockConnectionData) connection).setResultData(results);
         assertEquals("ABC", selectQueries.call("XYZ"));
@@ -61,21 +67,25 @@ public class ClobAdapterTest extends TestCase {
         assertEquals("registerOutParameter(1,2005)", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getClob(1)", log.get(i++));
-        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i));
     }
 
+    @Test
     public void testRegister() {
         ClobAdapter.register("ClobAdapter");
         assertTrue(QueryObjectFactory.isMapperRegistered("ClobAdapter"));
         QueryObjectFactory.unregisterMapper("ClobAdapter");
     }
 
+    @Test
     public void testGetNumberOfColumns() {
         assertEquals(1, new ClobAdapter().getNumberOfColumns());
     }
 
+    @Test
     public void testClobReader() {
-        assertNotNull(new ClobReader());
+        ClobReader clobReader = new ClobReader();
+        assertNotNull(clobReader);
     }
 
     public interface SelectQueries extends BaseQuery {

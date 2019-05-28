@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -11,26 +12,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FactoryMethodTest extends TestCase {
+import static org.junit.Assert.*;
 
-    static boolean factoryCalled1;
-    static boolean factoryCalled2;
+public class FactoryMethodTest {
+
+    private static boolean factoryCalled1;
+    private static boolean factoryCalled2;
     private Connection connection;
     private SelectQueries selectQueries;
 
+    @SuppressWarnings("unused")
     public static Person personFactory(int id) {
         factoryCalled1 = true;
         return new Person(id);
     }
 
+    @SuppressWarnings("unused")
     public static Person personFactory(int id, String name) {
         factoryCalled2 = true;
         return new Person(id, name);
     }
 
+    @Test
     public void testGetPerson1() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("id", 1);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -42,9 +48,10 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled1);
     }
 
+    @Test
     public void testGetPerson2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("id", 1);
         data.put("name", "tester");
@@ -58,9 +65,10 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled2);
     }
 
+    @Test
     public void testGetPerson3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("id", 1);
         data.put("name", "tester");
@@ -74,12 +82,13 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled1);
     }
 
+    @Test
     public void testGetPersons1() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("id", 1);
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("id", 2);
         ((MockConnectionData) connection).setResultSetData(results);
@@ -93,13 +102,14 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled1);
     }
 
+    @Test
     public void testGetPersons2() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("id", 1);
         data.put("name", "tester1");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("id", 2);
         data.put("name", "tester2");
@@ -116,13 +126,14 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled2);
     }
 
+    @Test
     public void testGetPersons3() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("id", 1);
         data.put("name", "tester1");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("id", 2);
         data.put("name", "tester2");
@@ -139,9 +150,10 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled1);
     }
 
+    @Test
     public void testCallPerson1() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Integer(1));
+        List<Object> result = new ArrayList<>();
+        result.add(1);
         ((MockConnectionData) connection).setResultData(result);
         assertFalse(factoryCalled1);
         Person person = selectQueries.callPerson1();
@@ -150,9 +162,10 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled1);
     }
 
+    @Test
     public void testCallPerson2() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Integer(1));
+        List<Object> result = new ArrayList<>();
+        result.add(1);
         result.add("tester");
         ((MockConnectionData) connection).setResultData(result);
 
@@ -164,9 +177,10 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled2);
     }
 
+    @Test
     public void testCallPerson3() throws SQLException {
-        List<Object> result = new ArrayList<Object>();
-        result.add(new Integer(1));
+        List<Object> result = new ArrayList<>();
+        result.add(1);
         result.add("tester");
         ((MockConnectionData) connection).setResultData(result);
 
@@ -178,6 +192,7 @@ public class FactoryMethodTest extends TestCase {
         assertTrue(factoryCalled1);
     }
 
+    @Before
     public void setUp() {
         selectQueries = QueryObjectFactory.createQueryObject(SelectQueries.class);
         connection = MockConnectionFactory.getConnection();

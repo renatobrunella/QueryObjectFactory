@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -8,12 +9,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class SimpleUpdateTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    Connection connection;
-    UpdateQueries updateQueries;
-    List<String> log;
+public class SimpleUpdateTest {
 
+    private Connection connection;
+    private UpdateQueries updateQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         updateQueries = QueryObjectFactory.createQueryObject(UpdateQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -21,8 +25,9 @@ public class SimpleUpdateTest extends TestCase {
         updateQueries.setConnection(connection);
     }
 
+    @Test
     public void testUpdateByte() throws SQLException {
-        updateQueries.updateByte((byte) 11, new Byte((byte) 22));
+        updateQueries.updateByte((byte) 11, (byte) 22);
         updateQueries.updateByte((byte) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -42,8 +47,9 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateShort() throws SQLException {
-        updateQueries.updateShort((short) 11, new Short((short) 22));
+        updateQueries.updateShort((short) 11, (short) 22);
         updateQueries.updateShort((short) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -63,8 +69,9 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateInt() throws SQLException {
-        updateQueries.updateInt(11, new Integer(22));
+        updateQueries.updateInt(11, 22);
         updateQueries.updateInt(33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -84,8 +91,9 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateLong() throws SQLException {
-        updateQueries.updateLong((long) 11, new Long((long) 22));
+        updateQueries.updateLong((long) 11, (long) 22);
         updateQueries.updateLong((long) 33, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -105,8 +113,9 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateFloat() throws SQLException {
-        updateQueries.updateFloat((float) 11.1, new Float((float) 22.2));
+        updateQueries.updateFloat((float) 11.1, (float) 22.2);
         updateQueries.updateFloat((float) 33.3, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -126,8 +135,9 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateDouble() throws SQLException {
-        updateQueries.updateDouble(11.1, new Double(22.2));
+        updateQueries.updateDouble(11.1, 22.2);
         updateQueries.updateDouble(33.3, null);
         int i = 0;
         assertEquals(10, log.size());
@@ -147,6 +157,7 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateDate0() throws SQLException {
         updateQueries.updateDate0(new java.util.Date(0));
         updateQueries.updateDate0(null);
@@ -162,6 +173,7 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateDate1() throws SQLException {
         updateQueries.updateDate1(new java.util.Date(0));
         updateQueries.updateDate1(null);
@@ -177,6 +189,7 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateDate2() throws SQLException {
         updateQueries.updateDate2(new java.util.Date(0));
         updateQueries.updateDate2(null);
@@ -192,6 +205,7 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateDate3() throws SQLException {
         updateQueries.updateDate3(new java.util.Date(0));
         updateQueries.updateDate3(null);
@@ -207,6 +221,7 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateString() throws SQLException {
         updateQueries.updateString("abc");
         updateQueries.updateString(null);
@@ -222,8 +237,9 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateChar() throws SQLException {
-        updateQueries.updateChar('a', new Character('b'));
+        updateQueries.updateChar('a', 'b');
         updateQueries.updateChar('c', null);
         int i = 0;
         assertEquals(10, log.size());
@@ -243,6 +259,7 @@ public class SimpleUpdateTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testUpdateIntReturnUpdateCount() throws SQLException {
         int count = updateQueries.updateIntReturnUpdateCount(10);
         int i = 0;

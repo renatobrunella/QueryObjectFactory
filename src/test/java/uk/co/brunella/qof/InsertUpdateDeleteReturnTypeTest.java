@@ -1,12 +1,16 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class InsertUpdateDeleteReturnTypeTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+public class InsertUpdateDeleteReturnTypeTest {
+
+    @Test
     public void testInsert() {
         try {
             QueryObjectFactory.createQueryObject(InsertQueries.class);
@@ -16,6 +20,7 @@ public class InsertUpdateDeleteReturnTypeTest extends TestCase {
         }
     }
 
+    @Test
     public void testInsert2() {
         try {
             QueryObjectFactory.createQueryObject(InsertQueries2.class);
@@ -25,6 +30,7 @@ public class InsertUpdateDeleteReturnTypeTest extends TestCase {
         }
     }
 
+    @Test
     public void testUpdate() {
         try {
             QueryObjectFactory.createQueryObject(UpdateQueries.class);
@@ -34,6 +40,7 @@ public class InsertUpdateDeleteReturnTypeTest extends TestCase {
         }
     }
 
+    @Test
     public void testUpdate2() {
         try {
             QueryObjectFactory.createQueryObject(UpdateQueries2.class);
@@ -43,6 +50,7 @@ public class InsertUpdateDeleteReturnTypeTest extends TestCase {
         }
     }
 
+    @Test
     public void testDelete() {
         try {
             QueryObjectFactory.createQueryObject(DeleteQueries.class);
@@ -52,6 +60,7 @@ public class InsertUpdateDeleteReturnTypeTest extends TestCase {
         }
     }
 
+    @Test
     public void testDelete2() {
         try {
             QueryObjectFactory.createQueryObject(DeleteQueries2.class);
@@ -61,6 +70,7 @@ public class InsertUpdateDeleteReturnTypeTest extends TestCase {
         }
     }
 
+    @Test
     public void testCall() {
         try {
             QueryObjectFactory.createQueryObject(CallQueries.class);

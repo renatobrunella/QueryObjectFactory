@@ -59,7 +59,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.12</version>
             <scope>test,compile</scope>
         </dependency>
 
@@ -132,6 +132,12 @@
                             </filter>
                             <filter>
                                 <artifact>junit:junit</artifact>
+                                <excludes>
+                                    <exclude>**</exclude>
+                                </excludes>
+                            </filter>
+                            <filter>
+                                <artifact>org.hamcrest:hamcrest-core</artifact>
                                 <excludes>
                                     <exclude>**</exclude>
                                 </excludes>

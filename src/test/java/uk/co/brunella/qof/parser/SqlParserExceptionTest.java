@@ -1,10 +1,14 @@
 package uk.co.brunella.qof.parser;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 import uk.co.brunella.qof.exception.SqlParserException;
 
-public class SqlParserExceptionTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+public class SqlParserExceptionTest {
+
+    @Test
     public void testParsingOneParameter1() {
         String sql = "select * from test where name = {%1";
         try {
@@ -15,6 +19,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneResult1() {
         String sql = "select * {%% from test";
         try {
@@ -25,6 +30,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneResult2() {
         String sql = "select * {%%.} from test";
         try {
@@ -35,6 +41,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneParameter2() {
         String sql = "select * from test where name = {%1field}";
         try {
@@ -45,6 +52,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneParameter3() {
         String sql = "select * from test where name = {%-1}";
         try {
@@ -55,6 +63,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneParameter4() {
         String sql = "select * from test where name = {abcd}";
         try {
@@ -65,6 +74,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneParameter5() {
         String sql = "select * from test where name = {@@%1}";
         try {
@@ -75,6 +85,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneParameter6() {
         String sql = "select * from test where name = {%1%2}";
         try {
@@ -85,6 +96,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneParameter7() {
         String sql = "select * from test where name = {%1,%2}";
         try {
@@ -95,6 +107,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneParameter8() {
         String sql = "select * from test where name = {%1,%2}";
         try {
@@ -105,6 +118,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingOneParameter9() {
         String sql = "select * from test where name = {%%,%%}";
         try {
@@ -115,6 +129,7 @@ public class SqlParserExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testParsingCallAsQuery() {
         String sql = "{ call xyz (%1)}";
         try {

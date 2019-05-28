@@ -33,13 +33,11 @@ public class LoggingDelegationProxyFactory {
 
     public static Object createProxy(LoggingDelegationProxy proxy, Object delegatee, Class<?>... interfaces) {
         Class<?>[] proxyInterfaces = new Class<?>[1 + interfaces.length];
-        for (int i = 0; i < interfaces.length; i++) {
-            proxyInterfaces[i] = interfaces[i];
-        }
+        System.arraycopy(interfaces, 0, proxyInterfaces, 0, interfaces.length);
         proxyInterfaces[proxyInterfaces.length - 1] = LoggingDelegationProxy.class;
         List<String> log;
         if (proxy == null) {
-            log = new ArrayList<String>();
+            log = new ArrayList<>();
         } else {
             log = proxy.getLog();
         }
@@ -53,49 +51,50 @@ public class LoggingDelegationProxyFactory {
         private List<String> log;
         private boolean logClass;
 
-        public LoggingDelegationProxyInvocationHandler(Object delegatee, List<String> log) {
+        LoggingDelegationProxyInvocationHandler(Object delegatee, List<String> log) {
             this.delegatee = delegatee;
             this.log = log;
             logClass = false;
         }
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (method.getName().equals("getLog")) {
-                return log;
-            } else if (method.getName().equals("clearLog")) {
-                log.clear();
-                return null;
-            } else if (method.getName().equals("setLogClass")) {
-                logClass = (Boolean) args[0];
-                return null;
-            } else if (method.getName().equals("equals")) {
-                return args.length == 1 && proxy == args[0];
-            } else {
-                StringBuilder sb = new StringBuilder();
-                if (logClass) {
-                    sb.append(method.getDeclaringClass().getName());
-                    sb.append('.');
-                }
-                sb.append(method.getName());
-                sb.append('(');
-                if (args != null) {
-                    for (int i = 0; i < args.length; i++) {
-                        sb.append(args[i]);
-                        if (i + 1 < args.length) {
-                            sb.append(',');
+            switch (method.getName()) {
+                case "getLog":
+                    return log;
+                case "clearLog":
+                    log.clear();
+                    return null;
+                case "setLogClass":
+                    logClass = (Boolean) args[0];
+                    return null;
+                case "equals":
+                    return args.length == 1 && proxy == args[0];
+                default:
+                    StringBuilder sb = new StringBuilder();
+                    if (logClass) {
+                        sb.append(method.getDeclaringClass().getName());
+                        sb.append('.');
+                    }
+                    sb.append(method.getName());
+                    sb.append('(');
+                    if (args != null) {
+                        for (int i = 0; i < args.length; i++) {
+                            sb.append(args[i]);
+                            if (i + 1 < args.length) {
+                                sb.append(',');
+                            }
                         }
                     }
-                }
-                sb.append(')');
-                log.add(sb.toString());
-                try {
-                    Method delegateeMethod = delegatee.getClass().getMethod(method.getName(), method.getParameterTypes());
-                    return delegateeMethod.invoke(delegatee, args);
-                } catch (NoSuchMethodException e) {
-                    return null;
-                } catch (InvocationTargetException e) {
-                    throw e.getCause();
-                }
+                    sb.append(')');
+                    log.add(sb.toString());
+                    try {
+                        Method delegateeMethod = delegatee.getClass().getMethod(method.getName(), method.getParameterTypes());
+                        return delegateeMethod.invoke(delegatee, args);
+                    } catch (NoSuchMethodException e) {
+                        return null;
+                    } catch (InvocationTargetException e) {
+                        throw e.getCause();
+                    }
             }
         }
     }

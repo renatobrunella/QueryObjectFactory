@@ -1,15 +1,14 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.sql.SQLException;
 
-public class ThreadTest extends TestCase {
+import static org.junit.Assert.*;
 
-    public ThreadTest(String arg0) {
-        super(arg0);
-    }
+public class ThreadTest {
 
+    @Test
     public void testTwoThread() {
         QueryObjectFactory.createQueryObject(Test3.class);
         T t1 = new T(1);
@@ -22,7 +21,7 @@ public class ThreadTest extends TestCase {
             t1.join();
             t2.join();
             t3.join();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
         assertFalse(t1.finishedSuccessfully);
         assertTrue(t2.finishedSuccessfully);

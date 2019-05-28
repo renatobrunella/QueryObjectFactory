@@ -1,9 +1,13 @@
 package uk.co.brunella.qof.dialect;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class DefaultDialectTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+public class DefaultDialectTest {
+
+    @Test
     public void testGetLimitString() {
         try {
             new DefaultDialect().getLimitString("", true);
@@ -13,6 +17,7 @@ public class DefaultDialectTest extends TestCase {
         }
     }
 
+    @Test
     public void testLimitParametersBeforeQueryParameters() {
         try {
             new DefaultDialect().limitParametersBeforeQueryParameters();
@@ -22,6 +27,7 @@ public class DefaultDialectTest extends TestCase {
         }
     }
 
+    @Test
     public void testLimitAddOffset() {
         try {
             new DefaultDialect().limitAddOffset();
@@ -31,6 +37,7 @@ public class DefaultDialectTest extends TestCase {
         }
     }
 
+    @Test
     public void testLimitOffsetFirst() {
         try {
             new DefaultDialect().limitOffsetFirst();

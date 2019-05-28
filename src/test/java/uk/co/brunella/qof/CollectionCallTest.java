@@ -1,6 +1,7 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
@@ -11,12 +12,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class CollectionCallTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    Connection connection;
-    CallQueries callQueries;
-    List<String> log;
+public class CollectionCallTest {
 
+    private Connection connection;
+    private CallQueries callQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         callQueries = QueryObjectFactory.createQueryObject(CallQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -24,8 +28,9 @@ public class CollectionCallTest extends TestCase {
         callQueries.setConnection(connection);
     }
 
+    @Test
     public void testCallCollectionFullBatching() throws SQLException {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         list.add(11);
         list.add(22);
         list.add(33);
@@ -44,8 +49,9 @@ public class CollectionCallTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallCollectionSmallBatching() throws SQLException {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         list.add(11);
         list.add(22);
         list.add(33);
@@ -65,8 +71,9 @@ public class CollectionCallTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallCollectionNoBatching() throws SQLException {
-        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         list.add(11);
         list.add(22);
         list.add(33);
@@ -84,8 +91,9 @@ public class CollectionCallTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallSetFullBatching() throws SQLException {
-        Set<Integer> set = new TreeSet<Integer>();
+        Set<Integer> set = new TreeSet<>();
         set.add(11);
         set.add(22);
         set.add(33);
@@ -104,8 +112,9 @@ public class CollectionCallTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallBeanFullBatching() throws SQLException {
-        List<TestBean> beanList = new ArrayList<TestBean>();
+        List<TestBean> beanList = new ArrayList<>();
         TestBean bean = new TestBean();
         bean.setId(11);
         bean.setName("name");
@@ -136,12 +145,13 @@ public class CollectionCallTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallTwoCollectionFullBatching() throws SQLException {
-        List<Integer> listInt = new ArrayList<Integer>();
+        List<Integer> listInt = new ArrayList<>();
         listInt.add(11);
         listInt.add(22);
         listInt.add(33);
-        List<String> listStr = new ArrayList<String>();
+        List<String> listStr = new ArrayList<>();
         listStr.add("a11");
         listStr.add(null);
         listStr.add("a33");

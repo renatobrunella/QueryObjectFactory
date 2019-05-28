@@ -1,6 +1,8 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.exception.ValidationException;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
@@ -12,12 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AdapterSqlTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class AdapterSqlTest {
 
     Connection connection;
     AdapterQueries adapterQueries;
     List<String> log;
 
+    @Before
     public void setUp() {
         QueryObjectFactory.unregisterMapper("name-gen");
         QueryObjectFactory.unregisterMapper("name-dyn");
@@ -30,16 +35,18 @@ public class AdapterSqlTest extends TestCase {
         adapterQueries.setFetchSize(99);
     }
 
+    @After
     public void tearDown() {
         QueryObjectFactory.unregisterMapper("name-gen");
         QueryObjectFactory.unregisterMapper("name-dyn");
     }
 
+    @Test
     public void testSelectBeanGen() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(1));
+        data.put("id", 1);
         data.put("first_name", "John");
         data.put("last_name", "Smith");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -62,11 +69,12 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectBeanDyn() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(1));
+        data.put("id", 1);
         data.put("first_name", "John");
         data.put("last_name", "Smith");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -89,6 +97,7 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertBeanGen() throws SQLException {
         TestBean2 bean = new TestBean2();
         bean.setId(11);
@@ -104,6 +113,7 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testInsertBeanDyn() throws SQLException {
         TestBean2 bean = new TestBean2();
         bean.setId(11);
@@ -119,6 +129,7 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCreationFails() {
         QueryObjectFactory.unregisterMapper("name-gen");
         try {
@@ -129,9 +140,10 @@ public class AdapterSqlTest extends TestCase {
         }
     }
 
+    @Test
     public void testSelectGen() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("first_name", "John");
         data.put("last_name", "Smith");
@@ -155,14 +167,15 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectNameGenMap() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("first_name", "John");
         data.put("last_name", "Smith");
         data.put("dummy", "abc");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("first_name", "Alfred");
         data.put("last_name", "Tester");
@@ -196,14 +209,15 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testSelectNameDynMap() throws SQLException {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
         data.put("first_name", "John");
         data.put("last_name", "Smith");
         data.put("dummy", "abc");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
         data.put("first_name", "Alfred");
         data.put("last_name", "Tester");
@@ -237,8 +251,9 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallGen() throws SQLException {
-        List<Object> results = new ArrayList<Object>();
+        List<Object> results = new ArrayList<>();
         results.add("Joe");
         results.add("Tester");
 
@@ -264,8 +279,9 @@ public class AdapterSqlTest extends TestCase {
         assertEquals("close()", log.get(i++));
     }
 
+    @Test
     public void testCallDyn() throws SQLException {
-        List<Object> results = new ArrayList<Object>();
+        List<Object> results = new ArrayList<>();
         results.add("Joe");
         results.add("Tester");
 

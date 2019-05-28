@@ -23,7 +23,10 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Type;
 import uk.co.brunella.qof.codegen.EmitUtils;
-import uk.co.brunella.qof.session.*;
+import uk.co.brunella.qof.session.DefaultSessionRunner;
+import uk.co.brunella.qof.session.TransactionManagementType;
+import uk.co.brunella.qof.session.UseDefaultSessionRunner;
+import uk.co.brunella.qof.session.UseSessionContext;
 import uk.co.brunella.qof.util.DefineClassHelper;
 import uk.co.brunella.qof.util.ReflectionUtils;
 
@@ -76,7 +79,6 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
         while (clazz != null) {
             for (Method method : clazz.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(UseDefaultSessionRunner.class)) {
-                    checkThrowsSystemException(method);
                     String signature = methodSignature(method);
                     if (!annotatedMethods.containsKey(signature)) {
                         annotatedMethods.put(signature, method);
@@ -101,27 +103,6 @@ public class SessionRunnerEnhancer implements QueryObjectClassEnhancer {
         }
         sb.append(')');
         return sb.toString();
-    }
-
-    private void checkThrowsSystemException(Method method) {
-        boolean foundSystemException = false;
-//    boolean foundSQLException = false;
-        for (Class<?> exceptionClass : method.getExceptionTypes()) {
-            if (SystemException.class == exceptionClass) {
-                foundSystemException = true;
-            }
-//      if (SQLException.class == exceptionClass) {
-//        foundSQLException = true;
-//      }
-        }
-        if (!foundSystemException) {
-            throw new RuntimeException(method.getDeclaringClass().getName() + "." + method.getName() +
-                    " must throw " + SystemException.class.getName());
-        }
-//    if (foundSQLException) {
-//      throw new RuntimeException(method.getDeclaringClass().getName() + "." + method.getName() + 
-//          " does not throw " + SQLException.class.getName());
-//    }
     }
 
     /*

@@ -1,18 +1,23 @@
 package uk.co.brunella.qof;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import uk.co.brunella.qof.testtools.MockConnectionData;
 import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
 import java.sql.Connection;
 import java.util.*;
 
-public class ConstructorMappingTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-    Connection connection;
-    PersonQueries personQueries;
-    List<String> log;
+public class ConstructorMappingTest {
 
+    private Connection connection;
+    private PersonQueries personQueries;
+    private List<String> log;
+
+    @Before
     public void setUp() {
         personQueries = QueryObjectFactory.createQueryObject(PersonQueries.class);
         connection = MockConnectionFactory.getConnection();
@@ -20,11 +25,12 @@ public class ConstructorMappingTest extends TestCase {
         personQueries.setConnection(connection);
     }
 
+    @Test
     public void testSelect() {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(55));
+        data.put("id", 55);
         data.put("first_name", "John");
         data.put("last_name", "Smith");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -34,16 +40,17 @@ public class ConstructorMappingTest extends TestCase {
         assertEquals("prepareStatement(select id , first_name , last_name from person where id = ? )", log.get(0));
     }
 
+    @Test
     public void testSelectCollection() {
-        List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-        Map<String, Object> data = new HashMap<String, Object>();
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(55));
+        data.put("id", 55);
         data.put("first_name", "John");
         data.put("last_name", "Smith");
-        data = new HashMap<String, Object>();
+        data = new HashMap<>();
         results.add(data);
-        data.put("id", new Integer(56));
+        data.put("id", 56);
         data.put("first_name", "Peter");
         data.put("last_name", "Smithers");
         ((MockConnectionData) connection).setResultSetData(results);
@@ -55,9 +62,10 @@ public class ConstructorMappingTest extends TestCase {
         assertEquals("prepareStatement(select id , first_name , last_name from person )", log.get(0));
     }
 
+    @Test
     public void testCall() {
-        List<Object> data = new ArrayList<Object>();
-        data.add(new Integer(55));
+        List<Object> data = new ArrayList<>();
+        data.add(55);
         ((MockConnectionData) connection).setResultData(data);
         Person person = personQueries.getPersonCall(55);
         assertNotNull(person);
@@ -65,8 +73,9 @@ public class ConstructorMappingTest extends TestCase {
         assertEquals("prepareCall({  ? = call get_person( ? )  })", log.get(0));
     }
 
+    @Test
     public void testCallChar() {
-        List<Object> data = new ArrayList<Object>();
+        List<Object> data = new ArrayList<>();
         data.add("x");
         ((MockConnectionData) connection).setResultData(data);
         Character c = personQueries.getChar();
@@ -75,8 +84,9 @@ public class ConstructorMappingTest extends TestCase {
         assertEquals("prepareCall({  ? = call get_char( )  })", log.get(0));
     }
 
+    @Test
     public void testCallDate() {
-        List<Object> data = new ArrayList<Object>();
+        List<Object> data = new ArrayList<>();
         data.add(new java.sql.Date(1000000));
         ((MockConnectionData) connection).setResultData(data);
         MyDate date = personQueries.getDate();

@@ -1,8 +1,10 @@
 package uk.co.brunella.qof.util;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class CallStackIntrospectorTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class CallStackIntrospectorTest {
 
     private static int findBaseLevel(Class<?>[] callStack) {
         for (int i = callStack.length - 1; i >= 0; i--) {
@@ -13,6 +15,7 @@ public class CallStackIntrospectorTest extends TestCase {
         return -1;
     }
 
+    @Test
     public void testGetCallStack() {
         Class<?>[] stack = CallStackIntrospector.getCallStack();
         int baseLevel = findBaseLevel(stack);
@@ -20,6 +23,7 @@ public class CallStackIntrospectorTest extends TestCase {
         assertEquals(getClass(), stack[baseLevel + 1]);
     }
 
+    @Test
     public void testGetCaller() {
         Class<?> callerClass = getCaller();
         assertEquals(getClass(), callerClass);
@@ -29,6 +33,7 @@ public class CallStackIntrospectorTest extends TestCase {
         return CallStackIntrospector.getCaller();
     }
 
+    @Test
     public void testGetCallerLevel() {
         Class<?> callerClass = CallStackIntrospector.getCaller(0);
         assertEquals(getClass(), callerClass);
@@ -38,7 +43,7 @@ public class CallStackIntrospectorTest extends TestCase {
     }
 
     public static class Call {
-        public static Class<?> getCaller(int level) {
+        static Class<?> getCaller(int level) {
             return CallStackIntrospector.getCaller(level);
         }
     }

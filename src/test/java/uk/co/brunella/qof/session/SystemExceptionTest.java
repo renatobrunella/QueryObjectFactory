@@ -1,9 +1,12 @@
 package uk.co.brunella.qof.session;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class SystemExceptionTest extends TestCase {
+import static org.junit.Assert.*;
 
+public class SystemExceptionTest {
+
+    @Test
     public void testCreation1() {
         try {
             throw new SystemException();
@@ -12,6 +15,7 @@ public class SystemExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testCreation2() {
         try {
             throw new SystemException("message");
@@ -20,6 +24,7 @@ public class SystemExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testCreation3() {
         try {
             throw new SystemException(new RuntimeException());
@@ -29,6 +34,7 @@ public class SystemExceptionTest extends TestCase {
         }
     }
 
+    @Test
     public void testCreation4() {
         try {
             throw new SystemException("message", new RuntimeException());
