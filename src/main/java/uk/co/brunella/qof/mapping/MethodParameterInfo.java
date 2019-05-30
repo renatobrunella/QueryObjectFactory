@@ -22,6 +22,8 @@ public interface MethodParameterInfo {
 
     int getIndex();
 
+    String getName();
+
     Class<?> getType();
 
     Class<?> getCollectionType();

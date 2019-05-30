@@ -22,6 +22,7 @@ import net.sf.cglib.core.Signature;
 import uk.co.brunella.qof.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class MethodInfoFactory {
@@ -38,10 +39,12 @@ public class MethodInfoFactory {
 
     private static MethodParameterInfo[] createParameterInfos(Method method) {
         Type[] genericTypes = method.getGenericParameterTypes();
+        Parameter[] parameters = method.getParameters();
         Class<?>[] types = method.getParameterTypes();
         MethodParameterInfo[] parameterInfos = new MethodParameterInfo[genericTypes.length];
 
         for (int i = 0; i < genericTypes.length; i++) {
+            String name = parameters[i].getName();
             Class<?> type = types[i];
             Class<?> collectionType = ReflectionUtils.getCollectionType(genericTypes[i]);
             Class<?> collectionElementType;
@@ -51,7 +54,7 @@ public class MethodInfoFactory {
                 collectionElementType = ReflectionUtils.getCollectionParameterizedType(genericTypes[i]);
             }
             Class<?> arrayElementType = ReflectionUtils.getArrayComponentType(genericTypes[i]);
-            parameterInfos[i] = new MethodParameterInfoImpl(i, type, collectionType, collectionElementType, arrayElementType);
+            parameterInfos[i] = new MethodParameterInfoImpl(i, name, type, collectionType, collectionElementType, arrayElementType);
         }
 
         return parameterInfos;
@@ -139,15 +142,17 @@ public class MethodInfoFactory {
     protected static class MethodParameterInfoImpl implements MethodParameterInfo {
 
         private int index;
+        private String name;
         private Class<?> type;
         private Class<?> collectionType;
         private Class<?> collectionElementType;
         private Class<?> arrayElementType;
 
-        MethodParameterInfoImpl(int index, Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
+        MethodParameterInfoImpl(int index, String name, Class<?> type, Class<?> collectionType, Class<?> collectionElementType,
                                 Class<?> arrayElementType) {
             super();
             this.index = index;
+            this.name = name;
             this.type = type;
             this.collectionType = collectionType;
             this.collectionElementType = collectionElementType;
@@ -156,6 +161,10 @@ public class MethodInfoFactory {
 
         public int getIndex() {
             return index;
+        }
+
+        public String getName() {
+            return name;
         }
 
         public Class<?> getType() {
