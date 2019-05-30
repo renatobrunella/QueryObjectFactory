@@ -47,11 +47,18 @@ public interface ParameterDefinition extends Definition {
     int[] getIndexes();
 
     /**
-     * Returns the index of the parameter in the query method.
+     * Returns the index of the parameter in the query method or -1 if named parameter.
      *
      * @return parameter index in query method
      */
     int getParameter();
+
+    /**
+     * Returns the name of the parameter in the query method if it was named or null.
+     *
+     * @return parameter name in query method
+     */
+    String getParameterName();
 
     /**
      * Returns the type of the parameter (string, int, etc.).

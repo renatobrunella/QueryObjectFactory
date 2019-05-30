@@ -87,7 +87,7 @@ public class SqlParser {
     private static final Pattern RESULT_DEF_PATTERN =
             Pattern.compile("\\{([\\w\\-]+)?%%((\\d+)|\\*|\\.(\\w+))?(@\\d+)?(\\[[\\w]+])?}");
     private static final Pattern PARAMETER_DEF_PATTERN =
-            Pattern.compile("\\{([\\w\\-]+)?%(\\d+)((\\.\\w+)(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?)?(@\\d+)?(\\[[\\w]+])?(#.*#)?}");
+            Pattern.compile("\\{([\\w\\-]+)?%(\\d+|[a-zA-Z_]\\w+)((\\.\\w+)(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?(\\.\\w+)?)?(@\\d+)?(\\[[\\w]+])?(#.*#)?}");
     private List<ParameterDefinition> parameterDefs;
     private List<ResultDefinition> resultDefs;
     private List<Integer> openCurlyBrackets;
@@ -313,6 +313,7 @@ public class SqlParser {
 
     private ParameterDefinition parseParameterDefinition(String definition, int curlyBracketIndex) {
         int parameterIndex;
+        String parameterName;
         String mappingType;
         int partialDefinitionPart = 0;
         String partialDefinitionGroup;
@@ -321,7 +322,14 @@ public class SqlParser {
         Matcher matcher = PARAMETER_DEF_PATTERN.matcher(definition);
         if (matcher.find() && matcher.group().equals(definition)) {
             mappingType = matcher.group(1);
-            parameterIndex = Integer.valueOf(matcher.group(2));
+            String indexOrName = matcher.group(2);
+            try {
+                parameterIndex = Integer.valueOf(indexOrName);
+                parameterName = null;
+            } catch (NumberFormatException e) {
+                parameterIndex = -1;
+                parameterName = indexOrName;
+            }
             String[] fields;
             fields = extractFields(matcher);
             if (matcher.group(9) != null) {
@@ -338,6 +346,7 @@ public class SqlParser {
             ParameterDefinitionImpl parameterDef = new ParameterDefinitionImpl();
             parameterDef.setType(mappingType);
             parameterDef.setParameter(parameterIndex);
+            parameterDef.setParameterName(parameterName);
             parameterDef.setFields(fields);
             parameterDef.setIndexes(new int[]{sqlIndex});
             parameterDef.setPartialDefinitionPart(partialDefinitionPart);

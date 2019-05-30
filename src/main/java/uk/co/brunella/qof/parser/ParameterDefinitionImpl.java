@@ -31,6 +31,7 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
     private int[] indexes;
     private String type;
     private int parameter;
+    private String parameterName;
     private String partialDefinitionGroup;
     private String parameterSeparator;
     private int partialDefinitionPart;
@@ -75,6 +76,14 @@ public class ParameterDefinitionImpl implements ParameterDefinition {
 
     public void setParameter(int parameter) {
         this.parameter = parameter;
+    }
+
+    public String getParameterName() {
+        return parameterName;
+    }
+
+    public void setParameterName(String parameterName) {
+        this.parameterName = parameterName;
     }
 
     public String getType() {

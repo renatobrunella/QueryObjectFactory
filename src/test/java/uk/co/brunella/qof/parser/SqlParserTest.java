@@ -42,6 +42,26 @@ public class SqlParserTest {
         ParameterDefinition def = parser.getParameterDefinitions()[0];
         assertEquals("auto", def.getType());
         assertEquals(1, def.getParameter());
+        assertEquals(null, def.getParameterName());
+        assertEquals(1, def.getIndexes().length);
+        assertEquals(1, def.getIndexes()[0]);
+        assertNull(def.getNames());
+        assertNull(def.getFields());
+    }
+
+    @Test
+    public void testParsingOneNamedParameter() {
+        String sql = "select * from test where name = {%name}";
+        SqlParser parser = new SqlParser(sql, false);
+        assertEquals("select * from test where name = ?", parser.getSql().trim());
+        assertNotNull(parser.getParameterDefinitions());
+        assertEquals(1, parser.getParameterDefinitions().length);
+        assertNotNull(parser.getResultDefinitions());
+        assertEquals(0, parser.getResultDefinitions().length);
+        ParameterDefinition def = parser.getParameterDefinitions()[0];
+        assertEquals("auto", def.getType());
+        assertEquals(-1, def.getParameter());
+        assertEquals("name", def.getParameterName());
         assertEquals(1, def.getIndexes().length);
         assertEquals(1, def.getIndexes()[0]);
         assertNull(def.getNames());
