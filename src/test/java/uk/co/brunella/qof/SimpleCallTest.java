@@ -7,6 +7,8 @@ import uk.co.brunella.qof.testtools.MockConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -283,14 +285,15 @@ public class SimpleCallTest {
     @Test
     public void testCallTime() throws SQLException {
         List<Object> result = new ArrayList<>();
-        result.add(new java.sql.Time(0));
+        Time time = new Time(0);
+        result.add(time);
         ((MockConnectionData) connection).setResultData(result);
         assertEquals(new java.util.Date(0).getTime(), callQueries.callTime(new java.util.Date(0)).getTime());
         assertEquals(new java.util.Date(0).getTime(), callQueries.callTime(null).getTime());
         int i = 0;
         assertEquals(12, log.size());
         assertEquals("prepareCall({  ? = call func ( ? )  })", log.get(i++));
-        assertEquals("setTime(2,01:00:00)", log.get(i++));
+        assertEquals("setTime(2," + time + ")", log.get(i++));
         assertEquals("registerOutParameter(1," + java.sql.Types.TIME + ")", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getTime(1)", log.get(i++));
@@ -306,14 +309,15 @@ public class SimpleCallTest {
     @Test
     public void testCallTimestamp() throws SQLException {
         List<Object> result = new ArrayList<>();
-        result.add(new java.sql.Timestamp(0));
+        Timestamp timestamp = new Timestamp(0);
+        result.add(timestamp);
         ((MockConnectionData) connection).setResultData(result);
         assertEquals(new java.util.Date(0).getTime(), callQueries.callTimestamp(new java.util.Date(0)).getTime());
         assertEquals(new java.util.Date(0).getTime(), callQueries.callTimestamp(null).getTime());
         int i = 0;
         assertEquals(12, log.size());
         assertEquals("prepareCall({  ? = call func ( ? )  })", log.get(i++));
-        assertEquals("setTimestamp(2,1970-01-01 01:00:00.0)", log.get(i++));
+        assertEquals("setTimestamp(2," + timestamp + ")", log.get(i++));
         assertEquals("registerOutParameter(1," + java.sql.Types.TIMESTAMP + ")", log.get(i++));
         assertEquals("execute()", log.get(i++));
         assertEquals("getTimestamp(1)", log.get(i++));

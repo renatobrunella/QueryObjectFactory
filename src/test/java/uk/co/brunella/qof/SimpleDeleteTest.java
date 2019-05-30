@@ -201,7 +201,7 @@ public class SimpleDeleteTest {
         assertEquals(8, log.size());
         assertEquals("prepareStatement(delete from test where column = ? )", log
                 .get(i++));
-        assertEquals("setTime(1,01:00:00)", log.get(i++));
+        assertEquals("setTime(1," + new java.sql.Time(0) + ")", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("prepareStatement(delete from test where column = ? )", log
@@ -219,7 +219,7 @@ public class SimpleDeleteTest {
         assertEquals(8, log.size());
         assertEquals("prepareStatement(delete from test where column = ? )", log
                 .get(i++));
-        assertEquals("setTimestamp(1,1970-01-01 01:00:00.0)", log.get(i++));
+        assertEquals("setTimestamp(1," + new java.sql.Timestamp(0) + ")", log.get(i++));
         assertEquals("executeUpdate()", log.get(i++));
         assertEquals("close()", log.get(i++));
         assertEquals("prepareStatement(delete from test where column = ? )", log

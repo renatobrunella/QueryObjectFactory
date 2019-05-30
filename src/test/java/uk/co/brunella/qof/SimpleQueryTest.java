@@ -404,7 +404,7 @@ public class SimpleQueryTest {
         assertEquals(9, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
-        assertEquals("setTime(1,01:00:00)", log.get(i++));
+        assertEquals("setTime(1," + new java.sql.Time(0) + ")", log.get(i++));
         assertEquals("executeQuery()", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("getTime(value)", log.get(i++));
@@ -438,7 +438,7 @@ public class SimpleQueryTest {
         assertEquals(9, log.size());
         assertEquals("prepareStatement(select value from test where id1 = ? ) )", log.get(i++));
         assertEquals("setFetchSize(2)", log.get(i++));
-        assertEquals("setTimestamp(1,1970-01-01 01:00:00.0)", log.get(i++));
+        assertEquals("setTimestamp(1," + new java.sql.Timestamp(0) + ")", log.get(i++));
         assertEquals("executeQuery()", log.get(i++));
         assertEquals("next()", log.get(i++));
         assertEquals("getTimestamp(value)", log.get(i++));

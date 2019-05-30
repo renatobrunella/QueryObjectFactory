@@ -91,7 +91,7 @@ public class ConstructorMappingTest {
         ((MockConnectionData) connection).setResultData(data);
         MyDate date = personQueries.getDate();
         assertNotNull(date);
-        assertEquals("Thu Jan 01 01:16:40 GMT 1970", date.toString());
+        assertEquals(new Date(1000000).toString(), date.toString());
         assertEquals("prepareCall({  ? = call get_date( )  })", log.get(0));
     }
 
