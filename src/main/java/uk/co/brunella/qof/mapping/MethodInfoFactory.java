@@ -182,6 +182,18 @@ public class MethodInfoFactory {
         public Class<?> getArrayElementType() {
             return arrayElementType;
         }
+
+        @Override
+        public String toString() {
+            return "MethodParameterInfoImpl{" +
+                    "index=" + index +
+                    ", name='" + name + '\'' +
+                    ", type=" + type +
+                    ", collectionType=" + collectionType +
+                    ", collectionElementType=" + collectionElementType +
+                    ", arrayElementType=" + arrayElementType +
+                    '}';
+        }
     }
 
     protected static class MethodReturnInfoImpl implements MethodReturnInfo {
@@ -216,5 +228,14 @@ public class MethodInfoFactory {
             return mapKeyType;
         }
 
+        @Override
+        public String toString() {
+            return "MethodReturnInfoImpl{" +
+                    "type=" + type +
+                    ", collectionType=" + collectionType +
+                    ", collectionElementType=" + collectionElementType +
+                    ", mapKeyType=" + mapKeyType +
+                    '}';
+        }
     }
 }

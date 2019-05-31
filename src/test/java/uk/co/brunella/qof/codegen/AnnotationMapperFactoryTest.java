@@ -24,11 +24,19 @@ public class AnnotationMapperFactoryTest {
         Method method1a = TestInterface.class.getMethod("test1", (Class[]) null);
         Method method1b = TestInterface.class.getMethod("test1", Integer.TYPE);
         assertEquals(
-                "Invalid parameter index for method public abstract int " + AnnotationMapperFactoryTest.class.getName() + "$TestInterface.test1()",
+                "Invalid parameter index 1 for method public abstract int " + AnnotationMapperFactoryTest.class.getName() + "$TestInterface.test1()",
                 run(method1a));
         assertEquals(
-                "Invalid parameter index for method public abstract int " + AnnotationMapperFactoryTest.class.getName() + "$TestInterface.test1(int)",
+                "Invalid parameter index 2 for method public abstract int " + AnnotationMapperFactoryTest.class.getName() + "$TestInterface.test1(int)",
                 run(method1b));
+    }
+
+    @Test
+    public void testInvalidParameterName() throws SecurityException, NoSuchMethodException {
+        Method method4 = TestInterface.class.getMethod("test4", Integer.TYPE);
+        assertEquals(
+                "Invalid parameter name unknown or JDK does not support parameter names for method public abstract int " + AnnotationMapperFactoryTest.class.getName() + "$TestInterface.test4(int)",
+                run(method4));
     }
 
     @Test
@@ -57,5 +65,10 @@ public class AnnotationMapperFactoryTest {
 
         @Query(sql = "select col {%%.field} from test where id = {%1}")
         int test3(int i);
+
+        @Query(sql = "select * from test where id = {%unknown}")
+        int test4(int id);
+
+
     }
 }

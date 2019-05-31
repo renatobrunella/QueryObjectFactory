@@ -96,9 +96,25 @@ public final class AnnotationMapperFactory {
         for (ParameterDefinition parameter : parameterDefs) {
             // get fields from annotation
             String mappingType = parameter.getType();
-            int index = parameter.getParameter() - 1;
-            if (index < 0 || index >= methodInfo.getParameterInfos().length) {
-                throw new ValidationException("Invalid parameter index for method " + methodInfo);
+            int index;
+            if (parameter.getParameterName() != null) {
+                index = -1;
+                MethodParameterInfo[] infos = methodInfo.getParameterInfos();
+                for (int i = 0; i < infos.length; i++) {
+                    if (infos[i].getName().equals(parameter.getParameterName())) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index == -1) {
+                    throw new ValidationException("Invalid parameter name " + parameter.getParameterName() +
+                            " or JDK does not support parameter names for method " + methodInfo);
+                }
+            } else {
+                index = parameter.getParameter() - 1;
+                if (index < 0 || index >= methodInfo.getParameterInfos().length) {
+                    throw new ValidationException("Invalid parameter index " + parameter.getParameter() + " for method " + methodInfo);
+                }
             }
             int[] sqlIndexes = parameter.getIndexes();
             String[] sqlColumns = parameter.getNames();

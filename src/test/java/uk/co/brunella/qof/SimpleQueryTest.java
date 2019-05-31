@@ -359,6 +359,28 @@ public class SimpleQueryTest {
     }
 
     @Test
+    public void selectStringWithNamedParameters() throws SQLException {
+        List<Map<String, Object>> results = new ArrayList<>();
+        Map<String, Object> data = new HashMap<>();
+        results.add(data);
+        data.put("value", "abc");
+        ((MockConnectionData) connection).setResultSetData(results);
+        assertEquals("abc", selectQueries.selectStringWithNamedParameters("abc", "xyz"));
+        int i = 0;
+        assertEquals(10, log.size());
+        assertEquals("prepareStatement(select value from test where id1 = ? or id2 = ? ) )", log.get(i++));
+        assertEquals("setFetchSize(2)", log.get(i++));
+        assertEquals("setString(1,abc)", log.get(i++));
+        assertEquals("setString(2,xyz)", log.get(i++));
+        assertEquals("executeQuery()", log.get(i++));
+        assertEquals("next()", log.get(i++));
+        assertEquals("getString(value)", log.get(i++));
+        assertEquals("next()", log.get(i++));
+        assertEquals("close()", log.get(i++));
+        assertEquals("close()", log.get(i++));
+    }
+
+    @Test
     public void testSelectDate() throws SQLException {
         List<Map<String, Object>> results = new ArrayList<>();
         Map<String, Object> data = new HashMap<>();
@@ -511,6 +533,9 @@ public class SimpleQueryTest {
 
         @Query(sql = "select value {%%} from test where id1 = {%1})")
         String selectString(String a) throws SQLException;
+
+        @Query(sql = "select value {%%} from test where id1 = {%id1} or id2 = {%id2})")
+        String selectStringWithNamedParameters(String id1, String id2) throws SQLException;
 
         @Query(sql = "select value {date %%} from test where id1 = {date %1})")
         java.util.Date selectDate(java.util.Date a) throws SQLException;
