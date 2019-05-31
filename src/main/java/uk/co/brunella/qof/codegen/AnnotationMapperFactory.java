@@ -108,7 +108,8 @@ public final class AnnotationMapperFactory {
                 }
                 if (index == -1) {
                     throw new ValidationException("Invalid parameter name " + parameter.getParameterName() +
-                            " or JDK does not support parameter names for method " + methodInfo);
+                            " or JDK does not support parameter names or is not enabled for method " + methodInfo +
+                            "\nTo enable use javac option -parameters");
                 }
             } else {
                 index = parameter.getParameter() - 1;

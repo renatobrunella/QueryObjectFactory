@@ -35,7 +35,8 @@ public class AnnotationMapperFactoryTest {
     public void testInvalidParameterName() throws SecurityException, NoSuchMethodException {
         Method method4 = TestInterface.class.getMethod("test4", Integer.TYPE);
         assertEquals(
-                "Invalid parameter name unknown or JDK does not support parameter names for method public abstract int " + AnnotationMapperFactoryTest.class.getName() + "$TestInterface.test4(int)",
+                "Invalid parameter name unknown or JDK does not support parameter names or is not enabled for method public abstract int "
+                        + AnnotationMapperFactoryTest.class.getName() + "$TestInterface.test4(int)\nTo enable use javac option -parameters",
                 run(method4));
     }
 
