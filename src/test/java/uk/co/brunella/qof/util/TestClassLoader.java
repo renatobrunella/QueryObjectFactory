@@ -1,7 +1,5 @@
 package uk.co.brunella.qof.util;
 
-import sun.net.www.ParseUtil;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -36,11 +34,24 @@ public class TestClassLoader extends URLClassLoader {
         } catch (IOException ignored) {
         }
         try {
-            return ParseUtil.fileToEncodedURL(file);
+            return fileToEncodedURL(file);
         } catch (MalformedURLException malformedurlexception) {
             throw new InternalError();
         }
     }
+
+    private static URL fileToEncodedURL(File file) throws MalformedURLException {
+        String path = file.getAbsolutePath();
+        //path = ParseUtil.encodePath(path);
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+        if (!path.endsWith("/") && file.isDirectory()) {
+            path = path + "/";
+        }
+        return new URL("file", "", path);
+    }
+
 
     private static File[] getClassPath(String s) {
         File[] afile;
