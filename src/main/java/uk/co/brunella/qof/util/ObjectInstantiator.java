@@ -19,6 +19,7 @@
 package uk.co.brunella.qof.util;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Helper class to instantiate an object.
@@ -42,8 +43,8 @@ public final class ObjectInstantiator {
     public static <T> T newInstance(Class<T> clazz, Object[] initArgs) {
         if (initArgs == null || initArgs.length == 0) {
             try {
-                return clazz.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+                return clazz.getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
         } else {

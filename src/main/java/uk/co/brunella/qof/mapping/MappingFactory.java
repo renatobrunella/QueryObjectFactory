@@ -22,6 +22,7 @@ import uk.co.brunella.qof.adapter.MappingAdapter;
 import uk.co.brunella.qof.exception.ValidationException;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,10 +94,10 @@ public class MappingFactory {
         }
         Class<?> mappingClass = info.getMapperClass();
         try {
-            ParameterMapping mapping = (ParameterMapping) mappingClass.newInstance();
+            ParameterMapping mapping = (ParameterMapping) mappingClass.getDeclaredConstructor().newInstance();
             mapping.setParameters(index, type, collectionType, beanType, getters, sqlIndexes, sqlColumns, info.getAdapter(), usesArray, parameterSeparator);
             return mapping;
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }
@@ -132,12 +133,12 @@ public class MappingFactory {
         }
         Class<?> mappingClass = info.getMapperClass();
         try {
-            ResultMapping mapping = (ResultMapping) mappingClass.newInstance();
+            ResultMapping mapping = (ResultMapping) mappingClass.getDeclaredConstructor().newInstance();
             mapping.setParameters(type, collectionType, beanType, setter, sqlIndexes, sqlColumns,
                     info.getAdapter(), mapKeyType, constructorParameter, constructor, staticFactoryMethod,
                     collectionClass, collectionInitialCapacity);
             return mapping;
-        } catch (InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

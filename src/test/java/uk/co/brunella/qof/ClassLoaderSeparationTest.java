@@ -18,7 +18,7 @@ public class ClassLoaderSeparationTest {
     private static final String ADAPTER_NAME = "testadapter";
 
     @Test
-    public void test() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public void test() throws Exception {
         // create two separate class loaders
         ClassLoader cl1 = TestClassLoader.createClassLoader(null);
         ClassLoader cl2 = TestClassLoader.createClassLoader(null);
@@ -28,8 +28,8 @@ public class ClassLoaderSeparationTest {
         Class<?> dao2Class = cl2.loadClass(Dao2Factory.class.getName());
 
         // create the objects - both use the same adapter name but have their own class loader
-        assertNotNull(dao1Class.newInstance());
-        assertNotNull(dao2Class.newInstance());
+        assertNotNull(dao1Class.getDeclaredConstructor().newInstance());
+        assertNotNull(dao2Class.getDeclaredConstructor().newInstance());
     }
 
     public static class Dao1Factory {

@@ -75,7 +75,7 @@ public class BeanCallTest {
         TestBean bean = callQueries.callBean2();
         assertNotNull(bean);
         assertEquals(11, bean.getId());
-        assertEquals(new Integer(22), bean.getNum());
+        assertEquals(Integer.valueOf(22), bean.getNum());
         assertEquals("Name", bean.getName());
         assertNull(bean.getDate());
         int i = 0;
@@ -105,7 +105,7 @@ public class BeanCallTest {
         TestBean bean = callQueries.callBean3(11);
         assertNotNull(bean);
         assertEquals(11, bean.getId());
-        assertEquals(new Integer(22), bean.getNum());
+        assertEquals(Integer.valueOf(22), bean.getNum());
         assertEquals("Name", bean.getName());
         assertNull(bean.getDate());
         int i = 0;
