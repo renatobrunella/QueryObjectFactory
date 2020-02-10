@@ -40,7 +40,7 @@ import java.lang.annotation.*;
  * <br> <code>{%1}</code> defines a parameter mapping to the primitive type parameter <code>id</code>
  *
  * <p> Allowed return types of the query method are:
- * <ul type="disc">
+ * <ul>
  * <li> An atomic value object type such as <code>int</code>, <code>Double</code>, <code>String</code>, etc. </li>
  * <li> Java object type supporting JavaBean style getters and setters.</li>
  * <li> A value object mapped with a custom mapping adapter
