@@ -214,7 +214,7 @@ public class InClauseTest {
         results.add(data);
         data.put("value", "B");
         ((MockConnectionData) connection).setResultSetData(results);
-        List<String> list = selectQueries.selectDate(new java.util.Date[]{new java.util.Date(0), new java.util.Date(1000 * 84600)});
+        List<String> list = selectQueries.selectDate(new java.util.Date[]{new java.util.Date(0), new java.util.Date(1500 * 84600L)});
         assertEquals(2, list.size());
         assertEquals(12, log.size());
         int i = 0;

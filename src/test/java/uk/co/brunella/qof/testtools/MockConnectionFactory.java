@@ -141,7 +141,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public boolean getBoolean(String parameterName) throws SQLException {
-                return (boolean) getIndexedValue(Integer.valueOf(parameterName));
+                return (boolean) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             private Object getIndexedValue(int index) throws SQLException {
@@ -161,7 +161,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public byte getByte(String parameterName) throws SQLException {
-                return (byte) getIndexedValue(Integer.valueOf(parameterName));
+                return (byte) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -171,7 +171,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public Date getDate(String parameterName) throws SQLException {
-                return (Date) getIndexedValue(Integer.valueOf(parameterName));
+                return (Date) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -181,7 +181,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public double getDouble(String parameterName) throws SQLException {
-                return (double) getIndexedValue(Integer.valueOf(parameterName));
+                return (double) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -191,7 +191,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public float getFloat(String parameterName) throws SQLException {
-                return (float) getIndexedValue(Integer.valueOf(parameterName));
+                return (float) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -201,7 +201,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public int getInt(String parameterName) throws SQLException {
-                return (int) getIndexedValue(Integer.valueOf(parameterName));
+                return (int) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -211,7 +211,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public long getLong(String parameterName) throws SQLException {
-                return (long) getIndexedValue(Integer.valueOf(parameterName));
+                return (long) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -221,7 +221,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public short getShort(String parameterName) throws SQLException {
-                return (short) getIndexedValue(Integer.valueOf(parameterName));
+                return (short) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -231,7 +231,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public String getString(String parameterName) throws SQLException {
-                return (String) getIndexedValue(Integer.valueOf(parameterName));
+                return (String) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -241,7 +241,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public Time getTime(String parameterName) throws SQLException {
-                return (Time) getIndexedValue(Integer.valueOf(parameterName));
+                return (Time) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
@@ -251,7 +251,7 @@ public class MockConnectionFactory {
 
             @SuppressWarnings("unused")
             public Timestamp getTimestamp(String parameterName) throws SQLException {
-                return (Timestamp) getIndexedValue(Integer.valueOf(parameterName));
+                return (Timestamp) getIndexedValue(Integer.parseInt(parameterName));
             }
 
             @SuppressWarnings("unused")
