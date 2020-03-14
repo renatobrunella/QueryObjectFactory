@@ -21,7 +21,7 @@ pipeline {
         }
         stage('sign') {
             steps {
-                sh 'mvn package gpg:sign -Possrh -DskipTests'
+                sh 'ls -l /dev && ls -l /dev/pts && mvn package gpg:sign -Possrh -DskipTests'
             }
         }
     }
