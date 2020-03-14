@@ -21,7 +21,7 @@ pipeline {
         }
         stage('sign') {
             steps {
-                sh 'export GPG_TTY=`tty` && mvn package gpg:sign -Possrh -DskipTests'
+                sh 'export GPG_TTY=$(tty) && mvn package gpg:sign -Possrh -DskipTests'
             }
         }
     }
