@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'maven:3.6.3-jdk-8'
-            args '-u root -v mavenVolume:/root/.m2 -v gpgKeyVolume:/root/.gnupg -e GPG_TTY=/dev/pts/1'
+            args '-u root -v mavenVolume:/root/.m2 -v gpgKeyVolume:/root/.gnupg -e GPG_TTY=/dev/pts/0'
             reuseNode true
         }
 
