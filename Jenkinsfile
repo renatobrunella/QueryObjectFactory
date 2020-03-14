@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'maven:3.6.3-jdk-8'
-            args '-u root -v mavenVolume:/root/.m2 -v gpgKeyVolume:/root/.gnupg -e GPG_TTY=/dev/pts/0'
+            args '-u root -v mavenVolume:/root/.m2 -v gpgKeyVolume:/root/.gnupg'
             reuseNode true
         }
 
@@ -21,7 +21,7 @@ pipeline {
         }
         stage('sign') {
             steps {
-                sh 'ls -l /dev && ls -l /dev/pts && mvn package gpg:sign -Possrh -DskipTests'
+                sh 'export GPG_TTY=`tty` && mvn package gpg:sign -Possrh -DskipTests'
             }
         }
     }
