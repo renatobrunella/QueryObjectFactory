@@ -12,7 +12,7 @@
 
     <organization>
         <url>https://github.com/renatobrunella</url>
-        <name>Brunella</name>
+        <name>brunella.co.uk</name>
     </organization>
 
     <inceptionYear>2007</inceptionYear>
@@ -28,7 +28,7 @@
         <developer>
             <name>Renato Brunella</name>
             <email>develop@brunella.co.uk</email>
-            <organization>Brunella</organization>
+            <organization>brunella.co.uk</organization>
             <organizationUrl>https://github.com/renatobrunella</organizationUrl>
             <timezone>UTC+01:00</timezone>
         </developer>
