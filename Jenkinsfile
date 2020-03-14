@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'maven:3.6.3-jdk-8'
-            args '-u root'
+            args '-u root -v $M2_HOME:/root/.m2'
             reuseNode true
         }
 
