@@ -19,5 +19,10 @@ pipeline {
                 sh 'mvn install -DskipTests'
             }
         }
+        stage('sign') {
+            steps {
+                sh 'mvn package gpg:sign -Possrh -DskipTests'
+            }
+        }
     }
 }
