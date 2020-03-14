@@ -10,7 +10,6 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'printenv'
                 sh 'mvn clean package'
             }
         }
@@ -21,7 +20,7 @@ pipeline {
         }
         stage('sign') {
             steps {
-                sh 'export GPG_TTY=$(tty) && mvn package gpg:sign -Possrh -DskipTests'
+                sh 'export GPG_TTY=/dev/pts/0 && mvn package gpg:sign -Possrh -DskipTests'
             }
         }
     }
