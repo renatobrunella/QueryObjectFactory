@@ -20,7 +20,7 @@ pipeline {
         }
         stage('sign') {
             steps {
-                sh 'export GPG_TTY=/dev/console && printenv && ls -l /dev/pts && ps aux && mvn package gpg:sign -Possrh -DskipTests'
+                sh 'export GPG_TTY=/dev/console && mvn -X package gpg:sign -Possrh -DskipTests'
             }
         }
     }
