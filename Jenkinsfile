@@ -20,7 +20,8 @@ pipeline {
         }
         stage('sign') {
             steps {
-                sh 'export GPG_TTY=`ps -p 1 | tail -n 1 | awk \'{ print "/dev/" $2 }\'`; printenv; mvn -X package gpg:sign -Possrh -DskipTests'
+//                sh 'export GPG_TTY=`ps -p 1 | tail -n 1 | awk \'{ print "/dev/" $2 }\'`; printenv; mvn -X package gpg:sign -Possrh -DskipTests'
+                sh 'mvn package gpg:sign -Possrh -DskipTests'
             }
         }
     }
